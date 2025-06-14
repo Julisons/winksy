@@ -160,6 +160,26 @@ class _IWishCardState extends State<IWishCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('Assets: ',
+                          style: TextStyle(
+                            color: color.xTextColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: FONT_TITLE,
+                          ),
+                        ),
+                        Text( "${'${widget.pet.petAssets}'.kes()} wnks",
+                          style: TextStyle(
+                            color: color.xTrailing,
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_TITLE,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text('Last Active: ',
                           style: TextStyle(
                             color: color.xTextColor,

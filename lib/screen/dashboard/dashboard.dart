@@ -94,9 +94,10 @@ class _IDashboardState extends State<IDashboard>
             ],
             labelColor: color.xTextColor,
             unselectedLabelColor: color.xTextColorTertiary,
-            indicator: UnderlineTabIndicator(
-              borderSide:
-              BorderSide(width: 3.0, color: color.xTrailing, style: BorderStyle.solid),
+            indicator: BoxDecoration(
+              color: color.xSecondaryColor,
+              borderRadius: BorderRadius.circular(30.h),
+
             ),
             dividerHeight: 0,
             dividerColor:  color.xTrailing,

@@ -28,6 +28,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winksy/model/User.dart';
 import 'package:winksy/model/message.dart' as sms;
+import 'package:winksy/model/notification.dart' as noti;
 import 'package:http/http.dart' as http;
 import '../../request/posts.dart';
 import '../../request/urls.dart';
@@ -295,77 +296,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> _showBigPictureNotificationHiddenLargeIcon(
-    RemoteNotification? notification,
-    String id,
-    String icon,
-    String channel,
-  ) async {
-    icon = icon.startsWith('http')
-        ? icon
-        : '${IUrls.IMAGE_URL} ${icon.replaceFirst('.', '')}';
 
-    final String largeIconPath = await _downloadAndSaveFile(icon, 'largeIcon');
-    final String bigPicturePath = await _downloadAndSaveFile(
-      icon,
-      'bigPicture',
-    );
-    final BigPictureStyleInformation bigPictureStyleInformation =
-        BigPictureStyleInformation(
-          FilePathAndroidBitmap(bigPicturePath),
-          hideExpandedLargeIcon: true,
-          contentTitle: '${notification?.title}',
-          htmlFormatContentTitle: true,
-          summaryText: '${notification?.body}',
-          htmlFormatSummaryText: true,
-        );
-    final AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-          icon: 'ic_launcher',
-          channel,
-          channel,
-          channelDescription: '${notification?.title}',
-          largeIcon: FilePathAndroidBitmap(largeIconPath),
-          styleInformation: bigPictureStyleInformation,
-        );
-    final NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      7,
-      '${notification?.title}',
-      '${notification?.body}',
-      notificationDetails,
-    );
-  }
-
-  Future<void> _showNormalNotification(
-    RemoteNotification notification,
-    String id,
-    channel,
-  ) async {
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-          icon: 'ic_launcher',
-          id,
-          'normal',
-          channelDescription: 'normal',
-          importance: Importance.max,
-          priority: Priority.high,
-          ticker: 'ticker',
-        );
-
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      DateTime.now().millisecond,
-      '${notification.title}',
-      '${notification.body}',
-      notificationDetails,
-      payload: 'item x',
-    );
-  }
 
   Future<Uint8List> _getByteArrayFromUrl(String url) async {
     final http.Response response = await http.get(Uri.parse(url));
@@ -471,21 +402,25 @@ _showNotification(RemoteNotification? notification, Map<String, dynamic> data) {
   String icon = data['icon'] ?? ''; // Access icon URL
   String payload = data['data'] ?? ''; // Access icon URL
   String channel = data['channel'] ?? 'message'; // Access icon URL
-  String id =
-      data['id']?.toString() ??
+  String id = data['id']?.toString() ??
           DateTime.timestamp()
               .toString(); // Access ID and convert to string if necessary
-  sms.Message message = sms.Message.fromJson(json.decode(payload));
+
 
  /* print(' body-----------------------: ${notification?.body}');
   print(' title-----------------------: ${notification?.title}');
   print('Icon URL-----------------------: $icon');
   print('payload-------------------: $payload');
   print('msgChatId-------------------: ${message.msgChatId}');*/
-  //if(icon.isNotEmpty){
-  //_showBigPictureNotificationHiddenLargeIcon(notification!, id,  icon,channel);
-  //  }else
+  if(channel == PET_NOTIFICATION){
+    noti.Notification notification = noti.Notification.fromJson(json.decode(payload));
+  _showBigPictureNotificationHiddenLargeIcon(notification, id,icon,channel);
+    }else if(channel == PET_NOTIFICATION_NORMAL){
+    noti.Notification notification = noti.Notification.fromJson(json.decode(payload));
+    _showNormalNotification(notification, id,channel);
+    }else
       {
+        sms.Message message = sms.Message.fromJson(json.decode(payload));
     showChatNotification( icon, channel, channel, message);
   }
 }
@@ -632,4 +567,75 @@ void _handleNotificationResponse(NotificationResponse response) {
     print("User typed message: ${response.input}"); // ✅ This is the reply!
     // You can now route it to chat, send to backend, etc.
   }
+}
+
+
+Future<void> _showBigPictureNotificationHiddenLargeIcon(
+    noti.Notification notification,
+    String id,
+    String icon,
+    String channel,
+    ) async {
+  icon = icon.startsWith('http')
+      ? icon
+      : '${IUrls.IMAGE_URL} ${icon.replaceFirst('.', '')}';
+
+  final String largeIconPath = await _downloadAndSaveFile(icon, 'largeIcon');
+  final String bigPicturePath = await _downloadAndSaveFile(
+    icon,
+    'bigPicture',
+  );
+  final BigPictureStyleInformation bigPictureStyleInformation =
+  BigPictureStyleInformation(
+    FilePathAndroidBitmap(bigPicturePath),
+    hideExpandedLargeIcon: true,
+    contentTitle: notification.notiTitle,
+    htmlFormatContentTitle: true,
+    summaryText: notification.notiDesc,
+    htmlFormatSummaryText: true,
+  );
+  final AndroidNotificationDetails androidNotificationDetails =
+  AndroidNotificationDetails(
+    icon: 'ic_launcher',
+    channel,
+    channel,
+    channelDescription: notification.notiTitle,
+    largeIcon: FilePathAndroidBitmap(largeIconPath),
+    styleInformation: bigPictureStyleInformation,
+  );
+  final NotificationDetails notificationDetails = NotificationDetails(
+    android: androidNotificationDetails,
+  );
+  await flutterLocalNotificationsPlugin.show(
+    notification.notiId.toString().hashCode,
+    notification.notiTitle,
+    notification.notiDesc,
+    notificationDetails,
+  );
+}
+
+
+Future<void> _showNormalNotification(noti.Notification notification,
+    String id,channel,) async {
+  AndroidNotificationDetails androidNotificationDetails =
+  AndroidNotificationDetails(
+    icon: 'ic_launcher',
+    id,
+    'normal',
+    channelDescription: 'normal',
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+  );
+
+  NotificationDetails notificationDetails = NotificationDetails(
+    android: androidNotificationDetails,
+  );
+  await flutterLocalNotificationsPlugin.show(
+    DateTime.now().millisecond,
+    '${notification.notiTitle}',
+    '${notification.notiDesc}',
+    notificationDetails,
+    payload: notification.toJson().toString(),
+  );
 }

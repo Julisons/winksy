@@ -1,13 +1,13 @@
 class IUrls {
-  static String BASE = 'http://192.168.100.36';
- // static String BASE = 'http://212.47.74.158';
+ // static String BASE = 'http://192.168.100.36';
+  static String BASE = 'http://212.47.74.158';
 
   static String IMAGE_URL = '$BASE:5000';
   //static String IMAGE_URL = 'http://212.47.74.158:5000';
 
 
 //static String BASE_URL = 'http://212.47.74.158:5000';
-static String BASE_URL = '$BASE:80';
+static String BASE_URL = '$BASE:5000';
 
  // static String BASE_URL = 'http://212.47.74.158/dopamine';
 

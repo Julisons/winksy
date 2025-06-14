@@ -63,13 +63,13 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
           return <Widget>[
             SliverAppBar(
               pinned: true,
-              expandedHeight: 300.0.h,
+              expandedHeight: 280.0.h,
               floating: true,
               surfaceTintColor: color.xPrimaryColor,
               backgroundColor: color.xPrimaryColor,
               forceElevated: innerBoxIsScrolled,
               automaticallyImplyLeading: false,
-              toolbarHeight: 300.h,
+              toolbarHeight: 280.h,
               title: Container(
                 margin: EdgeInsets.only(bottom: 16.h, top: 20),
                 width: MediaQuery.of(context).size.width,
