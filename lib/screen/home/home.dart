@@ -406,9 +406,6 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
       position.longitude,
     );
     Placemark place = placemarks[0];
-    log(
-      '=${Mixin.user?.usrId}=============================================================$place',
-    );
 
     Mixin.user?.usrLat = position.latitude;
     Mixin.user?.usrLng = position.longitude;

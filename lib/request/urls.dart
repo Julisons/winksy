@@ -41,6 +41,9 @@ static String BASE_URL = '$BASE:80';
     return "$BASE_URL/interest/save_interest";
   }
 
+  static String TRANSACTION() {
+    return "$BASE_URL/transaction/save_transaction";
+  }
 
   static String USER() {
     return "$BASE_URL/user/save_user";
@@ -52,6 +55,9 @@ static String BASE_URL = '$BASE:80';
 
   static Uri PETS() {
     return Uri.parse("$BASE_URL/pet/fetch_pets");
+  }
+  static Uri OWNED_PETS() {
+    return Uri.parse("$BASE_URL/pet/fetch_owned_pets");
   }
 
 

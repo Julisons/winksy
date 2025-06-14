@@ -146,20 +146,17 @@ class _ISplashScreenState extends State<ISplashScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('Winksy', style: TextStyle(color: color.xTrailing, fontSize: 40, fontWeight: FontWeight.bold),),
-                        Positioned(
-                            right: 0,
-                            child: Text('®', style: TextStyle(color: color.xTrailing, fontSize: 16, fontWeight: FontWeight.bold),)),
+                        Text('®', style: TextStyle(color: color.xTrailing, fontSize: 16, fontWeight: FontWeight.bold),),
                       ],
                     )
                 ),
               ),
             ),
-
             SizedBox(height: 60.h),
             SizedBox(
               width: 280.w,
               child: Text(
-                  "Designed & Developed in Nairobi.\n© 2025 Winksy Technologies Limited.\nClosed Beta V2.0.",
+                  "Designed & Developed in Nairobi.\n© 2025 Wink Technologies Limited.\nClosed Beta V2.0.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,

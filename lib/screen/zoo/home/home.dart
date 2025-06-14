@@ -6,14 +6,16 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:winksy/screen/zoo/home/pet.dart';
+import 'package:winksy/screen/zoo/home/wish/wish.dart';
 
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/pet.dart';
-import '../../../provider/pet_provider.dart';
+import '../../../provider/pet/pet_provider.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import 'owned/owned.dart';
 
 
 
@@ -90,6 +92,7 @@ class _IPetHomeState extends State<IPetHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('${Mixin.user?.usrFullNames}',
                                   style: TextStyle(
@@ -147,7 +150,6 @@ class _IPetHomeState extends State<IPetHome> {
                                           ),
                                         ],
                                       ),
-
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,8 +265,8 @@ class _IPetHomeState extends State<IPetHome> {
             physics: const AlwaysScrollableScrollPhysics(),
             children: <Widget>[
               IPet(),
-              IPet(),
-              IPet()
+              IOwned(),
+              IWish()
             ],
           ),
         ),

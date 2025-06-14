@@ -2,21 +2,20 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
-import '../mixin/mixins.dart';
-import '../model/pet.dart';
-import '../model/response.dart';
-import '../request/gets.dart';
+import '../../mixin/mixins.dart';
+import '../../model/pet.dart';
+import '../../model/response.dart';
+import '../../request/gets.dart';
 
-class IPetProvider with ChangeNotifier {
+class IWishProvider with ChangeNotifier {
   List<Pet> list = [];
-  late Pet pet = Pet();
   late String errorMessage;
   bool _loading = false;
   bool _loadingMore = false;
   int _start = 0;
   final int _limit = 20;
 
-  IPetProvider init() {
+  IWishProvider init() {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
@@ -34,16 +33,15 @@ class IPetProvider with ChangeNotifier {
     setLoading(true);
 
     await XRequest().getData({
-      'petUsrId': Mixin.user?.usrId,
+      'petOwnerId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.PETS()).then((data) {
+    }, IUrls.OWNED_PETS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
           var res = jsonResponse.data['result'] ?? [];
-          pet = Pet.fromJson((jsonResponse.result));
 
           var items = res.map<Pet>((json) {
             return  Pet.fromJson(json);
@@ -148,9 +146,5 @@ class IPetProvider with ChangeNotifier {
 
   bool isLoaded() {
     return list.isNotEmpty;
-  }
-
-  Pet getPet() {
-    return pet;
   }
 }

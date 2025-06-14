@@ -8,24 +8,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
+import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 import 'package:winksy/screen/zoo/home/pet_card.dart';
-import '../../../component/popup.dart';
-import '../../../mixin/constants.dart';
-import '../../../provider/pet/pet_provider.dart';
-import '../../../theme/custom_colors.dart';
+
+import '../../../../theme/custom_colors.dart';
+import 'owned_card.dart';
 
 
 
-class IPet extends StatefulWidget {
-  const IPet({super.key});
+
+class IOwned extends StatefulWidget {
+  const IOwned({super.key});
 
 
   @override
-  State<IPet> createState() => _IPetState();
+  State<IOwned> createState() => _IOwnedState();
 }
 
-class _IPetState extends State<IPet> {
+class _IOwnedState extends State<IOwned> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();
@@ -37,7 +38,7 @@ class _IPetState extends State<IPet> {
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
         if (_scrollController.position.pixels != 0) {
-          Provider.of<IPetProvider>(context, listen: false).loadMore(_searchController.text);
+          Provider.of<IOwnedProvider>(context, listen: false).loadMore(_searchController.text);
         }}});
   }
 
@@ -56,7 +57,7 @@ class _IPetState extends State<IPet> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: 10.h),
-        child: Consumer<IPetProvider>(
+        child: Consumer<IOwnedProvider>(
             builder: (context, provider, child) {
               return provider.isLoading() ? const IPeopleShimmer() :
               Column(
@@ -77,7 +78,7 @@ class _IPetState extends State<IPet> {
                           physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            return IPetCard(
+                            return IOwnedCard(
                               pet: provider.list[index],
                               onRefresh: () {
                                 setState(() {});

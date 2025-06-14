@@ -1,29 +1,82 @@
-/// petId : "81d48941-69db-42aa-9f67-cb9511b18d27"
-/// petUsrId : "202e4835-854e-47f0-8433-ecc5364b0cc2"
-/// petOwnerId : "2c0ccf7a-0242-4608-98c0-ff6914e65a51"
-/// petValue : 0
-/// petLockedUntil : "2025-06-13T17:49:05.036+00:00"
-/// petBoosts : "string"
-/// petRename : "string"
-/// petLastBoughtAt : "2025-06-13T17:49:05.036+00:00"
-/// petCash : 0
-/// petCreatedBy : "202e4835-854e-47f0-8433-ecc5364b0cc2"
-/// petCreatedDate : "2025-06-12T21:00:00.000+00:00"
-/// petCreatedTime : "2025-06-13T17:50:09.268+00:00"
+/// petId : "af36e0a4-a4a4-47f2-b904-ff9e24b0b9a2"
+/// petUsrId : "723584b2-0ebb-4148-a196-846076377908"
+/// petOwnerId : "202e4835-854e-47f0-8433-ecc5364b0cc2"
+/// petValue : 30
+/// petLockedUntil : null
+/// petBoosts : null
+/// petRename : null
+/// petLastBoughtAt : "2025-06-13T21:00:00.000+00:00"
+/// petCash : 20
+/// petCreatedBy : null
+/// petCreatedDate : "2025-06-13T21:00:00.000+00:00"
+/// petCreatedTime : "2025-06-13T21:00:00.000+00:00"
 /// petInstId : null
 /// petUpdatedBy : null
-/// petUpdatedDate : "2025-06-12T21:00:00.000+00:00"
-/// petUpdatedTime : "2025-06-13T17:50:09.268+00:00"
-/// petDesc : "string"
-/// petStatus : "ACTIVE"
-/// petCode : "string"
-/// petType : "string"
-/// petLastActive : "string"
-/// petLastActiveTime : "2025-06-13T17:49:05.036+00:00"
-/// petLastPurchase : "2025-06-13T17:49:05.036+00:00"
-/// usrFullNames : "Julisons"
-/// usrImage : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=800&h=800&fit=crop&crop=face"
-/// usrOwner : "Austine Julisons"
+/// petUpdatedDate : null
+/// petUpdatedTime : null
+/// petDesc : null
+/// petStatus : null
+/// petCode : null
+/// petType : null
+/// petLastActive : null
+/// petLastActiveTime : "2025-06-13T21:00:00.000+00:00"
+/// petLastPurchase : "2025-06-13T21:00:00.000+00:00"
+/// usrImage : "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=800&h=800&fit=crop&crop=face"
+/// usrOwner : null
+/// usrId : "723584b2-0ebb-4148-a196-846076377908"
+/// usrFullNames : "Henry Sebastian Clarke"
+/// usrFirstName : "Henry"
+/// usrMiddleName : "Sebastian"
+/// usrLastName : "Clarke"
+/// usrUsername : "henryseb"
+/// usrEmail : "henry.clarke@btinternet.com"
+/// usrEncryptedPassword : null
+/// usrMobileNumber : null
+/// usrEnabled : null
+/// usrRoleId : null
+/// stpAccId : null
+/// usrLocation : null
+/// usrMobileImei : null
+/// usrType : null
+/// usrOsType : null
+/// usrDob : "1984-12-18T21:00:00.000+00:00"
+/// usrGender : "Male"
+/// usrMobileModel : null
+/// usrCounty : null
+/// usrRgId : null
+/// usrResetHash : null
+/// usrCustId : null
+/// usrReportTo : null
+/// usrGroupId : null
+/// usrOwnerId : null
+/// usrNationalId : null
+/// usrLastLoginTime : "2025-06-07T07:34:09.142+00:00"
+/// usrFirebaseToken : null
+/// usrLat : -1.3570941832335646
+/// usrLng : 36.662631167765845
+/// usrCreatedDate : null
+/// usrCreatedTime : null
+/// usrUpdatedDate : null
+/// usrUpdatedTime : null
+/// usrDesc : null
+/// usrStatus : null
+/// usrCode : null
+/// usrIdFrntUrl : null
+/// usrIdBckUrl : null
+/// usrStreet : "45 Princes Street, Flat 8B"
+/// usrIsoCountryCode : "GB"
+/// usrCountry : "United Kingdom"
+/// usrPostalCode : "EH2 2BY"
+/// usrAdministrativeArea : "Scotland"
+/// usrSubAdministrativeArea : "Edinburgh"
+/// usrLocality : "Edinburgh"
+/// usrSubLocality : "Old Town"
+/// usrThoroughfare : "Princes Street"
+/// usrSubThoroughfare : "Flat 8B"
+/// usrPhoneData : null
+/// usrInstId : null
+/// usrCreatedBy : null
+/// usrUpdatedBy : null
 
 class Pet {
   Pet({
@@ -50,9 +103,62 @@ class Pet {
       dynamic petLastActive, 
       dynamic petLastActiveTime, 
       dynamic petLastPurchase, 
-      dynamic usrFullNames, 
       dynamic usrImage, 
-      dynamic usrOwner,}){
+      dynamic usrOwner, 
+      dynamic usrId, 
+      dynamic usrFullNames, 
+      dynamic usrFirstName, 
+      dynamic usrMiddleName, 
+      dynamic usrLastName, 
+      dynamic usrUsername, 
+      dynamic usrEmail, 
+      dynamic usrEncryptedPassword, 
+      dynamic usrMobileNumber, 
+      dynamic usrEnabled, 
+      dynamic usrRoleId, 
+      dynamic stpAccId, 
+      dynamic usrLocation, 
+      dynamic usrMobileImei, 
+      dynamic usrType, 
+      dynamic usrOsType, 
+      dynamic usrDob, 
+      dynamic usrGender, 
+      dynamic usrMobileModel, 
+      dynamic usrCounty, 
+      dynamic usrRgId, 
+      dynamic usrResetHash, 
+      dynamic usrCustId, 
+      dynamic usrReportTo, 
+      dynamic usrGroupId, 
+      dynamic usrOwnerId, 
+      dynamic usrNationalId, 
+      dynamic usrLastLoginTime, 
+      dynamic usrFirebaseToken, 
+      dynamic usrLat, 
+      dynamic usrLng, 
+      dynamic usrCreatedDate, 
+      dynamic usrCreatedTime, 
+      dynamic usrUpdatedDate, 
+      dynamic usrUpdatedTime, 
+      dynamic usrDesc, 
+      dynamic usrStatus, 
+      dynamic usrCode, 
+      dynamic usrIdFrntUrl, 
+      dynamic usrIdBckUrl, 
+      dynamic usrStreet, 
+      dynamic usrIsoCountryCode, 
+      dynamic usrCountry, 
+      dynamic usrPostalCode, 
+      dynamic usrAdministrativeArea, 
+      dynamic usrSubAdministrativeArea, 
+      dynamic usrLocality, 
+      dynamic usrSubLocality, 
+      dynamic usrThoroughfare, 
+      dynamic usrSubThoroughfare, 
+      dynamic usrPhoneData, 
+      dynamic usrInstId, 
+      dynamic usrCreatedBy, 
+      dynamic usrUpdatedBy,}){
     petId = petId;
     petUsrId = petUsrId;
     petOwnerId = petOwnerId;
@@ -76,9 +182,62 @@ class Pet {
     petLastActive = petLastActive;
     petLastActiveTime = petLastActiveTime;
     petLastPurchase = petLastPurchase;
-    usrFullNames = usrFullNames;
     usrImage = usrImage;
     usrOwner = usrOwner;
+    usrId = usrId;
+    usrFullNames = usrFullNames;
+    usrFirstName = usrFirstName;
+    usrMiddleName = usrMiddleName;
+    usrLastName = usrLastName;
+    usrUsername = usrUsername;
+    usrEmail = usrEmail;
+    usrEncryptedPassword = usrEncryptedPassword;
+    usrMobileNumber = usrMobileNumber;
+    usrEnabled = usrEnabled;
+    usrRoleId = usrRoleId;
+    stpAccId = stpAccId;
+    usrLocation = usrLocation;
+    usrMobileImei = usrMobileImei;
+    usrType = usrType;
+    usrOsType = usrOsType;
+    usrDob = usrDob;
+    usrGender = usrGender;
+    usrMobileModel = usrMobileModel;
+    usrCounty = usrCounty;
+    usrRgId = usrRgId;
+    usrResetHash = usrResetHash;
+    usrCustId = usrCustId;
+    usrReportTo = usrReportTo;
+    usrGroupId = usrGroupId;
+    usrOwnerId = usrOwnerId;
+    usrNationalId = usrNationalId;
+    usrLastLoginTime = usrLastLoginTime;
+    usrFirebaseToken = usrFirebaseToken;
+    usrLat = usrLat;
+    usrLng = usrLng;
+    usrCreatedDate = usrCreatedDate;
+    usrCreatedTime = usrCreatedTime;
+    usrUpdatedDate = usrUpdatedDate;
+    usrUpdatedTime = usrUpdatedTime;
+    usrDesc = usrDesc;
+    usrStatus = usrStatus;
+    usrCode = usrCode;
+    usrIdFrntUrl = usrIdFrntUrl;
+    usrIdBckUrl = usrIdBckUrl;
+    usrStreet = usrStreet;
+    usrIsoCountryCode = usrIsoCountryCode;
+    usrCountry = usrCountry;
+    usrPostalCode = usrPostalCode;
+    usrAdministrativeArea = usrAdministrativeArea;
+    usrSubAdministrativeArea = usrSubAdministrativeArea;
+    usrLocality = usrLocality;
+    usrSubLocality = usrSubLocality;
+    usrThoroughfare = usrThoroughfare;
+    usrSubThoroughfare = usrSubThoroughfare;
+    usrPhoneData = usrPhoneData;
+    usrInstId = usrInstId;
+    usrCreatedBy = usrCreatedBy;
+    usrUpdatedBy = usrUpdatedBy;
 }
 
   Pet.fromJson(dynamic json) {
@@ -105,9 +264,62 @@ class Pet {
     petLastActive = json['petLastActive'];
     petLastActiveTime = json['petLastActiveTime'];
     petLastPurchase = json['petLastPurchase'];
-    usrFullNames = json['usrFullNames'];
     usrImage = json['usrImage'];
     usrOwner = json['usrOwner'];
+    usrId = json['usrId'];
+    usrFullNames = json['usrFullNames'];
+    usrFirstName = json['usrFirstName'];
+    usrMiddleName = json['usrMiddleName'];
+    usrLastName = json['usrLastName'];
+    usrUsername = json['usrUsername'];
+    usrEmail = json['usrEmail'];
+    usrEncryptedPassword = json['usrEncryptedPassword'];
+    usrMobileNumber = json['usrMobileNumber'];
+    usrEnabled = json['usrEnabled'];
+    usrRoleId = json['usrRoleId'];
+    stpAccId = json['stpAccId'];
+    usrLocation = json['usrLocation'];
+    usrMobileImei = json['usrMobileImei'];
+    usrType = json['usrType'];
+    usrOsType = json['usrOsType'];
+    usrDob = json['usrDob'];
+    usrGender = json['usrGender'];
+    usrMobileModel = json['usrMobileModel'];
+    usrCounty = json['usrCounty'];
+    usrRgId = json['usrRgId'];
+    usrResetHash = json['usrResetHash'];
+    usrCustId = json['usrCustId'];
+    usrReportTo = json['usrReportTo'];
+    usrGroupId = json['usrGroupId'];
+    usrOwnerId = json['usrOwnerId'];
+    usrNationalId = json['usrNationalId'];
+    usrLastLoginTime = json['usrLastLoginTime'];
+    usrFirebaseToken = json['usrFirebaseToken'];
+    usrLat = json['usrLat'];
+    usrLng = json['usrLng'];
+    usrCreatedDate = json['usrCreatedDate'];
+    usrCreatedTime = json['usrCreatedTime'];
+    usrUpdatedDate = json['usrUpdatedDate'];
+    usrUpdatedTime = json['usrUpdatedTime'];
+    usrDesc = json['usrDesc'];
+    usrStatus = json['usrStatus'];
+    usrCode = json['usrCode'];
+    usrIdFrntUrl = json['usrIdFrntUrl'];
+    usrIdBckUrl = json['usrIdBckUrl'];
+    usrStreet = json['usrStreet'];
+    usrIsoCountryCode = json['usrIsoCountryCode'];
+    usrCountry = json['usrCountry'];
+    usrPostalCode = json['usrPostalCode'];
+    usrAdministrativeArea = json['usrAdministrativeArea'];
+    usrSubAdministrativeArea = json['usrSubAdministrativeArea'];
+    usrLocality = json['usrLocality'];
+    usrSubLocality = json['usrSubLocality'];
+    usrThoroughfare = json['usrThoroughfare'];
+    usrSubThoroughfare = json['usrSubThoroughfare'];
+    usrPhoneData = json['usrPhoneData'];
+    usrInstId = json['usrInstId'];
+    usrCreatedBy = json['usrCreatedBy'];
+    usrUpdatedBy = json['usrUpdatedBy'];
   }
   dynamic petId;
   dynamic petUsrId;
@@ -132,9 +344,62 @@ class Pet {
   dynamic petLastActive;
   dynamic petLastActiveTime;
   dynamic petLastPurchase;
-  dynamic usrFullNames;
   dynamic usrImage;
   dynamic usrOwner;
+  dynamic usrId;
+  dynamic usrFullNames;
+  dynamic usrFirstName;
+  dynamic usrMiddleName;
+  dynamic usrLastName;
+  dynamic usrUsername;
+  dynamic usrEmail;
+  dynamic usrEncryptedPassword;
+  dynamic usrMobileNumber;
+  dynamic usrEnabled;
+  dynamic usrRoleId;
+  dynamic stpAccId;
+  dynamic usrLocation;
+  dynamic usrMobileImei;
+  dynamic usrType;
+  dynamic usrOsType;
+  dynamic usrDob;
+  dynamic usrGender;
+  dynamic usrMobileModel;
+  dynamic usrCounty;
+  dynamic usrRgId;
+  dynamic usrResetHash;
+  dynamic usrCustId;
+  dynamic usrReportTo;
+  dynamic usrGroupId;
+  dynamic usrOwnerId;
+  dynamic usrNationalId;
+  dynamic usrLastLoginTime;
+  dynamic usrFirebaseToken;
+  dynamic usrLat;
+  dynamic usrLng;
+  dynamic usrCreatedDate;
+  dynamic usrCreatedTime;
+  dynamic usrUpdatedDate;
+  dynamic usrUpdatedTime;
+  dynamic usrDesc;
+  dynamic usrStatus;
+  dynamic usrCode;
+  dynamic usrIdFrntUrl;
+  dynamic usrIdBckUrl;
+  dynamic usrStreet;
+  dynamic usrIsoCountryCode;
+  dynamic usrCountry;
+  dynamic usrPostalCode;
+  dynamic usrAdministrativeArea;
+  dynamic usrSubAdministrativeArea;
+  dynamic usrLocality;
+  dynamic usrSubLocality;
+  dynamic usrThoroughfare;
+  dynamic usrSubThoroughfare;
+  dynamic usrPhoneData;
+  dynamic usrInstId;
+  dynamic usrCreatedBy;
+  dynamic usrUpdatedBy;
 Pet copyWith({  dynamic petId,
   dynamic petUsrId,
   dynamic petOwnerId,
@@ -158,9 +423,62 @@ Pet copyWith({  dynamic petId,
   dynamic petLastActive,
   dynamic petLastActiveTime,
   dynamic petLastPurchase,
-  dynamic usrFullNames,
   dynamic usrImage,
   dynamic usrOwner,
+  dynamic usrId,
+  dynamic usrFullNames,
+  dynamic usrFirstName,
+  dynamic usrMiddleName,
+  dynamic usrLastName,
+  dynamic usrUsername,
+  dynamic usrEmail,
+  dynamic usrEncryptedPassword,
+  dynamic usrMobileNumber,
+  dynamic usrEnabled,
+  dynamic usrRoleId,
+  dynamic stpAccId,
+  dynamic usrLocation,
+  dynamic usrMobileImei,
+  dynamic usrType,
+  dynamic usrOsType,
+  dynamic usrDob,
+  dynamic usrGender,
+  dynamic usrMobileModel,
+  dynamic usrCounty,
+  dynamic usrRgId,
+  dynamic usrResetHash,
+  dynamic usrCustId,
+  dynamic usrReportTo,
+  dynamic usrGroupId,
+  dynamic usrOwnerId,
+  dynamic usrNationalId,
+  dynamic usrLastLoginTime,
+  dynamic usrFirebaseToken,
+  dynamic usrLat,
+  dynamic usrLng,
+  dynamic usrCreatedDate,
+  dynamic usrCreatedTime,
+  dynamic usrUpdatedDate,
+  dynamic usrUpdatedTime,
+  dynamic usrDesc,
+  dynamic usrStatus,
+  dynamic usrCode,
+  dynamic usrIdFrntUrl,
+  dynamic usrIdBckUrl,
+  dynamic usrStreet,
+  dynamic usrIsoCountryCode,
+  dynamic usrCountry,
+  dynamic usrPostalCode,
+  dynamic usrAdministrativeArea,
+  dynamic usrSubAdministrativeArea,
+  dynamic usrLocality,
+  dynamic usrSubLocality,
+  dynamic usrThoroughfare,
+  dynamic usrSubThoroughfare,
+  dynamic usrPhoneData,
+  dynamic usrInstId,
+  dynamic usrCreatedBy,
+  dynamic usrUpdatedBy,
 }) => Pet(  petId: petId ?? petId,
   petUsrId: petUsrId ?? petUsrId,
   petOwnerId: petOwnerId ?? petOwnerId,
@@ -184,9 +502,62 @@ Pet copyWith({  dynamic petId,
   petLastActive: petLastActive ?? petLastActive,
   petLastActiveTime: petLastActiveTime ?? petLastActiveTime,
   petLastPurchase: petLastPurchase ?? petLastPurchase,
-  usrFullNames: usrFullNames ?? usrFullNames,
   usrImage: usrImage ?? usrImage,
   usrOwner: usrOwner ?? usrOwner,
+  usrId: usrId ?? usrId,
+  usrFullNames: usrFullNames ?? usrFullNames,
+  usrFirstName: usrFirstName ?? usrFirstName,
+  usrMiddleName: usrMiddleName ?? usrMiddleName,
+  usrLastName: usrLastName ?? usrLastName,
+  usrUsername: usrUsername ?? usrUsername,
+  usrEmail: usrEmail ?? usrEmail,
+  usrEncryptedPassword: usrEncryptedPassword ?? usrEncryptedPassword,
+  usrMobileNumber: usrMobileNumber ?? usrMobileNumber,
+  usrEnabled: usrEnabled ?? usrEnabled,
+  usrRoleId: usrRoleId ?? usrRoleId,
+  stpAccId: stpAccId ?? stpAccId,
+  usrLocation: usrLocation ?? usrLocation,
+  usrMobileImei: usrMobileImei ?? usrMobileImei,
+  usrType: usrType ?? usrType,
+  usrOsType: usrOsType ?? usrOsType,
+  usrDob: usrDob ?? usrDob,
+  usrGender: usrGender ?? usrGender,
+  usrMobileModel: usrMobileModel ?? usrMobileModel,
+  usrCounty: usrCounty ?? usrCounty,
+  usrRgId: usrRgId ?? usrRgId,
+  usrResetHash: usrResetHash ?? usrResetHash,
+  usrCustId: usrCustId ?? usrCustId,
+  usrReportTo: usrReportTo ?? usrReportTo,
+  usrGroupId: usrGroupId ?? usrGroupId,
+  usrOwnerId: usrOwnerId ?? usrOwnerId,
+  usrNationalId: usrNationalId ?? usrNationalId,
+  usrLastLoginTime: usrLastLoginTime ?? usrLastLoginTime,
+  usrFirebaseToken: usrFirebaseToken ?? usrFirebaseToken,
+  usrLat: usrLat ?? usrLat,
+  usrLng: usrLng ?? usrLng,
+  usrCreatedDate: usrCreatedDate ?? usrCreatedDate,
+  usrCreatedTime: usrCreatedTime ?? usrCreatedTime,
+  usrUpdatedDate: usrUpdatedDate ?? usrUpdatedDate,
+  usrUpdatedTime: usrUpdatedTime ?? usrUpdatedTime,
+  usrDesc: usrDesc ?? usrDesc,
+  usrStatus: usrStatus ?? usrStatus,
+  usrCode: usrCode ?? usrCode,
+  usrIdFrntUrl: usrIdFrntUrl ?? usrIdFrntUrl,
+  usrIdBckUrl: usrIdBckUrl ?? usrIdBckUrl,
+  usrStreet: usrStreet ?? usrStreet,
+  usrIsoCountryCode: usrIsoCountryCode ?? usrIsoCountryCode,
+  usrCountry: usrCountry ?? usrCountry,
+  usrPostalCode: usrPostalCode ?? usrPostalCode,
+  usrAdministrativeArea: usrAdministrativeArea ?? usrAdministrativeArea,
+  usrSubAdministrativeArea: usrSubAdministrativeArea ?? usrSubAdministrativeArea,
+  usrLocality: usrLocality ?? usrLocality,
+  usrSubLocality: usrSubLocality ?? usrSubLocality,
+  usrThoroughfare: usrThoroughfare ?? usrThoroughfare,
+  usrSubThoroughfare: usrSubThoroughfare ?? usrSubThoroughfare,
+  usrPhoneData: usrPhoneData ?? usrPhoneData,
+  usrInstId: usrInstId ?? usrInstId,
+  usrCreatedBy: usrCreatedBy ?? usrCreatedBy,
+  usrUpdatedBy: usrUpdatedBy ?? usrUpdatedBy,
 );
 
 
@@ -215,9 +586,62 @@ Pet copyWith({  dynamic petId,
     map['petLastActive'] = petLastActive;
     map['petLastActiveTime'] = petLastActiveTime;
     map['petLastPurchase'] = petLastPurchase;
-    map['usrFullNames'] = usrFullNames;
     map['usrImage'] = usrImage;
     map['usrOwner'] = usrOwner;
+    map['usrId'] = usrId;
+    map['usrFullNames'] = usrFullNames;
+    map['usrFirstName'] = usrFirstName;
+    map['usrMiddleName'] = usrMiddleName;
+    map['usrLastName'] = usrLastName;
+    map['usrUsername'] = usrUsername;
+    map['usrEmail'] = usrEmail;
+    map['usrEncryptedPassword'] = usrEncryptedPassword;
+    map['usrMobileNumber'] = usrMobileNumber;
+    map['usrEnabled'] = usrEnabled;
+    map['usrRoleId'] = usrRoleId;
+    map['stpAccId'] = stpAccId;
+    map['usrLocation'] = usrLocation;
+    map['usrMobileImei'] = usrMobileImei;
+    map['usrType'] = usrType;
+    map['usrOsType'] = usrOsType;
+    map['usrDob'] = usrDob;
+    map['usrGender'] = usrGender;
+    map['usrMobileModel'] = usrMobileModel;
+    map['usrCounty'] = usrCounty;
+    map['usrRgId'] = usrRgId;
+    map['usrResetHash'] = usrResetHash;
+    map['usrCustId'] = usrCustId;
+    map['usrReportTo'] = usrReportTo;
+    map['usrGroupId'] = usrGroupId;
+    map['usrOwnerId'] = usrOwnerId;
+    map['usrNationalId'] = usrNationalId;
+    map['usrLastLoginTime'] = usrLastLoginTime;
+    map['usrFirebaseToken'] = usrFirebaseToken;
+    map['usrLat'] = usrLat;
+    map['usrLng'] = usrLng;
+    map['usrCreatedDate'] = usrCreatedDate;
+    map['usrCreatedTime'] = usrCreatedTime;
+    map['usrUpdatedDate'] = usrUpdatedDate;
+    map['usrUpdatedTime'] = usrUpdatedTime;
+    map['usrDesc'] = usrDesc;
+    map['usrStatus'] = usrStatus;
+    map['usrCode'] = usrCode;
+    map['usrIdFrntUrl'] = usrIdFrntUrl;
+    map['usrIdBckUrl'] = usrIdBckUrl;
+    map['usrStreet'] = usrStreet;
+    map['usrIsoCountryCode'] = usrIsoCountryCode;
+    map['usrCountry'] = usrCountry;
+    map['usrPostalCode'] = usrPostalCode;
+    map['usrAdministrativeArea'] = usrAdministrativeArea;
+    map['usrSubAdministrativeArea'] = usrSubAdministrativeArea;
+    map['usrLocality'] = usrLocality;
+    map['usrSubLocality'] = usrSubLocality;
+    map['usrThoroughfare'] = usrThoroughfare;
+    map['usrSubThoroughfare'] = usrSubThoroughfare;
+    map['usrPhoneData'] = usrPhoneData;
+    map['usrInstId'] = usrInstId;
+    map['usrCreatedBy'] = usrCreatedBy;
+    map['usrUpdatedBy'] = usrUpdatedBy;
     return map;
   }
 
