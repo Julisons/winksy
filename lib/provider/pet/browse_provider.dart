@@ -34,6 +34,7 @@ class IBrowseProvider with ChangeNotifier {
 
     await XRequest().getData({
       'petOwnerId': Mixin.user?.usrId,
+      'wishUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.OWNED_PETS()).then((data) {
@@ -64,6 +65,7 @@ class IBrowseProvider with ChangeNotifier {
 
     await XRequest().getData({
       'petOwnerId': Mixin.user?.usrId,
+      'wishUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.OWNED_PETS()).then((data) {

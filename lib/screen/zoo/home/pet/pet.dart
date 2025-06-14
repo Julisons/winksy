@@ -65,7 +65,7 @@ class _IPetState extends State<IPet> {
                     child: RefreshIndicator(
                         color: color.xTrailing,
                         backgroundColor: color.xPrimaryColor,
-                        onRefresh: () => provider.refresh(''),
+                        onRefresh: () => provider.refresh('', false),
                         child: ListView.builder(
                           controller: _scrollController,
                           padding: const EdgeInsets.only(

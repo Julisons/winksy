@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
+import 'package:winksy/provider/pet/wish_provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 
 import '../../../../component/button.dart';
@@ -18,6 +19,7 @@ import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../model/pet.dart';
 import '../../../../model/transaction.dart';
+import '../../../../model/wish.dart';
 import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
@@ -37,6 +39,8 @@ class IWishCard extends StatefulWidget {
 class _IWishCardState extends State<IWishCard> {
   bool _isLoading = false;
   late Transaction _transaction;
+  late Wish _wish;
+
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +204,14 @@ class _IWishCardState extends State<IWishCard> {
                       ],
                     ),
                     SizedBox(height: 10,),
+                    _isLoading ? SizedBox(
+                      width: 120.w,
+                      height: 40.h,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              color: color.xTrailing)),
+                    )
+                        :
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,14 +219,24 @@ class _IWishCardState extends State<IWishCard> {
                         IButton(
                           onPress: () {
                             setState(() {_isLoading = true;});
-                            _transaction = Transaction();
+                            _wish = Wish()
+                              ..wishId = widget.pet.wishId
+                              ..wishPetId = widget.pet.usrId
+                              ..wishUsrId = Mixin.user?.usrId;
 
-                            IPost.postData(_transaction, (state, res, value) {setState(() {
+                            IPost.postData(_wish, (state, res, value) {setState(() {
                               if (state) {
                                 setState(() {_isLoading = false;});
-                                Provider.of<IOwnedProvider>(context, listen: false).refresh('');
+
+                                if (state) {
+                                  Mixin.showToast(context, res, INFO);
+                                  Provider.of<IWishProvider>(context, listen: false).refresh('');
+                                } else {
+                                  Mixin.errorDialog(context, 'ERROR', res);
+                                }
+
                               } else {Mixin.errorDialog(context, 'ERROR', res);
-                              }});}, IUrls.TRANSACTION());
+                              }});}, IUrls.WISH());
                           },
                           isBlack: false,
                           text: 'Remove',
@@ -232,7 +254,14 @@ class _IWishCardState extends State<IWishCard> {
                           IPost.postData(_transaction, (state, res, value) {setState(() {
                             if (state) {
                               setState(() {_isLoading = false;});
-                              Provider.of<IOwnedProvider>(context, listen: false).refresh('');
+
+                              if (state) {
+                                Mixin.showToast(context, res, INFO);
+                                Provider.of<IWishProvider>(context, listen: false).refresh('');
+                              } else {
+                                Mixin.errorDialog(context, 'ERROR', res);
+                              }
+
                             } else {Mixin.errorDialog(context, 'ERROR', res);
                             }});}, IUrls.TRANSACTION());
                         },

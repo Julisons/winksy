@@ -46,7 +46,7 @@ static String BASE_URL = '$BASE:80';
   }
 
   static String WISH() {
-    return "$BASE_URL//wishlist/save_wishlist";
+    return "$BASE_URL/wishlist/save_wishlist";
   }
 
   static String USER() {
@@ -62,6 +62,10 @@ static String BASE_URL = '$BASE:80';
   }
   static Uri OWNED_PETS() {
     return Uri.parse("$BASE_URL/pet/fetch_owned_pets");
+  }
+
+  static Uri PETS_WISHLIST() {
+    return Uri.parse("$BASE_URL/pet/fetch_pets_wishlist");
   }
 
 

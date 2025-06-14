@@ -20,18 +20,21 @@ class IPetProvider with ChangeNotifier {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
-        refresh('')
+        refresh('', false)
       });
     }else{
-      refresh('');
+      refresh('', false);
     }
     return this;
   }
 
-  Future<bool> refresh(search) async {
+  Future<bool> refresh(search, silently) async {
     _start = 0;
     list.clear();
-    setLoading(true);
+
+    if(!silently) {
+      setLoading(true);
+    }
 
     await XRequest().getData({
       'petUsrId': Mixin.user?.usrId,

@@ -205,7 +205,7 @@ class _IBrowseCardState extends State<IBrowseCard> {
                     SizedBox(height: 10,),
                     _isLoading ? SizedBox(
                       width: 120.w,
-                      height: 35.h,
+                      height: 40.h,
                       child: Center(
                           child: CircularProgressIndicator(
                               color: color.xTrailing)),
@@ -215,7 +215,7 @@ class _IBrowseCardState extends State<IBrowseCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
+                        '${widget.pet.wishUsrId}' != Mixin.user?.usrId.toString() ?
                         IButton(
                           onPress: () {
                             setState(() {_isLoading = true;});
@@ -223,12 +223,11 @@ class _IBrowseCardState extends State<IBrowseCard> {
                               ..wishPetId = widget.pet.usrId
                               ..wishUsrId = Mixin.user?.usrId;
 
-                            IPost.postData(_transaction, (state, res, value) {setState(() {
+                            IPost.postData(_wish, (state, res, value) {setState(() {
                               if (state) {
                                 setState(() {_isLoading = false;});
-
                                 if (state) {
-                                  Mixin.showToast(context, 'ERROR', res);
+                                  Mixin.showToast(context, res, INFO);
                                   Provider.of<IBrowseProvider>(context, listen: false).refresh('');
                                 } else {
                                   Mixin.errorDialog(context, 'ERROR', res);
@@ -244,7 +243,7 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           fontWeight: FontWeight.normal,
                           width: 120.w,
                           height: 35.h,
-                        ),
+                        ) : SizedBox.shrink(),
 
                       IButton(
                         onPress: () {
@@ -259,7 +258,7 @@ class _IBrowseCardState extends State<IBrowseCard> {
                               setState(() {_isLoading = false;});
 
                               if (state) {
-                                Mixin.showToast(context, 'ERROR', res);
+                                Mixin.showToast(context, res, INFO);
                                 Provider.of<IBrowseProvider>(context, listen: false).refresh('');
                               } else {
                                 Mixin.errorDialog(context, 'ERROR', res);

@@ -33,10 +33,10 @@ class IWishProvider with ChangeNotifier {
     setLoading(true);
 
     await XRequest().getData({
-      'petOwnerId': Mixin.user?.usrId,
+      'wishUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.OWNED_PETS()).then((data) {
+    }, IUrls.PETS_WISHLIST()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
@@ -63,7 +63,7 @@ class IWishProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'petOwnerId': Mixin.user?.usrId,
+      'wishUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.OWNED_PETS()).then((data) {

@@ -64,7 +64,7 @@ class Mixin {
         timeInSecForIosWeb: 1,
         backgroundColor: type == ERROR ? xRedColor : lime,
         textColor: Colors.white,
-        fontSize: 20,
+       // fontSize: 20,
     );
     Vibration.vibrate(duration: 1, amplitude: 8);
   }
