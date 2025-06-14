@@ -66,12 +66,13 @@ class Mixin {
         textColor: Colors.white,
        // fontSize: 20,
     );
-    Vibration.vibrate(duration: 1, amplitude: 8);
+   vibrate();
   }
 
   static Future<void> errorDialog(
       BuildContext context, String title, String message) async {
     final color = Theme.of(context).extension<CustomColors>()!;
+    vibrate();
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -246,7 +247,7 @@ class Mixin {
 
   static void vibrate() async {
     if (await Vibration.hasCustomVibrationsSupport()) {
-      Vibration.vibrate(duration: 50);
+      Vibration.vibrate(duration: 80, amplitude: 8);
     } else {
       Vibration.vibrate();
       await Future.delayed(Duration(milliseconds: 500));

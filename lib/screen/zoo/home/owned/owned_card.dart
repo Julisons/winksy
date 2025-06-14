@@ -92,13 +92,7 @@ class _IOwnedCardState extends State<IOwnedCard> {
                             color: color.xTextColorSecondary,
                             fontWeight: FontWeight.bold,
                             fontSize: FONT_TITLE,
-                            shadows: [
-                              Shadow(
-                                  offset: Offset(0, 1),
-                                  blurRadius: 1.0,
-                                  color: Colors.black
-                              ),
-                            ],
+
                           ),
                         ),
                         SizedBox(width: 3,),
@@ -163,6 +157,26 @@ class _IOwnedCardState extends State<IOwnedCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('Assets: ',
+                          style: TextStyle(
+                            color: color.xTextColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: FONT_TITLE,
+                          ),
+                        ),
+                        Text( "${'${widget.pet.petAssets}'.kes()} wnks",
+                          style: TextStyle(
+                            color: color.xTrailing,
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_TITLE,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text('Last Active: ',
                           style: TextStyle(
                             color: color.xTextColor,
@@ -207,7 +221,10 @@ class _IOwnedCardState extends State<IOwnedCard> {
                         IButton(
                           onPress: () {
                             setState(() {_isLoading = true;});
-                            _transaction = Transaction();
+                            _transaction = Transaction()
+                              ..txnPetUsrId = widget.pet.usrId
+                              ..txnBuyerUsrId = Mixin.user?.usrId
+                              ..txnAmount = widget.pet.petValue;
 
                             IPost.postData(_transaction, (state, res, value) {setState(() {
                               if (state) {
@@ -219,7 +236,7 @@ class _IOwnedCardState extends State<IOwnedCard> {
                           isBlack: false,
                           text: 'Ignore',
                           color:  color.xPrimaryColor,
-                          textColor:  Colors.white,
+                          textColor:  color.xTextColor,
                           fontWeight: FontWeight.normal,
                           width: 120.w,
                           height: 35.h,

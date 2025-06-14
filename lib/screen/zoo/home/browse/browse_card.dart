@@ -95,13 +95,6 @@ class _IBrowseCardState extends State<IBrowseCard> {
                             color: color.xTextColorSecondary,
                             fontWeight: FontWeight.bold,
                             fontSize: FONT_TITLE,
-                            shadows: [
-                              Shadow(
-                                  offset: Offset(0, 1),
-                                  blurRadius: 1.0,
-                                  color: Colors.black
-                              ),
-                            ],
                           ),
                         ),
                         SizedBox(width: 3,),
@@ -154,6 +147,26 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           ),
                         ),
                         Text( '${'${widget.pet.petCash}'.kes()} wnks',
+                          style: TextStyle(
+                            color: color.xTrailing,
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_TITLE,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Assets: ',
+                          style: TextStyle(
+                            color: color.xTextColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: FONT_TITLE,
+                          ),
+                        ),
+                        Text( "${'${widget.pet.petAssets}'.kes()} wnks",
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,
@@ -239,7 +252,7 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           isBlack: false,
                           text: 'Add to wishlist',
                           color:  color.xPrimaryColor,
-                          textColor:  Colors.white,
+                          textColor:  color.xTextColor,
                           fontWeight: FontWeight.normal,
                           width: 120.w,
                           height: 35.h,

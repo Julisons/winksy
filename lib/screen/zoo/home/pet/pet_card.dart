@@ -84,13 +84,6 @@ class _IPetCardState extends State<IPetCard> {
                             color: color.xTextColorSecondary,
                             fontWeight: FontWeight.bold,
                             fontSize: FONT_TITLE,
-                            shadows: [
-                              Shadow(
-                                  offset: Offset(0, 1),
-                                  blurRadius: 1.0,
-                                  color: Colors.black
-                              ),
-                            ],
                           ),
                         ),
                         SizedBox(width: 3,),
@@ -162,7 +155,7 @@ class _IPetCardState extends State<IPetCard> {
                             fontSize: FONT_TITLE,
                           ),
                         ),
-                        Text( "${'${widget.pet.petCash}'.kes()} wnks",
+                        Text( "${'${widget.pet.petAssets}'.kes()} wnks",
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,

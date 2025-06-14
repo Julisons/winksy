@@ -1,5 +1,5 @@
-/// petId : "8fdd4a3a-04a0-4741-aeb0-312a38ffee7f"
-/// petUsrId : "35d95975-115a-4ef2-8c1b-f670d0c3bec2"
+/// petId : "4b160739-b875-4055-9903-4fface84a1d1"
+/// petUsrId : "cf1e25fc-73b5-4477-bc86-0b805eb9b45d"
 /// petOwnerId : null
 /// petValue : 30
 /// petLockedUntil : null
@@ -21,18 +21,20 @@
 /// petLastActive : null
 /// petLastActiveTime : "2025-06-13T21:00:00.000+00:00"
 /// petLastPurchase : "2025-06-13T21:00:00.000+00:00"
-/// wishPetId : "35d95975-115a-4ef2-8c1b-f670d0c3bec2"
-/// wishId : "cca1ec63-5a76-4cd7-b56e-b5002a342e85"
+/// petTxnId : null
+/// petAssets : null
+/// wishPetId : "cf1e25fc-73b5-4477-bc86-0b805eb9b45d"
+/// wishId : "19d40d36-b426-4101-b06a-9917d57ad3ad"
 /// wishUsrId : "2c0ccf7a-0242-4608-98c0-ff6914e65a51"
-/// usrImage : "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop&crop=face"
-/// usrOwner : null
-/// usrId : "35d95975-115a-4ef2-8c1b-f670d0c3bec2"
-/// usrFullNames : "Benjamin Luke Mitchell"
-/// usrFirstName : "Benjamin"
-/// usrMiddleName : "Luke"
-/// usrLastName : "Mitchell"
-/// usrUsername : "benluke"
-/// usrEmail : "benjamin.mitchell@telstra.com.au"
+/// usrImage : "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=800&h=800&fit=crop&crop=face"
+/// usrOwner : ""
+/// usrId : "cf1e25fc-73b5-4477-bc86-0b805eb9b45d"
+/// usrFullNames : "Lily Catherine Weber"
+/// usrFirstName : "Lily"
+/// usrMiddleName : "Catherine"
+/// usrLastName : "Weber"
+/// usrUsername : "lilyweber"
+/// usrEmail : "lily.weber@web.de"
 /// usrEncryptedPassword : null
 /// usrMobileNumber : null
 /// usrEnabled : null
@@ -42,8 +44,8 @@
 /// usrMobileImei : null
 /// usrType : null
 /// usrOsType : null
-/// usrDob : "1988-12-29T21:00:00.000+00:00"
-/// usrGender : "Male"
+/// usrDob : "1992-11-22T21:00:00.000+00:00"
+/// usrGender : "Female"
 /// usrMobileModel : null
 /// usrCounty : null
 /// usrRgId : null
@@ -55,8 +57,8 @@
 /// usrNationalId : null
 /// usrLastLoginTime : "2025-06-07T07:34:09.142+00:00"
 /// usrFirebaseToken : null
-/// usrLat : -1.3583157940655313
-/// usrLng : 36.669567067850465
+/// usrLat : -1.3563940797548995
+/// usrLng : 36.65637465198036
 /// usrCreatedDate : null
 /// usrCreatedTime : null
 /// usrUpdatedDate : null
@@ -66,16 +68,16 @@
 /// usrCode : null
 /// usrIdFrntUrl : null
 /// usrIdBckUrl : null
-/// usrStreet : "234 Pitt Street, Apartment 1806"
-/// usrIsoCountryCode : "AU"
-/// usrCountry : "Australia"
-/// usrPostalCode : "2000"
-/// usrAdministrativeArea : "New South Wales"
-/// usrSubAdministrativeArea : "Sydney"
-/// usrLocality : "Sydney"
-/// usrSubLocality : "CBD"
-/// usrThoroughfare : "Pitt Street"
-/// usrSubThoroughfare : "Apartment 1806"
+/// usrStreet : "789 Maximilianstraße, Wohnung 14"
+/// usrIsoCountryCode : "DE"
+/// usrCountry : "Germany"
+/// usrPostalCode : "80539"
+/// usrAdministrativeArea : "Bayern"
+/// usrSubAdministrativeArea : "Munich"
+/// usrLocality : "Munich"
+/// usrSubLocality : "Altstadt-Lehel"
+/// usrThoroughfare : "Maximilianstraße"
+/// usrSubThoroughfare : "Wohnung 14"
 /// usrPhoneData : null
 /// usrInstId : null
 /// usrCreatedBy : null
@@ -106,6 +108,8 @@ class Pet {
       dynamic petLastActive, 
       dynamic petLastActiveTime, 
       dynamic petLastPurchase, 
+      dynamic petTxnId, 
+      dynamic petAssets, 
       dynamic wishPetId, 
       dynamic wishId, 
       dynamic wishUsrId, 
@@ -188,6 +192,8 @@ class Pet {
     petLastActive = petLastActive;
     petLastActiveTime = petLastActiveTime;
     petLastPurchase = petLastPurchase;
+    petTxnId = petTxnId;
+    petAssets = petAssets;
     wishPetId = wishPetId;
     wishId = wishId;
     wishUsrId = wishUsrId;
@@ -273,6 +279,8 @@ class Pet {
     petLastActive = json['petLastActive'];
     petLastActiveTime = json['petLastActiveTime'];
     petLastPurchase = json['petLastPurchase'];
+    petTxnId = json['petTxnId'];
+    petAssets = json['petAssets'];
     wishPetId = json['wishPetId'];
     wishId = json['wishId'];
     wishUsrId = json['wishUsrId'];
@@ -356,6 +364,8 @@ class Pet {
   dynamic petLastActive;
   dynamic petLastActiveTime;
   dynamic petLastPurchase;
+  dynamic petTxnId;
+  dynamic petAssets;
   dynamic wishPetId;
   dynamic wishId;
   dynamic wishUsrId;
@@ -438,6 +448,8 @@ Pet copyWith({  dynamic petId,
   dynamic petLastActive,
   dynamic petLastActiveTime,
   dynamic petLastPurchase,
+  dynamic petTxnId,
+  dynamic petAssets,
   dynamic wishPetId,
   dynamic wishId,
   dynamic wishUsrId,
@@ -520,6 +532,8 @@ Pet copyWith({  dynamic petId,
   petLastActive: petLastActive ?? petLastActive,
   petLastActiveTime: petLastActiveTime ?? petLastActiveTime,
   petLastPurchase: petLastPurchase ?? petLastPurchase,
+  petTxnId: petTxnId ?? petTxnId,
+  petAssets: petAssets ?? petAssets,
   wishPetId: wishPetId ?? wishPetId,
   wishId: wishId ?? wishId,
   wishUsrId: wishUsrId ?? wishUsrId,
@@ -607,6 +621,8 @@ Pet copyWith({  dynamic petId,
     map['petLastActive'] = petLastActive;
     map['petLastActiveTime'] = petLastActiveTime;
     map['petLastPurchase'] = petLastPurchase;
+    map['petTxnId'] = petTxnId;
+    map['petAssets'] = petAssets;
     map['wishPetId'] = wishPetId;
     map['wishId'] = wishId;
     map['wishUsrId'] = wishUsrId;

@@ -163,7 +163,7 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                                   children: [
                                     Text('Value:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
                                     Text('${pet.petValue} wnks',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold)),
+                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
                                   ],
                                 ),
                                 Row(
@@ -171,15 +171,15 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                                   children: [
                                     Text('Cash:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
                                     Text('${'${pet.petCash}'.kes()} wnks',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold)),
+                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
                                   ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Assets:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                    Text('${'${pet.petCash}'.kes()} wnks',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold)),
+                                    Text('${'${pet.petAssets}'.kes()} wnks',
+                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
                                   ],
                                 ),
                                 Row(
@@ -188,7 +188,7 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                                     Text('Last Active:',
                                         style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
                                     Text(timeago.format(DateTime.parse(pet.petLastActiveTime)),
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold)),
+                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
                                   ],
                                 ),
                                 Row(
@@ -197,7 +197,7 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                                     Text('Owned By:',
                                         style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
                                     Text('${pet.usrOwner}',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold)),
+                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
                                   ],
                                 ),
                               ],

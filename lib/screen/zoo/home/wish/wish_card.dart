@@ -96,13 +96,6 @@ class _IWishCardState extends State<IWishCard> {
                             color: color.xTextColorSecondary,
                             fontWeight: FontWeight.bold,
                             fontSize: FONT_TITLE,
-                            shadows: [
-                              Shadow(
-                                  offset: Offset(0, 1),
-                                  blurRadius: 1.0,
-                                  color: Colors.black
-                              ),
-                            ],
                           ),
                         ),
                         SizedBox(width: 3,),
@@ -241,7 +234,7 @@ class _IWishCardState extends State<IWishCard> {
                           isBlack: false,
                           text: 'Remove',
                           color:  color.xPrimaryColor,
-                          textColor:  Colors.white,
+                          textColor:  color.xTextColor,
                           fontWeight: FontWeight.normal,
                           width: 120.w,
                           height: 35.h,
@@ -249,7 +242,9 @@ class _IWishCardState extends State<IWishCard> {
                       IButton(
                         onPress: () {
                           setState(() {_isLoading = true;});
-                          _transaction = Transaction();
+                          _transaction = Transaction()
+                          ..txnBuyerUsrId = Mixin.user?.usrId
+                          ..txnPetUsrId = widget.pet.usrId;
 
                           IPost.postData(_transaction, (state, res, value) {setState(() {
                             if (state) {
