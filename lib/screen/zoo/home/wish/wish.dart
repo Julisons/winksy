@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
-import 'package:winksy/screen/zoo/home/pet_card.dart';
+import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
 import '../../../../theme/custom_colors.dart';
 import 'wish_card.dart';

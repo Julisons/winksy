@@ -41,7 +41,7 @@ class IWishProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data['result'];
 
           var items = res.map<Pet>((json) {
             return  Pet.fromJson(json);

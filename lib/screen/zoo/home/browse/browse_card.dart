@@ -10,26 +10,34 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:winksy/mixin/extentions.dart';
+import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
-import '../../../component/button.dart';
-import '../../../mixin/constants.dart';
-import '../../../mixin/mixins.dart';
-import '../../../model/pet.dart';
-import '../../../request/urls.dart';
-import '../../../theme/custom_colors.dart';
+
+import '../../../../component/button.dart';
+import '../../../../mixin/constants.dart';
+import '../../../../mixin/mixins.dart';
+import '../../../../model/pet.dart';
+import '../../../../model/transaction.dart';
+import '../../../../request/posts.dart';
+import '../../../../request/urls.dart';
+import '../../../../theme/custom_colors.dart';
 
 
-class IPetCard extends StatefulWidget {
-  const IPetCard({super.key, required this.pet, required this.onRefresh, required this.text});
+class IBrowseCard extends StatefulWidget {
+  const IBrowseCard({super.key, required this.pet, required this.onRefresh, required this.text});
   final Pet pet;
   final VoidCallback onRefresh;
   final String text;
 
+
   @override
-  State<IPetCard> createState() => _IPetCardState();
+  State<IBrowseCard> createState() => _IBrowseCardState();
 }
 
-class _IPetCardState extends State<IPetCard> {
+class _IBrowseCardState extends State<IBrowseCard> {
+  bool _isLoading = false;
+  late Transaction _transaction;
+
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
@@ -155,26 +163,6 @@ class _IPetCardState extends State<IPetCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Assets: ',
-                          style: TextStyle(
-                            color: color.xTextColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
-                          ),
-                        ),
-                        Text( "${'${widget.pet.petCash}'.kes()} wnks",
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
                         Text('Last Active: ',
                           style: TextStyle(
                             color: color.xTextColor,
@@ -209,6 +197,51 @@ class _IPetCardState extends State<IPetCard> {
                             fontSize: FONT_TITLE,
                           ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: SizedBox.shrink()),
+                        _isLoading ? SizedBox(
+                          width: 120.w,
+                          height: 35.h,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                                  color: color.xTrailing)),
+                        )
+                            :
+                      IButton(
+                        onPress: () {
+                          setState(() {_isLoading = true;});
+                          _transaction = Transaction()
+                          ..txnPetUsrId = widget.pet.usrId
+                          ..txnBuyerUsrId = Mixin.user?.usrId
+                          ..txnAmount = widget.pet.petValue;
+
+                          IPost.postData(_transaction, (state, res, value) {setState(() {
+                            if (state) {
+                              setState(() {_isLoading = false;});
+
+                              if (state) {
+                                Provider.of<IOwnedProvider>(context, listen: false).refresh('');
+                              } else {
+                                Mixin.errorDialog(context, 'ERROR', res);
+                              }
+
+                            } else {Mixin.errorDialog(context, 'ERROR', res);
+                            }});}, IUrls.TRANSACTION());
+                        },
+                        isBlack: false,
+                        text: 'Buy Now',
+                        color:  color.xTrailing,
+                        textColor:  Colors.white,
+                        fontWeight: FontWeight.normal,
+                        width: 120.w,
+                        height: 35.h,
+                      )
                       ],
                     ),
                   ],

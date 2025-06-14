@@ -36,7 +36,7 @@ class IInterestProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data['result'];
           log('---${res}');
 
           var items = res.map<User>((json) {

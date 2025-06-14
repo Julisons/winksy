@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:winksy/screen/zoo/home/pet.dart';
+import 'package:winksy/screen/zoo/home/pet/pet.dart';
 import 'package:winksy/screen/zoo/home/wish/wish.dart';
 
 import '../../../component/popup.dart';
@@ -123,6 +123,22 @@ class _IPetHomeState extends State<IPetHome> {
                               width: MediaQuery.of(context).size.width/2,
                               child: Consumer<IPetProvider>(
                               builder: (context, provider, child) {
+
+                                if (provider.isLoading()) {
+                                  return Shimmer.fromColors(
+                                    baseColor: color.xPrimaryColor,
+                                    highlightColor: color.xPrimaryColor,
+                                    child: Container(
+                                      height: 20.h,
+                                      width: 100.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                }
+
                                 Pet pet = provider.getPet();
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +207,6 @@ class _IPetHomeState extends State<IPetHome> {
                                         ),
                                       ],
                                     ),
-
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -63,6 +63,7 @@ class IOwnedProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
+      'petOwnerId': Mixin.user?.usrId,
       'meId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit

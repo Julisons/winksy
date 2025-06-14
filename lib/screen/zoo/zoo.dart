@@ -9,8 +9,10 @@ import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import 'home/browse/browse.dart';
 import 'home/home.dart';
-import 'home/pet.dart';
+import 'home/pet/pet.dart';
+import 'home/wish/wish.dart';
 
 class IZoo extends StatefulWidget {
 
@@ -77,8 +79,8 @@ class _IZooState extends State<IZoo> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: <Widget>[
             IPetHome(),
-            IPet(),
-            IPet(),
+            IBrowse(),
+            IWish(),
           ],
         ),
       ),

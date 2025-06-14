@@ -13,20 +13,20 @@ import 'package:winksy/screen/people/people_shimmer.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
 import '../../../../theme/custom_colors.dart';
-import 'owned_card.dart';
+import 'browse_card.dart';
 
 
 
 
-class IOwned extends StatefulWidget {
-  const IOwned({super.key});
+class IBrowse extends StatefulWidget {
+  const IBrowse({super.key});
 
 
   @override
-  State<IOwned> createState() => _IOwnedState();
+  State<IBrowse> createState() => _IBrowseState();
 }
 
-class _IOwnedState extends State<IOwned> {
+class _IBrowseState extends State<IBrowse> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();
@@ -78,7 +78,7 @@ class _IOwnedState extends State<IOwned> {
                           physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            return IOwnedCard(
+                            return IBrowseCard(
                               pet: provider.list[index],
                               onRefresh: () {
                                 setState(() {});
