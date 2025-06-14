@@ -7,7 +7,7 @@ import '../../model/pet.dart';
 import '../../model/response.dart';
 import '../../request/gets.dart';
 
-class IOwnedProvider with ChangeNotifier {
+class IBrowseProvider with ChangeNotifier {
   List<Pet> list = [];
   late String errorMessage;
   bool _loading = false;
@@ -15,7 +15,7 @@ class IOwnedProvider with ChangeNotifier {
   int _start = 0;
   final int _limit = 20;
 
-  IOwnedProvider init() {
+  IBrowseProvider init() {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
@@ -33,7 +33,7 @@ class IOwnedProvider with ChangeNotifier {
     setLoading(true);
 
     await XRequest().getData({
-      'petRecentOwnerId': Mixin.user?.usrId,
+      'petOwnerId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.OWNED_PETS()).then((data) {
@@ -63,7 +63,7 @@ class IOwnedProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'petRecentOwnerId': Mixin.user?.usrId,
+      'petOwnerId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.OWNED_PETS()).then((data) {

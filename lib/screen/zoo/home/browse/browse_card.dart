@@ -10,6 +10,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:winksy/mixin/extentions.dart';
+import 'package:winksy/provider/pet/browse_provider.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 
@@ -18,6 +19,7 @@ import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../model/pet.dart';
 import '../../../../model/transaction.dart';
+import '../../../../model/wish.dart';
 import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
@@ -37,6 +39,7 @@ class IBrowseCard extends StatefulWidget {
 class _IBrowseCardState extends State<IBrowseCard> {
   bool _isLoading = false;
   late Transaction _transaction;
+  late Wish _wish;
 
   @override
   Widget build(BuildContext context) {
@@ -200,19 +203,49 @@ class _IBrowseCardState extends State<IBrowseCard> {
                       ],
                     ),
                     SizedBox(height: 10,),
+                    _isLoading ? SizedBox(
+                      width: 120.w,
+                      height: 35.h,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              color: color.xTrailing)),
+                    )
+                        :
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: SizedBox.shrink()),
-                        _isLoading ? SizedBox(
+
+                        IButton(
+                          onPress: () {
+                            setState(() {_isLoading = true;});
+                            _wish = Wish()
+                              ..wishPetId = widget.pet.usrId
+                              ..wishUsrId = Mixin.user?.usrId;
+
+                            IPost.postData(_transaction, (state, res, value) {setState(() {
+                              if (state) {
+                                setState(() {_isLoading = false;});
+
+                                if (state) {
+                                  Mixin.showToast(context, 'ERROR', res);
+                                  Provider.of<IBrowseProvider>(context, listen: false).refresh('');
+                                } else {
+                                  Mixin.errorDialog(context, 'ERROR', res);
+                                }
+
+                              } else {Mixin.errorDialog(context, 'ERROR', res);
+                              }});}, IUrls.WISH());
+                          },
+                          isBlack: false,
+                          text: 'Add to wishlist',
+                          color:  color.xPrimaryColor,
+                          textColor:  Colors.white,
+                          fontWeight: FontWeight.normal,
                           width: 120.w,
                           height: 35.h,
-                          child: Center(
-                              child: CircularProgressIndicator(
-                                  color: color.xTrailing)),
-                        )
-                            :
+                        ),
+
                       IButton(
                         onPress: () {
                           setState(() {_isLoading = true;});
@@ -226,7 +259,8 @@ class _IBrowseCardState extends State<IBrowseCard> {
                               setState(() {_isLoading = false;});
 
                               if (state) {
-                                Provider.of<IOwnedProvider>(context, listen: false).refresh('');
+                                Mixin.showToast(context, 'ERROR', res);
+                                Provider.of<IBrowseProvider>(context, listen: false).refresh('');
                               } else {
                                 Mixin.errorDialog(context, 'ERROR', res);
                               }

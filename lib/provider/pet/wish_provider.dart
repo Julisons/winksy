@@ -63,10 +63,10 @@ class IWishProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'meId': Mixin.user?.usrId,
+      'petOwnerId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.PETS()).then((data) {
+    }, IUrls.OWNED_PETS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));

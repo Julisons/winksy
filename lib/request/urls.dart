@@ -45,6 +45,10 @@ static String BASE_URL = '$BASE:80';
     return "$BASE_URL/transaction/save_transaction";
   }
 
+  static String WISH() {
+    return "$BASE_URL//wishlist/save_wishlist";
+  }
+
   static String USER() {
     return "$BASE_URL/user/save_user";
   }

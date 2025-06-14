@@ -65,7 +65,7 @@ class IPetProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'meId': Mixin.user?.usrId,
+      'petUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.PETS()).then((data) {

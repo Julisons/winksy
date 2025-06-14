@@ -12,6 +12,7 @@ import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
+import '../../../../provider/pet/browse_provider.dart';
 import '../../../../theme/custom_colors.dart';
 import 'browse_card.dart';
 
@@ -57,7 +58,7 @@ class _IBrowseState extends State<IBrowse> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: 10.h),
-        child: Consumer<IOwnedProvider>(
+        child: Consumer<IBrowseProvider>(
             builder: (context, provider, child) {
               return provider.isLoading() ? const IPeopleShimmer() :
               Column(

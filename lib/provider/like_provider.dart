@@ -28,7 +28,6 @@ class ILikeProvider with ChangeNotifier {
     list.clear();
     setLoading(true);
 
-
     await XRequest().getData({
       'intFolId': Mixin.winkser?.usrId,
       'intUsrId': Mixin.user?.usrId

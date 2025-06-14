@@ -6,6 +6,7 @@ import 'package:winksy/provider/like_provider.dart';
 import 'package:winksy/provider/match_provider.dart';
 import 'package:winksy/provider/notification_provider.dart';
 import 'package:winksy/provider/payment_provider.dart';
+import 'package:winksy/provider/pet/browse_provider.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/provider/pet/pet_provider.dart';
 import 'package:winksy/provider/pet/wish_provider.dart';
@@ -59,6 +60,8 @@ class MyApp extends StatelessWidget {
     ]);
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider<IBrowseProvider>(
+              create: (_) => IBrowseProvider().init()),
           ChangeNotifierProvider<IUsersProvider>(
               create: (_) => IUsersProvider().init()),
           ChangeNotifierProvider<IWishProvider>(
