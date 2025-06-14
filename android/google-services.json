@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "528777529072",
+    "project_id": "winksy-d28f6",
+    "storage_bucket": "winksy-d28f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528777529072:android:5efa2c8d1c873dda46e435",
+        "android_client_info": {
+          "package_name": "ir.cyren.winksy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7WZvMvHxttlh5f-wIVxiG3ZRxhVAexv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,67 @@
+import 'dart:core';
+import 'package:flutter/material.dart';
+import '../mixin/constants.dart';
+import '../mixin/mixins.dart';
+import '../screen/splash/splash_screen.dart';
+
+class IPopup extends StatefulWidget {
+  const IPopup({Key? key}) : super(key: key);
+
+  @override
+  State<IPopup> createState() => _IPopupState();
+}
+
+class _IPopupState extends State<IPopup> {
+  late String auth = 'Log Out';
+  @override
+  void initState() {
+    super.initState();
+
+    Mixin.hasPref(key: CURR).then((value) => {
+      if(!value){
+        setState(() {
+          auth = 'Login';
+        })
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      color: darkAshGrey,
+      iconColor: lime,
+      onSelected: (value) {
+        handleClick(value, context);
+      },
+      itemBuilder: (BuildContext context) {
+        return { 'Edit Profile','Change Mobile No.','Terms & Conditions', 'Contact Us','Settings', auth,}.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice, style: TextStyle(color: Colors.white),),
+          );
+        }).toList();
+      },
+    );
+  }
+
+  void handleClick(String value, BuildContext context) {
+    switch (value) {
+      case 'Log Out':
+       // Mixin.navigate(context, const ILogout());
+        break;
+      case 'Edit Profile':
+        //Mixin.navigate(context, const IAccount());
+        break;
+      case 'Contact Us':
+       // Mixin.navigate(context, const IContactUs());
+        break;
+      case 'Terms & Conditions':
+        //Mixin.navigate(context, const ITerms());
+        break;
+      case 'Settings':
+        //Mixin.navigate(context, const ISettings());
+        break;
+    }
+  }
+}
