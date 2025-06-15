@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:winksy/provider/pet/owned_provider.dart';
+import 'package:winksy/provider/pet/wish_provider.dart';
 import 'package:winksy/screen/zoo/home/pet/pet.dart';
 import 'package:winksy/screen/zoo/home/wish/wish.dart';
 
@@ -33,13 +35,13 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
       if (_tabController.indexIsChanging) {
         switch (_tabController.index) {
           case 0:
-            //Provider.of<IPetProvider>(context, listen: false).refresh('', true);
+            Provider.of<IPetProvider>(context, listen: false).refresh('', false);
             break;
           case 1:
-            //Provider.of<IPetProvider>(context, listen: false).refresh('', true);
+            Provider.of<IOwnedProvider>(context, listen: false).refresh('', false);
             break;
           case 2:
-            //Provider.of<IPetProvider>(context, listen: false).refresh('', true);
+            Provider.of<IWishProvider>(context, listen: false).refresh('', false);
             break;
         }
       }

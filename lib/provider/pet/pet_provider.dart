@@ -14,7 +14,7 @@ class IPetProvider with ChangeNotifier {
   bool _loading = false;
   bool _loadingMore = false;
   int _start = 0;
-  final int _limit = 20;
+  final int _limit = 10;
 
   IPetProvider init() {
     if( Mixin.user == null) {
@@ -28,13 +28,12 @@ class IPetProvider with ChangeNotifier {
     return this;
   }
 
-  Future<bool> refresh(search, silently) async {
+  Future<bool> refresh(search, loud) async {
     _start = 0;
-    list.clear();
-
-    if(!silently) {
-      setLoading(true);
+    if(loud) {
+      list.clear();
     }
+    setLoading(true, loud);
 
     await XRequest().getData({
       'petUsrId': Mixin.user?.usrId,
@@ -76,7 +75,7 @@ class IPetProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
-          var res = jsonResponse.data['result'];
+          var res = jsonResponse.data['result'] ;
           log('---${res}');
 
           var items = res.map<Pet>((json) {
@@ -102,8 +101,10 @@ class IPetProvider with ChangeNotifier {
     return _loadingMore;
   }
 
-  void setLoading(value) {
-    _loading = value;
+  void setLoading(bool value,bool loud) {
+    if(loud) {
+      _loading = value;
+    }
     notifyListeners();
   }
 
@@ -115,9 +116,8 @@ class IPetProvider with ChangeNotifier {
   void setData(value) {
     list.clear();
     list.addAll(value);
-    setLoading(false);
+    setLoading(false, true);
   }
-
 
   void setDataMore(value) {
     list.addAll(value);

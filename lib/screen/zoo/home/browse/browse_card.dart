@@ -237,17 +237,14 @@ class _IBrowseCardState extends State<IBrowseCard> {
                               ..wishUsrId = Mixin.user?.usrId;
 
                             IPost.postData(_wish, (state, res, value) {setState(() {
-                              if (state) {
-                                setState(() {_isLoading = false;});
+                              setState(() {_isLoading = false;});
                                 if (state) {
                                   Mixin.showToast(context, res, INFO);
-                                  Provider.of<IBrowseProvider>(context, listen: false).refresh('');
+                                  Provider.of<IBrowseProvider>(context, listen: false).refresh('', false);
                                 } else {
                                   Mixin.errorDialog(context, 'ERROR', res);
                                 }
-
-                              } else {Mixin.errorDialog(context, 'ERROR', res);
-                              }});}, IUrls.WISH());
+                            });}, IUrls.WISH());
                           },
                           isBlack: false,
                           text: 'Add to wishlist',
@@ -267,18 +264,14 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           ..txnAmount = widget.pet.petValue;
 
                           IPost.postData(_transaction, (state, res, value) {setState(() {
-                            if (state) {
-                              setState(() {_isLoading = false;});
-
+                            setState(() {_isLoading = false;});
                               if (state) {
                                 Mixin.showToast(context, res, INFO);
-                                Provider.of<IBrowseProvider>(context, listen: false).refresh('');
+                                Provider.of<IBrowseProvider>(context, listen: false).refresh('', false);
                               } else {
-                                Mixin.errorDialog(context, 'ERROR', res);
+                                Mixin.info(context, 'INFO', res);
                               }
-
-                            } else {Mixin.errorDialog(context, 'ERROR', res);
-                            }});}, IUrls.TRANSACTION());
+                          });}, IUrls.TRANSACTION());
                         },
                         isBlack: false,
                         text: 'Buy Now',
@@ -305,7 +298,7 @@ extension on String {
   String kes() {
     return NumberFormat.currency(
       locale: 'en_KE',
-      symbol: 'KES ',
+      symbol: ' ',
       decimalDigits: 0, // Set to 0 decimal places
     ).format(int.parse(this));
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:winksy/model/Link.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'package:vibration/vibration.dart';
 import '../../../../mixin/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../component/button.dart';
 import '../model/invoice.dart';
 import 'package:winksy/model/User.dart';
 import 'package:intl/intl.dart';
@@ -99,6 +101,53 @@ class Mixin {
       },
     );
   }
+
+
+  static Future<void> info(
+      BuildContext context, String title, String message) async {
+    final color = Theme.of(context).extension<CustomColors>()!;
+    vibrate();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor:color.xPrimaryColor,
+          title: Text(title, style:  TextStyle(color: color.xTrailing)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message, style: TextStyle(color:  color.xTextColor)),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel', style: TextStyle(color:  color.xTextColorSecondary),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+            IButton(
+              onPress: () {
+                Navigator.of(context).pop();
+              },
+              isBlack: false,
+              text: 'Buy wnk points',
+              color:  color.xTrailing,
+              textColor:  Colors.white,
+              fontWeight: FontWeight.normal,
+              width: 120.w,
+              height: 35.h,
+            )
+          ],
+        );
+      },
+    );
+  }
+
 
   static Future<void> signIn(
       BuildContext context, String title, String message) async {

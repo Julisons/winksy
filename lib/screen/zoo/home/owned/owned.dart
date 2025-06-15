@@ -66,7 +66,7 @@ class _IOwnedState extends State<IOwned> {
                     child: RefreshIndicator(
                         color: color.xTrailing,
                         backgroundColor: color.xPrimaryColor,
-                        onRefresh: () => provider.refresh(''),
+                        onRefresh: () => provider.refresh('',true),
                         child: ListView.builder(
                           controller: _scrollController,
                           padding: const EdgeInsets.only(

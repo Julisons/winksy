@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
 import '../../mixin/mixins.dart';
@@ -19,18 +20,20 @@ class IBrowseProvider with ChangeNotifier {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
-        refresh('')
+        refresh('', true)
       });
     }else{
-      refresh('');
+      refresh('', true);
     }
     return this;
   }
 
-  Future<bool> refresh(search) async {
+  Future<bool> refresh(String search, bool loud) async {
     _start = 0;
-    list.clear();
-    setLoading(true);
+    if(loud) {
+      list.clear();
+    }
+    setLoading(true, loud);
 
     await XRequest().getData({
       'petOwnerId': Mixin.user?.usrId,
@@ -99,8 +102,10 @@ class IBrowseProvider with ChangeNotifier {
     return _loadingMore;
   }
 
-  void setLoading(value) {
-    _loading = value;
+  void setLoading(bool value,bool loud) {
+    if(loud) {
+      _loading = value;
+    }
     notifyListeners();
   }
 
@@ -112,7 +117,7 @@ class IBrowseProvider with ChangeNotifier {
   void setData(value) {
     list.clear();
     list.addAll(value);
-    setLoading(false);
+    setLoading(false, true);
   }
 
 

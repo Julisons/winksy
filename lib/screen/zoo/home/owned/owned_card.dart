@@ -214,6 +214,14 @@ class _IOwnedCardState extends State<IOwnedCard> {
                       ],
                     ),
                     SizedBox(height: 10,),
+                    _isLoading ? SizedBox(
+                      width: 120.w,
+                      height: 40.h,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              color: color.xTrailing)),
+                    )
+                        :
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,17 +229,18 @@ class _IOwnedCardState extends State<IOwnedCard> {
                         IButton(
                           onPress: () {
                             setState(() {_isLoading = true;});
-                            _transaction = Transaction()
+                          /*  _transaction = Transaction()
                               ..txnPetUsrId = widget.pet.usrId
                               ..txnBuyerUsrId = Mixin.user?.usrId
                               ..txnAmount = widget.pet.petValue;
 
                             IPost.postData(_transaction, (state, res, value) {setState(() {
+                             setState(() {_isLoading = false;});
                               if (state) {
-                                setState(() {_isLoading = false;});
-                                Provider.of<IOwnedProvider>(context, listen: false).refresh('');
+                                Mixin.showToast(context, res, INFO);
+                                Provider.of<IOwnedProvider>(context, listen: false).refresh('', false);
                               } else {Mixin.errorDialog(context, 'ERROR', res);
-                              }});}, IUrls.TRANSACTION());
+                              }});}, IUrls.TRANSACTION());*/
                           },
                           isBlack: false,
                           text: 'Ignore',
@@ -244,12 +253,16 @@ class _IOwnedCardState extends State<IOwnedCard> {
                     IButton(
                       onPress: () {
                         setState(() {_isLoading = true;});
-                        _transaction = Transaction();
+                        _transaction = Transaction()
+                        ..txnPetUsrId = widget.pet.usrId
+                        ..txnBuyerUsrId = Mixin.user?.usrId
+                        ..txnAmount = widget.pet.petValue;
 
                         IPost.postData(_transaction, (state, res, value) {setState(() {
+                          setState(() {_isLoading = false;});
                           if (state) {
-                            setState(() {_isLoading = false;});
-                            Provider.of<IOwnedProvider>(context, listen: false).refresh('');
+                            Mixin.showToast(context, res, INFO);
+                            Provider.of<IOwnedProvider>(context, listen: false).refresh('', false);
                           } else {Mixin.errorDialog(context, 'ERROR', res);
                           }});}, IUrls.TRANSACTION());
                       },
@@ -278,7 +291,7 @@ extension on String {
   String kes() {
     return NumberFormat.currency(
       locale: 'en_KE',
-      symbol: 'KES ',
+      symbol: ' ',
       decimalDigits: 0, // Set to 0 decimal places
     ).format(int.parse(this));
   }

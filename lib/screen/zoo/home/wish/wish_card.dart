@@ -238,18 +238,13 @@ class _IWishCardState extends State<IWishCard> {
                               ..wishUsrId = Mixin.user?.usrId;
 
                             IPost.postData(_wish, (state, res, value) {setState(() {
-                              if (state) {
                                 setState(() {_isLoading = false;});
-
                                 if (state) {
                                   Mixin.showToast(context, res, INFO);
-                                  Provider.of<IWishProvider>(context, listen: false).refresh('');
+                                  Provider.of<IWishProvider>(context, listen: false).refresh('', false);
                                 } else {
                                   Mixin.errorDialog(context, 'ERROR', res);
-                                }
-
-                              } else {Mixin.errorDialog(context, 'ERROR', res);
-                              }});}, IUrls.WISH());
+                                }});}, IUrls.WISH());
                           },
                           isBlack: false,
                           text: 'Remove',
@@ -267,18 +262,13 @@ class _IWishCardState extends State<IWishCard> {
                           ..txnPetUsrId = widget.pet.usrId;
 
                           IPost.postData(_transaction, (state, res, value) {setState(() {
-                            if (state) {
                               setState(() {_isLoading = false;});
-
                               if (state) {
                                 Mixin.showToast(context, res, INFO);
-                                Provider.of<IWishProvider>(context, listen: false).refresh('');
+                                Provider.of<IWishProvider>(context, listen: false).refresh('', false);
                               } else {
                                 Mixin.errorDialog(context, 'ERROR', res);
-                              }
-
-                            } else {Mixin.errorDialog(context, 'ERROR', res);
-                            }});}, IUrls.TRANSACTION());
+                              }});}, IUrls.TRANSACTION());
                         },
                         isBlack: false,
                         text: 'Buy Now',
@@ -305,7 +295,7 @@ extension on String {
   String kes() {
     return NumberFormat.currency(
       locale: 'en_KE',
-      symbol: 'KES ',
+      symbol: ' ',
       decimalDigits: 0, // Set to 0 decimal places
     ).format(int.parse(this));
   }

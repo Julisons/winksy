@@ -19,18 +19,20 @@ class IWishProvider with ChangeNotifier {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
-        refresh('')
+        refresh('', true)
       });
     }else{
-      refresh('');
+      refresh('',true);
     }
     return this;
   }
 
-  Future<bool> refresh(search) async {
+  Future<bool> refresh(search, bool loud) async {
     _start = 0;
-    list.clear();
-    setLoading(true);
+    if(loud) {
+      list.clear();
+    }
+    setLoading(true, loud);
 
     await XRequest().getData({
       'wishUsrId': Mixin.user?.usrId,
@@ -97,8 +99,11 @@ class IWishProvider with ChangeNotifier {
     return _loadingMore;
   }
 
-  void setLoading(value) {
-    _loading = value;
+
+  void setLoading(bool value,bool loud) {
+    if(loud) {
+      _loading = value;
+    }
     notifyListeners();
   }
 
@@ -110,7 +115,7 @@ class IWishProvider with ChangeNotifier {
   void setData(value) {
     list.clear();
     list.addAll(value);
-    setLoading(false);
+    setLoading(false, true);
   }
 
 
