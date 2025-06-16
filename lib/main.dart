@@ -29,6 +29,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'component/splash_screen.dart';
 import 'firebase_options.dart';
+import 'games/games.dart';
 import 'mixin/constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -97,7 +98,7 @@ class MyApp extends StatelessWidget {
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                home: ISplashScreen(),
+                home: IGames(),
                 theme: ThemeDataStyle.lighter,
                 darkTheme: ThemeDataStyle.darker,
               );

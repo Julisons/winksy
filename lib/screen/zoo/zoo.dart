@@ -41,7 +41,7 @@ class _IZooState extends State<IZoo> {
             child: Stack(
               alignment: AlignmentDirectional.centerStart,
               children: [
-                Text('Friends Zoo',
+                Text('Friend Zoo',
                   style: GoogleFonts.poppins(
                     color: color.xTrailing, fontSize: 34, fontWeight: FontWeight.bold,
                     shadows: [

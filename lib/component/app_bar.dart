@@ -1,34 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../component/popup.dart';
 import '../mixin/constants.dart';
+import '../theme/custom_colors.dart';
 
-class IAppBar extends StatelessWidget {
-  const IAppBar({Key? key, this.title = 'VIDEOMED TELEMEDICINE'}) : super(key: key);
+class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
+  const IAppBar({Key? key, this.title = 'Winksy'}) : super(key: key);
   final String title;
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).extension<CustomColors>()!;
+
     return AppBar(
-      automaticallyImplyLeading: false,
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        // Status bar color
-        statusBarColor: xGreenPrimary,
-        statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
-        statusBarBrightness: Brightness.dark, // For iOS (dark icons)
-      ),
-      backgroundColor: xGreenPrimary,
-      elevation: 4.0,
-      foregroundColor: Colors.white,
-      title: Text('     $title', style: const TextStyle(color: Colors.white)),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.search),
-          tooltip: 'Search',
-          onPressed: () {},
+      backgroundColor: color.xPrimaryColor,
+      title: Transform(
+        transform: Matrix4.translationValues(10, 0.0, 0.0),
+        child: SizedBox(
+            width: 310.w,
+            height: 120.h,
+            child: Stack(
+              alignment: AlignmentDirectional.centerStart,
+              children: [
+                Text(title,
+                  style: GoogleFonts.poppins(
+                    color: color.xTrailing, fontSize: 34, fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                          offset: Offset(0, 1),
+                          blurRadius: 3.0,
+                          color: color.xSecondaryColor
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
         ),
-        const IPopup(),
-      ],
+      ),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

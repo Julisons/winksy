@@ -19,6 +19,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../component/button.dart';
+import '../../games/games.dart';
 import '../../main.dart';
 import '../../mixin/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,7 +73,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
       tabItem('Home', icon: const Icon(Icons.home_outlined)),
       tabItem('', icon: const Icon(Icons.favorite_border_rounded)),
       tabItem('', icon: const Icon(Icons.messenger_outline)),
-      tabItem('', icon: const Icon(Icons.pets)),
+      tabItem('', icon: const Icon(Icons.sports_esports)),
       tabItem('', icon: const Icon(Icons.person_outline)),
     ];
   }
@@ -86,7 +87,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     IPeople(showTitle: true),
     IDashboard(),
     IChat(user: Mixin.user!),
-    IZoo(),
+    IGames(),
     IProfile(),
   ];
 

@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../../component/app_bar.dart';
 import '../components/game_board.dart';
 import '../components/player_turn_widget.dart';
 import '../utils/game_logic.dart';
 
 // ignore: must_be_immutable
-class GameScreen extends StatefulWidget {
-  GameScreen({super.key});
+class Quadrix extends StatefulWidget {
+  Quadrix({super.key});
 
   @override
-  State<GameScreen> createState() => _GameScreenState();
+  State<Quadrix> createState() => _QuadrixState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _QuadrixState extends State<Quadrix> {
   GlobalKey<GameBoardState> gameBoardKey = GlobalKey<GameBoardState>();
 
   GlobalKey<PlayerTurnWidgetState> playerTurnKey =
@@ -22,31 +23,9 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
-      elevation: 0,
-      title: Text(
-        'Quadrix',
-        style: GoogleFonts.aBeeZee(
-          fontWeight: FontWeight.w600,
-          fontSize: 44,
-          color:  Theme.of(context).scaffoldBackgroundColor,
-        ),
-      ),
-      actions: [
-        IconButton(
-          tooltip: 'How to play?',
-          onPressed: () {
-            launchUrlString('https://en.wikipedia.org/wiki/Connect_Four');
-          },
-          icon: const Icon(
-            Icons.info_outline_rounded,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
+    var appBar = IAppBar(title: 'Quadrix',);
     return Scaffold(
-      appBar: appBar,
+      appBar:appBar,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
