@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
+import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
@@ -43,7 +44,6 @@ class _IGamesState extends State<IGames> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
 
-
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
       appBar:IAppBar(title: 'Games',),
@@ -70,17 +70,7 @@ class _IGamesState extends State<IGames> {
                           Mixin.navigate(context,IZoo());
                           break;
                         case 'Quadrix':
-                          Mixin.navigate(context,MaterialApp(
-                            debugShowCheckedModeBanner: false,
-                            theme: ThemeData(
-                              scaffoldBackgroundColor: const Color(0xff6E8894),
-                              appBarTheme: const AppBarTheme(
-                                backgroundColor: Color(0xff1a090d),
-                                centerTitle: true,
-                              ),
-                            ),
-                            title: 'Quadrix',
-                            home: Quadrix()));
+                          Mixin.navigate(context,IQuadrix());
                           break;
                         case 'Crazy8':
                           ScaffoldMessenger.of(context).showSnackBar(

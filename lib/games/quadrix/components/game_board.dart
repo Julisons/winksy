@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../theme/custom_colors.dart';
 import '../models/coin.dart';
 import '../utils/game_logic.dart';
 import 'game_coin_widget.dart';
@@ -17,9 +18,11 @@ class GameBoard extends StatefulWidget {
 }
 
 class GameBoardState extends State<GameBoard> {
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final color = Theme.of(context).extension<CustomColors>()!;
+    return Container(
       height: MediaQuery.of(context).size.width - 20,
       width: MediaQuery.of(context).size.width - 20,
       child: ListView(
@@ -35,7 +38,7 @@ class GameBoardState extends State<GameBoard> {
                           row: coin['row'] as int,
                           column: coin['column'] as int,
                           selected: false,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color: color.xSecondaryColor,
                         ),
                         playerTurnKey: widget.playerTurnKey,
                         gameBoardKey: widget.gameBoardKey);
@@ -101,7 +104,7 @@ class GameBoardState extends State<GameBoard> {
                           row: coin['row'] as int,
                           column: coin['column'] as int,
                           selected: false,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color: color.xSecondaryColor,
                         )
                       : (coin['value'] == 1)
                           ? Coin(

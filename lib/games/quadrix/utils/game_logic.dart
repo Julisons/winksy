@@ -6,7 +6,7 @@ import '../models/coin.dart';
 final playerSound = AudioPlayer();
 
 void playDropSound() {
-  playerSound.play(AssetSource('droper.wav')); // Your sound file
+  playerSound.play(AssetSource('sound/droper.wav')); // Your sound file
 }
 
 Color playerOneColor = const Color(0xffff4d4d); // Vibrant Red

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/provider/chat_provider.dart';
 import 'package:winksy/provider/interest_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
@@ -30,6 +31,7 @@ import 'package:provider/provider.dart';
 import 'component/splash_screen.dart';
 import 'firebase_options.dart';
 import 'games/games.dart';
+import 'games/quadrix/quadrix.dart';
 import 'mixin/constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -98,7 +100,7 @@ class MyApp extends StatelessWidget {
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                home: IGames(),
+                home: IQuadrix(),
                 theme: ThemeDataStyle.lighter,
                 darkTheme: ThemeDataStyle.darker,
               );

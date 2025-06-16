@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../component/app_bar.dart';
+import '../../../mixin/constants.dart';
+import '../../../theme/custom_colors.dart';
 import '../components/game_board.dart';
 import '../components/player_turn_widget.dart';
 import '../utils/game_logic.dart';
@@ -16,6 +18,7 @@ class Quadrix extends StatefulWidget {
 }
 
 class _QuadrixState extends State<Quadrix> {
+
   GlobalKey<GameBoardState> gameBoardKey = GlobalKey<GameBoardState>();
 
   GlobalKey<PlayerTurnWidgetState> playerTurnKey =
@@ -23,17 +26,50 @@ class _QuadrixState extends State<Quadrix> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = IAppBar(title: 'Quadrix',);
+    final color = Theme.of(context).extension<CustomColors>()!;
+    var appBar = AppBar(
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      title: Transform(
+        transform: Matrix4.translationValues(10, 0.0, 0.0),
+        child: SizedBox(
+            width: 310.w,
+            height: 120.h,
+            child: Stack(
+              alignment: AlignmentDirectional.centerStart,
+              children: [
+                Text("Quadrix",
+                  style: GoogleFonts.poppins(
+                    color: HexColor.fromHex('#f21c1b'), fontSize: 34, fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            )
+        ),
+      ),
+      actions: [
+        IconButton(
+          tooltip: 'How to play?',
+          onPressed: () {
+            launchUrlString('https://en.wikipedia.org/wiki/Connect_Four');
+          },
+          icon: const Icon(
+            Icons.info_outline_rounded,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
     return Scaffold(
-      appBar:appBar,
+      appBar: appBar,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).scaffoldBackgroundColor,
-              Theme.of(context).appBarTheme.backgroundColor as Color,
+              color.xPrimaryColor,
+              color.xSecondaryColor,
             ],
             stops: const [0.45, 1],
           ),
@@ -93,17 +129,18 @@ class _QuadrixState extends State<Quadrix> {
                 });
           },
           child: Container(
-            width: 100,
+            width: 130,
             height: 50,
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
-              color: Colors.white10,
+              color: color.xPrimaryColor
             ),
             alignment: Alignment.center,
-            child: const Text(
-              'Give Up',
+            child:  Text(
+              'Give up',
               style: TextStyle(
-                color: Colors.white,
+                color: color.xTextColor,
                 fontSize: 18,
               ),
             ),
