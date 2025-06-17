@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,9 @@ import 'package:winksy/screen/zoo/zoo.dart';
 
 import '../../component/app_bar.dart';
 import '../../mixin/mixins.dart';
+import '../../model/User.dart';
+import '../../model/quad.dart';
+import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
 
 
@@ -31,32 +37,37 @@ class IQuadrix extends StatefulWidget {
 
 class _IQuadrixState extends State<IQuadrix> {
   late Timer _timer;
-  late var loading = '...';
+  late var _loading = '...';
   final String loading1 = '.';
   final String loading2 = '..';
   final String loading3 = '...';
+
+  var _waiting = 'Waiting for opponent';
+  final _room = 'quadrix_room';
 
   void _startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec, (Timer timer) {
           setState(() {
-            if (loading.isEmpty) {
-              loading = '.';
-            } else if (loading.length == 1) {
-              loading = loading2;
-            } else if (loading.length == 2) {
-              loading = loading3;
-            } else if (loading.length == 3) {
-              loading = '';
+            if (_loading.isEmpty) {
+              _loading = '.';
+            } else if (_loading.length == 1) {
+              _loading = loading2;
+            } else if (_loading.length == 2) {
+              _loading = loading3;
+            } else if (_loading.length == 3) {
+              _loading = '';
             }
           });
       },
     );
   }
+
   @override
   void initState() {
     super.initState();
+    _initSocket();
     _startTimer();
   }
 
@@ -91,10 +102,10 @@ class _IQuadrixState extends State<IQuadrix> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Waiting for opponent', style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary)),
+                      Text(_waiting, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary)),
                       SizedBox(
                           width: 30.w,
-                          child: Text(loading, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
+                          child: Text(_loading, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
                     ],
                   ),
                   SizedBox(height: 20,),
@@ -138,5 +149,64 @@ class _IQuadrixState extends State<IQuadrix> {
         ),
       ),
     );
+  }
+
+  Future<void> _initSocket() async {
+    if (Mixin.quadrixSocket != null) {
+      Mixin.quadrixSocket?.disconnect();
+      Mixin.quadrixSocket?.dispose();
+      Mixin.quadrixSocket = null;
+    }
+
+    Mixin.quadrixSocket = IO.io(IUrls.NODE_QUADRIX(), <String, dynamic>{
+      'timeout': 9000,
+      'transports': ['websocket'],
+      'autoConnect': false,
+      'reconnection': true,
+      'query': {
+        'user': Mixin.user?.usrFullNames ?? 'Guest',
+        'room': _room,
+      },
+    });
+
+    Mixin.quadrixSocket?.on('connect_error', (c) {
+      log(c.toString());
+    });
+
+    Mixin.quadrixSocket?.connect();
+
+    Mixin.quadrixSocket?.onConnect((_) {
+      Mixin.quadrixSocket?.emit('joinRoom', {
+        'user': Mixin.user?.usrFullNames ?? 'Guest',
+        'room': _room,
+        'usrId': Mixin.user?.usrId,
+        'action': 'joinRoom'
+      });
+    });
+
+    Mixin.quadrixSocket?.on('roomJoined', (message) {
+      print(jsonEncode(message));
+      Mixin.quad = Quad.fromJson(message);
+
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.usrId.toString()) {
+        return;
+      }
+
+
+      Mixin.winkser = User()
+        ..usrId = Mixin.quad?.usrId
+        ..usrFullNames = Mixin.quad?.user;
+
+      setState(() {
+        _timer.cancel();
+        _loading = '';
+        _waiting = 'Gaming with ${Mixin.quad?.user}';
+
+        Future.delayed(Duration(seconds: 4), () {
+          Mixin.navigate(context,Quadrix());
+        });
+
+      });
+    });
   }
 }

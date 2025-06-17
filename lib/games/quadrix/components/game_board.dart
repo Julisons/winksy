@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../mixin/mixins.dart';
+import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
 import '../models/coin.dart';
 import '../utils/game_logic.dart';
@@ -18,6 +22,14 @@ class GameBoard extends StatefulWidget {
 }
 
 class GameBoardState extends State<GameBoard> {
+  final _room = 'quadrix_room';
+
+
+  @override
+  void initState() {
+    super.initState();
+    _play();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +45,7 @@ class GameBoardState extends State<GameBoard> {
               return InkWell(
                 onTap: () async {
                   if (end == false) {
+
                     await onPlay(
                         coin: Coin(
                           row: coin['row'] as int,
@@ -42,6 +55,19 @@ class GameBoardState extends State<GameBoard> {
                         ),
                         playerTurnKey: widget.playerTurnKey,
                         gameBoardKey: widget.gameBoardKey);
+
+                    currentPlayer = "${Mixin.winkser?.usrFullNames}'s turn";
+
+                    print('--------$currentPlayer----------------player--------$player}TurnKey: }');
+
+                    Mixin.quadrixSocket?.emit('played', {
+                      'user': player,
+                      'room': _room,
+                      'usrId': Mixin.user?.usrId,
+                      'action': 'played',
+                      'row': coin['row'] as int,
+                      'column': coin['column'] as int,
+                    });
 
                     Result result = didEnd();
                     //stop the game if the game has ended
@@ -54,16 +80,16 @@ class GameBoardState extends State<GameBoard> {
                             backgroundColor: (result == Result.draw)
                                 ? Colors.white.withOpacity(0.9)
                                 : (result == Result.player1)
-                                    ? playerOneColor.withOpacity(0.9)
-                                    : playerTwoColor.withOpacity(0.9),
+                                ? playerOneColor.withOpacity(0.9)
+                                : playerTwoColor.withOpacity(0.9),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             content: Text(
                               (result == Result.draw)
                                   ? 'It\'s a tie'
                                   : (result == Result.player1)
-                                      ? 'Player 1 wins'
-                                      : 'Player 2 wins',
+                                  ? 'Player 1 wins'
+                                  : 'Player 2 wins',
                               style: GoogleFonts.aBeeZee(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
@@ -133,5 +159,84 @@ class GameBoardState extends State<GameBoard> {
         }).toList(),
       ),
     );
+  }
+
+  _play(){
+    Mixin.quadrixSocket?.on('play', (message) async {
+      print(jsonEncode(message));
+       Mixin.quad = Quad.fromJson(message);
+
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.usrId.toString()) {
+        return;
+      }
+
+      await onPlay(
+      coin: Coin(
+        row: Mixin.quad?.row as int,
+        column: Mixin.quad?.column as int,
+        selected: false,
+        color: Theme.of(context).extension<CustomColors>()!.xSecondaryColor,
+      ),
+      playerTurnKey: widget.playerTurnKey,
+      gameBoardKey: widget.gameBoardKey);
+
+      setState(()  {
+        if (end == false) {
+          Result result = didEnd();
+          //stop the game if the game has ended
+          if (result != Result.play) {
+            setState(() {});
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: (result == Result.draw)
+                      ? Colors.white.withOpacity(0.9)
+                      : (result == Result.player1)
+                      ? playerOneColor.withOpacity(0.9)
+                      : playerTwoColor.withOpacity(0.9),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  content: Text(
+                    (result == Result.draw)
+                        ? 'It\'s a tie'
+                        : (result == Result.player1)
+                        ? 'Player 1 wins'
+                        : 'Player 2 wins',
+                    style: GoogleFonts.aBeeZee(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  title: Text(
+                    'GAME OVER!',
+                    style: GoogleFonts.davidLibre(
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black,
+                      fontSize: 28,
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Game Over!',
+                style: GoogleFonts.aBeeZee(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+              backgroundColor: Colors.black,
+            ),
+          );
+        }
+      });
+    });
   }
 }

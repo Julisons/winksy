@@ -1,6 +1,7 @@
 class IUrls {
  //static String BASE = 'http://192.168.100.36';
-  static String BASE = 'http://212.47.74.158';
+ static String BASE = 'http://10.10.1.28';
+ // static String BASE = 'http://212.47.74.158';
 
   static String IMAGE_URL = '$BASE:5000';
   //static String IMAGE_URL = 'http://212.47.74.158:5000';
@@ -26,6 +27,10 @@ static String BASE_URL = '$BASE:5000';
   static String NODE_ONLINE(){
    // return "http://192.168.100.36:3030/chats";
     return "$BASE:3030/chats";
+  }
+  static String NODE_QUADRIX(){
+    // return "http://192.168.100.36:3030/chats";
+    return "$BASE:9000";
   }
 
   static String SAVE_MESSAGE() {

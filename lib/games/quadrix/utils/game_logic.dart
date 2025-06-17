@@ -12,7 +12,7 @@ void playDropSound() {
 Color playerOneColor = const Color(0xffff4d4d); // Vibrant Red
 Color playerTwoColor = const Color(0xff2ecc71); // Lime Green
 
-
+var currentPlayer = '';
 //player = 1 if it's player 1's turn to play and 2 if it's player 2's turn to play
 int player = 1;
 //count the number of turns

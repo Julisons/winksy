@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../mixin/constants.dart';
+import '../../../mixin/mixins.dart';
+import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
 import '../components/game_board.dart';
 import '../components/player_turn_widget.dart';
@@ -18,6 +22,7 @@ class Quadrix extends StatefulWidget {
 }
 
 class _QuadrixState extends State<Quadrix> {
+  late Quad _quad;
 
   GlobalKey<GameBoardState> gameBoardKey = GlobalKey<GameBoardState>();
 
@@ -96,6 +101,7 @@ class _QuadrixState extends State<Quadrix> {
                   (MediaQuery.of(context).size.width - 20) / 2 -
                   50,
               child: PlayerTurnWidget(key: playerTurnKey),
+
             ),
           ],
         ),
@@ -148,5 +154,23 @@ class _QuadrixState extends State<Quadrix> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+      Mixin.quadrixSocket?.on('roomJoined', (message) {
+        print(jsonEncode(message));
+        _quad = Quad.fromJson(message);
+
+        setState(() {
+          Future.delayed(Duration(seconds: 4), () {
+            Mixin.navigate(context,Quadrix());
+          });
+        });
+      });
+    });
   }
 }

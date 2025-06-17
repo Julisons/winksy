@@ -35,6 +35,8 @@ import 'games/quadrix/quadrix.dart';
 import 'mixin/constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'mixin/mixins.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +44,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Mixin.getUser().then((value) =>
+  {
+    if(value != null){
+      Mixin.user = value,
+    }
+  });
 
   runApp(
     DevicePreview(
@@ -100,7 +109,7 @@ class MyApp extends StatelessWidget {
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                home: IQuadrix(),
+                home: ISplashScreen(),
                 theme: ThemeDataStyle.lighter,
                 darkTheme: ThemeDataStyle.darker,
               );
