@@ -60,21 +60,23 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
   PersistentBottomNavBarItem tabItem(title, {required Widget icon, screen}) {
     return PersistentBottomNavBarItem(
-      textStyle: GoogleFonts.workSans(textStyle: TextStyle(fontSize: 10.sp)),
+      textStyle: GoogleFonts.workSans(textStyle: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.normal)),
       icon: icon,
       title: (title),
-      activeColorPrimary: Theme.of(context).colorScheme.tertiary,
+      activeColorSecondary: Colors.white,
+      activeColorPrimary: Theme.of(context).extension<CustomColors>()!.xTrailing.withOpacity(.8),
       inactiveColorPrimary: CupertinoColors.systemGrey,
     );
   }
 
+
   List<PersistentBottomNavBarItem> navBarsItems() {
     return [
-      tabItem('Home', icon: const Icon(Icons.home_outlined)),
-      tabItem('', icon: const Icon(Icons.favorite_border_rounded)),
-      tabItem('', icon: const Icon(Icons.messenger_outline)),
-      tabItem('', icon: const Icon(Icons.sports_esports)),
-      tabItem('', icon: const Icon(Icons.person_outline)),
+      tabItem('Home  ', icon: const Icon(Icons.home_outlined)),
+      tabItem('People', icon: const Icon(Icons.favorite_border_rounded)),
+      tabItem('Messages', icon: const Icon(Icons.messenger_outline)),
+      tabItem('Games', icon: const Icon(Icons.sports_esports)),
+      tabItem('Account', icon: const Icon(Icons.person_outline)),
     ];
   }
 
@@ -144,7 +146,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
             colorBehindNavBar: color.xPrimaryColor,
           ),
           navBarStyle: NavBarStyle
-              .style5, // Choose the nav bar style with this property.
+              .style7, // Choose the nav bar style with this property.
         ),
       ),
     );
@@ -177,10 +179,10 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     if (prefs.containsKey(USER)) {
       Mixin.user = User.fromJson(json.decode(prefs.getString(USER) ?? ""));
       if (Mixin.user?.usrId != null) {
-        Mixin.user?.usrDesc = token;
+        Mixin.user?.usrFirebaseToken = token;
         User data = User()
           ..usrId = Mixin.user?.usrId
-          ..usrDesc = token;
+          ..usrFirebaseToken = token;
         IPost.postData(data, (state, res, value) {
           log('-------------------------Token updated: $state, $res $token');
         }, IUrls.UPDATE_USER());

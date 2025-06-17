@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/mixin/constants.dart';
@@ -11,16 +13,14 @@ import '../component/app_bar.dart';
 import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
 
-
 class ListItem {
   final String title;
   final String desc;
-  final IconData icon;
+  final FaIcon icon;
   ListItem({required this.title, required this.desc, required this.icon});
 }
 
 class IGames extends StatefulWidget {
-
   IGames({super.key});
 
   @override
@@ -29,15 +29,27 @@ class IGames extends StatefulWidget {
 
 class _IGamesState extends State<IGames> {
   final List<ListItem> items = [
-    ListItem(title: 'My Account', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
-    ListItem(title: 'My Recent Opponents', desc: 'Players you recently competed against',  icon: Icons.group),
-    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
+    ListItem(
+        title: 'My Account',
+        desc: 'Manage your account settings',
+        icon: FaIcon(FontAwesomeIcons.circleUser)),
+    ListItem(
+        title: 'My Recent Opponents',
+        desc: 'Players you recently competed against',
+        icon: FaIcon(FontAwesomeIcons.userGroup)),
+    ListItem(
+        title: 'Game Settings',
+        desc: 'Customize your gameplay preferences',
+        icon: FaIcon(FontAwesomeIcons.screwdriver)),
   ];
 
   final List<ListItem> games = [
-    ListItem(title: 'Friend Zoo', desc: '', icon: Icons.pets),
-    ListItem(title: 'Quadrix', desc: '',  icon: Icons.sports_baseball),
-    ListItem(title: 'Crazy8', desc: '',  icon: Icons.credit_card)
+    ListItem(title: 'Friend Zoo', desc: '', icon: FaIcon(FontAwesomeIcons.userGroup)),
+    ListItem(title: 'Quadrix', desc: '', icon: FaIcon(FontAwesomeIcons.basketball)),
+    ListItem(title: 'Crazy8', desc: '', icon: FaIcon(FontAwesomeIcons.dice)),
+    ListItem(title: 'Tic Tac Toe', desc: '', icon: FaIcon(FontAwesomeIcons.diceThree)),
+    ListItem(title: 'Daily Spin', desc: '', icon: FaIcon(FontAwesomeIcons.arrowsSpin)),
+    ListItem(title: 'Chess', desc: '', icon: FaIcon(FontAwesomeIcons.chess)),
   ];
 
   @override
@@ -46,35 +58,37 @@ class _IGamesState extends State<IGames> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Games',),
+      appBar: IAppBar(title: 'Games'),
       body: Padding(
-        padding:  EdgeInsets.all(16.0.r),
+        padding: EdgeInsets.all(16.0.r),
         child: Column(
           children: [
             Expanded(
+              flex: 2,
               child: GridView.builder(
                 itemCount: games.length,
+                physics: NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, // 3 items per row
+                  crossAxisCount: 3,
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
-                  childAspectRatio: .7, // Adjust to your UI preference
+                  childAspectRatio: .7,
                 ),
                 itemBuilder: (context, index) {
                   final item = games[index];
                   return GestureDetector(
                     onTap: () {
-                      switch(item.title)
-                      {
+                      switch (item.title) {
                         case 'Friend Zoo':
-                          Mixin.navigate(context,IZoo());
+                          Mixin.navigate(context, IZoo());
                           break;
                         case 'Quadrix':
-                          Mixin.navigate(context,IQuadrix());
+                          Mixin.navigate(context, IQuadrix());
                           break;
                         case 'Crazy8':
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Coming soon!')));
+                            SnackBar(content: Text('Coming soon!')),
+                          );
                           break;
                       }
                     },
@@ -86,9 +100,35 @@ class _IGamesState extends State<IGames> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(item.icon,size: 60,color: color.xTextColor,),
+                            IconButton(
+                              color: color.xTextColor,
+                              onPressed: () {
+                                switch (item.title) {
+                                  case 'Friend Zoo':
+                                    Mixin.navigate(context, IZoo());
+                                    break;
+                                  case 'Quadrix':
+                                    Mixin.navigate(context, IQuadrix());
+                                    break;
+                                  case 'Crazy8':
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Coming soon!')),
+                                    );
+                                    break;
+                                }
+                              },
+                              icon: item.icon,
+                              iconSize: 40.r,
+                            ),
                             SizedBox(height: 8),
-                            Text(item.title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                            Text(
+                              item.title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_TITLE,
+                                color: color.xTextColorSecondary,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -97,21 +137,47 @@ class _IGamesState extends State<IGames> {
                 },
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
+            SizedBox(height: 20.r), // spacing between sections
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(items.length, (index) {
                   return Card(
                     color: color.xSecondaryColor,
                     elevation: ELEVATION,
                     margin: EdgeInsets.only(bottom: 16.r),
                     child: ListTile(
-                      contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                      leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                      title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                      contentPadding: EdgeInsets.only(
+                        left: 20.r,
+                        right: 12.r,
+                        bottom: 12.r,
+                        top: 12.r,
+                      ),
+                      leading: IconButton(
+                        color: color.xTextColor,
+                        onPressed: () {},
+                        icon: items[index].icon,
+                        iconSize: 30.r,
+                      ),
+                      title: Text(
+                        items[index].title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: FONT_TITLE,
+                          color: color.xTextColorSecondary,
+                        ),
+                      ),
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 6.r),
-                        child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                        padding: EdgeInsets.only(top: 6.r),
+                        child: Text(
+                          items[index].desc,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_13,
+                            color: color.xTextColor,
+                          ),
+                        ),
                       ),
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -120,7 +186,7 @@ class _IGamesState extends State<IGames> {
                       },
                     ),
                   );
-                },
+                }),
               ),
             ),
           ],

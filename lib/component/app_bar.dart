@@ -15,6 +15,7 @@ class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return AppBar(
+      automaticallyImplyLeading: true,
       backgroundColor: color.xPrimaryColor,
       title: Transform(
         transform: Matrix4.translationValues(10, 0.0, 0.0),

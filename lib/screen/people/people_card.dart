@@ -16,6 +16,7 @@ import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../mixin/constants.dart';
 import '../../model/chat.dart';
+import '../account/winkser.dart';
 import '../message/message.dart';
 
 
@@ -37,12 +38,17 @@ class _IPeopleCardState extends State<IPeopleCard> {
     return InkWell(
       onTap: () {
         Mixin.winkser = widget.user;
+
+        log("Winkser: ${Mixin.winkser?.usrGender}");
         Chat chat = Chat()
         ..chatReceiverId = widget.user.usrId
         ..chatSenderId = Mixin.user?.usrId
         ..chatCreatedBy = Mixin.user?.usrId
         ..usrReceiver = widget.user.usrFullNames;
-        Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+        //Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+
+        Mixin.navigate(context, IWinkser());
+
       },
       child: Card(
         elevation: ELEVATION,
@@ -68,13 +74,13 @@ class _IPeopleCardState extends State<IPeopleCard> {
                       width: MediaQuery.of(context).size.width/2,
                     //  height: MediaQuery.of(context).size.width/2,
                       decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                        shape: BoxShape.rectangle,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => CircleAvatar(
-                    backgroundColor: color.xSecondaryColor,
+                  errorWidget: (context, url, error) => Container(
+                    color: color.xSecondaryColor,
                     child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
                   ),
                 ),
@@ -113,7 +119,7 @@ class _IPeopleCardState extends State<IPeopleCard> {
                         child: Icon(
                           Icons.verified,
                           color: Colors.white, // Checkmark color
-                          size: 16, // Adjust size as needed
+                          size: 13.r, // Adjust size as needed
                         ),
                       ),
                     ),

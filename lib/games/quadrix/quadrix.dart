@@ -189,8 +189,9 @@ class _IQuadrixState extends State<IQuadrix> {
       Mixin.quad = Quad.fromJson(message);
 
       if(Mixin.user?.usrId.toString() == Mixin.quad?.usrId.toString()) {
-        return;
+       return;
       }
+
 
 
       Mixin.winkser = User()

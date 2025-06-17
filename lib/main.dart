@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/provider/chat_provider.dart';
+import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/interest_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
 import 'package:winksy/provider/like_provider.dart';
@@ -74,6 +75,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
               create: (_) => IBrowseProvider().init()),
+          ChangeNotifierProvider<IGiftProvider>(
+              create: (_) => IGiftProvider().init()),
           ChangeNotifierProvider<IUsersProvider>(
               create: (_) => IUsersProvider().init()),
           ChangeNotifierProvider<IWishProvider>(

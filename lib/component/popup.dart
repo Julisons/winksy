@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../mixin/constants.dart';
 import '../mixin/mixins.dart';
 import '../screen/splash/splash_screen.dart';
+import '../theme/custom_colors.dart';
 
 class IPopup extends StatefulWidget {
   const IPopup({Key? key}) : super(key: key);
@@ -28,14 +29,16 @@ class _IPopupState extends State<IPopup> {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).extension<CustomColors>()!;
+
     return PopupMenuButton<String>(
-      color: darkAshGrey,
+      color: color.xPrimaryColor,
       iconColor: lime,
       onSelected: (value) {
         handleClick(value, context);
       },
       itemBuilder: (BuildContext context) {
-        return { 'Edit Profile','Change Mobile No.','Terms & Conditions', 'Contact Us','Settings', auth,}.map((String choice) {
+        return { 'Edit Profile','Terms & Conditions', 'Contact Us','Settings', auth,}.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
             child: Text(choice, style: TextStyle(color: Colors.white),),

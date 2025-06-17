@@ -32,6 +32,7 @@ class _IZooState extends State<IZoo> {
       child: Scaffold(
         backgroundColor: color.xPrimaryColor,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: color.xPrimaryColor,
           title: Transform(
             transform: Matrix4.translationValues(10, 0.0, 0.0),
