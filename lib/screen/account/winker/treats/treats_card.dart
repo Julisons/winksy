@@ -131,7 +131,7 @@ class _ITreatCardState extends State<ITreatCard> {
 
         IPost.postData(gift, (state, res, value) {
           setState(() {
-            Mixin.playerSound.play(AssetSource('sound/clapping.wav')); // Your sound file
+           // Mixin.playerSound.play(AssetSource('sound/clapping.wav')); // Your sound file
             Mixin.playerSound.play(AssetSource('sound/thank_you.wav')); // Your sound file
             _isLoading = false;
               _controllerCenter.play();
