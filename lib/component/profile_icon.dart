@@ -30,36 +30,30 @@ class ProfileProgressWidget extends StatelessWidget {
         Container(
         // color: Colors.blue,
          height: 180.h,
-         width: 150.h,
+         width: 180.h,
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Positioned(
-                top: 0,
-                child: SizedBox(
-                  width: 149.w,
-                  height: 149.w,
-                  child: TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0.0, end: completion),
-                    duration: Duration(milliseconds: 4800),
-                    builder: (context, value, _) => CircularProgressIndicator(
-                      value: value,
-                      strokeWidth: 3.r,
-                      backgroundColor: color.xSecondaryColor,
-                      color: color.xTrailingAlt, // blue accent color
-                    ),
+              SizedBox(
+                width: 130.w,
+                height: 130.w,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.0, end: completion),
+                  duration: Duration(milliseconds: 4800),
+                  builder: (context, value, _) => CircularProgressIndicator(
+                    value: value,
+                    strokeWidth: 3.r,
+                    backgroundColor: color.xSecondaryColor,
+                    color: color.xTrailingAlt, // blue accent color
                   ),
                 ),
               ),
-              Positioned(
-                top: 5.r,
-                child: CircleAvatar(
-                  radius: 70.w,
-                  backgroundImage: CachedNetworkImageProvider(imageUrl),
-                ),
+              CircleAvatar(
+                radius: 60.w,
+                backgroundImage: CachedNetworkImageProvider(imageUrl),
               ),
               Positioned(
-                bottom: 14.h,
+                bottom: 1.h,
                 child: IButton(
                   color: color.xTrailing,
                   onPress: () {
@@ -67,7 +61,8 @@ class ProfileProgressWidget extends StatelessWidget {
                   },
                   isBlack: true,
                   text: "Edit",
-                  width: 60.w,
+                  icon: Icon(Icons.edit, color: Colors.white, size: 16.r),
+                  width: 80.w,
                   height: 28.h,
                   textColor: Colors.white,
                 ),

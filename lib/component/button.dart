@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vibration/vibration.dart';
@@ -15,6 +16,7 @@ class IButton extends StatelessWidget {
   final double width;
   final double height;
   final double font;
+  final Widget? icon;
   final FontWeight fontWeight;
 
   const IButton(
@@ -30,7 +32,7 @@ class IButton extends StatelessWidget {
         this.width = 0.0,
         this.height = 45,
         this.font = 10,
-        this.fontWeight = FontWeight.w500})
+        this.fontWeight = FontWeight.w500,  this.icon})
       : super(key: key);
 
   @override
@@ -66,14 +68,23 @@ class IButton extends StatelessWidget {
   Widget buttonContent(context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-        child: Text(text,
-          style: TextStyle(
-            fontFamily: 'Work Sans',
-            fontSize: font == 10 ? FONT_13 : font,
-            color: textColor,
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
+        child: Row(
+          children: [
+            if (icon != null)
+              Padding(
+                padding: EdgeInsets.only(right: 8.w),
+                child: icon!,
+              ),
+            Text(text,
+              style: TextStyle(
+                fontFamily: 'Work Sans',
+                fontSize: font == 10 ? FONT_13 : font,
+                color: textColor,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ));
   }
 }

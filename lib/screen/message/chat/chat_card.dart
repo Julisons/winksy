@@ -89,16 +89,19 @@ class _IChatCardState extends State<IChatCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('${widget.chat.usrReceiver}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle( fontWeight: FontWeight.bold, color: color.xTextColor, fontSize: FONT_TITLE)),
+                          Flexible(
+                            child: Text('${widget.chat.usrReceiver}',
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                style: TextStyle( fontWeight: FontWeight.bold, color: color.xTextColor, fontSize: FONT_TITLE)),
+                          ),
 
                           Text(timeago.format(DateTime.parse(widget.chat.msgCreatedTime)),
                               textAlign: TextAlign.center,
                               style: TextStyle( fontWeight: FontWeight.normal, color: color.xTrailing, fontSize: FONT_SMALL),),
                         ],
                       ),
-                        Expanded(
+                      Flexible(
                           child: Row(
                             children: [
                               widget.chat.msgReceiverId.toString() != Mixin.user?.usrId.toString()  ?
@@ -110,9 +113,10 @@ class _IChatCardState extends State<IChatCard> {
                                   color: widget.chat.msgStatus == 'SENT' ? Colors.grey : Colors.blueAccent, // Use Colors.blue if message is read
                                                                ),
                                ) :  SizedBox.shrink(),
-                              Expanded(
+                              Flexible(
                                 child: Text('${widget.chat.msgText}',
                                     textAlign: TextAlign.start,
+                                    maxLines: 2,
                                     style: TextStyle( fontWeight: widget.chat.msgStatus == 'SENT' ? FontWeight.bold : FontWeight.normal,
                                         color: color.xTextColorSecondary, fontSize: FONT_13)),
                               ),

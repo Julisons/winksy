@@ -89,7 +89,7 @@ class _IWinkserState extends State<IWinkser> {
               iconTheme: IconThemeData(color: color.xTrailing),
               backgroundColor: Colors.transparent,
               title:
-              Text('${Mixin.winkser?.usrFullNames}   ',
+                Text('${Mixin.winkser?.usrFullNames}   ',
                 style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
               ),
               actions: <Widget>[IPopup()]),

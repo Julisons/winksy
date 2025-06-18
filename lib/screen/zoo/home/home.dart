@@ -89,8 +89,8 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                           child: CachedNetworkImage(
                             imageUrl: '${Mixin.user?.usrImage}',
                             fit: BoxFit.cover,
-                            height: 150.w,
-                            width: 150.w,
+                            width: 150.r,
+                            height: 150.r,
                             placeholder: (context, url) => Shimmer.fromColors(
                               baseColor: color.xPrimaryColor,
                               highlightColor: color.xPrimaryColor,
@@ -216,9 +216,9 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                 child: TabBar(
                   controller: _tabController,
                   tabs: [
-                    Tab(child: Text("My Pets", style: TextStyle(fontWeight: FontWeight.bold))),
-                    Tab(child: Text("Recently Owned", style: TextStyle(fontWeight: FontWeight.bold))),
-                    Tab(child: Text("Wish List", style: TextStyle(fontWeight: FontWeight.bold))),
+                    Tab(child: Text("My Pets",maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_13))),
+                    Tab(child: Text("Recently Owned",maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_13))),
+                    Tab(child: Text("Wish List", maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_13))),
                   ],
                   labelColor: color.xTextColor,
                   unselectedLabelColor: color.xTextColorTertiary,

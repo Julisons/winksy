@@ -50,8 +50,8 @@ class _IPetCardState extends State<IPetCard> {
             ClipOval(
               child: CachedNetworkImage(
                 imageUrl: widget.pet.usrImage.toString(),
-                width: 150.h,
-                height: 150.h,
+                width: 150.r,
+                height: 150.r,
                 fit: BoxFit.fitHeight,
                 placeholder: (context, url) => Shimmer.fromColors(
                   baseColor: xShimmerBase,
@@ -87,18 +87,20 @@ class _IPetCardState extends State<IPetCard> {
                           ),
                         ),
                         SizedBox(width: 3,),
-                        Visibility(
-                          visible: true,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue, // Background color for the badge
-                            ),
-                            padding: EdgeInsets.all(2), // Padding for the circle
-                            child: Icon(
-                              Icons.verified,
-                              color: Colors.white, // Checkmark color
-                              size: 16, // Adjust size as needed
+                        Flexible(
+                          child: Visibility(
+                            visible: true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue, // Background color for the badge
+                              ),
+                              padding: EdgeInsets.all(2), // Padding for the circle
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.white, // Checkmark color
+                                size: 10.r, // Adjust size as needed
+                              ),
                             ),
                           ),
                         ),
@@ -112,14 +114,16 @@ class _IPetCardState extends State<IPetCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
-                        Text( '${widget.pet.petValue} wnks',
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text( '${widget.pet.petValue} wnks',
+                            style: TextStyle(
+                              color: color.xTrailing,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                            ),
                           ),
                         ),
                       ],
@@ -132,14 +136,16 @@ class _IPetCardState extends State<IPetCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
-                        Text( '${'${widget.pet.petCash}'.kes()} wnks',
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text( '${'${widget.pet.petCash}'.kes()} wnks',
+                            style: TextStyle(
+                              color: color.xTrailing,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                            ),
                           ),
                         ),
                       ],
@@ -152,14 +158,16 @@ class _IPetCardState extends State<IPetCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
-                        Text( "${'${widget.pet.petAssets}'.kes()} wnks",
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text( "${'${widget.pet.petAssets}'.kes()} wnks",
+                            style: TextStyle(
+                              color: color.xTrailing,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                            ),
                           ),
                         ),
                       ],
@@ -172,14 +180,16 @@ class _IPetCardState extends State<IPetCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
-                        Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
+                            style: TextStyle(
+                              color: color.xTrailing,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                            ),
                           ),
                         ),
                       ],

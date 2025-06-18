@@ -83,14 +83,14 @@ class _IProfileState extends State<IProfile> {
               children: [
                 Text('${Mixin.user?.usrFullNames}',
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: FONT_TITLE,
                     fontWeight: FontWeight.w600,
                     color: color.xTextColorSecondary,
                   ),
                 ),
-                SizedBox(height: 8.h),
-                Text('${(profileCompletion * 100).toInt()}% complete',
-                  style: TextStyle(fontSize: 14.sp, color: color.xTextColor),
+                SizedBox(height: 4.h),
+                  Text('${(profileCompletion * 100).toInt()}% complete',
+                  style: TextStyle(fontSize: FONT_13, color: color.xTextColor),
                 ),
               ],
             ),

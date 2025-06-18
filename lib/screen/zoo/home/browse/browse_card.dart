@@ -94,22 +94,24 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           style: TextStyle(
                             color: color.xTextColorSecondary,
                             fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                         SizedBox(width: 3,),
-                        Visibility(
-                          visible: true,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue, // Background color for the badge
-                            ),
-                            padding: EdgeInsets.all(2), // Padding for the circle
-                            child: Icon(
-                              Icons.verified,
-                              color: Colors.white, // Checkmark color
-                              size: 16, // Adjust size as needed
+                        Flexible(
+                          child: Visibility(
+                            visible: true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue, // Background color for the badge
+                              ),
+                              padding: EdgeInsets.all(2), // Padding for the circle
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.white, // Checkmark color
+                                size: 10.r, // Adjust size as needed
+                              ),
                             ),
                           ),
                         ),
@@ -123,14 +125,14 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                         Text( '${widget.pet.petValue} wnks',
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                       ],
@@ -143,14 +145,16 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
-                        Text( '${'${widget.pet.petCash}'.kes()} wnks',
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text( '${'${widget.pet.petCash}'.kes()} wnks',
+                            style: TextStyle(
+                              color: color.xTrailing,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                            ),
                           ),
                         ),
                       ],
@@ -163,14 +167,16 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
-                        Text( "${'${widget.pet.petAssets}'.kes()} wnks",
-                          style: TextStyle(
-                            color: color.xTrailing,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text( "${'${widget.pet.petAssets}'.kes()} wnks",
+                            style: TextStyle(
+                              color: color.xTrailing,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                            ),
                           ),
                         ),
                       ],
@@ -183,14 +189,14 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                         Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                       ],
@@ -203,14 +209,14 @@ class _IBrowseCardState extends State<IBrowseCard> {
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                         Text( '${widget.pet.usrOwner}',
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                            fontSize: FONT_13,
                           ),
                         ),
                       ],
@@ -229,57 +235,63 @@ class _IBrowseCardState extends State<IBrowseCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         '${widget.pet.wishUsrId}' != Mixin.user?.usrId.toString() ?
-                        IButton(
+                        Flexible(
+                          child: IButton(
+                            onPress: () {
+                              setState(() {_isLoading = true;});
+                              _wish = Wish()
+                                ..wishPetId = widget.pet.usrId
+                                ..wishUsrId = Mixin.user?.usrId;
+
+                              IPost.postData(_wish, (state, res, value) {setState(() {
+                                setState(() {_isLoading = false;});
+                                  if (state) {
+                                    Mixin.showToast(context, res, INFO);
+                                    Provider.of<IBrowseProvider>(context, listen: false).refresh('', false);
+                                  } else {
+                                    Mixin.errorDialog(context, 'ERROR', res);
+                                  }
+                              });}, IUrls.WISH());
+                            },
+                            isBlack: false,
+                            text: 'Add to wishlist',
+                            color:  color.xPrimaryColor,
+                            textColor:  color.xTextColor,
+                            fontWeight: FontWeight.normal,
+                            width: 120.w,
+                            height: 35.h,
+                            font: FONT_13,
+                          ),
+                        ) : SizedBox.shrink(),
+
+                      Flexible(
+                        child: IButton(
                           onPress: () {
                             setState(() {_isLoading = true;});
-                            _wish = Wish()
-                              ..wishPetId = widget.pet.usrId
-                              ..wishUsrId = Mixin.user?.usrId;
+                            _transaction = Transaction()
+                            ..txnPetUsrId = widget.pet.usrId
+                            ..txnBuyerUsrId = Mixin.user?.usrId
+                            ..txnAmount = widget.pet.petValue;
 
-                            IPost.postData(_wish, (state, res, value) {setState(() {
+                            IPost.postData(_transaction, (state, res, value) {setState(() {
                               setState(() {_isLoading = false;});
                                 if (state) {
                                   Mixin.showToast(context, res, INFO);
                                   Provider.of<IBrowseProvider>(context, listen: false).refresh('', false);
                                 } else {
-                                  Mixin.errorDialog(context, 'ERROR', res);
+                                  Mixin.info(context, 'INFO', res);
                                 }
-                            });}, IUrls.WISH());
+                            });}, IUrls.TRANSACTION());
                           },
                           isBlack: false,
-                          text: 'Add to wishlist',
-                          color:  color.xPrimaryColor,
-                          textColor:  color.xTextColor,
+                          text: 'Buy Now',
+                          color:  color.xTrailing,
+                          textColor:  Colors.white,
                           fontWeight: FontWeight.normal,
                           width: 120.w,
                           height: 35.h,
-                        ) : SizedBox.shrink(),
-
-                      IButton(
-                        onPress: () {
-                          setState(() {_isLoading = true;});
-                          _transaction = Transaction()
-                          ..txnPetUsrId = widget.pet.usrId
-                          ..txnBuyerUsrId = Mixin.user?.usrId
-                          ..txnAmount = widget.pet.petValue;
-
-                          IPost.postData(_transaction, (state, res, value) {setState(() {
-                            setState(() {_isLoading = false;});
-                              if (state) {
-                                Mixin.showToast(context, res, INFO);
-                                Provider.of<IBrowseProvider>(context, listen: false).refresh('', false);
-                              } else {
-                                Mixin.info(context, 'INFO', res);
-                              }
-                          });}, IUrls.TRANSACTION());
-                        },
-                        isBlack: false,
-                        text: 'Buy Now',
-                        color:  color.xTrailing,
-                        textColor:  Colors.white,
-                        fontWeight: FontWeight.normal,
-                        width: 120.w,
-                        height: 35.h,
+                          font: FONT_13,
+                        ),
                       )
                       ],
                     ),
