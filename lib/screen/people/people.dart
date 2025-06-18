@@ -91,7 +91,10 @@ class _IPeopleState extends State<IPeople> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: 10.h),
-        child: Consumer<IUsersProvider>(
+        child:
+
+
+        Consumer<IUsersProvider>(
             builder: (context, provider, child) {
               return provider.isLoading() ? const IPeopleShimmer() :
               Column(

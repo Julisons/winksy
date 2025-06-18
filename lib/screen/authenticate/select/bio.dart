@@ -119,7 +119,6 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                         _image = value;
                         _cropImage();
                       });
-                      _postImage();
                     }
                   });
                 },

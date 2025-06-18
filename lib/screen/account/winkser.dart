@@ -23,6 +23,7 @@ import '../../provider/user_provider.dart';
 import '../../request/posts.dart';
 import '../../theme/custom_colors.dart';
 import '../message/message.dart';
+import '../zoo/home/pet/pet.dart';
 
 final List<ListItem> gifts = [
   ListItem(title: 'Nudge', desc: '', icon: FaIcon(FontAwesomeIcons.handPointLeft)),
@@ -42,6 +43,7 @@ class _IWinkserState extends State<IWinkser> {
   Chat chat = Chat();
   late Interest _interest;
 
+  bool isVerified = true;
   var _isLoading = false;
   ScrollController scrollController =  ScrollController();
 
@@ -206,6 +208,22 @@ class _IWinkserState extends State<IWinkser> {
                               ),
                             ],
                           ),
+                          SizedBox(height: 10.h,),
+                          if (isVerified)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.verified, color: color.xTrailingAlt, size: 20.r),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  "Verified profile",
+                                  style: TextStyle(
+                                    color: color.xTextColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
                           SizedBox(height: 20.h,),
                           Column(
                             children: [
@@ -335,7 +353,7 @@ class _IWinkserState extends State<IWinkser> {
                           ],
                         ),
                       ),
-                      Container()
+                      IPet(),
                     ],
                   ),
                 ),

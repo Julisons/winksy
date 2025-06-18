@@ -2,13 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:winksy/mixin/extentions.dart';
+import 'package:winksy/screen/account/photo/photos.dart';
 
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
+import '../zoo/home/home.dart';
+import '../zoo/home/pet/pet.dart';
 
 
 
@@ -87,10 +92,10 @@ class _IProfileState extends State<IProfile> {
                   bottom: TabBar(
                     isScrollable: false,
                     tabs: [
-                      Tab(child: Text("Links", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
-                      Tab(child: Text("Folders",style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
-                      Tab(child: Text("Followers", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
-                      Tab(child: Text("Following", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
+                      Tab(child: Text("Details", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
+                      Tab(child: Text("Friends",style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
+                      Tab(child: Text("Photos",style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
+                      Tab(child: Text("Friend Zoo", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
                     ],
                     labelColor: color.xTextColor,
                     unselectedLabelColor: color.xTextColorTertiary,
@@ -104,19 +109,41 @@ class _IProfileState extends State<IProfile> {
                   )),
             ];
           },
-          body: TabBarView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            children: <Widget>[
-              Container(),
-              Container(),
-              Container(),
-              Container(),
-
-             /* ILink(),
-              IMyFolders(),
-              IFollower(),
-              IFollowing()*/
-            ],
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(CORNER*8),
+              ),
+              elevation: ELEVATION,
+              color: color.xSecondaryColor,
+              child: Padding(
+                padding:  EdgeInsets.all(12.r),
+                child: TabBarView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(34.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ProfileField(label: 'Name', value: Mixin.user?.usrFullNames ?? ''),
+                          ProfileField(label: 'Email', value: Mixin.user?.usrEmail ?? ''),
+                          ProfileField(label: 'Age', value: '${'${Mixin.user?.usrDob}'.age()} Years'),
+                          ProfileField(label: 'Gender', value: '${Mixin.user?.usrGender}' ?? ''),
+                          ProfileField(label: 'Phone', value: Mixin.user?.usrMobileNumber ?? ''),
+                          ProfileField(label: 'Place', value: '${Mixin.user?.usrCountry}, ${Mixin.user?.usrAdministrativeArea}'),
+                          ProfileField(label: 'Bio', value: Mixin.user?.usrDesc ?? ''),
+                        ],
+                      ),
+                    ),
+                    Container(),
+                    IPhotos(),
+                    IPet(),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),

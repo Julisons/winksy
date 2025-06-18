@@ -1,34 +1,35 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
 import '../../mixin/mixins.dart';
 import '../../model/pet.dart';
 import '../../model/response.dart';
 import '../../request/gets.dart';
+import '../model/photo.dart';
 
-class IPetProvider with ChangeNotifier {
-  List<Pet> list = [];
-  late Pet pet = Pet();
+class IPhotoProvider with ChangeNotifier {
+  List<Photo> list = [];
   late String errorMessage;
   bool _loading = false;
   bool _loadingMore = false;
   int _start = 0;
-  final int _limit = 10;
+  final int _limit = 20;
 
-  IPetProvider init() {
+  IPhotoProvider init() {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
-        refresh('', false)
+        refresh('', true)
       });
     }else{
-      refresh('', false);
+      refresh('', true);
     }
     return this;
   }
 
-  Future<bool> refresh(search, loud) async {
+  Future<bool> refresh(String search, bool loud) async {
     _start = 0;
     if(loud) {
       list.clear();
@@ -36,19 +37,18 @@ class IPetProvider with ChangeNotifier {
     setLoading(true, loud);
 
     await XRequest().getData({
-      'petUsrId': Mixin.winkser?.usrId,
+      'imgUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.PETS()).then((data) {
+    }, IUrls.PHOTOS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
-          var res = jsonResponse.data['result'];
-          pet = Pet.fromJson((jsonResponse.result));
+          var res = jsonResponse.data['result'] ?? [];
 
-          var items = res.map<Pet>((json) {
-            return  Pet.fromJson(json);
+          var items = res.map<Photo>((json) {
+            return  Photo.fromJson(json);
           }).toList();
 
           setData(items);
@@ -67,19 +67,20 @@ class IPetProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'petUsrId': Mixin.user?.usrId,
+      'petOwnerId': Mixin.user?.usrId,
+      'wishUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.PETS()).then((data) {
+    }, IUrls.OWNED_PETS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
-          var res = jsonResponse.data['result'] ;
+          var res = jsonResponse.data['result'] ?? [];
           log('---${res}');
 
-          var items = res.map<Pet>((json) {
-            return  Pet.fromJson(json);
+          var items = res.map<Photo>((json) {
+            return  Photo.fromJson(json);
           }).toList();
 
           setDataMore(items);
@@ -119,16 +120,17 @@ class IPetProvider with ChangeNotifier {
     setLoading(false, true);
   }
 
+
   void setDataMore(value) {
     list.addAll(value);
     setLoadingMore(false);
   }
 
-  List<Pet> getHouses() {
+  List<Photo> getHouses() {
     return list;
   }
 
-  List<Pet> getRecommended() {
+  List<Photo> getRecommended() {
     return list;
   }
 
@@ -151,9 +153,5 @@ class IPetProvider with ChangeNotifier {
 
   bool isLoaded() {
     return list.isNotEmpty;
-  }
-
-  Pet getPet() {
-    return pet;
   }
 }

@@ -39,7 +39,8 @@ class ProfileProgressWidget extends StatelessWidget {
         SizedBox(height: 16.h),
         SizedBox(
          // color: Colors.blue,
-         height: 130.h,
+         height: 133.h,
+         width: 143.h,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -48,7 +49,7 @@ class ProfileProgressWidget extends StatelessWidget {
                 height: 118.w,
                 child: TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0.0, end: completion),
-                  duration: Duration(milliseconds: 800),
+                  duration: Duration(milliseconds: 4800),
                   builder: (context, value, _) => CircularProgressIndicator(
                     value: value,
                     strokeWidth: 2,

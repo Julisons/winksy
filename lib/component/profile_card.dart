@@ -42,7 +42,7 @@ class ProfileField extends StatelessWidget {
               value.isNotEmpty ? value : '-',
               style: TextStyle(
                 fontSize: FONT_TITLE,
-                color: color.xTextColorTertiary,
+                color: color.xTextColorSecondary,
               ),
             ),
           ),

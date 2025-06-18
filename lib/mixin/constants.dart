@@ -91,7 +91,7 @@ final double FONT_SMALL = 10.sp;
 
 final double APP_BAR = 50.w;
 final double TILE_HEIGHT = 110.w;
-final double ELEVATION = 8.w;
+final double ELEVATION = 0.w;
 final double CORNER = 5.w;
 
 const int ERROR = 1;

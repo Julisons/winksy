@@ -87,6 +87,9 @@ class IPost {
       request.send().then((response) {
 
         response.stream.bytesToString().then((value){
+
+          log('Response: $value');
+
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(value));
 
           bool state = jsonResponse.success;

@@ -49,7 +49,7 @@ class Mixin {
       String? data = prefs.getString(CURR);
       log(data!);
 
-      return User.fromJson(jsonDecode(data!));
+      return User.fromJson(jsonDecode(data));
     } else {
       return null;
     }

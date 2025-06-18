@@ -64,7 +64,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
       icon: icon,
       title: (title),
       activeColorSecondary: Colors.white,
-      activeColorPrimary: Theme.of(context).extension<CustomColors>()!.xTrailing.withOpacity(.8),
+      activeColorPrimary: Theme.of(context).extension<CustomColors>()!.xTrailing,
       inactiveColorPrimary: CupertinoColors.systemGrey,
     );
   }

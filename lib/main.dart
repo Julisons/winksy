@@ -12,6 +12,7 @@ import 'package:winksy/provider/pet/browse_provider.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/provider/pet/pet_provider.dart';
 import 'package:winksy/provider/pet/wish_provider.dart';
+import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/provider/theme_provider.dart';
 import 'package:winksy/provider/user_provider.dart';
 import 'package:winksy/screen/authenticate/select/bio.dart';
@@ -75,6 +76,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
               create: (_) => IBrowseProvider().init()),
+          ChangeNotifierProvider<IPhotoProvider>(
+              create: (_) => IPhotoProvider().init()),
           ChangeNotifierProvider<IGiftProvider>(
               create: (_) => IGiftProvider().init()),
           ChangeNotifierProvider<IUsersProvider>(
