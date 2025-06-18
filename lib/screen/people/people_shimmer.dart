@@ -20,7 +20,7 @@ class IPeopleShimmer extends StatelessWidget {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      backgroundColor: color.xPrimaryColor,
+      backgroundColor: color.xSecondaryColor,
       body:Column(
         children: [
           Expanded(

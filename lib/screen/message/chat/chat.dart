@@ -31,7 +31,7 @@ import 'chat_shimmer.dart';
 
 class IChat extends StatefulWidget {
   const IChat({super.key, required this.user});
-  final User user;
+  final User? user;
 
   @override
   State<IChat> createState() => _IChatState();

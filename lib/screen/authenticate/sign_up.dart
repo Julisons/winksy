@@ -49,9 +49,6 @@ class _ISignUpState extends State<ISignUp> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
-    SystemChrome.setSystemUIOverlayStyle(  SystemUiOverlayStyle(
-        statusBarIconBrightness: Theme.of(context).brightness,
-        statusBarColor: color.xPrimaryColor));
 
     return Scaffold(
       appBar: AppBar(

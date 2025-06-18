@@ -88,7 +88,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     IProfile(),*/
     IPeople(showTitle: true),
     IDashboard(),
-    IChat(user: Mixin.user!),
+    IChat(user: Mixin.user),
     IGames(),
     IProfile(),
   ];
@@ -121,7 +121,23 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
           navBarHeight: 65.h,
           controller: persistentTabController,
           screens: screens,
-          onItemSelected: (value) async {},
+          onItemSelected: (value) async {
+            if (value == 0) {
+              // log('-------------------Home');
+            } else if (value == 1) {
+              // log('-------------------People');
+            } else if (value == 2) {
+              // log('-------------------Messages');
+            } else if (value == 3) {
+              // log('-------------------Games');
+            } else if (value == 4) {
+              // log('-------------------Account');
+              Mixin.winkser = User()
+                ..usrId = Mixin.user?.usrId
+                ..usrImage = Mixin.user?.usrImage
+                ..usrFullNames = Mixin.user?.usrFullNames;
+            }
+          },
           animationSettings: const NavBarAnimationSettings(
             navBarItemAnimation: ItemAnimationSettings(
               // Navigation Bar's items animation properties.
@@ -175,10 +191,6 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
   }
 
   void _updateToken(token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey(USER)) {
-      Mixin.user = User.fromJson(json.decode(prefs.getString(USER) ?? ""));
-      if (Mixin.user?.usrId != null) {
         Mixin.user?.usrFirebaseToken = token;
         User data = User()
           ..usrId = Mixin.user?.usrId
@@ -186,11 +198,9 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
         IPost.postData(data, (state, res, value) {
           log('-------------------------Token updated: $state, $res $token');
         }, IUrls.UPDATE_USER());
-      }
-    }
   }
 
-  _buildFCM() async {
+  Future<void> _buildFCM() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     // Initialize plugin
     const AndroidInitializationSettings initializationSettingsAndroid =

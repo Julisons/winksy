@@ -22,7 +22,7 @@ class Intro extends StatelessWidget {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: color.xPrimaryColor,
       body: Padding(
         padding: EdgeInsets.only(left: 30.h, right: 30.h, bottom: 30.h, top: 43.h),
         child: Column(
@@ -55,7 +55,7 @@ class Intro extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: FONT_START,
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.tertiary,
+                                  color: color.xTrailing,
                                 ),
                               ),
                             ),
@@ -67,7 +67,7 @@ class Intro extends StatelessWidget {
                         width: 160.w,
                         child: Text("Store and watch your favourite links from YouTube, Vimeo, Twitch and much more.",
                             textAlign: TextAlign.center,
-                            style: TextStyle( fontWeight: FontWeight.normal, color: Colors.white, fontSize: FONT_13)),
+                            style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
                       ),
                     ],
                   )),
@@ -97,7 +97,7 @@ class Intro extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: FONT_START,
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.tertiary,
+                                  color: color.xTrailing,
                                 ),
                               ),
                             ),
@@ -109,7 +109,7 @@ class Intro extends StatelessWidget {
                         width: 160.w,
                         child: Text("Discover, follow and collaborate with other like minded curators on Breadcram™",
                             textAlign: TextAlign.center,
-                            style: TextStyle( fontWeight: FontWeight.normal, color: Colors.white, fontSize: FONT_13)),
+                            style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
                       ),
                     ],
                   )),
@@ -139,7 +139,7 @@ class Intro extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: FONT_START,
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.tertiary,
+                                  color: color.xTrailing,
                                 ),
                               ),
                             ),
@@ -151,7 +151,7 @@ class Intro extends StatelessWidget {
                         width: 160.w,
                         child: Text(" Use folders to organise your stored links into custom playlist.",
                             textAlign: TextAlign.center,
-                            style: TextStyle( fontWeight: FontWeight.normal, color: Colors.white, fontSize: FONT_13)),
+                            style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
                       ),
                     ],
                   )),
@@ -162,8 +162,8 @@ class Intro extends StatelessWidget {
               controller: _controller, // PageController
               count: 3,
               effect: ExpandingDotsEffect(
-                activeDotColor: Theme.of(context).colorScheme.tertiary,
-                dotColor: Colors.white,
+                activeDotColor: color.xTrailing,
+                dotColor: color.xTextColor,
                 dotHeight: 8,
                 dotWidth: 8,
               ),

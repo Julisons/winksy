@@ -14,7 +14,7 @@ class IPost {
   static Future postData(dynamic data, Function updateUI, String url) async {
     final token = await Mixin.getPrefString(key: TOKEN);
     log(url.toString());
-    var body = jsonEncode(data.toJson());
+    var body = jsonEncode(data);
     log('---jsonResponse---$token');
     log('---body---$body');
     http.Response? response;

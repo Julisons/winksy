@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
+import 'package:winksy/screen/account/photo/photos.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
@@ -70,7 +71,7 @@ class _IWinkserState extends State<IWinkser> {
         statusBarBrightness: Brightness.light, // for iOS
       ),
       child: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           backgroundColor: color.xPrimaryColor,
           appBar: AppBar(
@@ -195,7 +196,7 @@ class _IWinkserState extends State<IWinkser> {
                               ) : Icon(Icons.person, size: 50, color: color.xPrimaryColor,),
                               Positioned(
                                 right: 30,
-                                bottom: 6.r,
+                                bottom: 3.r,
                                 child: Container(
                                   width: 15.r,
                                   height: 15.r,
@@ -311,6 +312,7 @@ class _IWinkserState extends State<IWinkser> {
                       isScrollable: true,
                       tabs: [
                         Tab(child: Text("Details", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
+                        Tab(child: Text("Photos",style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
                         Tab(child: Text("Friend Zoo", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),))
                       ],
                       labelColor: color.xTextColor,
@@ -353,6 +355,7 @@ class _IWinkserState extends State<IWinkser> {
                           ],
                         ),
                       ),
+                      IPhotos(),
                       IPet(),
                     ],
                   ),

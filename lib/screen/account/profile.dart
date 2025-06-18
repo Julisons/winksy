@@ -12,6 +12,7 @@ import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
+import '../interest/like/like.dart';
 import '../zoo/home/home.dart';
 import '../zoo/home/pet/pet.dart';
 
@@ -137,7 +138,7 @@ class _IProfileState extends State<IProfile> {
                         ],
                       ),
                     ),
-                    Container(),
+                    ILike(),
                     IPhotos(),
                     IPet(),
                   ],

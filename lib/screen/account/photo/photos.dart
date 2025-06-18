@@ -46,9 +46,6 @@ class _IPhotosState extends State<IPhotos> {
           _image = value;
           _cropImage();
         });
-
-
-
       }
     });
   }
@@ -66,7 +63,7 @@ class _IPhotosState extends State<IPhotos> {
                 Expanded(
                   child: RefreshIndicator(
                       color: color.xTrailing,
-                      backgroundColor: color.xPrimaryColor,
+                      backgroundColor: color.xSecondaryColor,
                       onRefresh: () => provider.refresh('', true),
                       child: GridView.builder(
                         padding: const EdgeInsets.only(
@@ -100,6 +97,7 @@ class _IPhotosState extends State<IPhotos> {
 
                 if(provider.isLoadingMore())
                   Container(
+                      color: color.xSecondaryColor,
                       padding: EdgeInsets.all(14.h),
                       child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
               ],

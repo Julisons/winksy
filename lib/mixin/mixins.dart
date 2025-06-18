@@ -47,9 +47,14 @@ class Mixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(CURR)) {
       String? data = prefs.getString(CURR);
-      log(data!);
+      if(data.toString() == 'null')
+        {
+          return null;
+        }
 
-      return User.fromJson(jsonDecode(data));
+      log('----------------DATA---{$data}');
+
+      return User.fromJson(jsonDecode(data!));
     } else {
       return null;
     }

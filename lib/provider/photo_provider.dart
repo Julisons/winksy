@@ -37,7 +37,7 @@ class IPhotoProvider with ChangeNotifier {
     setLoading(true, loud);
 
     await XRequest().getData({
-      'imgUsrId': Mixin.user?.usrId,
+      'imgUsrId': Mixin.winkser?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.PHOTOS()).then((data) {

@@ -48,54 +48,58 @@ class _ISignInState extends State<ISignIn> {
   Widget build(BuildContext context) {
 
     final color = Theme.of(context).extension<CustomColors>()!;
-    SystemChrome.setSystemUIOverlayStyle(  SystemUiOverlayStyle(
-        statusBarIconBrightness: Theme.of(context).brightness,
-        statusBarColor: color.xPrimaryColor));
+
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.black,
-        title: Text('Sign In', style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR),),
+        backgroundColor: color.xPrimaryColor,
+        title: Text('Sign In', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR),),
         centerTitle: true, // Center the title
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.tertiary,),
+          icon: Icon(Icons.arrow_back_ios, color: color.xTrailing,),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous page
           },
         ),
       ),
       body: Container(
-        color:Theme.of(context).colorScheme.surface,
+        color: color.xPrimaryColor,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.only(bottom: 16, left: 24, right: 24, top: 16),
         child: Center(
           child: Column(
             children: [
-              const Expanded(
+               Expanded(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text(''),
+                  child: Text('Welcome Back',
+                    style: TextStyle(
+                      fontSize: FONT_APP_BAR,
+                      fontWeight: FontWeight.bold,
+                      color: color.xTrailing,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 34),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+                style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
                 decoration:  InputDecoration(
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
                   border: InputBorder.none,
                   labelText: 'Mobile Number',
                   labelStyle: TextStyle(
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
                   fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
@@ -106,10 +110,10 @@ class _ISignInState extends State<ISignIn> {
                 controller: _pinController,
                 keyboardType: TextInputType.text,
                 obscureText: !isPasswordVisible,
-                style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+                style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
                   border: InputBorder.none,
                   hintText: 'Password',
@@ -119,11 +123,11 @@ class _ISignInState extends State<ISignIn> {
                   ),
                   labelText: 'Password',
                   labelStyle: TextStyle(
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
                 fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
@@ -133,7 +137,7 @@ class _ISignInState extends State<ISignIn> {
                       isPasswordVisible
                           ? Icons.visibility
                           : Icons.visibility_off,
-                      color: Theme.of(context).colorScheme.tertiary
+                      color: color.xTrailing
                     ),
                     onPressed: () {
                       setState(() {
@@ -153,11 +157,11 @@ class _ISignInState extends State<ISignIn> {
                   child: RichText(
                     text:  TextSpan(
                       text: "Forgot",
-                      style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: FONT_13, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: color.xTrailing, fontSize: FONT_13, fontWeight: FontWeight.bold),
                       children: <TextSpan>[
                         TextSpan(
                             text: '  Password ? ',
-                            style: TextStyle(color: Theme.of(context).colorScheme.tertiary,fontWeight: FontWeight.bold, fontSize: FONT_13)),
+                            style: TextStyle(color: color.xTrailing,fontWeight: FontWeight.bold, fontSize: FONT_13)),
                       ],
                     ),
                   ),
@@ -166,7 +170,7 @@ class _ISignInState extends State<ISignIn> {
               SizedBox(height: 34.h),
               _isLoading ? Center(
                 child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.tertiary))
+                  color: color.xTrailing))
                   :
               IButton(
                 onPress: () {
@@ -222,7 +226,7 @@ class _ISignInState extends State<ISignIn> {
               SizedBox(height: 18.h,),
               IGoogle(onPress: (){
                 _handleSignIn(context);
-              }, text: 'Sign in with Google', width: MediaQuery.of(context).size.width,textColor: Colors.white,
+              }, text: 'Sign in with Google', width: MediaQuery.of(context).size.width,textColor: color.xTextColor,
                 color: color.xSecondaryColor,isBlack: false,),
               SizedBox(height: 44.h),
               SizedBox(
@@ -235,18 +239,18 @@ class _ISignInState extends State<ISignIn> {
                     textAlign: TextAlign.center,
                     text:  TextSpan(
                       text: "By signing up, you agree to our",
-                      style: TextStyle(color: Colors.white, fontSize: FONT_MEDIUM),
+                      style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                       children: <TextSpan>[
                         TextSpan(
                             text: ' Terms of Use ',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing,
                                 decoration: TextDecoration.underline)),
                         TextSpan(
                             text: 'and to receive Winksy emails & updates and acknowledge that you read our ',
-                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: Colors.white)),
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: color.xTextColor)),
                         TextSpan(
                             text: ' Privacy Policy.',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary, decoration: TextDecoration.underline)),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing, decoration: TextDecoration.underline)),
                       ],
                     ),
                   ),
@@ -280,7 +284,7 @@ class _ISignInState extends State<ISignIn> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white,
+                      color: Theme.of(context).extension<CustomColors>()!.xTextColor,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -372,7 +376,7 @@ class _ISignInState extends State<ISignIn> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white,
+                      color: Theme.of(context).extension<CustomColors>()!.xTextColor,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -390,11 +394,11 @@ class _ISignInState extends State<ISignIn> {
                       ),
                       labelText: 'Enter One Time Pin(OTP)',
                       labelStyle: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).extension<CustomColors>()!.xTextColor,
                         fontSize: FONT_13,
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                        borderSide: BorderSide(color: Theme.of(context).extension<CustomColors>()!.xTrailing),
                       ),
                       fillColor: Color.fromARGB(250, 250, 250, 250),
                       filled: true,
@@ -481,7 +485,7 @@ class _ISignInState extends State<ISignIn> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white,
+                      color: Theme.of(context).extension<CustomColors>()!.xTextColor,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -520,7 +524,7 @@ class _ISignInState extends State<ISignIn> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white,
+                      color: Theme.of(context).extension<CustomColors>()!.xTextColor,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),

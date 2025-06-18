@@ -54,7 +54,7 @@ class _IPhotoCardState extends State<IPhotoCard> {
             child: CachedNetworkImage(
               imageUrl: '${IUrls.IMAGE_URL}/file/secured/${widget.photo.imgImage}',
               fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width/2,
               placeholder: (context, url) => Shimmer.fromColors(
                 baseColor: Theme.of(context).colorScheme.surface,
                 highlightColor: Theme.of(context).colorScheme.surface,

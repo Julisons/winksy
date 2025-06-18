@@ -68,8 +68,8 @@ class _IPeopleCardState extends State<IPeopleCard> {
                   height: MediaQuery.of(context).size.width/1.2,
                   fit: BoxFit.fitHeight,
                   placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: xShimmerBase,
-                    highlightColor: xShimmerHighlight,
+                    baseColor: color.xSecondaryColor,
+                    highlightColor:color.xPrimaryColor,
                     child: Container(
                       width: MediaQuery.of(context).size.width/2,
                     //  height: MediaQuery.of(context).size.width/2,

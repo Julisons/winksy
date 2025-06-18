@@ -67,7 +67,7 @@ class _SocialIntroState extends State<SocialIntro> {
                         style: TextStyle(
                           fontSize: FONT_START,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: color.xTrailing,
                         ),
                       ),
                     ),
@@ -78,7 +78,7 @@ class _SocialIntroState extends State<SocialIntro> {
                       width: 260.w,
                       child: Text(" By signing up, you agree to our Terms of Use and to receive Winksy emails & updates and acknowledge that you read our Privacy Policy. ",
                           textAlign: TextAlign.center,
-                          style: TextStyle( fontWeight: FontWeight.normal, color: Colors.white, fontSize: FONT_13)),
+                          style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
                     ),
                   ),
                   Positioned(
@@ -87,7 +87,7 @@ class _SocialIntroState extends State<SocialIntro> {
                       width: 260.w,
                       child: Text("Read Here",
                           textAlign: TextAlign.center,
-                          style: TextStyle( fontWeight: FontWeight.bold, color: Colors.white,
+                          style: TextStyle( fontWeight: FontWeight.bold, color: color.xTextColor,
                               fontSize: FONT_13, decoration: TextDecoration.underline)),
                     ),
                   ),
@@ -101,13 +101,13 @@ class _SocialIntroState extends State<SocialIntro> {
             SizedBox(height: 16.h,),
             IGoogle(onPress: (){
               _handleSignIn(context);
-            }, text: 'Sign Up with Google', width: MediaQuery.of(context).size.width,textColor: Colors.white,
+            }, text: 'Sign Up with Google', width: MediaQuery.of(context).size.width,textColor:color.xTextColor,
               color: color.xSecondaryColor,isBlack: false,),
             SizedBox(height: 16.h,),
             IButton(onPress: (){
               Mixin.navigate(context, const ISignUp());
             }, text: 'Sign Up', width: MediaQuery.of(context).size.width,
-              color: Theme.of(context).colorScheme.tertiary,isBlack: false,textColor: Colors.white,),
+              color: color.xTrailing,isBlack: false,textColor: Colors.white,),
             SizedBox(height: 26.h,),
             Align(
               alignment: Alignment.center,
@@ -118,7 +118,7 @@ class _SocialIntroState extends State<SocialIntro> {
                 child: RichText(
                   text: TextSpan(
                     text: "Have an account ? ",
-                    style: TextStyle(color: Colors.white, fontSize: FONT_MEDIUM),
+                    style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                     children: <TextSpan>[
                       TextSpan(
                           text: '  Sign In Here  ',

@@ -47,7 +47,7 @@ class _ILikeState extends State<ILike> {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: color.xSecondaryColor,
       body:
       Container(
         padding: EdgeInsets.only(top: 10.h),
