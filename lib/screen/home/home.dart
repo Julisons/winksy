@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:winksy/model/chat.dart';
+import 'package:winksy/model/notification.dart';
 import 'package:winksy/provider/payment_provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +30,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winksy/model/User.dart';
 import 'package:winksy/model/message.dart' as sms;
-import 'package:winksy/model/notification.dart' as noti;
 import 'package:http/http.dart' as http;
 import '../../request/posts.dart';
 import '../../request/urls.dart';
@@ -421,10 +421,10 @@ _showNotification(RemoteNotification? notification, Map<String, dynamic> data) {
   print('payload-------------------: $payload');
   print('msgChatId-------------------: ${message.msgChatId}');*/
   if(channel == PET_NOTIFICATION){
-    noti.Notification notification = noti.Notification.fromJson(json.decode(payload));
+    INotification notification = INotification.fromJson(json.decode(payload));
   _showBigPictureNotificationHiddenLargeIcon(notification, id,icon,channel);
     }else if(channel == PET_NOTIFICATION_NORMAL){
-    noti.Notification notification = noti.Notification.fromJson(json.decode(payload));
+    INotification notification = INotification.fromJson(json.decode(payload));
     _showNormalNotification(notification, id,channel);
     }else
       {
@@ -579,7 +579,7 @@ void _handleNotificationResponse(NotificationResponse response) {
 
 
 Future<void> _showBigPictureNotificationHiddenLargeIcon(
-    noti.Notification notification,
+    INotification notification,
     String id,
     String icon,
     String channel,
@@ -623,7 +623,7 @@ Future<void> _showBigPictureNotificationHiddenLargeIcon(
 }
 
 
-Future<void> _showNormalNotification(noti.Notification notification,
+Future<void> _showNormalNotification(INotification notification,
     String id,channel,) async {
   AndroidNotificationDetails androidNotificationDetails =
   AndroidNotificationDetails(

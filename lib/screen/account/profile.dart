@@ -13,6 +13,7 @@ import '../../../theme/custom_colors.dart';
 import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
 import '../interest/like/like.dart';
+import '../notification/notification.dart';
 import '../zoo/home/home.dart';
 import '../zoo/home/pet/pet.dart';
 import 'friend/friend.dart';
@@ -34,13 +35,39 @@ class _IProfileState extends State<IProfile> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
     
-    return  DefaultTabController(
+    return DefaultTabController(
       length: 4,
-      child:  Scaffold(
+      child: Scaffold(
         backgroundColor: color.xPrimaryColor,
         appBar: AppBar(
             surfaceTintColor: color.xPrimaryColor,
             centerTitle: true,
+            leading: Stack(
+              children: [
+                IconButton(
+                  icon: Padding(
+                    padding:  EdgeInsets.only(left: 18.h),
+                    child: Icon(Icons.notifications_outlined, size : 28.r,color: color.xTextColorSecondary),
+                  ),
+                  onPressed: () {
+                    // Handle notification tap
+                    Mixin.navigate(context, const INotifications());
+                  },
+                ),
+                Positioned(
+                  right: 0,
+                  top: 8,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             backgroundColor: color.xPrimaryColor,
             title: Text('',
               style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
@@ -67,7 +94,6 @@ class _IProfileState extends State<IProfile> {
                               name: '${Mixin.user?.usrFullNames}',
                               imageUrl:'${Mixin.user?.usrImage}',
                               completion: profileCompletion),
-
                   ),
                   bottom: TabBar(
                     isScrollable: false,

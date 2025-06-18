@@ -15,7 +15,13 @@ class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return AppBar(
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon:  Icon(Icons.arrow_back_ios_new_rounded, color: color.xTrailing,),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       backgroundColor: color.xPrimaryColor,
       title: Transform(
         transform: Matrix4.translationValues(10, 0.0, 0.0),

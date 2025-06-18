@@ -1,31 +1,88 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
-import '../mixin/mixins.dart';
-import '../model/notification.dart' as n;
-import '../request/gets.dart';
+import 'package:winksy/request/urls.dart';
+import '../../mixin/mixins.dart';
+import '../../model/response.dart';
+import '../../request/gets.dart';
+import '../model/notification.dart';
 
-class INotificationsProvider with ChangeNotifier {
-  List<n.Notification> list = [];
+class INotificationProvider with ChangeNotifier {
+  List<INotification> list = [];
   late String errorMessage;
-  bool loading = false;
+  bool _loading = false;
+  bool _loadingMore = false;
+  int _start = 0;
+  final int _limit = 20;
 
-  INotificationsProvider init() {
-
+  INotificationProvider init() {
+    if( Mixin.user == null) {
+      Mixin.getUser().then((value) => {
+        Mixin.user = value,
+        refresh('', true)
+      });
+    }else{
+      refresh('', true);
+    }
     return this;
   }
 
-  Future<bool> refresh() async {
-    setLoading(true);
-    await NotificationsRequest().fetchNotifications(Mixin.user?.usrId).then((data) {
-      setLoading(false);
+  Future<bool> refresh(String search, bool loud) async {
+    _start = 0;
+    if(loud) {
+      list.clear();
+    }
+    setLoading(true, loud);
+
+    await XRequest().getData({
+      //'notiUsrId': Mixin.user?.usrId,
+      'start':_start,
+      'limit':_limit
+    }, IUrls.NOTIFICATIONS()).then((data) {
       if (data.statusCode == 200) {
         try {
-          var res = jsonDecode(data.body.toString());
-          var items = res.map<n.Notification>((json) {
-            return n.Notification.fromJson(json);
+          JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
+          log('${jsonResponse.data}');
+          var res = jsonResponse.data['result'] ?? [];
+
+          var items = res.map<INotification>((json) {
+            return  INotification.fromJson(json);
           }).toList();
-          setHouses(items);
+
+          setData(items);
+        } catch (e) {
+          log(e.toString());
+        }
+      } else {
+        setMessage(data.headers['message']);
+      }
+    });
+    return isLoaded();
+  }
+
+  Future<bool> loadMore(search) async {
+    _start += _limit;
+    setLoadingMore(true);
+
+    await XRequest().getData({
+      'INotificationOwnerId': Mixin.user?.usrId,
+      'wishUsrId': Mixin.user?.usrId,
+      'start':_start,
+      'limit':_limit
+    }, IUrls.NOTIFICATIONS()).then((data) {
+      if (data.statusCode == 200) {
+        try {
+          JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
+          log('${jsonResponse.data}');
+          var res = jsonResponse.data['result'] ?? [];
+          log('---${res}');
+
+          var items = res.map<INotification>((json) {
+            return  INotification.fromJson(json);
+          }).toList();
+
+          setDataMore(items);
         } catch (e) {
           log(e.toString());
         }
@@ -37,25 +94,50 @@ class INotificationsProvider with ChangeNotifier {
   }
 
   bool isLoading() {
-    return loading;
+    return _loading;
   }
 
-  void setLoading(value) {
-    loading = value;
+  bool isLoadingMore() {
+    return _loadingMore;
+  }
+
+  void setLoading(bool value,bool loud) {
+    if(loud) {
+      _loading = value;
+    }
     notifyListeners();
   }
 
-  void setHouses(value) {
+  void setLoadingMore(value) {
+    _loadingMore = value;
+    notifyListeners();
+  }
+
+  void setData(value) {
     list.clear();
     list.addAll(value);
-    notifyListeners();
+    setLoading(false, true);
   }
 
-  List<n.Notification> getHouses() {
+
+  void setDataMore(value) {
+    list.addAll(value);
+    setLoadingMore(false);
+  }
+
+  List<INotification> getHouses() {
+    return list;
+  }
+
+  List<INotification> getRecommended() {
     return list;
   }
 
   int getCount() {
+    return list.length;
+  }
+
+  int getRecommendedCount() {
     return list.length;
   }
 

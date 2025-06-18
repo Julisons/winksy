@@ -75,6 +75,13 @@ class _IWinkserState extends State<IWinkser> {
         child: Scaffold(
           backgroundColor: color.xPrimaryColor,
           appBar: AppBar(
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon:  Icon(Icons.arrow_back_ios_new_rounded, color: color.xTrailing,),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               surfaceTintColor: color.xPrimaryColor,
               centerTitle: true,
               iconTheme: IconThemeData(color: color.xTrailing),

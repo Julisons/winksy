@@ -7,14 +7,6 @@ import 'package:http/http.dart' as http;
 import '../mixin/constants.dart';
 import '../mixin/mixins.dart';
 
-class NotificationsRequest {
-  NotificationsRequest();
-  Future<http.Response> fetchNotifications(usrId) {
-    var url = Uri.parse(IUrls.NOTIFICATIONS(usrId));
-    log(url.toString());
-    return http.get(url);
-  }
-}
 
 
 class LinkMainRequest {

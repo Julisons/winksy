@@ -76,6 +76,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
               create: (_) => IBrowseProvider().init()),
+          ChangeNotifierProvider<INotificationProvider>(
+              create: (_) => INotificationProvider().init()),
           ChangeNotifierProvider<IPhotoProvider>(
               create: (_) => IPhotoProvider().init()),
           ChangeNotifierProvider<IGiftProvider>(
@@ -96,8 +98,6 @@ class MyApp extends StatelessWidget {
               create: (_) => ILikeMeProvider().init()),
           ChangeNotifierProvider<IInterestProvider>(
               create: (_) => IInterestProvider().init()),
-          ChangeNotifierProvider<INotificationsProvider>(
-              create: (_) => INotificationsProvider().init()),
           ChangeNotifierProvider<IPaymentProvider>(
               create: (_) => IPaymentProvider().init()),
           ChangeNotifierProvider<ThemeProvider>(

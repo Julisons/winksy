@@ -72,6 +72,10 @@ static String BASE_URL = '$BASE:5000';
     return Uri.parse("$BASE_URL/pet/fetch_owned_pets");
   }
 
+  static Uri NOTIFICATIONS() {
+    return Uri.parse("$BASE_URL/notification/fetch_notifications");
+  }
+
   static Uri PHOTOS() {
     return Uri.parse("$BASE_URL/image/fetch_images");
   }
@@ -163,10 +167,6 @@ static String INVOICE_DTLS(invodInvoId, ownerId) {
 
   static String PAYMENTS(params) {
     return "$BASE_URL/usr/fetchPayments$params";
-  }
-
-  static String NOTIFICATIONS(usrId) {
-    return "$BASE_URL/usr/fetchNotifications?usrId=$usrId";
   }
 
   static String UPDATE_USER() {
