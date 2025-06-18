@@ -43,7 +43,7 @@ class _IWinkserState extends State<IWinkser> {
   bool light = true;
   Chat chat = Chat();
   late Interest _interest;
-
+  var height = 480.h;
   bool isVerified = true;
   var _isLoading = false;
   ScrollController scrollController =  ScrollController();
@@ -80,33 +80,8 @@ class _IWinkserState extends State<IWinkser> {
               iconTheme: IconThemeData(color: color.xTrailing),
               backgroundColor: Colors.transparent,
               title:
-
-              Stack(
-                alignment: AlignmentDirectional.topEnd,
-                children: [
-                  Text('${Mixin.winkser?.usrFullNames}   ',
-                    style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Visibility(
-                      visible: true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue, // Background color for the badge
-                        ),
-                        padding: EdgeInsets.all(2), // Padding for the circle
-                        child: Icon(
-                          Icons.verified,
-                          color: Colors.white, // Checkmark color
-                          size: 13.r, // Adjust size as needed
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              Text('${Mixin.winkser?.usrFullNames}   ',
+                style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
               ),
               actions: <Widget>[IPopup()]),
           body: NestedScrollView(
@@ -114,16 +89,16 @@ class _IWinkserState extends State<IWinkser> {
               return <Widget>[
                 SliverAppBar(
                     pinned: true,
-                    expandedHeight: 460.0.h,
+                    expandedHeight: height,
                     floating: true,
                     surfaceTintColor: color.xPrimaryColor,
                     backgroundColor: color.xPrimaryColor,
                     forceElevated: innerBoxIsScrolled,
-                    toolbarHeight: 460.h,
+                    toolbarHeight: height,
                     automaticallyImplyLeading: false,
                     title: Container(
-                      margin: EdgeInsets.only(bottom: 16.h),
                       width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.only(bottom: 16.h),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -355,7 +330,7 @@ class _IWinkserState extends State<IWinkser> {
                           ],
                         ),
                       ),
-                      IPhotos(),
+                      IPhotos(showFab: false,),
                       IPet(),
                     ],
                   ),

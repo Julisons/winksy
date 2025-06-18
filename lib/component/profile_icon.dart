@@ -23,7 +23,9 @@ class ProfileProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Column(
-      mainAxisSize: MainAxisSize.min,
+     // mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(name,
           style: TextStyle(
@@ -38,32 +40,31 @@ class ProfileProgressWidget extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         SizedBox(
-         // color: Colors.blue,
-         height: 133.h,
-         width: 143.h,
+         height: 200.h,
+         width: 148.h,
           child: Stack(
             alignment: Alignment.center,
             children: [
               SizedBox(
-                width: 118.w,
-                height: 118.w,
+                width: 110.w,
+                height: 110.w,
                 child: TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0.0, end: completion),
                   duration: Duration(milliseconds: 4800),
                   builder: (context, value, _) => CircularProgressIndicator(
                     value: value,
-                    strokeWidth: 2,
+                    strokeWidth: 3.r,
                     backgroundColor: color.xSecondaryColor,
                     color: color.xTrailingAlt, // blue accent color
                   ),
                 ),
               ),
               CircleAvatar(
-                radius: 56.w,
+                radius: 50.w,
                 backgroundImage: CachedNetworkImageProvider(imageUrl),
               ),
               Positioned(
-                bottom: -1,
+                bottom: 8.h,
                 child: IButton(
                   color: color.xTrailing,
                   onPress: () {

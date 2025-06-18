@@ -15,17 +15,17 @@ import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
 import '../../../theme/custom_colors.dart';
-import 'like_card.dart';
+import 'friend_card.dart';
 
 
-class ILike extends StatefulWidget {
-  const ILike({super.key});
+class IFriend extends StatefulWidget {
+  const IFriend({super.key});
 
   @override
-  State<ILike> createState() => _ILikeState();
+  State<IFriend> createState() => _IFriendState();
 }
 
-class _ILikeState extends State<ILike> {
+class _IFriendState extends State<IFriend> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
 
@@ -47,7 +47,7 @@ class _ILikeState extends State<ILike> {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      backgroundColor: color.xPrimaryColor,
+      backgroundColor: color.xSecondaryColor,
       body:
       Container(
         padding: EdgeInsets.only(top: 10.h),
@@ -76,7 +76,7 @@ class _ILikeState extends State<ILike> {
                         childAspectRatio: .7, // Aspect ratio of each grid item
                       ),
                       itemBuilder: (context, index) {
-                        return ILikeCard(
+                        return IFriendCard(
                           user: provider.list[index],
                           onRefresh: () {
                             setState(() {});

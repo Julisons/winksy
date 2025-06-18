@@ -58,7 +58,7 @@ class _SocialIntroState extends State<SocialIntro> {
                     ),
                   ),
                   Positioned(
-                    bottom: 160, // Position the text near the bottom
+                    bottom: 205, // Position the text near the bottom
                     child: SizedBox(
                       width: 208.w,
                       child: Text(

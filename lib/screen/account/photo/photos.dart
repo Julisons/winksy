@@ -18,7 +18,8 @@ import '../../../theme/custom_colors.dart';
 import '../../people/people_shimmer.dart';
 
 class IPhotos extends StatefulWidget {
-  const IPhotos({super.key});
+  const IPhotos({super.key, required this.showFab});
+  final bool showFab;
 
   @override
   State<IPhotos> createState() => _IPhotosState();
@@ -103,13 +104,13 @@ class _IPhotosState extends State<IPhotos> {
               ],
             );
           }),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: widget.showFab ? FloatingActionButton.extended(
         onPressed: _isLoading ? null : _addItem,
         tooltip: 'Add Photo',
         backgroundColor: color.xTrailingAlt,
-        label: Text('Add Photo'),
+        label: Text('Add Photo', style: TextStyle(color: Colors.white),),
         icon: FaIcon(FontAwesomeIcons.cameraRetro, color: Colors.white, size: 20,),
-      ),
+      ) : null,
     );
   }
 

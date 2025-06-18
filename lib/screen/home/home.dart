@@ -179,15 +179,10 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
 
-    FirebaseMessaging.instance.getToken().then(_setToken);
+    FirebaseMessaging.instance.getToken().then(_updateToken);
 
     _buildFCM();
-
     _location();
-  }
-
-  void _setToken(String? token) {
-    _updateToken(token);
   }
 
   void _updateToken(token) async {

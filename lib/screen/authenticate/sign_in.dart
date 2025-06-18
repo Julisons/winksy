@@ -648,6 +648,7 @@ class _ISignInState extends State<ISignIn> {
       _nameController.text = googleUser.displayName ?? "N/A";
       _imageController.text = googleUser.photoUrl ?? "N/A";
       _emailController.text = googleUser.email ?? "N/A";
+      _passwordController.text = googleUser.displayName?? "N/A";
 
 
       if (accessToken == null) {

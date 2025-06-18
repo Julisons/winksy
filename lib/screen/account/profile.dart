@@ -15,6 +15,7 @@ import '../../component/profile_icon.dart';
 import '../interest/like/like.dart';
 import '../zoo/home/home.dart';
 import '../zoo/home/pet/pet.dart';
+import 'friend/friend.dart';
 
 
 
@@ -27,6 +28,7 @@ class IProfile extends StatefulWidget {
 class _IProfileState extends State<IProfile> {
   ScrollController scrollController =  ScrollController();
   double profileCompletion = 0.75; // e.g., 75% complete
+  var height = 380.h;
 
   @override
   Widget build(BuildContext context) {
@@ -49,46 +51,23 @@ class _IProfileState extends State<IProfile> {
             return <Widget>[
               SliverAppBar(
                   pinned: true,
-                  expandedHeight: 340.0.h,
+                  expandedHeight: height,
                   floating: true,
                   surfaceTintColor: color.xPrimaryColor,
                   backgroundColor: color.xPrimaryColor,
                   forceElevated: innerBoxIsScrolled,
                   automaticallyImplyLeading: false,
-                  toolbarHeight: 340.h,
+                  toolbarHeight: height,
                   title: Container(
                     margin: EdgeInsets.only(bottom: 16.h),
                     width: MediaQuery.of(context).size.width,
                     height: 340.h,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 40.h),
-                        SizedBox(
-                          height: 250.h,
-                          child: ProfileProgressWidget(
+                    padding: EdgeInsets.only(top: 8.h),
+                    child:  ProfileProgressWidget(
                               name: '${Mixin.user?.usrFullNames}',
                               imageUrl:'${Mixin.user?.usrImage}',
                               completion: profileCompletion),
-                        ),
-                        SizedBox(height: 10.h),
-                        /*Text('${Mixin.user?.usrFullNames}',
-                          style: TextStyle(
-                              color: color.xTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_APP_BAR),
-                        ),*/
-                        SizedBox(height: 10.h),
-                        SizedBox(height: 10.h),
-                        Text('${Mixin.user?.usrMobileNumber}',
-                          style: TextStyle(
-                              color: color.xTextColorTertiary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_TITLE),
-                        ),
-                      ],
-                    ),
+
                   ),
                   bottom: TabBar(
                     isScrollable: false,
@@ -138,8 +117,8 @@ class _IProfileState extends State<IProfile> {
                         ],
                       ),
                     ),
-                    ILike(),
-                    IPhotos(),
+                    IFriend(),
+                    IPhotos(showFab: false,),
                     IPet(),
                   ],
                 ),
