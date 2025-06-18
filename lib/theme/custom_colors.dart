@@ -6,6 +6,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color xTextColor;
   final Color xTextColorSecondary;
   final Color xTrailing;
+  final Color xTrailingAlt;
   final Color xTextColorTertiary;
   final Color xSecondaryColor;
   final Color xSecondaryColorSelected;
@@ -15,6 +16,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.xTextColor,
     required this.xTextColorSecondary,
     required this.xTrailing,
+    required this.xTrailingAlt,
     required this.xTextColorTertiary,
     required this.xSecondaryColor,
     required this.xSecondaryColorSelected,
@@ -35,6 +37,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       xTextColor: xTextColor ?? this.xTextColor,
       xTextColorSecondary: xTextColorSecondary ?? this.xTextColorSecondary,
       xTrailing: xTrailing ?? this.xTrailing,
+      xTrailingAlt: xTrailingAlt ?? this.xTrailingAlt,
       xTextColorTertiary: xTextColorTertiary ?? this.xTextColorTertiary,
       xSecondaryColor: xSecondaryColor ?? this.xSecondaryColor,
       xSecondaryColorSelected: xSecondaryColorSelected ?? this.xSecondaryColorSelected,
@@ -49,6 +52,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       xTextColor: Color.lerp(xTextColor, other.xTextColor, t)!,
       xTextColorSecondary: Color.lerp(xTextColorSecondary, other.xTextColorSecondary, t)!,
       xTrailing: Color.lerp(xTrailing, other.xTrailing, t)!,
+      xTrailingAlt: xTrailingAlt ?? this.xTrailingAlt,
       xTextColorTertiary: Color.lerp(xTextColorTertiary, other.xTextColorTertiary, t)!,
       xSecondaryColor: Color.lerp(xSecondaryColor, other.xSecondaryColor, t)!,
       xSecondaryColorSelected: Color.lerp(xSecondaryColorSelected, other.xSecondaryColorSelected, t)!,

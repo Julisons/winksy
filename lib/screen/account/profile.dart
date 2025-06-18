@@ -8,6 +8,7 @@ import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import '../../component/profile_icon.dart';
 
 
 
@@ -19,6 +20,7 @@ class IProfile extends StatefulWidget {
 
 class _IProfileState extends State<IProfile> {
   ScrollController scrollController =  ScrollController();
+  double profileCompletion = 0.75; // e.g., 75% complete
 
   @override
   Widget build(BuildContext context) {
@@ -56,46 +58,21 @@ class _IProfileState extends State<IProfile> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(height: 40.h),
                         SizedBox(
-                          height: 40.h,
-                        ),
-                        SizedBox(
-                          height: 150.w,
-                          width: 150.w,
-                          child: CircleAvatar(
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                            child: Mixin.user?.usrImage != null  ?
-                            ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl: '${Mixin.user?.usrImage}',
-                                fit: BoxFit.cover,
-                                height: 150.w,
-                                width: 150.w,
-                                placeholder: (context, url) => Shimmer.fromColors(
-                                  baseColor: color.xPrimaryColor,
-                                  highlightColor: color.xPrimaryColor,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) =>  CircleAvatar(
-                                    backgroundColor: color.xSecondaryColor,
-                                    child: Icon(Icons.person, size: 50,color:color.xPrimaryColor,)),
-                              ),
-                            )
-                                : Icon(Icons.person, size: 50,color: Theme.of(context).colorScheme.tertiary,),
-                          ),
+                          height: 250.h,
+                          child: ProfileProgressWidget(
+                              name: '${Mixin.user?.usrFullNames}',
+                              imageUrl:'${Mixin.user?.usrImage}',
+                              completion: profileCompletion),
                         ),
                         SizedBox(height: 10.h),
-                        Text('${Mixin.user?.usrFullNames}',
+                        /*Text('${Mixin.user?.usrFullNames}',
                           style: TextStyle(
                               color: color.xTextColor,
                               fontWeight: FontWeight.bold,
                               fontSize: FONT_APP_BAR),
-                        ),
+                        ),*/
                         SizedBox(height: 10.h),
                         SizedBox(height: 10.h),
                         Text('${Mixin.user?.usrMobileNumber}',
