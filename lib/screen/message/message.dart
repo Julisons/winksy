@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:winksy/screen/account/winkser.dart';
+import 'package:winksy/screen/account/winker/winkser.dart';
 import '../../../component/debouncer.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/mixins.dart';

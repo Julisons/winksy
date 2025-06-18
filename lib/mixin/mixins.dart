@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:winksy/model/Link.dart';
@@ -33,7 +34,7 @@ class Mixin {
   static PlatformWebViewController ? webController;
   static PageController? pageController;
   static Map<String, num> positions = {};
-
+  static final playerSound = AudioPlayer();
   static Quad? quad ;
   static IO.Socket? quadrixSocket;
   static Invoice? invoice;

@@ -42,11 +42,13 @@ class _SocialIntroState extends State<SocialIntro> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: EdgeInsets.only(left: 30.h, right: 30.h, bottom: 30.h, top: 43.h),
-        child:  Center(child: Column(
+        child:  Center(
+            child: Column(
           children: [
             Expanded(
-              child: Stack(
-                alignment: Alignment.center, // Align widgets within the Stack
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(30),
@@ -57,40 +59,30 @@ class _SocialIntroState extends State<SocialIntro> {
                       fit: BoxFit.contain, // Adjust the image's scaling
                     ),
                   ),
-                  Positioned(
-                    bottom: 205, // Position the text near the bottom
-                    child: SizedBox(
-                      width: 208.w,
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        "Sign Up",
-                        style: TextStyle(
-                          fontSize: FONT_START,
-                          fontWeight: FontWeight.bold,
-                          color: color.xTrailing,
-                        ),
-                      ),
+                  Text(
+                    textAlign: TextAlign.center,
+                    "Sign Up",
+                    style: TextStyle(
+                      fontSize: FONT_START,
+                      fontWeight: FontWeight.bold,
+                      color: color.xTrailing,
                     ),
                   ),
-                  Positioned(
-                    bottom: 70, // Position the text near the bottom
-                    child: SizedBox(
-                      width: 260.w,
+
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width/1.4,
                       child: Text(" By signing up, you agree to our Terms of Use and to receive Winksy emails & updates and acknowledge that you read our Privacy Policy. ",
                           textAlign: TextAlign.center,
                           style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 26, // Position the text near the bottom
-                    child: SizedBox(
-                      width: 260.w,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/2,
                       child: Text("Read Here",
                           textAlign: TextAlign.center,
                           style: TextStyle( fontWeight: FontWeight.bold, color: color.xTextColor,
                               fontSize: FONT_13, decoration: TextDecoration.underline)),
                     ),
-                  ),
+
                 ],
               ),
             ),

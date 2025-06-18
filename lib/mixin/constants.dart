@@ -82,8 +82,9 @@ const String CONN_JOINED = "CONN_JOINED";
 const String PRESCRIPTION = "Medication";
 const bool leading = false;
 
-final double FONT_START = 39.5.sp;
+final double FONT_START = 24.5.sp;
 final double FONT_APP_BAR = 24.sp;
+final double FONT_ICON = 54.sp;
 final double FONT_TITLE = 14.5.sp;
 final double FONT_13 = 13.sp;
 final double FONT_MEDIUM = 14.sp;

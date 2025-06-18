@@ -128,7 +128,9 @@ class _IProfileState extends State<IProfile> {
                                       height: 50.w,
                                       margin: EdgeInsets.all(8),
                                       child: CachedNetworkImage(
-                                        imageUrl: item.giftPath,
+                                        imageUrl:  item.giftPath.startsWith('http')
+                                            ? item.giftPath
+                                            : '${IUrls.IMAGE_URL}/file/secured/${item.giftPath}',
                                         width: 50.w,
                                         height: 50.w,
                                         fit: BoxFit.contain,

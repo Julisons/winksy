@@ -31,7 +31,8 @@ class Intro extends StatelessWidget {
               child: PageView(
                 controller: _controller,
                 children: [
-                  Center(child: Column(
+                  Center(child:
+                  Column(
                     children: [
                       Stack(
                         alignment: Alignment.center, // Align widgets within the Stack
@@ -48,14 +49,26 @@ class Intro extends StatelessWidget {
                           Positioned(
                             bottom: 20, // Position the text near the bottom
                             child: SizedBox(
-                              width: 208.w,
+                              width: MediaQuery.of(context).size.width/1.4,
                               child: Text(
                                 textAlign: TextAlign.center,
-                                "Organise your content",
+                                "Love is Just a Wink Away.💞",
                                 style: TextStyle(
                                   fontSize: FONT_START,
                                   fontWeight: FontWeight.bold,
                                   color: color.xTrailing,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 2,
+                                      color: Colors.black.withOpacity(0.5),
+                                    ),
+                                    Shadow(
+                                      offset: Offset(-1, -1),
+                                      blurRadius: 1,
+                                      color: Colors.white.withOpacity(0.2),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -63,11 +76,13 @@ class Intro extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 20.h,),
-                      SizedBox(
-                        width: 160.w,
-                        child: Text("Store and watch your favourite links from YouTube, Vimeo, Twitch and much more.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
+                      Flexible(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/1.2,
+                          child: Text("Your forever might be closer than you think. Winksy brings hearts together with just one meaningful glance.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
+                        ),
                       ),
                     ],
                   )),
@@ -90,10 +105,10 @@ class Intro extends StatelessWidget {
                           Positioned(
                             bottom: 20, // Position the text near the bottom
                             child: SizedBox(
-                              width: 208.w,
+                              width: MediaQuery.of(context).size.width/1.4,
                               child: Text(
                                 textAlign: TextAlign.center,
-                                "Discover other curators",
+                                "Where Hearts Find Home.💘",
                                 style: TextStyle(
                                   fontSize: FONT_START,
                                   fontWeight: FontWeight.bold,
@@ -105,11 +120,13 @@ class Intro extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 20.h,),
-                      SizedBox(
-                        width: 160.w,
-                        child: Text("Discover, follow and collaborate with other like minded curators on Breadcram™",
-                            textAlign: TextAlign.center,
-                            style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
+                      Flexible(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/1.2,
+                          child: Text("Not just another match — it’s someone who feels like home from the very first hello.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
+                        ),
                       ),
                     ],
                   )),
@@ -132,10 +149,10 @@ class Intro extends StatelessWidget {
                           Positioned(
                             bottom: 20, // Position the text near the bottom
                             child: SizedBox(
-                              width: 208.w,
+                              width: MediaQuery.of(context).size.width/1.4,
                               child: Text(
                                 textAlign: TextAlign.center,
-                                "Build custom playlist",
+                                "Chat. Connect. Challenge.🎲",
                                 style: TextStyle(
                                   fontSize: FONT_START,
                                   fontWeight: FontWeight.bold,
@@ -147,11 +164,13 @@ class Intro extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 20.h,),
-                      SizedBox(
-                        width: 160.w,
-                        child: Text(" Use folders to organise your stored links into custom playlist.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
+                      Flexible(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/1.2,
+                          child: Text(" Discover real people through quick 2D games and meaningful conversations.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13)),
+                        ),
                       ),
                     ],
                   )),

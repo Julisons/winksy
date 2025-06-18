@@ -7,17 +7,18 @@ import '../../mixin/mixins.dart';
 import '../../model/gift.dart';
 import '../../model/pet.dart';
 import '../../model/response.dart';
+import '../../model/treat.dart';
 import '../../request/gets.dart';
 
-class IGiftProvider with ChangeNotifier {
-  List<Gift> list = [];
+class ITreatProvider with ChangeNotifier {
+  List<Treat> list = [];
   late String errorMessage;
   bool _loading = false;
   bool _loadingMore = false;
   int _start = 0;
-  final int _limit = 200;
+  final int _limit = 20;
 
-  IGiftProvider init() {
+  ITreatProvider init() {
     if( Mixin.user == null) {
       Mixin.getUser().then((value) => {
         Mixin.user = value,
@@ -37,18 +38,17 @@ class IGiftProvider with ChangeNotifier {
     setLoading(true, loud);
 
     await XRequest().getData({
-      'ugiftUsrId': Mixin.winkser?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.GIFTS()).then((data) {
+    }, IUrls.TREATS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
           var res = jsonResponse.data['result'] ?? [];
 
-          var items = res.map<Gift>((json) {
-            return  Gift.fromJson(json);
+          var items = res.map<Treat>((json) {
+            return  Treat.fromJson(json);
           }).toList();
 
           setData(items);
@@ -79,8 +79,8 @@ class IGiftProvider with ChangeNotifier {
           var res = jsonResponse.data['result'] ?? [];
           log('---${res}');
 
-          var items = res.map<Gift>((json) {
-            return  Gift.fromJson(json);
+          var items = res.map<Treat>((json) {
+            return  Treat.fromJson(json);
           }).toList();
 
           setDataMore(items);
@@ -126,11 +126,11 @@ class IGiftProvider with ChangeNotifier {
     setLoadingMore(false);
   }
 
-  List<Gift> getHouses() {
+  List<Treat> getHouses() {
     return list;
   }
 
-  List<Gift> getRecommended() {
+  List<Treat> getRecommended() {
     return list;
   }
 

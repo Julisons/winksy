@@ -80,8 +80,8 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      height: 150.w,
-                      width: 150.w,
+                      width: 150.r,
+                      height: 150.r,
                       child: CircleAvatar(
                         backgroundColor: Theme.of(context).colorScheme.secondary,
                         child: Mixin.user?.usrImage != null
@@ -109,104 +109,107 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                             : Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.tertiary),
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '${Mixin.user?.usrFullNames}',
-                              style: TextStyle(
-                                  color: color.xTextColorSecondary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: FONT_APP_BAR),
-                            ),
-                            SizedBox(width: 3),
-                            Visibility(
-                              visible: true,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.blue,
-                                ),
-                                padding: EdgeInsets.all(2),
-                                child: Icon(Icons.verified, color: Colors.white, size: 16),
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '${Mixin.user?.usrFullNames}',
+                                style: TextStyle(
+                                    color: color.xTextColorSecondary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FONT_APP_BAR),
                               ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.h),
-                          width: MediaQuery.of(context).size.width / 2,
-                          child: Consumer<IPetProvider>(builder: (context, provider, child) {
-                            if (provider.isLoading()) {
-                              return Shimmer.fromColors(
-                                baseColor: color.xPrimaryColor,
-                                highlightColor: color.xPrimaryColor,
+                              SizedBox(width: 3),
+                              Visibility(
+                                visible: true,
                                 child: Container(
-                                  height: 20.h,
-                                  width: 100.w,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    color: Colors.blue,
                                   ),
+                                  padding: EdgeInsets.all(2),
+                                  child: Icon(Icons.verified, color: Colors.white, size: 16),
                                 ),
-                              );
-                            }
+                              ),
+                            ],
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10.h),
+                              child: Consumer<IPetProvider>(builder: (context, provider, child) {
+                                if (provider.isLoading()) {
+                                  return Shimmer.fromColors(
+                                    baseColor: color.xPrimaryColor,
+                                    highlightColor: color.xPrimaryColor,
+                                    child: Container(
+                                      height: 20.h,
+                                      width: 100.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                }
 
-                            Pet pet = provider.getPet();
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 10.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                Pet pet = provider.getPet();
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Value:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                    Text('${pet.petValue} wnks',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
+                                    SizedBox(height: 10.h),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Value:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
+                                        Text('${pet.petValue} wnks',
+                                            style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Cash:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
+                                        Text('${'${pet.petCash}'.kes()} wnks',
+                                            style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Assets:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
+                                        Text('${'${pet.petAssets}'.kes()} wnks',
+                                            style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Last Active:',
+                                            style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
+                                        Text(timeago.format(DateTime.parse(pet.petLastActiveTime)),
+                                            style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Owned By:',
+                                            style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
+                                        Text('${pet.usrOwner}',
+                                            style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
+                                      ],
+                                    ),
                                   ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Cash:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                    Text('${'${pet.petCash}'.kes()} wnks',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Assets:', style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                    Text('${'${pet.petAssets}'.kes()} wnks',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Last Active:',
-                                        style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                    Text(timeago.format(DateTime.parse(pet.petLastActiveTime)),
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Owned By:',
-                                        style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                    Text('${pet.usrOwner}',
-                                        style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
-                                  ],
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
-                      ],
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

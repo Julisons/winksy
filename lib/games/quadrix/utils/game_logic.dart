@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+import '../../../mixin/mixins.dart';
 import '../models/coin.dart';
 
-final playerSound = AudioPlayer();
+
 
 void playDropSound() {
-  playerSound.play(AssetSource('sound/droper.wav')); // Your sound file
+  Mixin.playerSound.play(AssetSource('sound/droper.wav')); // Your sound file
 }
 
 Color playerOneColor = const Color(0xffff4d4d); // Vibrant Red

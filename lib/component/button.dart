@@ -69,6 +69,9 @@ class IButton extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (icon != null)
               Padding(
@@ -77,7 +80,7 @@ class IButton extends StatelessWidget {
               ),
             Text(text,
               style: TextStyle(
-                fontFamily: 'Work Sans',
+                //fontFamily: 'Work Sans',
                 fontSize: font == 10 ? FONT_13 : font,
                 color: textColor,
                 fontWeight: FontWeight.w500,

@@ -137,19 +137,18 @@ class _ISplashScreenState extends State<ISplashScreen>
             const SizedBox(height: 40),
             FadeTransition(
               opacity: _animation,
-              child: Transform(
-                transform: Matrix4.translationValues(10, 0.0, 0.0),
-                child: SizedBox(
-                    width: 166.w,
-                    height: 120.h,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Winksy', style: TextStyle(color: color.xTrailing, fontSize: 40, fontWeight: FontWeight.bold),),
-                        Text('®', style: TextStyle(color: color.xTrailing, fontSize: 16, fontWeight: FontWeight.bold),),
-                      ],
-                    )
-                ),
+              child: SizedBox(
+                  width: 166.w,
+                  height: 120.h,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Winksy', style: TextStyle(color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold),),
+                      Text('®', style: TextStyle(color: color.xTrailing, fontSize: FONT_TITLE, fontWeight: FontWeight.bold),),
+                    ],
+                  )
               ),
             ),
             SizedBox(height: 60.h),

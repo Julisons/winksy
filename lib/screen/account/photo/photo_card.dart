@@ -18,7 +18,7 @@ import '../../../../theme/custom_colors.dart';
 import '../../../mixin/constants.dart';
 import '../../../model/chat.dart';
 import '../../../model/photo.dart';
-import '../winkser.dart';
+import '../winker/winkser.dart';
 import '../../message/message.dart';
 
 

@@ -10,22 +10,23 @@ import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/screen/account/photo/photos.dart';
-import '../../../mixin/constants.dart';
-import '../../../mixin/mixins.dart';
-import '../../../request/urls.dart';
-import '../../component/button.dart';
-import '../../component/popup.dart';
-import '../../component/profile_card.dart';
-import '../../games/games.dart';
-import '../../model/chat.dart';
-import '../../model/interest.dart';
-import '../../model/user.dart';
-import '../../provider/like_provider.dart';
-import '../../provider/user_provider.dart';
-import '../../request/posts.dart';
-import '../../theme/custom_colors.dart';
-import '../message/message.dart';
-import '../zoo/home/pet/pet.dart';
+import 'package:winksy/screen/account/winker/treats/treats.dart';
+import '../../../../mixin/constants.dart';
+import '../../../../mixin/mixins.dart';
+import '../../../../request/urls.dart';
+import '../../../component/button.dart';
+import '../../../component/popup.dart';
+import '../../../component/profile_card.dart';
+import '../../../games/games.dart';
+import '../../../model/chat.dart';
+import '../../../model/interest.dart';
+import '../../../model/user.dart';
+import '../../../provider/like_provider.dart';
+import '../../../provider/user_provider.dart';
+import '../../../request/posts.dart';
+import '../../../theme/custom_colors.dart';
+import '../../message/message.dart';
+import '../../zoo/home/pet/pet.dart';
 
 final List<ListItem> gifts = [
   ListItem(title: 'Nudge', desc: '', icon: FaIcon(FontAwesomeIcons.handPointLeft)),
@@ -126,7 +127,9 @@ class _IWinkserState extends State<IWinkser> {
                                         height: 50.w,
                                         margin: EdgeInsets.all(8),
                                         child: CachedNetworkImage(
-                                          imageUrl: item.giftPath,
+                                          imageUrl:  item.giftPath.startsWith('http')
+                                              ? item.giftPath
+                                              : '${IUrls.IMAGE_URL}/file/secured/${item.giftPath}',
                                           width: 50.w,
                                           height: 50.w,
                                           fit: BoxFit.contain,
@@ -234,7 +237,15 @@ class _IWinkserState extends State<IWinkser> {
                                         } else if (gifts[index].title == 'Nudge') {
 
                                         } else if (gifts[index].title == 'Gift') {
-
+                                          showModalBottomSheet<void>(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SizedBox(
+                                                height: 200,
+                                                child:  ITreats(),
+                                              );
+                                            },
+                                          );
                                         }
                                        },
                                       child: IconButton(
@@ -250,7 +261,15 @@ class _IWinkserState extends State<IWinkser> {
                                           } else if (gifts[index].title == 'Nudge') {
 
                                           } else if (gifts[index].title == 'Gift') {
-
+                                            showModalBottomSheet<void>(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return SizedBox(
+                                                  height: MediaQuery.of(context).size.height/1.2,
+                                                  child:  ITreats(),
+                                                );
+                                              },
+                                            );
                                           }
                                         },
                                         icon: gifts[index].icon,

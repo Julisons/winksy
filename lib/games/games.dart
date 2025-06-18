@@ -20,6 +20,13 @@ class ListItem {
   ListItem({required this.title, required this.desc, required this.icon});
 }
 
+class Item {
+  final String title;
+  final String desc;
+  final String icon;
+  Item({required this.title, required this.desc, required this.icon});
+}
+
 class IGames extends StatefulWidget {
   IGames({super.key});
 
@@ -43,13 +50,13 @@ class _IGamesState extends State<IGames> {
         icon: FaIcon(FontAwesomeIcons.screwdriver)),
   ];
 
-  final List<ListItem> games = [
-    ListItem(title: 'Friend Zoo', desc: '', icon: FaIcon(FontAwesomeIcons.userGroup)),
-    ListItem(title: 'Quadrix', desc: '', icon: FaIcon(FontAwesomeIcons.basketball)),
-    ListItem(title: 'Crazy8', desc: '', icon: FaIcon(FontAwesomeIcons.dice)),
-    ListItem(title: 'Tic Tac Toe', desc: '', icon: FaIcon(FontAwesomeIcons.diceThree)),
-    ListItem(title: 'Daily Spin', desc: '', icon: FaIcon(FontAwesomeIcons.arrowsSpin)),
-    ListItem(title: 'Chess', desc: '', icon: FaIcon(FontAwesomeIcons.chess)),
+  final List<Item> games = [
+    Item(title: 'Friend Zoo', desc: '', icon: '🐯'),
+    Item(title: 'Quadrix', desc: '', icon: '🏐'),
+    Item(title: 'Crazy8', desc: '', icon: '♣️'),
+    Item(title: 'Tic Tac Toe', desc: '', icon: '✖'),
+    Item(title: 'Daily Spin', desc: '', icon: '🎡'),
+    Item(title: 'Chess', desc: '', icon: '♟️'),
   ];
 
   @override
@@ -100,25 +107,12 @@ class _IGamesState extends State<IGames> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
-                              color: color.xTextColor,
-                              onPressed: () {
-                                switch (item.title) {
-                                  case 'Friend Zoo':
-                                    Mixin.navigate(context, IZoo());
-                                    break;
-                                  case 'Quadrix':
-                                    Mixin.navigate(context, IQuadrix());
-                                    break;
-                                  case 'Crazy8':
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Coming soon!')),
-                                    );
-                                    break;
-                                }
-                              },
-                              icon: item.icon,
-                              iconSize: 40.r,
+                            Text( item.icon,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_ICON,
+                                color: color.xTextColorSecondary,
+                              ),
                             ),
                             SizedBox(height: 8),
                             Text(
