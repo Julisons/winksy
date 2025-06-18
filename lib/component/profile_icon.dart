@@ -27,44 +27,39 @@ class ProfileProgressWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(name,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: color.xTextColorSecondary,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Text('${(completion * 100).toInt()}% complete',
-          style: TextStyle(fontSize: 14.sp, color: color.xTextColor),
-        ),
-        SizedBox(height: 16.h),
-        SizedBox(
-         height: 200.h,
-         width: 148.h,
+        Container(
+        // color: Colors.blue,
+         height: 180.h,
+         width: 150.h,
           child: Stack(
             alignment: Alignment.center,
             children: [
-              SizedBox(
-                width: 110.w,
-                height: 110.w,
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0.0, end: completion),
-                  duration: Duration(milliseconds: 4800),
-                  builder: (context, value, _) => CircularProgressIndicator(
-                    value: value,
-                    strokeWidth: 3.r,
-                    backgroundColor: color.xSecondaryColor,
-                    color: color.xTrailingAlt, // blue accent color
+              Positioned(
+                top: 0,
+                child: SizedBox(
+                  width: 149.w,
+                  height: 149.w,
+                  child: TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0.0, end: completion),
+                    duration: Duration(milliseconds: 4800),
+                    builder: (context, value, _) => CircularProgressIndicator(
+                      value: value,
+                      strokeWidth: 3.r,
+                      backgroundColor: color.xSecondaryColor,
+                      color: color.xTrailingAlt, // blue accent color
+                    ),
                   ),
                 ),
               ),
-              CircleAvatar(
-                radius: 50.w,
-                backgroundImage: CachedNetworkImageProvider(imageUrl),
+              Positioned(
+                top: 5.r,
+                child: CircleAvatar(
+                  radius: 70.w,
+                  backgroundImage: CachedNetworkImageProvider(imageUrl),
+                ),
               ),
               Positioned(
-                bottom: 8.h,
+                bottom: 14.h,
                 child: IButton(
                   color: color.xTrailing,
                   onPress: () {

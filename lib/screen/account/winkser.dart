@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
+import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/screen/account/photo/photos.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
@@ -53,6 +54,7 @@ class _IWinkserState extends State<IWinkser> {
     super.initState();
     Provider.of<IGiftProvider>(context, listen: false).refresh('', true);
     Provider.of<ILikeProvider>(context, listen: false).refresh('');
+    Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
      chat = Chat()
       ..chatReceiverId = Mixin.winkser?.usrId
       ..chatSenderId = Mixin.user?.usrId

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/account/photo/photos.dart';
@@ -12,6 +13,8 @@ import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
+import '../../provider/gift/gift_provider.dart';
+import '../../provider/photo_provider.dart';
 import '../interest/like/like.dart';
 import '../notification/notification.dart';
 import '../zoo/home/home.dart';
@@ -30,6 +33,13 @@ class _IProfileState extends State<IProfile> {
   ScrollController scrollController =  ScrollController();
   double profileCompletion = 0.75; // e.g., 75% complete
   var height = 380.h;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<IGiftProvider>(context, listen: false).refresh('', true);
+    Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +79,20 @@ class _IProfileState extends State<IProfile> {
               ],
             ),
             backgroundColor: color.xPrimaryColor,
-            title: Text('',
-              style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
+            title: Column(
+              children: [
+                Text('${Mixin.user?.usrFullNames}',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: color.xTextColorSecondary,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text('${(profileCompletion * 100).toInt()}% complete',
+                  style: TextStyle(fontSize: 14.sp, color: color.xTextColor),
+                ),
+              ],
             ),
             actions: <Widget>[IPopup()]),
         body:  NestedScrollView(
@@ -90,10 +112,54 @@ class _IProfileState extends State<IProfile> {
                     width: MediaQuery.of(context).size.width,
                     height: 340.h,
                     padding: EdgeInsets.only(top: 8.h),
-                    child:  ProfileProgressWidget(
-                              name: '${Mixin.user?.usrFullNames}',
-                              imageUrl:'${Mixin.user?.usrImage}',
-                              completion: profileCompletion),
+                    child:  Column(
+                      children: [
+                        SizedBox(
+                          height: 100.h, // 50% of parent height
+                          child: Consumer<IGiftProvider>(
+                              builder: (context, provider, child) {
+                                return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: provider.getCount(),
+                                  itemBuilder: (context, index) {
+                                    final item = provider.list[index];
+                                    return Container(
+                                      width: 50.w,
+                                      height: 50.w,
+                                      margin: EdgeInsets.all(8),
+                                      child: CachedNetworkImage(
+                                        imageUrl: item.giftPath,
+                                        width: 50.w,
+                                        height: 50.w,
+                                        fit: BoxFit.contain,
+                                        placeholder: (context, url) => Shimmer.fromColors(
+                                          baseColor: xShimmerBase,
+                                          highlightColor: xShimmerHighlight,
+                                          child: Container(
+                                            width: MediaQuery.of(context).size.width/2,
+                                            //  height: MediaQuery.of(context).size.width/2,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) => CircleAvatar(
+                                          backgroundColor: color.xSecondaryColor,
+                                          child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
+                        ),
+                        ProfileProgressWidget(
+                                  name: '${Mixin.user?.usrFullNames}',
+                                  imageUrl:'${Mixin.user?.usrImage}',
+                                  completion: profileCompletion),
+                      ],
+                    ),
                   ),
                   bottom: TabBar(
                     isScrollable: false,
