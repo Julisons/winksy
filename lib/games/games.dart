@@ -58,7 +58,7 @@ class _IGamesState extends State<IGames> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar: IAppBar(title: 'Games'),
+      appBar: IAppBar(title: 'Games', leading: false,),
       body: Padding(
         padding: EdgeInsets.all(16.0.r),
         child: Column(

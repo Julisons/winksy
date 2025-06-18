@@ -89,7 +89,7 @@ class _IQuadrixState extends State<IQuadrix> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Quadrix',),
+      appBar:IAppBar(title: 'Quadrix', leading: false,),
       body: Padding(
         padding:  EdgeInsets.all(16.0.r),
         child: Column(

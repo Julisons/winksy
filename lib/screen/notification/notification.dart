@@ -25,7 +25,7 @@ class _INotificationsState extends State<INotifications> {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:  const IAppBar(title: 'Notifications'),
+      appBar:  IAppBar(title: 'Notifications', leading: true,),
       body:Consumer<INotificationProvider>(
           builder: (context, provider, child) {
             return provider.isLoading()

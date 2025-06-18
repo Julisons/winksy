@@ -7,8 +7,9 @@ import '../mixin/constants.dart';
 import '../theme/custom_colors.dart';
 
 class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
-  const IAppBar({Key? key, this.title = 'Winksy'}) : super(key: key);
+  const IAppBar({Key? key, this.title = 'Winksy', required this.leading}) : super(key: key);
   final String title;
+  final bool leading;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +17,12 @@ class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
 
     return AppBar(
       automaticallyImplyLeading: false,
-      leading: IconButton(
+      leading: leading ? IconButton(
         icon:  Icon(Icons.arrow_back_ios_new_rounded, color: color.xTrailing,),
         onPressed: () {
           Navigator.pop(context);
         },
-      ),
+      ) : null,
       backgroundColor: color.xPrimaryColor,
       title: Transform(
         transform: Matrix4.translationValues(10, 0.0, 0.0),
