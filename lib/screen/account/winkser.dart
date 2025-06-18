@@ -219,14 +219,37 @@ class _IWinkserState extends State<IWinkser> {
                                     child: FloatingActionButton(
                                       elevation: ELEVATION,
                                       mini: false,
+                                      tooltip: gifts[index].title,
                                       backgroundColor: color.xTrailing,
                                       onPressed: () {
+                                        if (gifts[index].title == 'Message') {
+                                          Chat chat = Chat()
+                                            ..chatReceiverId = Mixin.winkser?.usrId
+                                            ..chatSenderId = Mixin.user?.usrId
+                                            ..chatCreatedBy = Mixin.user?.usrId
+                                            ..usrReceiver = Mixin.winkser?.usrFullNames;
+                                          Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+                                        } else if (gifts[index].title == 'Nudge') {
 
+                                        } else if (gifts[index].title == 'Gift') {
+
+                                        }
                                        },
                                       child: IconButton(
                                         color: Colors.white,
                                         onPressed: () {
+                                          if (gifts[index].title == 'Message') {
+                                            Chat chat = Chat()
+                                              ..chatReceiverId = Mixin.winkser?.usrId
+                                              ..chatSenderId = Mixin.user?.usrId
+                                              ..chatCreatedBy = Mixin.user?.usrId
+                                              ..usrReceiver = Mixin.winkser?.usrFullNames;
+                                            Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+                                          } else if (gifts[index].title == 'Nudge') {
 
+                                          } else if (gifts[index].title == 'Gift') {
+
+                                          }
                                         },
                                         icon: gifts[index].icon,
                                         iconSize: 24.r,

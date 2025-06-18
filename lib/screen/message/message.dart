@@ -50,7 +50,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
   final _debouncer = Debouncer(milliseconds: 500);
   late Icon icon = Icon(
     Icons.search,
-    color: Theme.of(context).extension<CustomColors>()!.xTextColor,
+    color: Theme.of(context).extension<CustomColors>()!.xTrailing,
   );
 
   final _searchController = TextEditingController();
@@ -218,7 +218,14 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
       appBar: AppBar(
-        automaticallyImplyLeading: widget.showTitle,
+       // automaticallyImplyLeading: widget.showTitle,
+        automaticallyImplyLeading: false,
+        leading: widget.showTitle ? IconButton(
+        icon:  Icon(Icons.arrow_back_ios_new_rounded, color: color.xTrailing,),
+        onPressed: () {
+        Navigator.pop(context);
+        },
+        ) : null,
         backgroundColor: color.xPrimaryColor,
         surfaceTintColor: color.xPrimaryColor,
         title: search,
@@ -230,7 +237,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
             onPressed: () {
               setState(() {
                 if (icon.icon == Icons.search) {
-                  icon = const Icon(Icons.clear);
+                  icon = Icon(Icons.clear, color: color.xTrailing,);
                   search = Padding(
                     padding: const EdgeInsets.only(top: 0),
                     child: TextField(
@@ -276,7 +283,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                     ),
                   );
                 } else {
-                  icon = Icon(Icons.search, color: color.xTextColor);
+                  icon = Icon(Icons.search, color: color.xTrailing);
                   search = Row(
                     children: [
                       ?widget.showTitle
