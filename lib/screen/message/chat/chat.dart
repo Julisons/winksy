@@ -112,7 +112,7 @@ class _IChatState extends State<IChat> {
                             addAutomaticKeepAlives: false,
                             itemBuilder: (context, index) {
                               return IChatCard(
-                                chat: provider.list[index],
+                                chat: provider.getCount() > index ? provider.list[index]: Chat(),
                                 text: 'View Details',
                                 onClick: (){
                                   _socket?.emit(CHAT_CLICKED,jsonEncode(provider.list[index]));

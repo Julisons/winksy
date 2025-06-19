@@ -76,7 +76,7 @@ class _ITreatCardState extends State<ITreatCard> {
                   ], // manually specify the colors to be used
                   createParticlePath: drawStar, // define a custom shape/path.
                   child:     CachedNetworkImage(
-                    imageUrl:  widget.treat.giftPath.startsWith('http')
+                    imageUrl: widget.treat.giftPath.startsWith('http')
                         ? widget.treat.giftPath
                         : '${IUrls.IMAGE_URL}/file/secured/${widget.treat.giftPath}',
                     fit: BoxFit.contain,
@@ -100,7 +100,7 @@ class _ITreatCardState extends State<ITreatCard> {
               const SizedBox(height: 10),
               Text(
                 widget.treat.giftDesc,
-                style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold,),
+                style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold, color: color.xTextColor,),
               ),
               RichText(
                 text: TextSpan(
@@ -110,7 +110,7 @@ class _ITreatCardState extends State<ITreatCard> {
                       text: '${widget.treat.giftAmount.toStringAsFixed(2)} ',
                     ),
                     TextSpan(
-                      text: 'Winks',
+                      text: 'Wnk',
                       style:  TextStyle(color: color.xTrailingAlt, fontSize: FONT_13), // Blue color for Wnks
                     ),
                   ],
@@ -123,7 +123,8 @@ class _ITreatCardState extends State<ITreatCard> {
       onTap: () {
         Gift gift = Gift()
         ..ugiftUsrId = Mixin.winkser?.usrId
-        ..ugiftGiftId = widget.treat.giftId;
+        ..ugiftGiftId = widget.treat.giftId
+        ..ugiftGifterId = Mixin.user?.usrId;
 
         setState(() {
           _isLoading = false;

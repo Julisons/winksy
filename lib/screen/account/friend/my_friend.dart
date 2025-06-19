@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
+import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 import 'package:winksy/model/User.dart';
@@ -15,17 +16,18 @@ import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
 import '../../../theme/custom_colors.dart';
-import 'friend_card.dart';
+import '../photo/photo_shimmer.dart';
+import 'my_friend_card.dart';
 
 
-class IFriend extends StatefulWidget {
-  const IFriend({super.key});
+class IMyFriend extends StatefulWidget {
+  const IMyFriend({super.key});
 
   @override
-  State<IFriend> createState() => _IFriendState();
+  State<IMyFriend> createState() => _IMyFriendState();
 }
 
-class _IFriendState extends State<IFriend> {
+class _IMyFriendState extends State<IMyFriend> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
 
@@ -51,15 +53,15 @@ class _IFriendState extends State<IFriend> {
       body:
       Container(
         padding: EdgeInsets.only(top: 10.h),
-        child: Consumer<ILikeMeProvider>(
+        child: Consumer<IFriendsProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() : SizedBox(
+              return provider.isLoading() ? const IPhotoShimmer() : SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: RefreshIndicator(
                     color: color.xTrailing,
                     backgroundColor: color.xPrimaryColor,
-                    onRefresh: () => provider.refresh(''),
+                    onRefresh: () => provider.refresh('',true),
                     child: GridView.builder(
                       padding: const EdgeInsets.only(
                           bottom: 6,

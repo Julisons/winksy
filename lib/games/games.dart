@@ -79,7 +79,7 @@ class _IGamesState extends State<IGames> {
                   crossAxisCount: 3,
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
-                  childAspectRatio: .7,
+                  childAspectRatio: .8,
                 ),
                 itemBuilder: (context, index) {
                   final item = games[index];

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
+import 'package:winksy/screen/authenticate/select/bio.dart';
 import 'package:winksy/screen/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +36,8 @@ class _ISignUpState extends State<ISignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _pinConfirmController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   bool _isLoading = false;
   bool _isPasswordVisible = false;
@@ -44,6 +47,26 @@ class _ISignUpState extends State<ISignUp> {
   var image;
   var email;
 
+
+  DateTime? selectedDate;
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime latestAllowedDate = DateTime(now.year - 12, now.month, now.day);
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: latestAllowedDate, // safe default
+      firstDate: DateTime(1900),
+      lastDate: latestAllowedDate,
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+        _ageController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+      });
+    }
+  }
 
 
   @override
@@ -82,7 +105,7 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _firstNameController,
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
               decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: color.xTrailing),
@@ -91,14 +114,14 @@ class _ISignUpState extends State<ISignUp> {
                   hintText: 'First name',
                   labelText: 'First name',
                   labelStyle: TextStyle(
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: color.xTrailing),
                   ),
                   hintStyle: TextStyle(
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
                   suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
@@ -110,7 +133,7 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _lastNameController,
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
               decoration:  InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: color.xTrailing),
@@ -119,14 +142,14 @@ class _ISignUpState extends State<ISignUp> {
                 hintText: 'Last name',
                 labelText: 'Last name',
                 labelStyle: TextStyle(
-                  color: Colors.white,
+                  color: color.xTextColor,
                   fontSize: FONT_13,
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: color.xTrailing),
                 ),
                 hintStyle: TextStyle(
-                  color: Colors.white,
+                  color: color.xTextColor,
                   fontSize: FONT_13,
                 ),
                 suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
@@ -138,7 +161,7 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
               decoration:  InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: color.xTrailing),
@@ -146,7 +169,7 @@ class _ISignUpState extends State<ISignUp> {
                 border: InputBorder.none,
                 labelText: 'Email address',
                 labelStyle: TextStyle(
-                  color: Colors.white,
+                  color: color.xTextColor,
                   fontSize: FONT_13,
                 ),
                 focusedBorder: UnderlineInputBorder(
@@ -154,7 +177,7 @@ class _ISignUpState extends State<ISignUp> {
                 ),
                 hintText: 'Email address',
                 hintStyle: TextStyle(
-                  color: Colors.white,
+                  color: color.xTextColor,
                   fontSize: FONT_13,
                 ),
                 suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
@@ -169,9 +192,40 @@ class _ISignUpState extends State<ISignUp> {
             ),
             const SizedBox(height: 24),
             TextFormField(
+              controller: _ageController,
+              keyboardType: TextInputType.emailAddress,
+              style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
+              onTap: () {
+                _selectDate(context);
+              },
+              decoration:  InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: color.xTrailing),
+                ),
+                border: InputBorder.none,
+                labelText: 'Date of Birth',
+                labelStyle: TextStyle(
+                  color: color.xTextColor,
+                  fontSize: FONT_13,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: color.xTrailing),
+                ),
+                hintText: 'Date of Birth',
+                hintStyle: TextStyle(
+                  color: color.xTextColor,
+                  fontSize: FONT_13,
+                ),
+                suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
+                fillColor: color.xPrimaryColor,
+                filled: true,
+              ),
+            ),
+            const SizedBox(height: 24),
+            TextFormField(
               controller: _pinController,
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
@@ -183,12 +237,12 @@ class _ISignUpState extends State<ISignUp> {
                 border: InputBorder.none,
                 hintText: 'Password',
                 hintStyle: TextStyle(
-                  color: Colors.white,
+                  color: color.xTextColor,
                   fontSize: FONT_13,
                 ),
                 labelText: 'Password',
                 labelStyle: TextStyle(
-                  color: Colors.white,
+                  color: color.xTextColor,
                   fontSize: FONT_13,
                 ),
                 fillColor: color.xPrimaryColor,
@@ -210,33 +264,7 @@ class _ISignUpState extends State<ISignUp> {
               ),
             ),
             const SizedBox(height: 24),
-            TextFormField(
-              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
-              controller: _usernameController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: color.xTrailing),
-                ),
-                border: InputBorder.none,
-                hintText: 'Username',
-                hintStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: FONT_13,
-                ),
-                  labelText: 'Username',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: FONT_13,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: color.xTrailing),
-                  ),
-                  fillColor: color.xPrimaryColor,
-                filled: true,
-                suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 16,)
-              ),
-            ),
+
              SizedBox(height: 34.h),
             Text(' * Please fill in all marked areas correctly.', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold),),
              SizedBox(height: 44.h),
@@ -252,13 +280,17 @@ class _ISignUpState extends State<ISignUp> {
               color: color.xTrailing,
               onPress: () {
                 if (_firstNameController.text.isEmpty) {
-                  Mixin.showToast(
-                      context, "First name cannot be empty!", ERROR);
+                  Mixin.showToast(context, "First name cannot be empty!", ERROR);
                   return;
                 }
 
                 if (_lastNameController.text.isEmpty) {
                   Mixin.showToast(context, "Last name cannot be empty!", ERROR);
+                  return;
+                }
+
+                if (_ageController.text.isEmpty) {
+                  Mixin.showToast(context, "Date of birth cannot be empty!", ERROR);
                   return;
                 }
 
@@ -277,22 +309,18 @@ class _ISignUpState extends State<ISignUp> {
                   return;
                 }
 
-                if (_usernameController.text.isEmpty) {
-                  Mixin.showToast(
-                      context, "Username cannot be empty!", ERROR);
-                  return;
-                }
-
                 User user = User()
                   ..usrFirstName = _firstNameController.text.trim()
                   ..usrLastName = _lastNameController.text.trim()
                   ..usrEmail = _emailController.text.trim()
+                  ..usrFullNames = '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}'
                   ..usrMobileNumber = _phoneController.text.trim()
                   ..usrEncryptedPassword = _pinController.text.trim()
-                  ..usrUsername = '@${_usernameController.text.trim()}';
+                  ..usrDob = DateFormat('yyyy-MM-dd').format(selectedDate!)
+                  ..usrUsername = _emailController.text.trim();
 
                 setState(() {
-                  _isLoading = true;
+                 // _isLoading = true;
                 });
 
                 IPost.postData(user, (state, res, value) {
@@ -302,6 +330,7 @@ class _ISignUpState extends State<ISignUp> {
                       Mixin.showToast(context, res, INFO);
                       Mixin.getUser().then((value) => {
                         Mixin.user = value,
+                          Mixin.navigate(context, const IBio())
                       });
                     } else {
                       Mixin.errorDialog(context, 'ERROR', res);
@@ -317,7 +346,7 @@ class _ISignUpState extends State<ISignUp> {
             SizedBox(height: 16.h,),
             IGoogle(onPress: (){
               _handleSignIn(context);
-            }, text: 'Sign Up with Google', width: MediaQuery.of(context).size.width,textColor: Colors.white,
+            }, text: 'Sign Up with Google', width: MediaQuery.of(context).size.width,textColor: color.xTextColor,
               color: color.xSecondaryColor,isBlack: false,),
              SizedBox(height: 24.h),
             Align(
@@ -329,7 +358,7 @@ class _ISignUpState extends State<ISignUp> {
                 child: RichText(
                   text: TextSpan(
                     text: "Have an account?",
-                    style: TextStyle(color: Colors.white, fontSize: FONT_MEDIUM),
+                    style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                     children: <TextSpan>[
                       TextSpan(
                           text: '  Sign In  ',
@@ -345,13 +374,13 @@ class _ISignUpState extends State<ISignUp> {
               width: 300.w,
               child: InkWell(
                 onTap: () {
-                 // Mixin.navigate(context, const ITerms());
+                 //Mixin.navigate(context, const ITerms());
                 },
                 child: RichText(
                   textAlign: TextAlign.center,
                   text:  TextSpan(
                     text: "By signing up, you agree to our",
-                    style: TextStyle(color: Colors.white, fontSize: FONT_MEDIUM),
+                    style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                     children: <TextSpan>[
                       TextSpan(
                           text: ' Terms of Use ',
@@ -359,7 +388,7 @@ class _ISignUpState extends State<ISignUp> {
                               decoration: TextDecoration.underline)),
                       TextSpan(
                           text: 'and to receive Winksy emails & updates and acknowledge that you read our ',
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: Colors.white)),
+                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: color.xTextColor)),
                       TextSpan(
                           text: ' Privacy Policy.',
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing, decoration: TextDecoration.underline)),

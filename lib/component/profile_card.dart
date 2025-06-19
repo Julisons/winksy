@@ -25,9 +25,10 @@ class ProfileField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 60.w,
+            width: 80.w,
             child: Text(
-              '$label : ',
+              '$label',
+              maxLines: 1,
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: FONT_13,

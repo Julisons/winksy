@@ -10,27 +10,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
+import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import 'package:winksy/model/User.dart';
+import '../../../model/chat.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
-import '../../mixin/constants.dart';
-import '../../model/chat.dart';
-import '../account/winker/winkser.dart';
-import '../message/message.dart';
+import '../../message/message.dart';
 
 
-class IPeopleCard extends StatefulWidget {
-  const IPeopleCard({super.key, required this.user, required this.onRefresh, required this.text});
+
+class IFriendCard extends StatefulWidget {
+  const IFriendCard({super.key, required this.user, required this.onRefresh, required this.text});
   final User user;
   final VoidCallback onRefresh;
   final String text;
 
   @override
-  State<IPeopleCard> createState() => _IPeopleCardState();
+  State<IFriendCard> createState() => _IFriendCardState();
 }
 
-class _IPeopleCardState extends State<IPeopleCard> {
+class _IFriendCardState extends State<IFriendCard> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
@@ -38,17 +38,11 @@ class _IPeopleCardState extends State<IPeopleCard> {
     return InkWell(
       onTap: () {
         Mixin.winkser = widget.user;
-
-        log("Winkser: ${Mixin.winkser?.usrGender}");
         Chat chat = Chat()
         ..chatReceiverId = widget.user.usrId
         ..chatSenderId = Mixin.user?.usrId
-        ..chatCreatedBy = Mixin.user?.usrId
         ..usrReceiver = widget.user.usrFullNames;
-        //Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
-
-        Mixin.navigate(context, IWinkser());
-
+        Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
       },
       child: Card(
         elevation: ELEVATION,
@@ -69,19 +63,19 @@ class _IPeopleCardState extends State<IPeopleCard> {
                   height: MediaQuery.of(context).size.width/1.2,
                   fit: BoxFit.fitHeight,
                   placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: color.xSecondaryColor,
-                    highlightColor:color.xPrimaryColor,
+                    baseColor: xShimmerBase,
+                    highlightColor: xShimmerHighlight,
                     child: Container(
                       width: MediaQuery.of(context).size.width/2,
                     //  height: MediaQuery.of(context).size.width/2,
                       decoration: const BoxDecoration(
-                        shape: BoxShape.rectangle,
+                        shape: BoxShape.circle,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Container(
-                    color: color.xSecondaryColor,
+                  errorWidget: (context, url, error) => CircleAvatar(
+                    backgroundColor: color.xSecondaryColor,
                     child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
                   ),
                 ),
@@ -120,7 +114,7 @@ class _IPeopleCardState extends State<IPeopleCard> {
                         child: Icon(
                           Icons.verified,
                           color: Colors.white, // Checkmark color
-                          size: 13.r, // Adjust size as needed
+                          size: 16, // Adjust size as needed
                         ),
                       ),
                     ),

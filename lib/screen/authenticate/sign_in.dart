@@ -87,7 +87,7 @@ class _ISignInState extends State<ISignIn> {
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
+                style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
                 decoration:  InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: color.xTrailing),
@@ -110,7 +110,7 @@ class _ISignInState extends State<ISignIn> {
                 controller: _pinController,
                 keyboardType: TextInputType.text,
                 obscureText: !isPasswordVisible,
-                style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
+                style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: color.xTrailing),

@@ -112,7 +112,8 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                                       borderRadius: BorderRadius.circular(
                                           16), // Rounded corners for the image
                                       child: CachedNetworkImage(
-                                        imageUrl: '${_user.usrImage}',
+                                        imageUrl: '${_user.usrImage}'.startsWith('http') ? _user.usrImage
+                                            : '${IUrls.IMAGE_URL}/file/secured/${_user.usrImage}',
                                         width: MediaQuery.of(context).size.width,
                                         height: MediaQuery.of(context).size.height,
                                         fit: BoxFit.cover,
@@ -179,9 +180,9 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                                     Positioned(
                                       bottom: 20,
                                       child: Text(
-                                        _user.usrDistance == null || _user.usrDistance.isEmpty
+                                        (_user.usrDistance == null || _user.usrDistance.isEmpty
                                             ? '${_user.usrLocality}'
-                                            : '${_user.usrDistance} (${_user.usrLocality})',
+                                            : '${_user.usrDistance} (${_user.usrLocality})').replaceAll("null", ''),
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.normal,

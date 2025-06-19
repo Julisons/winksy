@@ -10,14 +10,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
-import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import 'package:winksy/model/User.dart';
-import '../../../model/chat.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
-import '../../message/message.dart';
-
+import '../../mixin/constants.dart';
+import '../../model/chat.dart';
+import '../../model/friend.dart';
+import '../account/winker/winkser.dart';
+import '../message/message.dart';
 
 
 class IFriendCard extends StatefulWidget {
@@ -38,11 +39,7 @@ class _IFriendCardState extends State<IFriendCard> {
     return InkWell(
       onTap: () {
         Mixin.winkser = widget.user;
-        Chat chat = Chat()
-        ..chatReceiverId = widget.user.usrId
-        ..chatSenderId = Mixin.user?.usrId
-        ..usrReceiver = widget.user.usrFullNames;
-        Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+        Mixin.navigate(context, IWinkser());
       },
       child: Card(
         elevation: ELEVATION,
@@ -62,19 +59,19 @@ class _IFriendCardState extends State<IFriendCard> {
                   height: MediaQuery.of(context).size.width/1.2,
                   fit: BoxFit.fitHeight,
                   placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: xShimmerBase,
-                    highlightColor: xShimmerHighlight,
+                    baseColor: color.xSecondaryColor,
+                    highlightColor:color.xPrimaryColor,
                     child: Container(
                       width: MediaQuery.of(context).size.width/2,
                     //  height: MediaQuery.of(context).size.width/2,
                       decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                        shape: BoxShape.rectangle,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => CircleAvatar(
-                    backgroundColor: color.xSecondaryColor,
+                  errorWidget: (context, url, error) => Container(
+                    color: color.xSecondaryColor,
                     child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
                   ),
                 ),
@@ -113,7 +110,7 @@ class _IFriendCardState extends State<IFriendCard> {
                         child: Icon(
                           Icons.verified,
                           color: Colors.white, // Checkmark color
-                          size: 16, // Adjust size as needed
+                          size: 13.r, // Adjust size as needed
                         ),
                       ),
                     ),

@@ -7,9 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/extentions.dart';
+import 'package:winksy/model/friend.dart';
+import 'package:winksy/provider/friend_provider.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/photo_provider.dart';
-import 'package:winksy/screen/account/photo/photos.dart';
+import 'package:winksy/screen/account/photo/photo.dart';
 import 'package:winksy/screen/account/winker/treats/treats.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
@@ -21,12 +23,14 @@ import '../../../games/games.dart';
 import '../../../model/chat.dart';
 import '../../../model/interest.dart';
 import '../../../model/user.dart';
+import '../../../provider/friends_provider.dart';
 import '../../../provider/like_provider.dart';
 import '../../../provider/user_provider.dart';
 import '../../../request/posts.dart';
 import '../../../theme/custom_colors.dart';
 import '../../message/message.dart';
 import '../../zoo/home/pet/pet.dart';
+import '../friend/my_friend.dart';
 
 final List<ListItem> gifts = [
   ListItem(title: 'Nudge', desc: '', icon: FaIcon(FontAwesomeIcons.handPointLeft)),
@@ -44,7 +48,7 @@ class _IWinkserState extends State<IWinkser> {
   User? user;
   bool light = true;
   Chat chat = Chat();
-  late Interest _interest;
+  late Friend _friend;
   var height = 480.h;
   bool isVerified = true;
   var _isLoading = false;
@@ -53,13 +57,18 @@ class _IWinkserState extends State<IWinkser> {
   @override
   void initState() {
     super.initState();
-    Provider.of<IGiftProvider>(context, listen: false).refresh('', true);
-    Provider.of<ILikeProvider>(context, listen: false).refresh('');
-    Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
+
      chat = Chat()
       ..chatReceiverId = Mixin.winkser?.usrId
       ..chatSenderId = Mixin.user?.usrId
       ..usrReceiver = Mixin.winkser?.usrFullNames;
+
+    Future.delayed(Duration(seconds: 1), () {
+      Provider.of<IGiftProvider>(context, listen: false).refresh('', true);
+      Provider.of<IFriendProvider>(context, listen: false).refresh('',true);
+      Provider.of<IFriendsProvider>(context, listen: false).refresh('',true);
+      Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
+    });
   }
 
   @override
@@ -74,7 +83,7 @@ class _IWinkserState extends State<IWinkser> {
         statusBarBrightness: Brightness.light, // for iOS
       ),
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           backgroundColor: color.xPrimaryColor,
           appBar: AppBar(
@@ -160,7 +169,8 @@ class _IWinkserState extends State<IWinkser> {
                               Mixin.winkser?.usrImage != null
                                   ? ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: '${Mixin.winkser?.usrImage.toString()}',
+                                  imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ?Mixin.winkser?.usrImage
+                                      : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                                   fit: BoxFit.cover,
                                   height: 150.w,
                                   width: 150.w,
@@ -280,7 +290,7 @@ class _IWinkserState extends State<IWinkser> {
                                 }),
                               ),
                               SizedBox(height: 20.h,),
-                              Consumer<ILikeProvider>(
+                              Consumer<IFriendProvider>(
                                   builder: (context, provider, child) {
                                     return _isLoading ? Center(
                                       child: CircularProgressIndicator(
@@ -299,25 +309,25 @@ class _IWinkserState extends State<IWinkser> {
 
                                           setState(() {_isLoading = true;});
 
-                                          _interest = Interest()
-                                            ..intUsrId = Mixin.user?.usrId
-                                            ..intFolId = Mixin.winkser?.usrId
-                                            ..intDesc = 'Liked ${Mixin.winkser?.usrFullNames}'
-                                            ..intStatus = 'ACTIVE'
-                                            ..intCode = 'LIKE'
-                                            ..intInstId = Mixin.user?.usrInstId
-                                            ..intType = 'USER';
+                                          _friend = Friend()
+                                            ..frndUsrId = Mixin.user?.usrId
+                                            ..frndFolId = Mixin.winkser?.usrId
+                                            ..frndDesc = 'Liked ${Mixin.winkser?.usrFullNames}'
+                                            ..frndStatus = 'Requested'
+                                            ..frndCode = 'LIKE'
+                                            ..frndInstId = Mixin.user?.usrInstId
+                                            ..frndType = 'USER';
 
-                                          IPost.postData(_interest, (state, res, value) {setState(() {
+                                          IPost.postData(_friend, (state, res, value) {setState(() {
                                             if (state) {
                                               setState(() {_isLoading = false;});
-                                              Provider.of<ILikeProvider>(context, listen: false).refresh('');
+                                              Provider.of<IFriendProvider>(context, listen: false).refresh('', false);
                                             } else {Mixin.errorDialog(context, 'ERROR', res);
-                                            }});}, IUrls.INTEREST());
+                                            }});}, IUrls.FRIEND());
 
                                         },
-                                        label: Text(provider.getCount() > 0 ? 'Friends' : 'Add Friend',
-                                        style: TextStyle(fontSize: FONT_13, color:provider.getCount() > 0 ? color.xTextColor : Colors.white),),
+                                        label: Text(provider.getCount() > 0 ? provider.list[0].frndStatus : 'Add Friend',
+                                        style: TextStyle(fontSize: FONT_13, color:provider.getCount() > 0 ? color.xTextColor : Colors.white)),
                                         icon: IconButton(
                                           color: provider.getCount() > 0 ? color.xTextColor : Colors.white,
                                           onPressed: () {
@@ -339,6 +349,7 @@ class _IWinkserState extends State<IWinkser> {
                       tabs: [
                         Tab(child: Text("Details", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
                         Tab(child: Text("Photos",style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
+                        Tab(child: Text("Friends",style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),)),
                         Tab(child: Text("Friend Zoo", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold),))
                       ],
                       labelColor: color.xTextColor,
@@ -368,20 +379,25 @@ class _IWinkserState extends State<IWinkser> {
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.all(34.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ProfileField(label: 'Name', value: Mixin.winkser?.usrFullNames ?? ''),
-                            ProfileField(label: 'Email', value: Mixin.winkser?.usrEmail ?? ''),
-                            ProfileField(label: 'Age', value: '${'${Mixin.winkser?.usrDob}'.age()} Years'),
-                            ProfileField(label: 'Gender', value: '${Mixin.winkser?.usrGender}' ?? ''),
-                            ProfileField(label: 'Phone', value: Mixin.winkser?.usrMobileNumber ?? ''),
-                            ProfileField(label: 'Place', value: '${Mixin.winkser?.usrCountry}, ${Mixin.winkser?.usrAdministrativeArea}'),
-                            ProfileField(label: 'Bio', value: Mixin.winkser?.usrDesc ?? ''),
-                          ],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ProfileField(label: 'Name : ', value: Mixin.winkser?.usrFullNames ?? ''),
+                              ProfileField(label: 'Email : ', value: Mixin.winkser?.usrEmail ?? ''),
+                              ProfileField(label: 'Age : ', value: '${'${Mixin.winkser?.usrDob}'.age()} Years'),
+                              ProfileField(label: 'Gender : ', value: '${Mixin.winkser?.usrGender}' ?? ''),
+                              ProfileField(label: 'Phone : ', value: Mixin.winkser?.usrMobileNumber ?? ''),
+                              ProfileField(label: 'Place : ', value: '${Mixin.winkser?.usrCountry}, ${Mixin.winkser?.usrAdministrativeArea}'),
+                              ProfileField(label: 'Bio : ', value:' '),
+                              Text( Mixin.winkser?.usrDesc ??'', style: TextStyle(fontSize: FONT_13), ),
+                            ],
+                          ),
                         ),
                       ),
+
                       IPhotos(showFab: false,),
+                      IMyFriend(),
                       IPet(),
                     ],
                   ),

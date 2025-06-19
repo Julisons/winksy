@@ -39,7 +39,7 @@ class ProfileProgressWidget extends StatelessWidget {
                 height: 130.w,
                 child: TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0.0, end: completion),
-                  duration: Duration(milliseconds: 4800),
+                  duration: Duration(milliseconds: 3000),
                   builder: (context, value, _) => CircularProgressIndicator(
                     value: value,
                     strokeWidth: 3.r,

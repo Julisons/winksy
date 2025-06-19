@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/model/photo.dart';
 import 'package:winksy/screen/account/photo/photo_card.dart';
+import 'package:winksy/screen/account/photo/photo_shimmer.dart';
 
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
@@ -58,7 +59,7 @@ class _IPhotosState extends State<IPhotos> {
       backgroundColor: color.xSecondaryColor,
       body: Consumer<IPhotoProvider>(
           builder: (context, provider, child) {
-            return provider.isLoading() ? const IPeopleShimmer() :
+            return provider.isLoading() ? const IPhotoShimmer() :
             Column(
               children: [
                 Expanded(

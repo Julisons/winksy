@@ -21,13 +21,13 @@ class PhoneField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CountryCodePicker(
-            dialogBackgroundColor: Colors.white,
+            dialogBackgroundColor: color.xTextColor,
             padding: EdgeInsets.symmetric(
               horizontal: 7.w,
             ),
             textStyle: TextStyle(
               fontSize: FONT_13,
-              color: Colors.white,
+              color: color.xTextColorSecondary,
             ),
 
             onChanged: (val) {
@@ -35,7 +35,7 @@ class PhoneField extends StatelessWidget {
                 onCodeChange!(val.dialCode.toString().replaceFirst("+", ''));
               }
             },
-            backgroundColor: Colors.white,
+            backgroundColor: color.xTextColor,
             // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
             initialSelection: 'KE',
             favorite: const ['+254', 'KE'],
@@ -50,7 +50,7 @@ class PhoneField extends StatelessWidget {
           const SizedBox(width: 10,),
           Expanded(
               child: TextFormField(
-                style: TextStyle(fontSize: FONT_13,  color: lime),
+                style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
                 controller: textEditingController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
@@ -62,13 +62,13 @@ class PhoneField extends StatelessWidget {
                   ),
                   labelText: 'Phone number',
                   labelStyle: TextStyle(
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
                   border: InputBorder.none,
                   hintText: 'Phone number',
                   hintStyle: TextStyle(
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
 

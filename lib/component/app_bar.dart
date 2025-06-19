@@ -23,6 +23,7 @@ class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
           Navigator.pop(context);
         },
       ) : null,
+      elevation: ELEVATION,
       backgroundColor: color.xPrimaryColor,
       title: Transform(
         transform: Matrix4.translationValues(10, 0.0, 0.0),

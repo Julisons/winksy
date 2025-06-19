@@ -123,6 +123,7 @@ const String PAID = 'PAID';
 const String PENDING = 'PENDING';
 const String PET_NOTIFICATION = 'PET_NOTIFICATION';
 const String PET_NOTIFICATION_NORMAL = 'PET_NOTIFICATION_NORMAL';
+const String GIFT_NOTIFICATION = 'GIFT_NOTIFICATION';
 
 
 const int _greenPrimaryValue = 0xFF4CAF50;

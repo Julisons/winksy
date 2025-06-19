@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/extentions.dart';
-import 'package:winksy/screen/account/photo/photos.dart';
+import 'package:winksy/screen/account/photo/photo.dart';
 
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
@@ -13,13 +13,14 @@ import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
+import '../../provider/friends_provider.dart';
 import '../../provider/gift/gift_provider.dart';
 import '../../provider/photo_provider.dart';
 import '../interest/like/like.dart';
 import '../notification/notification.dart';
 import '../zoo/home/home.dart';
 import '../zoo/home/pet/pet.dart';
-import 'friend/friend.dart';
+import 'friend/my_friend.dart';
 
 
 
@@ -37,8 +38,12 @@ class _IProfileState extends State<IProfile> {
   @override
   void initState() {
     super.initState();
-    Provider.of<IGiftProvider>(context, listen: false).refresh('', true);
-    Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
+
+    Future.delayed(Duration(seconds: 1), (){
+      Provider.of<IGiftProvider>(context, listen: false).refresh('', true);
+      Provider.of<IPhotoProvider>(context, listen: false).refresh('', false);
+      Provider.of<IFriendsProvider>(context, listen: false).refresh('', true);
+    });
   }
 
   @override
@@ -196,22 +201,25 @@ class _IProfileState extends State<IProfile> {
                 child: TabBarView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(34.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProfileField(label: 'Name', value: Mixin.user?.usrFullNames ?? ''),
-                          ProfileField(label: 'Email', value: Mixin.user?.usrEmail ?? ''),
-                          ProfileField(label: 'Age', value: '${'${Mixin.user?.usrDob}'.age()} Years'),
-                          ProfileField(label: 'Gender', value: '${Mixin.user?.usrGender}' ?? ''),
-                          ProfileField(label: 'Phone', value: Mixin.user?.usrMobileNumber ?? ''),
-                          ProfileField(label: 'Place', value: '${Mixin.user?.usrCountry}, ${Mixin.user?.usrAdministrativeArea}'),
-                          ProfileField(label: 'Bio', value: Mixin.user?.usrDesc ?? ''),
-                        ],
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.all(34.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ProfileField(label: 'Name : ', value: Mixin.user?.usrFullNames ?? ''),
+                            ProfileField(label: 'Email : ', value: Mixin.user?.usrEmail ?? ''),
+                            ProfileField(label: 'Age : ', value: '${'${Mixin.user?.usrDob}'.age()} Years'),
+                            ProfileField(label: 'Gender : ', value: '${Mixin.user?.usrGender}' ?? ''),
+                            ProfileField(label: 'Phone : ', value: Mixin.user?.usrMobileNumber ?? ''),
+                            ProfileField(label: 'Place : ', value: '${Mixin.user?.usrCountry}, ${Mixin.user?.usrAdministrativeArea}'),
+                            ProfileField(label: 'About me : ', value:' '),
+                            Text( Mixin.user?.usrDesc ??'', style: TextStyle(fontSize: FONT_13), ),
+                          ],
+                        ),
                       ),
                     ),
-                    IFriend(),
+                    IMyFriend(),
                     IPhotos(showFab: false,),
                     IPet(),
                   ],

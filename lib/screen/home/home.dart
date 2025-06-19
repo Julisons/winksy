@@ -423,10 +423,16 @@ _showNotification(RemoteNotification? notification, Map<String, dynamic> data) {
   if(channel == PET_NOTIFICATION){
     INotification notification = INotification.fromJson(json.decode(payload));
   _showBigPictureNotificationHiddenLargeIcon(notification, id,icon,channel);
-    }else if(channel == PET_NOTIFICATION_NORMAL){
+    }
+  else if(channel == PET_NOTIFICATION_NORMAL){
     INotification notification = INotification.fromJson(json.decode(payload));
     _showNormalNotification(notification, id,channel);
-    }else
+    }
+  else if(channel == GIFT_NOTIFICATION){
+    INotification notification = INotification.fromJson(json.decode(payload));
+    _showNormalNotification(notification, id,channel);
+    }
+  else
       {
         sms.Message message = sms.Message.fromJson(json.decode(payload));
     showChatNotification( icon, channel, channel, message);
@@ -520,6 +526,9 @@ void _handleNotificationResponse(NotificationResponse response) {
         newMessage.msgSenderId = message.msgReceiverId;
         newMessage.msgReceiverId = message.msgSenderId;
         newMessage.msgChatId = message.msgChatId;
+
+         IPost.postData(message, (state, res, value) {
+         }, IUrls.SAVE_MESSAGE());
         
         log('------ message.msgChatId,----------${ message.msgChatId}----');
 

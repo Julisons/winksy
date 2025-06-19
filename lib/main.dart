@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/provider/chat_provider.dart';
+import 'package:winksy/provider/friend_provider.dart';
+import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/gift/treat_provider.dart';
 import 'package:winksy/provider/interest_provider.dart';
@@ -19,6 +21,7 @@ import 'package:winksy/provider/user_provider.dart';
 import 'package:winksy/screen/authenticate/select/bio.dart';
 import 'package:winksy/screen/authenticate/select/intro.dart';
 import 'package:winksy/screen/authenticate/select/social_intro.dart';
+import 'package:winksy/screen/authenticate/sign_up.dart';
 import 'package:winksy/screen/home/home.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import 'package:winksy/screen/splash/splash_screen.dart';
@@ -77,6 +80,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
               create: (_) => IBrowseProvider().init()),
+          ChangeNotifierProvider<IFriendProvider>(
+              create: (_) => IFriendProvider().init()),
           ChangeNotifierProvider<ITreatProvider>(
               create: (_) => ITreatProvider().init()),
           ChangeNotifierProvider<INotificationProvider>(
@@ -107,6 +112,8 @@ class MyApp extends StatelessWidget {
               create: (_) => ThemeProvider()),
           ChangeNotifierProvider<IChatProvider>(
               create: (_) => IChatProvider().init()),
+          ChangeNotifierProvider<IFriendsProvider>(
+              create: (_) => IFriendsProvider().init()),
         ],
         child: ScreenUtilInit(
             designSize: const Size(490.9, 1075.0),
