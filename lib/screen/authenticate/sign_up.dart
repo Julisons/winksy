@@ -52,18 +52,18 @@ class _ISignUpState extends State<ISignUp> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Sign Up', style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.bold),),
+        backgroundColor: color.xPrimaryColor,
+        title: Text('Sign Up', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold),),
         centerTitle: true, // Center the title
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.tertiary),
+          icon: Icon(Icons.arrow_back_ios, color: color.xTrailing),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous page
           },
         ),
       ),
       body: Container(
-        color: Theme.of(context).colorScheme.surface,
+        color: color.xPrimaryColor,
         height: MediaQuery
             .of(context)
             .size
@@ -82,10 +82,10 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _firstNameController,
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
               decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
                   border: InputBorder.none,
                   hintText: 'First name',
@@ -95,14 +95,14 @@ class _ISignUpState extends State<ISignUp> {
                     fontSize: FONT_13,
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
                   hintStyle: TextStyle(
                     color: Colors.white,
                     fontSize: FONT_13,
                   ),
-                  suffixIcon: Icon(Icons.star,color: Theme.of(context).colorScheme.tertiary, size: 1,),
-                  fillColor: Theme.of(context).colorScheme.surface,
+                  suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
+                  fillColor: color.xPrimaryColor,
                   filled: true
               ),
             ),
@@ -110,10 +110,10 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _lastNameController,
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
               decoration:  InputDecoration(
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 border: InputBorder.none,
                 hintText: 'Last name',
@@ -123,14 +123,14 @@ class _ISignUpState extends State<ISignUp> {
                   fontSize: FONT_13,
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 hintStyle: TextStyle(
                   color: Colors.white,
                   fontSize: FONT_13,
                 ),
-                suffixIcon: Icon(Icons.star,color: Theme.of(context).colorScheme.tertiary, size: 1,),
-                fillColor: Theme.of(context).colorScheme.surface,
+                suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
+                fillColor: color.xPrimaryColor,
                 filled: true,
               ),
             ),
@@ -138,10 +138,10 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
               decoration:  InputDecoration(
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 border: InputBorder.none,
                 labelText: 'Email address',
@@ -150,15 +150,15 @@ class _ISignUpState extends State<ISignUp> {
                   fontSize: FONT_13,
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 hintText: 'Email address',
                 hintStyle: TextStyle(
                   color: Colors.white,
                   fontSize: FONT_13,
                 ),
-                suffixIcon: Icon(Icons.star,color: Theme.of(context).colorScheme.tertiary, size: 1,),
-                fillColor: Theme.of(context).colorScheme.surface,
+                suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
+                fillColor: color.xPrimaryColor,
                 filled: true,
               ),
             ),
@@ -171,14 +171,14 @@ class _ISignUpState extends State<ISignUp> {
             TextFormField(
               controller: _pinController,
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 border: InputBorder.none,
                 hintText: 'Password',
@@ -191,7 +191,7 @@ class _ISignUpState extends State<ISignUp> {
                   color: Colors.white,
                   fontSize: FONT_13,
                 ),
-                fillColor: Theme.of(context).colorScheme.surface,
+                fillColor: color.xPrimaryColor,
                 filled: true,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -199,7 +199,7 @@ class _ISignUpState extends State<ISignUp> {
                     _isPasswordVisible
                         ? Icons.visibility
                         : Icons.visibility_off,
-                    color: Theme.of(context).colorScheme.tertiary,
+                    color: color.xTrailing,
                   ),
                   onPressed: () {
                     setState(() {
@@ -211,12 +211,12 @@ class _ISignUpState extends State<ISignUp> {
             ),
             const SizedBox(height: 24),
             TextFormField(
-              style: TextStyle(fontSize: FONT_13,  color: Theme.of(context).colorScheme.tertiary),
+              style: TextStyle(fontSize: FONT_13,  color: color.xTrailing),
               controller: _usernameController,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  borderSide: BorderSide(color: color.xTrailing),
                 ),
                 border: InputBorder.none,
                 hintText: 'Username',
@@ -230,26 +230,26 @@ class _ISignUpState extends State<ISignUp> {
                     fontSize: FONT_13,
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    borderSide: BorderSide(color: color.xTrailing),
                   ),
-                  fillColor: Theme.of(context).colorScheme.surface,
+                  fillColor: color.xPrimaryColor,
                 filled: true,
-                suffixIcon: Icon(Icons.star,color: Theme.of(context).colorScheme.tertiary, size: 16,)
+                suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 16,)
               ),
             ),
              SizedBox(height: 34.h),
-            Text(' * Please fill in all marked areas correctly.', style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.bold),),
+            Text(' * Please fill in all marked areas correctly.', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold),),
              SizedBox(height: 44.h),
             _isLoading
                 ?  Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.tertiary,
+                color: color.xTrailing,
               ),
             )
                 :
 
             IButton(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: color.xTrailing,
               onPress: () {
                 if (_firstNameController.text.isEmpty) {
                   Mixin.showToast(
@@ -333,7 +333,7 @@ class _ISignUpState extends State<ISignUp> {
                     children: <TextSpan>[
                       TextSpan(
                           text: '  Sign In  ',
-                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+                          style: TextStyle(color: color.xTrailing,
                               fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM)),
                     ],
                   ),
@@ -355,14 +355,14 @@ class _ISignUpState extends State<ISignUp> {
                     children: <TextSpan>[
                       TextSpan(
                           text: ' Terms of Use ',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing,
                               decoration: TextDecoration.underline)),
                       TextSpan(
                           text: 'and to receive Winksy emails & updates and acknowledge that you read our ',
                           style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: Colors.white)),
                       TextSpan(
                           text: ' Privacy Policy.',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary, decoration: TextDecoration.underline)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing, decoration: TextDecoration.underline)),
                     ],
                   ),
                 ),

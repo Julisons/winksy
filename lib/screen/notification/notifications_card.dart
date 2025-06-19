@@ -47,13 +47,13 @@ class _INotificationsCardState extends State<INotificationsCard> with TickerProv
         child: InkWell(
           child: Card(
             color: color.xPrimaryColor,
+            elevation: ELEVATION,
             margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
             semanticContainer: true,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6.0),
             ),
-            elevation: .001,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
