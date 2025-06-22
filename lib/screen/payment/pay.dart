@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/mixin/mixins.dart';
-import 'package:winksy/model/Link.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

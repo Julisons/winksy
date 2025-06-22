@@ -13,7 +13,7 @@ import '../../component/google.dart';
 import '../../component/logo.dart';
 import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
-import 'package:winksy/model/User.dart';
+import '../../model/user.dart';
 import '../../request/posts.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
@@ -195,21 +195,15 @@ class _ISignInState extends State<ISignIn> {
                   IPost.postData(user, (state, res, value) {
                     setState(() {
                       if (state) {
-                        Mixin.prefString(pref: value.toString(), key: CURR);
+                        Mixin.prefString(pref: jsonEncode(value), key: CURR);
                         Mixin.showToast(context, res, INFO);
                         Mixin.getUser().then((value) =>
                         {
                           Mixin.user = value,
-
                           Mixin.user = User()
                             ..usrId = Mixin.user?.usrId,
 
-                          if(value?.usrRgId != null){
                             Mixin.pop(context, const IHome())
-                          }
-                        else {
-                          Mixin.pop(context, const IHome())
-                           }
                         });
                       } else {
                         Mixin.errorDialog(context, 'ERROR', res);

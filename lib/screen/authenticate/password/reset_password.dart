@@ -10,7 +10,7 @@ import '../../../component/logo.dart';
 import '../../../component/phone_field.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
-import 'package:winksy/model/User.dart';
+import '../../../model/user.dart';
 import '../../../request/posts.dart';
 import '../../../request/urls.dart';
 import '../../home/home.dart';

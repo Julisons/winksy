@@ -11,12 +11,12 @@ import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
 import '../../../mixin/mixins.dart';
-import 'package:winksy/model/User.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../mixin/constants.dart';
 import '../../model/chat.dart';
 import '../../model/friend.dart';
+import '../../model/user.dart';
 import '../account/winker/winkser.dart';
 import '../message/message.dart';
 

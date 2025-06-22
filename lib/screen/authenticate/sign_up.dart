@@ -14,8 +14,7 @@ import '../../component/google.dart';
 import '../../component/logo.dart';
 import '../../component/phone_field.dart';
 import '../../mixin/mixins.dart';
-import '../../model/User.dart';
-import '../../model/user.dart' hide User;
+import '../../model/user.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../request/posts.dart';
 import '../../request/urls.dart';
@@ -313,6 +312,7 @@ class _ISignUpState extends State<ISignUp> {
                   ..usrFirstName = _firstNameController.text.trim()
                   ..usrLastName = _lastNameController.text.trim()
                   ..usrEmail = _emailController.text.trim()
+                  ..usrType = 'SIGN-UP'
                   ..usrFullNames = '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}'
                   ..usrMobileNumber = _phoneController.text.trim()
                   ..usrEncryptedPassword = _pinController.text.trim()
@@ -452,6 +452,7 @@ class _ISignUpState extends State<ISignUp> {
         ..usrNationalId = email
         ..usrEmail = email
         ..usrMobileNumber = ''
+        ..usrType = 'GOOGLE'
         ..usrImage = image
         ..usrEncryptedPassword = email
         ..usrUsername = email;

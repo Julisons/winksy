@@ -16,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:winksy/model/User.dart';
 import 'package:winksy/model/message.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 
@@ -24,6 +23,7 @@ import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../model/chat.dart';
+import '../../../model/user.dart';
 import '../../../provider/chat_provider.dart';
 import '../../../request/urls.dart';
 import 'chat_card.dart';
@@ -112,7 +112,7 @@ class _IChatState extends State<IChat> {
                             addAutomaticKeepAlives: false,
                             itemBuilder: (context, index) {
                               return IChatCard(
-                                chat: provider.getCount() > index ? provider.list[index]: Chat(),
+                                chat: provider.list[index],
                                 text: 'View Details',
                                 onClick: (){
                                   _socket?.emit(CHAT_CLICKED,jsonEncode(provider.list[index]));

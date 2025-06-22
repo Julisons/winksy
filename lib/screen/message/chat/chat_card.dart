@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:timeago/timeago.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/mixin/extentions.dart';
-import 'package:winksy/model/Link.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,11 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:vibration/vibration.dart';
-import 'package:winksy/model/User.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../model/chat.dart';
+import '../../../model/user.dart';
 import '../message.dart';
 
 

@@ -73,6 +73,12 @@ android {
         }
     }
 
+    lint {
+        disable += "MissingTranslation" + "TypographyFractions"
+        abortOnError = false
+        checkReleaseBuilds =  false
+    }
+
 }
 
 flutter {

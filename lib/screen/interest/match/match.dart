@@ -11,7 +11,6 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/like_me_provider.dart';
 import 'package:winksy/provider/match_provider.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
-import 'package:winksy/model/User.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 

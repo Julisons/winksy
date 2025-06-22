@@ -177,7 +177,8 @@ class _SocialIntroState extends State<SocialIntro> {
         ..usrEmail = email
         ..usrMobileNumber = ''
         ..usrImage = image
-        ..usrEncryptedPassword = email
+        ..usrType = 'GOOGLE'
+        ..usrEncryptedPassword = email+':'+email
         ..usrUsername = email;
 
       IPost.postData(user, (state, res, value) {

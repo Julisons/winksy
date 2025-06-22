@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
 import '../mixin/mixins.dart';
+import '../model/interest.dart';
 import '../model/response.dart';
-import 'package:winksy/model/Interest.dart';
 import '../request/gets.dart';
 
 class ILikeProvider with ChangeNotifier {

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
 import '../mixin/mixins.dart';
 import '../model/response.dart';
-import 'package:winksy/model/User.dart';
+import '../model/user.dart';
 import '../request/gets.dart';
 
 class ILikeMeProvider with ChangeNotifier {

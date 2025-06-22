@@ -6,8 +6,8 @@ import '../../mixin/mixins.dart';
 import '../../model/pet.dart';
 import '../../model/response.dart';
 import '../../request/gets.dart';
-import '../model/User.dart';
 import '../model/friend.dart';
+import '../model/user.dart';
 
 class IFriendsProvider with ChangeNotifier {
   List<User> list = [];

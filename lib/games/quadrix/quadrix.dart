@@ -13,8 +13,8 @@ import 'package:winksy/screen/zoo/zoo.dart';
 
 import '../../component/app_bar.dart';
 import '../../mixin/mixins.dart';
-import '../../model/User.dart';
 import '../../model/quad.dart';
+import '../../model/user.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
 
