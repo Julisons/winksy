@@ -61,7 +61,7 @@ class _IChatCardState extends State<IChatCard> {
               children: [
                 ClipOval(
                   child: CachedNetworkImage(
-                    imageUrl: '${widget.chat.usrImage}',
+                    imageUrl: '${widget.chat.usrImage}'.startsWith('http') ? '${widget.chat.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${widget.chat.usrImage}',
                     fit: BoxFit.cover,
                     height: 70,
                     width: 70,
@@ -95,6 +95,7 @@ class _IChatCardState extends State<IChatCard> {
                                 style: TextStyle( fontWeight: FontWeight.bold, color: color.xTextColor, fontSize: FONT_TITLE)),
                           ),
 
+                          if(widget.chat.msgCreatedTime != null)
                           Text(timeago.format(DateTime.parse(widget.chat.msgCreatedTime)),
                               textAlign: TextAlign.center,
                               style: TextStyle( fontWeight: FontWeight.normal, color: color.xTrailing, fontSize: FONT_SMALL),),

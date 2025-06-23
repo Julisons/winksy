@@ -63,7 +63,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
               },
               child: ClipOval(
                 child: CachedNetworkImage(
-                  imageUrl: '${Mixin.winkser?.usrImage}',
+                  imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ? '${Mixin.winkser?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                   width: 50,
                   height: 50,
                   fit: BoxFit.fitHeight,
@@ -293,7 +293,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                               },
                               child: ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: '${Mixin.winkser?.usrImage}',
+                                  imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ? '${Mixin.winkser?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.fitHeight,
@@ -659,7 +659,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
               ? InkWell(
                   child: ClipOval(
                     child: CachedNetworkImage(
-                      imageUrl: '${Mixin.winkser?.usrImage}',
+                      imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ? '${Mixin.winkser?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                       width: 90,
                       height: 90,
                       fit: BoxFit.fitHeight,

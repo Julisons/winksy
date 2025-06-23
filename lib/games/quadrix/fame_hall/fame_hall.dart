@@ -16,8 +16,7 @@ import 'fame_hall_card.dart';
 
 
 class IFameHall extends StatefulWidget {
-  const IFameHall({super.key, required this.showTitle});
-  final bool showTitle;
+  const IFameHall({super.key});
 
   @override
   State<IFameHall> createState() => _IFameHallState();
@@ -51,7 +50,7 @@ class _IFameHallState extends State<IFameHall> {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      appBar:  widget.showTitle ? AppBar(
+      appBar:  AppBar(
         surfaceTintColor: color.xPrimaryColor,
         shadowColor: color.xPrimaryColor,
         automaticallyImplyLeading: false,
@@ -82,7 +81,7 @@ class _IFameHallState extends State<IFameHall> {
         centerTitle: false,
         backgroundColor: color.xPrimaryColor,
         actions: [IPopup()],
-      ) : null,
+      ),
       backgroundColor: color.xPrimaryColor,
       body:
       Container(

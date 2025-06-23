@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,8 +59,8 @@ class GameBoardState extends State<GameBoard> {
                 onTap: () async {
                   if (end == false) {
                     /**
-                    * IF ITS NOT YOUR TURN , DON'T PLAY
-                    */
+                     * IF ITS NOT YOUR TURN , DON'T PLAY
+                     */
                     if(_quad.quadPlayerId == null){
                       if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
                         return;
@@ -94,11 +95,10 @@ class GameBoardState extends State<GameBoard> {
                       ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
                       ..quadId = Mixin.quad?.quadId;
 
-
                     Result result = didEnd();
-
-                   // if(result == Result.play)
-                    {
+                    _end(result);
+                    // if(result == Result.play)
+                        {
                       Mixin.quadrixSocket?.emit('played', quad.toJson());
                     }
 
@@ -160,7 +160,7 @@ class GameBoardState extends State<GameBoard> {
                                 width: MediaQuery.of(context).size.width/3.5,
                                 textColor: Colors.white,
                                 onPress: () {
-                                 // Navigator.of(context).pop();
+                                  // Navigator.of(context).pop();
                                   Mixin.navigate(context,IQuadrixScreen());
                                 },
                               )
@@ -189,31 +189,31 @@ class GameBoardState extends State<GameBoard> {
                 child: GameCoinWidget(
                   coin: (coin['value'] == 0)
                       ? Coin(
-                          row: coin['row'] as int,
-                          column: coin['column'] as int,
-                          selected: false,
-                          color: color.xSecondaryColor,
-                        )
+                    row: coin['row'] as int,
+                    column: coin['column'] as int,
+                    selected: false,
+                    color: color.xSecondaryColor,
+                  )
                       : (coin['value'] == 1)
-                          ? Coin(
-                              row: coin['row'] as int,
-                              column: coin['column'] as int,
-                              selected: true,
-                              color: playerOneColor,
-                            )
-                          : (coin['value'] == 2)
-                              ? Coin(
-                                  row: coin['row'] as int,
-                                  column: coin['column'] as int,
-                                  selected: true,
-                                  color: playerTwoColor,
-                                )
-                              : Coin(
-                                  row: coin['row'] as int,
-                                  column: coin['column'] as int,
-                                  selected: true,
-                                  color: Colors.red,
-                                ),
+                      ? Coin(
+                    row: coin['row'] as int,
+                    column: coin['column'] as int,
+                    selected: true,
+                    color: playerOneColor,
+                  )
+                      : (coin['value'] == 2)
+                      ? Coin(
+                    row: coin['row'] as int,
+                    column: coin['column'] as int,
+                    selected: true,
+                    color: playerTwoColor,
+                  )
+                      : Coin(
+                    row: coin['row'] as int,
+                    column: coin['column'] as int,
+                    selected: true,
+                    color: Colors.red,
+                  ),
                 ),
               );
             }).toList(),
@@ -229,8 +229,8 @@ class GameBoardState extends State<GameBoard> {
       _quad = Quad.fromJson(message);
 
       /**
-      * THIS MOVE IS FROM ME, SO JUST IGNORE
-      */
+       * THIS MOVE IS FROM ME, SO JUST IGNORE
+       */
       if(Mixin.user?.usrId.toString() == _quad.quadUsrId.toString()) {
         return;
       }
@@ -248,12 +248,13 @@ class GameBoardState extends State<GameBoard> {
         color: Theme.of(context).extension<CustomColors>()!.xSecondaryColor,
       ),
 
-      playerTurnKey: widget.playerTurnKey,
-      gameBoardKey: widget.gameBoardKey);
+          playerTurnKey: widget.playerTurnKey,
+          gameBoardKey: widget.gameBoardKey);
 
       setState(()  {
         if (end == false) {
           Result result = didEnd();
+          _end(result);
           //stop the game if the game has ended
           if (result != Result.play) {
             setState(() {});
@@ -351,5 +352,13 @@ class GameBoardState extends State<GameBoard> {
         }
       });
     });
+  }
+
+  void _end(Result result){
+    if(result == Result.draw) {
+      Mixin.playerSound.play(AssetSource('sound/win.wav')); // Your sound file
+    }else {
+      Mixin.playerSound.play(AssetSource('sound/win2.wav')); // Your sound file
+    }
   }
 }

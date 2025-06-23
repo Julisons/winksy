@@ -26,6 +26,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'games/ tic_tac_toe/tic_tac_toe.dart';
 import 'games/quadrix/quadric_promotion.dart';
 import 'games/quadrix/quadrix_dashboard.dart';
 import 'mixin/constants.dart';
@@ -115,7 +116,7 @@ class MyApp extends StatelessWidget {
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                home: ISplashScreen(),
+                home: ITicTacToe(),
                 theme: ThemeDataStyle.lighter,
                 darkTheme: ThemeDataStyle.darker,
               );

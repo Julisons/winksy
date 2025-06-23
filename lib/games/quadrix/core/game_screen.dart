@@ -30,7 +30,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
   GlobalKey<GameBoardState> gameBoardKey = GlobalKey<GameBoardState>();
 
   GlobalKey<PlayerTurnWidgetState> playerTurnKey =
-      GlobalKey<PlayerTurnWidgetState>();
+  GlobalKey<PlayerTurnWidgetState>();
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +98,9 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
             ),
             Positioned(
               top: (MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).padding.top -
-                          appBar.preferredSize.height) /
-                      2 -
+                  MediaQuery.of(context).padding.top -
+                  appBar.preferredSize.height) /
+                  2 -
                   (MediaQuery.of(context).size.width - 20) / 2 -
                   50,
               child: PlayerTurnWidget(key: playerTurnKey),
@@ -202,8 +202,8 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
               height: 50,
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: color.xPrimaryColor
+                  borderRadius: BorderRadius.circular(25),
+                  color: color.xPrimaryColor
               ),
               alignment: Alignment.center,
               child:  Text(
