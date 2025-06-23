@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:winksy/games/chess/chess_dashboard.dart';
 
 import 'package:winksy/games/quadrix/core/game_screen.dart';
@@ -16,6 +18,8 @@ import ' tic_tac_toe/tic_tac_toe_dashboard.dart';
 import '../component/app_bar.dart';
 import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
+import 'ludo/ludo_provider.dart';
+import 'ludo/main_screen.dart';
 
 class ListItem {
   final String title;
@@ -57,11 +61,33 @@ class _IGamesState extends State<IGames> {
   final List<Item> games = [
     Item(title: 'Friend Zoo', desc: '', icon: '🐯'),
     Item(title: 'Quadrix', desc: '', icon: '🏐'),
-    Item(title: 'Crazy8', desc: '', icon: '♣️'),
+    Item(title: 'Ludo', desc: '', icon: '🎲'),
     Item(title: 'Tic Tac Toe', desc: '', icon: '✖'),
     Item(title: 'Daily Spin', desc: '', icon: '🎡'),
     Item(title: 'Chess', desc: '', icon: '♟️'),
   ];
+
+  @override
+  void initState() {
+    ///Initialize images and precache it
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Future.wait([
+        precacheImage(const AssetImage("assets/images/thankyou.gif"), context),
+        precacheImage(const AssetImage("assets/images/board.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/1.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/2.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/3.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/4.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/5.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/6.png"), context),
+        precacheImage(const AssetImage("assets/images/dice/draw.gif"), context),
+        precacheImage(const AssetImage("assets/images/crown/1st.png"), context),
+        precacheImage(const AssetImage("assets/images/crown/2nd.png"), context),
+        precacheImage(const AssetImage("assets/images/crown/3rd.png"), context),
+      ]);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +128,9 @@ class _IGamesState extends State<IGames> {
                         case 'Chess':
                           Mixin.navigate(context, IChessDashboard());
                           break;
-                        case 'Crazy8':
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Coming soon!')),
-                          );
+                        case 'Ludo':
+                          Provider.of<LudoProvider>(context, listen: false).startGame();
+                          Mixin.navigate(context, MainScreen());
                           break;
                       }
                     },

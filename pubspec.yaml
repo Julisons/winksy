@@ -74,6 +74,7 @@ dependencies:
   pay: ^3.2.1
   google_mlkit_face_detection: ^0.13.1
   camera: ^0.10.5+5
+  simple_ripple_animation: ^0.0.9
 
 dev_dependencies:
   flutter_test:
@@ -133,3 +134,5 @@ flutter:
     - assets/images/
     - assets/chess/
     - assets/sound/
+    - assets/images/dice/
+    - assets/images/crown/
