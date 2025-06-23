@@ -18,12 +18,7 @@ class IGiftProvider with ChangeNotifier {
   final int _limit = 200;
 
   IGiftProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh('', true)
-      });
-    }else{
+    if( Mixin.user != null) {
       refresh('', true);
     }
     return this;

@@ -24,13 +24,13 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
         children: [
-          buildColorBox(selectedPlayer: player, selected: player == 1, color: color.xTextColor),
+          buildColorBox(selectedPlayer: player, selected: player == 1, color: color.xPrimaryColor),
           const SizedBox(width: 10),
-          buildText(text: 'Player 1 ', color: color.xTextColor),
           const Spacer(),
-          buildColorBox(selectedPlayer: player, selected: player == 2, color: color.xTextColor),
+          buildText(text: quadPlayer, color: color.xTextColor),
+          const Spacer(),
+          buildColorBox(selectedPlayer: player, selected: player == 2, color: color.xPrimaryColor),
           const SizedBox(width: 10),
-          buildText(text: 'Player 2', color: color.xTextColor),
         ],
       ),
     );
@@ -60,7 +60,6 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
         fontWeight: FontWeight.bold,
         fontSize: 22,
       ),
-
       textAlign: TextAlign.center,
     );
   }

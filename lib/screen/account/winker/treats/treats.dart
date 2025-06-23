@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/gift/treat_provider.dart';
 import 'package:winksy/screen/account/winker/treats/treats_card.dart';
+import 'package:winksy/screen/account/winker/treats/treats_shimmer.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../theme/custom_colors.dart';
@@ -40,7 +41,7 @@ class _ITreatsState extends State<ITreats> {
 
     return Consumer<ITreatProvider>(
         builder: (context, provider, child) {
-          return provider.isLoading() ? const IPeopleShimmer() :
+          return provider.isLoading() ? const ITreatShimmer() :
           Column(
             children: [
               Expanded(

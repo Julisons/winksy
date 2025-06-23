@@ -13,12 +13,7 @@ class IMatchProvider with ChangeNotifier {
   bool loading = false;
 
   IMatchProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh('')
-      });
-    }else{
+    if( Mixin.user != null) {
       refresh('');
     }
     return this;

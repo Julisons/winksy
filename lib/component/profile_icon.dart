@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../request/urls.dart';
 import '../theme/custom_colors.dart';
 import 'button.dart';
 
@@ -50,7 +51,11 @@ class ProfileProgressWidget extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 60.w,
-                backgroundImage: CachedNetworkImageProvider(imageUrl),
+                backgroundColor: color.xPrimaryColor,
+                backgroundImage:
+                CachedNetworkImageProvider(
+                  imageUrl.startsWith('http') ? imageUrl : '${IUrls.IMAGE_URL}/file/secured/$imageUrl',
+                ),
               ),
               Positioned(
                 bottom: 1.h,

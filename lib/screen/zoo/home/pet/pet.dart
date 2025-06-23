@@ -74,7 +74,7 @@ class _IPetState extends State<IPet> {
                               right: 6,
                               left: 6),
                           scrollDirection: Axis.vertical,
-                          physics: const AlwaysScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return IPetCard(

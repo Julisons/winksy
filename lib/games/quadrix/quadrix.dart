@@ -78,9 +78,9 @@ class _IQuadrixState extends State<IQuadrix> {
   }
 
   final List<ListItem> items = [
-    ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
+/*    ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
-    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
+    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),*/
   ];
 
   @override
@@ -93,9 +93,14 @@ class _IQuadrixState extends State<IQuadrix> {
       body: Padding(
         padding:  EdgeInsets.all(16.0.r),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
+              flex: 3,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 100.h,),
                   Row(
@@ -119,32 +124,7 @@ class _IQuadrixState extends State<IQuadrix> {
                 ],
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: color.xSecondaryColor,
-                    elevation: ELEVATION,
-                    margin: EdgeInsets.only(bottom: 16.r),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                      leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                      title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
-                      subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 6.r),
-                        child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
-                      ),
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('${items[index].title} tapped')),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+            Expanded(flex: 1, child: SizedBox.shrink())
           ],
         ),
       ),
@@ -163,10 +143,6 @@ class _IQuadrixState extends State<IQuadrix> {
       'transports': ['websocket'],
       'autoConnect': false,
       'reconnection': true,
-      'query': {
-        'user': Mixin.user?.usrFullNames ?? 'Guest',
-        'room': _room,
-      },
     });
 
     Mixin.quadrixSocket?.on('connect_error', (c) {
@@ -176,38 +152,59 @@ class _IQuadrixState extends State<IQuadrix> {
     Mixin.quadrixSocket?.connect();
 
     Mixin.quadrixSocket?.onConnect((_) {
-      Mixin.quadrixSocket?.emit('joinRoom', {
-        'user': Mixin.user?.usrFullNames ?? 'Guest',
-        'room': _room,
-        'usrId': Mixin.user?.usrId,
-        'action': 'joinRoom'
-      });
+       Mixin.quad = Quad()
+      ..quadUser =  Mixin.user?.usrFullNames
+      ..quadUsrId = Mixin.user?.usrId;
+       Mixin.quadrixSocket?.emit('joinRoom', Mixin.quad?.toJson());
     });
 
     Mixin.quadrixSocket?.on('roomJoined', (message) {
       print(jsonEncode(message));
       Mixin.quad = Quad.fromJson(message);
 
-      if(Mixin.user?.usrId.toString() == Mixin.quad?.usrId.toString()) {
-       return;
-      }
+      /**
+      * I AM THE INITIATOR
+      */
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+        if(Mixin.quad?.quadStatus == PAIRED){
+          Mixin.winkser = User()
+            ..usrId = Mixin.quad?.quadAgainstId
+            ..usrFullNames = Mixin.quad?.quadAgainst;
 
+          setState(() {
+            _timer.cancel();
+            _loading = '';
+            _waiting = 'Gaming with ${Mixin.quad?.quadAgainst}';
 
+            Future.delayed(Duration(seconds: 4), () {
+               Mixin.navigate(context,IQuadrixScreen());
+            });
+          });
+        }else {
+          //WAITING IN ROOM
+          return;
+        }
+      }else
+        /**
+         * I JOINED A WAITING USER
+         */
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.quadAgainstId.toString()){
 
-      Mixin.winkser = User()
-        ..usrId = Mixin.quad?.usrId
-        ..usrFullNames = Mixin.quad?.user;
+        Mixin.winkser = User()
+          ..usrId = Mixin.quad?.quadUsrId
+          ..usrFullNames = Mixin.quad?.quadUser;
 
-      setState(() {
-        _timer.cancel();
-        _loading = '';
-        _waiting = 'Gaming with ${Mixin.quad?.user}';
+        setState(() {
+          _timer.cancel();
+          _loading = '';
+          _waiting = 'Gaming with ${Mixin.quad?.quadUser}';
 
-        Future.delayed(Duration(seconds: 4), () {
-          Mixin.navigate(context,Quadrix());
+          Future.delayed(Duration(seconds: 4), () {
+              Mixin.navigate(context,IQuadrixScreen());
+          });
         });
 
-      });
+      }
     });
   }
 }

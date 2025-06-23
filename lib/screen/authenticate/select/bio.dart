@@ -24,6 +24,7 @@ import '../../../../model/user.dart';
 import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../component/face_detector.dart';
 import '../../home/home.dart';
 
 
@@ -62,7 +63,7 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
     _boy = Mixin.user?.usrGender == 'MALE';
     _boyInt = Mixin.user?.usrOsType == 'MALE';
     _girlInt = Mixin.user?.usrOsType == 'FEMALE';
-    _bioController.text = Mixin.user?.usrDesc;
+    _bioController.text = Mixin.user?.usrDesc ?? '';
 
     return Scaffold(
         appBar: AppBar(
@@ -207,6 +208,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
 
                           Mixin.user?.usrGender = _girl ? 'FEMALE' : 'MALE';
                           Mixin.user?.usrOsType = _girlInt ? 'FEMALE' : 'MALE';
+
+                          log('${Mixin.user}');
                         });
                       },
                     ),
@@ -473,13 +476,38 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
           ),
         ],
       );
-      if (croppedFile != null) {
-        setState(() {
-          _isImage = true;
-          _croppedFile = croppedFile;
-          _postImage();
-        });
-      }
+
+      showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return  Container(
+            height: MediaQuery.of(context).size.height/1.2,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(bottom: 10),
+            child: FaceDetectionScanner(
+              croppedFile: croppedFile, // Your CroppedFile from image_cropper
+              onFaceDetected: (hasFace) {
+                if(hasFace){
+                  if (croppedFile != null) {
+                    setState(() {
+                      Navigator.pop(context);
+                      _isImage = true;
+                      _croppedFile = croppedFile;
+                      _postImage();
+                    });
+                  }
+                }else{
+                  Navigator.pop(context);
+                  Mixin.showToast(context, 'We couldn’t detect a face in this photo. Please upload a clear photo of yourself.', ERROR);
+                }
+              },
+              scanColor: Theme.of(context).extension<CustomColors>()!.xTrailingAlt,
+              showDetectionDetails: true,
+              height: 400,
+            ),
+          );
+        },
+      );
     }
   }
 }

@@ -17,13 +17,8 @@ class IPetProvider with ChangeNotifier {
   final int _limit = 10;
 
   IPetProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh('', false)
-      });
-    }else{
-      refresh('', false);
+    if( Mixin.user != null) {
+      refresh('', true);
     }
     return this;
   }

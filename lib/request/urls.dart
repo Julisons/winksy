@@ -1,11 +1,12 @@
 class IUrls {
- //static String BASE = 'http://192.168.100.36';
+
+// static String BASE = 'http://192.168.100.36';
 //static String BASE = 'http://10.10.1.28';
-  static String BASE = 'http://212.47.74.158';
+  static String BASE = 'http://192.168.67.215';
+ static String BASE_IMAGE = 'http://212.47.74.158';
 
-  static String IMAGE_URL = '$BASE:5000';
+static String IMAGE_URL = '$BASE_IMAGE:5000';
   //static String IMAGE_URL = 'http://212.47.74.158:5000';
-
 
 //static String BASE_URL = 'http://212.47.74.158:5000';
 static String BASE_URL = '$BASE:5000';
@@ -108,7 +109,6 @@ static String BASE_URL = '$BASE:5000';
   static Uri TREATS() {
     return Uri.parse("$BASE_URL/gift/fetch_gifts");
   }
-
 
   static String MAIN_LINKS(params) {
     return "$BASE_URL/usr/fetchLinkAlt$params";

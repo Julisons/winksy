@@ -5,12 +5,17 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:pay/pay.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/model/gift.dart';
 import 'package:winksy/model/treat.dart';
 import 'package:confetti/confetti.dart';
+import '../../../../component/google.dart';
+import '../../../../component/mpesa_pay.dart';
+import '../../../../component/payment_configurations.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../provider/gift/gift_provider.dart';
 import '../../../../request/posts.dart';
@@ -75,23 +80,13 @@ class _ITreatCardState extends State<ITreatCard> {
                     Colors.purple
                   ], // manually specify the colors to be used
                   createParticlePath: drawStar, // define a custom shape/path.
-                  child:     CachedNetworkImage(
+                  child: CachedNetworkImage(
                     imageUrl: widget.treat.giftPath.startsWith('http')
                         ? widget.treat.giftPath
                         : '${IUrls.IMAGE_URL}/file/secured/${widget.treat.giftPath}',
                     fit: BoxFit.contain,
                     width: 60.r,
                     height: 60.r,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Theme.of(context).colorScheme.surface,
-                      highlightColor: Theme.of(context).colorScheme.surface,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
                     errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
@@ -107,10 +102,10 @@ class _ITreatCardState extends State<ITreatCard> {
                   style:  TextStyle( color: color.xTextColorSecondary, fontSize: FONT_13, fontWeight: FontWeight.bold,),
                   children: [
                     TextSpan(
-                      text: '${widget.treat.giftAmount.toStringAsFixed(2)} ',
+                      text: dollar(widget.treat.giftAmount).toString(),
                     ),
                     TextSpan(
-                      text: 'Wnk',
+                      text: '',
                       style:  TextStyle(color: color.xTrailingAlt, fontSize: FONT_13), // Blue color for Wnks
                     ),
                   ],
@@ -125,8 +120,80 @@ class _ITreatCardState extends State<ITreatCard> {
         ..ugiftUsrId = Mixin.winkser?.usrId
         ..ugiftGiftId = widget.treat.giftId
         ..ugiftGifterId = Mixin.user?.usrId;
+        
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
 
-        setState(() {
+            return Container(
+              padding: EdgeInsets.all(26.r),
+                height: MediaQuery.of(context).size.height/1.2,
+                width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: widget.treat.giftPath.startsWith('http')
+                        ? widget.treat.giftPath
+                        : '${IUrls.IMAGE_URL}/file/secured/${widget.treat.giftPath}',
+                    fit: BoxFit.contain,
+                    width: 160.r,
+                    height: 160.r,
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.treat.giftDesc,
+                    style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold, color: color.xTextColor,),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      style:  TextStyle( color: color.xTextColorSecondary, fontSize: FONT_13, fontWeight: FontWeight.bold,),
+                      children: [
+                        TextSpan(
+                          text: dollar(widget.treat.giftAmount),
+                        ),
+                        TextSpan(
+                          text: '',
+                          style:  TextStyle(color: color.xTrailingAlt, fontSize: FONT_13), // Blue color for Wnks
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 44.h,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GooglePayButton(
+                        paymentConfiguration: defaultGooglePayConfig,
+                        paymentItems: [
+                          PaymentItem(
+                            label: 'Total',
+                            amount: widget.treat.giftAmount.toString(),
+                            status: PaymentItemStatus.final_price,
+                          )
+                        ],
+                        type: GooglePayButtonType.buy,
+                        margin: const EdgeInsets.only(top: 15.0),
+                        onPaymentResult: onGooglePayResult,
+                        loadingIndicator: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      IMpesaPay(onPress: (){
+
+                      }, width: MediaQuery.of(context).size.width/2.4,textColor: color.xTextColor,
+                        color: color.xSecondaryColor,isBlack: false,),
+                    ],
+                  )
+                ],
+              )
+            );
+          },
+        );
+
+
+        /*setState(() {
           _isLoading = false;
         });
 
@@ -143,9 +210,13 @@ class _ITreatCardState extends State<ITreatCard> {
               Mixin.errorDialog(context, 'ERROR', res);
             }
           });
-        }, IUrls.GIFT());
+        }, IUrls.GIFT());*/
       },
     );
+  }
+
+  void onGooglePayResult(paymentResult) {
+    // Send the resulting Google Pay token to your server / PSP
   }
 
   /// A custom Path to paint stars.
@@ -171,4 +242,10 @@ class _ITreatCardState extends State<ITreatCard> {
     path.close();
     return path;
   }
+}
+
+
+String dollar(num amount) {
+  final formatter = NumberFormat.currency(locale: 'en_US', symbol: '\$ ');
+  return formatter.format(amount);
 }

@@ -73,7 +73,7 @@ dependencies:
   confetti: ^0.8.0
   pay: ^3.2.1
   google_mlkit_face_detection: ^0.13.1
-
+  camera: ^0.10.5+5
 
 dev_dependencies:
   flutter_test:

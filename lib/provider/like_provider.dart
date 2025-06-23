@@ -13,12 +13,7 @@ class ILikeProvider with ChangeNotifier {
   bool loading = false;
 
   ILikeProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh('')
-      });
-    }else{
+    if( Mixin.user != null) {
       refresh('');
     }
     return this;

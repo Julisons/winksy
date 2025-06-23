@@ -10,6 +10,7 @@ import '../../component/logo.dart';
 import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
+import '../authenticate/select/bio.dart';
 import '../authenticate/select/intro.dart';
 import '../authenticate/sign_up.dart';
 import '../home/home.dart';
@@ -207,14 +208,19 @@ class _ISplashScreenState extends State<ISplashScreen>
       Mixin.hasPref(key: INTRO).then((value) => {
         if (value)
           {Mixin.hasPref(key: CURR).then((val) => {
-            if (val)
-              {
-                Mixin.getUser().then((value) =>
-                {
+            if (val){
+                Mixin.getUser().then((value) => {
+
+                  if(value == null){
+                    Mixin.clear(),
+                    Mixin.pop(context, const ISplashScreen()),
+                  },
+
                   Mixin.user = value,
-                  if(Mixin.tabs != null){
+                  if(Mixin.user != null){
                     Mixin.pop(context, const IHome())
                   }
+
                 })
               }
             else

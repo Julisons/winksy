@@ -10,6 +10,7 @@ import 'package:winksy/model/photo.dart';
 import 'package:winksy/screen/account/photo/photo_card.dart';
 import 'package:winksy/screen/account/photo/photo_shimmer.dart';
 
+import '../../../component/face_detector.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../provider/photo_provider.dart';
@@ -156,21 +157,48 @@ class _IPhotosState extends State<IPhotos> {
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: true,
             aspectRatioPresets: [
-              //  CropAspectRatioPreset.original,
-              //  CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+               CropAspectRatioPreset.square,
               CropAspectRatioPreset.ratio4x3,
               //CropAspectRatioPresetCustom(),
             ],
           ),
         ],
       );
-      if (croppedFile != null) {
-        setState(() {
-          _isImage = true;
-          _croppedFile = croppedFile;
-          _postImage();
-        });
-      }
+
+      showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+         return  Container(
+           height: MediaQuery.of(context).size.height/1.2,
+           width: MediaQuery.of(context).size.width,
+           padding: EdgeInsets.only(bottom: 10),
+           child: FaceDetectionScanner(
+             croppedFile: croppedFile, // Your CroppedFile from image_cropper
+             onFaceDetected: (hasFace) {
+               print('Face detected: $hasFace');
+
+               if(hasFace){
+                 if (croppedFile != null) {
+                   setState(() {
+                     Navigator.pop(context);
+                     _isImage = true;
+                     _croppedFile = croppedFile;
+                     _postImage();
+                   });
+                 }
+               }else{
+                 Navigator.pop(context);
+                 Mixin.showToast(context, 'We couldn’t detect a face in this photo. Please upload a clear photo of yourself.', ERROR);
+               }
+             },
+             scanColor: Theme.of(context).extension<CustomColors>()!.xTrailingAlt,
+             showDetectionDetails: true,
+             height: 400,
+           ),
+         );
+        },
+      );
     }
   }
 }

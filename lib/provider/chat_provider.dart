@@ -15,9 +15,7 @@ class IChatProvider with ChangeNotifier {
   bool loading = false;
 
   IChatProvider init() {
-    if( Mixin.user == null) {
-      refresh('');
-    }else{
+    if( Mixin.user != null) {
       refresh('');
     }
     return this;
@@ -27,7 +25,7 @@ class IChatProvider with ChangeNotifier {
     list.clear();
     setLoading(true);
     await XRequest().getData({
-      'usrId': Mixin.user?.usrId,
+     'usrId': Mixin.user?.usrId,
     }, IUrls.CHATS()).then((data) {
       if (data.statusCode == 200) {
         try {

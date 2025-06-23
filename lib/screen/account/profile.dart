@@ -220,7 +220,7 @@ class _IProfileState extends State<IProfile> {
                       ),
                     ),
                     IMyFriend(),
-                    IPhotos(showFab: false,),
+                    IPhotos(showFab: true,),
                     IPet(),
                   ],
                 ),

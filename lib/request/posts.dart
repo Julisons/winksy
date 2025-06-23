@@ -15,8 +15,6 @@ class IPost {
     final token = await Mixin.getPrefString(key: TOKEN);
     log(url.toString());
     var body = jsonEncode(data);
-    log('---jsonResponse---$token');
-    log('---body---$body');
     http.Response? response;
     try {
       response = await http.post(

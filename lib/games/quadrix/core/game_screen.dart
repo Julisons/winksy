@@ -14,14 +14,14 @@ import '../components/player_turn_widget.dart';
 import '../utils/game_logic.dart';
 
 // ignore: must_be_immutable
-class Quadrix extends StatefulWidget {
-  Quadrix({super.key});
+class IQuadrixScreen extends StatefulWidget {
+  IQuadrixScreen({super.key});
 
   @override
-  State<Quadrix> createState() => _QuadrixState();
+  State<IQuadrixScreen> createState() => _IQuadrixScreenState();
 }
 
-class _QuadrixState extends State<Quadrix> {
+class _IQuadrixScreenState extends State<IQuadrixScreen> {
   late Quad _quad;
 
   GlobalKey<GameBoardState> gameBoardKey = GlobalKey<GameBoardState>();
@@ -45,7 +45,7 @@ class _QuadrixState extends State<Quadrix> {
               children: [
                 Text("Quadrix",
                   style: GoogleFonts.poppins(
-                    color: HexColor.fromHex('#f21c1b'), fontSize: 34, fontWeight: FontWeight.bold,
+                    color: color.xTrailing, fontSize: 34, fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -161,16 +161,7 @@ class _QuadrixState extends State<Quadrix> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
 
-      Mixin.quadrixSocket?.on('roomJoined', (message) {
-        print(jsonEncode(message));
-        _quad = Quad.fromJson(message);
 
-        setState(() {
-          Future.delayed(Duration(seconds: 4), () {
-            Mixin.navigate(context,Quadrix());
-          });
-        });
-      });
     });
   }
 }

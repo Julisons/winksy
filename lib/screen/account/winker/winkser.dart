@@ -276,6 +276,7 @@ class _IWinkserState extends State<IWinkser> {
                                               builder: (BuildContext context) {
                                                 return SizedBox(
                                                   height: MediaQuery.of(context).size.height/1.2,
+                                                  width: MediaQuery.of(context).size.width,
                                                   child:  ITreats(),
                                                 );
                                               },

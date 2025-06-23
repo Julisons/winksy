@@ -3,17 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../component/game_button.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
+import '../core/game_screen.dart';
 import '../models/coin.dart';
+import '../quadrix_dashboard.dart';
 import '../utils/game_logic.dart';
 import 'game_coin_widget.dart';
 
 // ignore: must_be_immutable
 class GameBoard extends StatefulWidget {
-  GameBoard(
-      {super.key, required this.playerTurnKey, required this.gameBoardKey});
+  GameBoard({super.key, required this.playerTurnKey, required this.gameBoardKey});
   GlobalKey gameBoardKey;
   GlobalKey playerTurnKey;
 
@@ -22,12 +24,18 @@ class GameBoard extends StatefulWidget {
 }
 
 class GameBoardState extends State<GameBoard> {
-  final _room = 'quadrix_room';
-
+  late Quad _quad = Quad();
 
   @override
   void initState() {
     super.initState();
+
+    if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+      quadPlayer = "You start";
+    }else{
+      quadPlayer = Mixin.quad?.quadPlayer+" starts";
+    }
+
     _play();
   }
 
@@ -45,6 +53,24 @@ class GameBoardState extends State<GameBoard> {
               return InkWell(
                 onTap: () async {
                   if (end == false) {
+                    /**
+                    * IF ITS NOT YOUR TURN , DON'T PLAY
+                    */
+                    if(_quad.quadPlayerId == null){
+                      if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+                        return;
+                      }
+                    }else {
+                      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+                        return;
+                      }
+                    }
+
+                    if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+                      quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+                    }else {
+                      quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+                    }
 
                     await onPlay(
                         coin: Coin(
@@ -56,53 +82,64 @@ class GameBoardState extends State<GameBoard> {
                         playerTurnKey: widget.playerTurnKey,
                         gameBoardKey: widget.gameBoardKey);
 
-                    currentPlayer = "${Mixin.winkser?.usrFullNames}'s turn";
+                    Quad quad = Quad()
+                      ..quadRow = coin['row'] as int
+                      ..quadColumn =  coin['column'] as int
+                      ..quadUsrId = Mixin.user?.usrId
+                      ..quadPlayer = Mixin.user?.usrFullNames
+                      ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+                      ..quadId = Mixin.quad?.quadId;
 
-                    print('--------$currentPlayer----------------player--------$player}TurnKey: }');
-
-                    Mixin.quadrixSocket?.emit('played', {
-                      'user': player,
-                      'room': _room,
-                      'usrId': Mixin.user?.usrId,
-                      'action': 'played',
-                      'row': coin['row'] as int,
-                      'column': coin['column'] as int,
-                    });
+                    Mixin.quadrixSocket?.emit('played', quad.toJson());
 
                     Result result = didEnd();
                     //stop the game if the game has ended
                     if (result != Result.play) {
                       setState(() {});
-                      showDialog(
-                        context: context,
+                      showDialog(context: context,
                         builder: (context) {
+
+                          print('--------$quadPlayer----------------_quad-------- ${_quad.toJson()}');
+
                           return AlertDialog(
                             backgroundColor: (result == Result.draw)
-                                ? Colors.white.withOpacity(0.9)
-                                : (result == Result.player1)
-                                ? playerOneColor.withOpacity(0.9)
-                                : playerTwoColor.withOpacity(0.9),
+                                ? color.xSecondaryColor
+                                : color.xTrailing,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             content: Text(
-                              (result == Result.draw)
-                                  ? 'It\'s a tie'
-                                  : (result == Result.player1)
-                                  ? 'Player 1 wins'
-                                  : 'Player 2 wins',
-                              style: GoogleFonts.aBeeZee(
+                              (result == Result.draw) ? 'It\'s a tie'
+                                  : (result == Result.player1) ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()
+                                             ? 'You Win' : '') : 'You Win',
+                              style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             title: Text(
                               'GAME OVER!',
-                              style: GoogleFonts.davidLibre(
-                                fontWeight: FontWeight.w900,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
                                 fontSize: 28,
                               ),
                             ),
+                            actions: [
+                              GameButton(
+                                text: "Hall of Fame",
+                                onPressed: () {
+                                  Mixin.pop(context,IQuadrixDashboard());
+                                },
+                              ),
+
+                              GameButton(
+                                text: "Play Again",
+                                onPressed: () {
+                                  // Your action here
+                                  Mixin.pop(context,IQuadrixScreen());
+                                },
+                              )
+                            ],
                           );
                         },
                       );
@@ -161,22 +198,31 @@ class GameBoardState extends State<GameBoard> {
     );
   }
 
-  _play(){
+  void _play(){
     Mixin.quadrixSocket?.on('play', (message) async {
       print(jsonEncode(message));
-       Mixin.quad = Quad.fromJson(message);
+      _quad = Quad.fromJson(message);
 
-      if(Mixin.user?.usrId.toString() == Mixin.quad?.usrId.toString()) {
+      /**
+      * THIS MOVE IS FROM ME, SO JUST IGNORE
+      */
+      if(Mixin.user?.usrId.toString() == _quad.quadUsrId.toString()) {
         return;
       }
 
-      await onPlay(
-      coin: Coin(
-        row: Mixin.quad?.row as int,
-        column: Mixin.quad?.column as int,
+      if(Mixin.user?.usrId.toString() == _quad.quadPlayerId.toString()) {
+        quadPlayer = 'Your turn';
+      }else {
+        quadPlayer = '${_quad.quadPlayer}\'s turn';
+      }
+
+      await onPlay(coin: Coin(
+        row: int.parse(_quad.quadRow.toString()),
+        column: int.parse(_quad.quadColumn.toString()),
         selected: false,
         color: Theme.of(context).extension<CustomColors>()!.xSecondaryColor,
       ),
+
       playerTurnKey: widget.playerTurnKey,
       gameBoardKey: widget.gameBoardKey);
 
@@ -191,26 +237,26 @@ class GameBoardState extends State<GameBoard> {
               builder: (context) {
                 return AlertDialog(
                   backgroundColor: (result == Result.draw)
-                      ? Colors.white.withOpacity(0.9)
-                      : (result == Result.player1)
-                      ? playerOneColor.withOpacity(0.9)
-                      : playerTwoColor.withOpacity(0.9),
+                      ? Theme.of(context).extension<CustomColors>()!.xSecondaryColor
+                      : Theme.of(context).extension<CustomColors>()!.xTrailing,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   content: Text(
                     (result == Result.draw)
                         ? 'It\'s a tie'
                         : (result == Result.player1)
-                        ? 'Player 1 wins'
-                        : 'Player 2 wins',
-                    style: GoogleFonts.aBeeZee(
+                        ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                        ? '${Mixin.quad?.quadUser} Wins' : '${Mixin.quad?.quadAgainst} Wins')
+                        : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                        ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins'),
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   title: Text(
                     'GAME OVER!',
-                    style: GoogleFonts.davidLibre(
+                    style: TextStyle(
                       fontWeight: FontWeight.w900,
                       color: Colors.black,
                       fontSize: 28,
@@ -226,7 +272,7 @@ class GameBoardState extends State<GameBoard> {
             SnackBar(
               content: Text(
                 'Game Over!',
-                style: GoogleFonts.aBeeZee(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   fontSize: 20,

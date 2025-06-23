@@ -16,13 +16,8 @@ class IOwnedProvider with ChangeNotifier {
   final int _limit = 20;
 
   IOwnedProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh('', true)
-      });
-    }else{
-      refresh('',true);
+    if( Mixin.user != null) {
+      refresh('', true);
     }
     return this;
   }

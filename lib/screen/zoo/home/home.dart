@@ -15,6 +15,7 @@ import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/pet.dart';
 import '../../../provider/pet/pet_provider.dart';
+import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import 'owned/owned.dart';
 
@@ -87,7 +88,8 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                         child: Mixin.user?.usrImage != null
                             ? ClipOval(
                           child: CachedNetworkImage(
-                            imageUrl: '${Mixin.user?.usrImage}',
+                            imageUrl:
+                            '${Mixin.user?.usrImage}'.startsWith('http') ? '${Mixin.user?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.user?.usrImage}',
                             fit: BoxFit.cover,
                             width: 150.r,
                             height: 150.r,

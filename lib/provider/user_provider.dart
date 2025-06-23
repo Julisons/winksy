@@ -16,12 +16,7 @@ class IUsersProvider with ChangeNotifier {
   final int _limit = 20;
 
   IUsersProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh('')
-      });
-    }else{
+    if( Mixin.user != null) {
       refresh('');
     }
     return this;

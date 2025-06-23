@@ -79,6 +79,7 @@ const String DARK = "DARK";
 const String LIGHT = "LIGHT";
 const String CONN_JOIN = "CONN_JOIN";
 const String CONN_JOINED = "CONN_JOINED";
+const String PAIRED = "PAIRED";
 const String PRESCRIPTION = "Medication";
 const bool leading = false;
 

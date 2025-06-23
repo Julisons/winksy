@@ -12,12 +12,7 @@ class IPaymentProvider with ChangeNotifier {
   bool loading = false;
 
   IPaymentProvider init() {
-    if( Mixin.user == null) {
-      Mixin.getUser().then((value) => {
-        Mixin.user = value,
-        refresh()
-      });
-    }else{
+    if( Mixin.user != null) {
       refresh();
     }
     return this;

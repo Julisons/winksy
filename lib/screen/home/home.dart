@@ -346,6 +346,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     );
     Placemark place = placemarks[0];
 
+
     Mixin.user?.usrLat = position.latitude;
     Mixin.user?.usrLng = position.longitude;
     Mixin.user?.usrStreet = place.street;
@@ -362,7 +363,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
     IPost.postData(Mixin.user, (state, res, value) {
       if (state) {
-        Mixin.prefString(pref: jsonEncode(value), key: CURR);
+       // Mixin.prefString(pref: jsonEncode(value), key: CURR);
       } else {
         Mixin.errorDialog(context, 'ERROR', res);
       }

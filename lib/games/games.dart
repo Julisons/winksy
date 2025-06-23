@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
+import 'package:winksy/games/quadrix/quadrix_dashboard.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
@@ -90,7 +91,7 @@ class _IGamesState extends State<IGames> {
                           Mixin.navigate(context, IZoo());
                           break;
                         case 'Quadrix':
-                          Mixin.navigate(context, IQuadrix());
+                          Mixin.navigate(context, IQuadrixDashboard());
                           break;
                         case 'Crazy8':
                           ScaffoldMessenger.of(context).showSnackBar(
