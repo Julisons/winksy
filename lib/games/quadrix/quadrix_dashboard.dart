@@ -50,7 +50,7 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
   }
 
   final List<ListItem> items = [
-    ListItem(title: 'Start Online Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
+    ListItem(title: 'Start Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
     ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
     ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),

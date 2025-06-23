@@ -17,8 +17,6 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:winksy/model/message.dart';
-import 'package:winksy/screen/people/people_shimmer.dart';
-
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../theme/custom_colors.dart';

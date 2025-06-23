@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../component/button.dart';
 import '../../../component/game_button.dart';
+import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
@@ -90,53 +94,74 @@ class GameBoardState extends State<GameBoard> {
                       ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
                       ..quadId = Mixin.quad?.quadId;
 
-                    Mixin.quadrixSocket?.emit('played', quad.toJson());
 
                     Result result = didEnd();
+
+                   // if(result == Result.play)
+                    {
+                      Mixin.quadrixSocket?.emit('played', quad.toJson());
+                    }
+
                     //stop the game if the game has ended
                     if (result != Result.play) {
                       setState(() {});
                       showDialog(context: context,
                         builder: (context) {
 
-                          print('--------$quadPlayer----------------_quad-------- ${_quad.toJson()}');
+                          Quad quad = Quad()
+                            ..quadState = result.name.toString().toUpperCase()
+                            ..quadWinnerId = (result == Result.player1) ? Mixin.user?.usrId : Mixin.quad?.quadId
+                            ..quadId = Mixin.quad?.quadId;
+
+                          Mixin.quadrixSocket?.emit('win', quad.toJson());
 
                           return AlertDialog(
-                            backgroundColor: (result == Result.draw)
-                                ? color.xSecondaryColor
-                                : color.xTrailing,
+                            actionsAlignment: MainAxisAlignment.spaceBetween,
+                            backgroundColor: color.xSecondaryColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            content: Text(
-                              (result == Result.draw) ? 'It\'s a tie'
-                                  : (result == Result.player1) ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()
-                                             ? 'You Win' : '') : 'You Win',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
+                            content: Container(
+                              width: MediaQuery.of(context).size.width-20,
+                              padding: EdgeInsets.all(16.h),
+                              child: Text('You Win',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: FONT_13,
+                                  color: color.xTextColorSecondary,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                             title: Text(
                               'GAME OVER!',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 28,
+                                color: color.xTextColor,
+                                fontSize: FONT_TITLE,
                               ),
                             ),
                             actions: [
-                              GameButton(
+                              IButton(
                                 text: "Hall of Fame",
-                                onPressed: () {
-                                  Mixin.pop(context,IQuadrixDashboard());
+                                color: color.xPrimaryColor,
+                                textColor: Colors.white,
+                                height: 40.h,
+                                width: MediaQuery.of(context).size.width/3.5,
+                                onPress:(){
+                                  Navigator.of(context).pop();
+                                  // Mixin.pop(context,IQuadrixFameHall());
                                 },
                               ),
-
-                              GameButton(
+                              IButton(
                                 text: "Play Again",
-                                onPressed: () {
-                                  // Your action here
-                                  Mixin.pop(context,IQuadrixScreen());
+                                color: color.xTrailingAlt,
+                                height: 40.h,
+                                width: MediaQuery.of(context).size.width/3.5,
+                                textColor: Colors.white,
+                                onPress: () {
+                                 // Navigator.of(context).pop();
+                                  Mixin.navigate(context,IQuadrixScreen());
                                 },
                               )
                             ],
@@ -232,36 +257,78 @@ class GameBoardState extends State<GameBoard> {
           //stop the game if the game has ended
           if (result != Result.play) {
             setState(() {});
+            final color = Theme.of(context).extension<CustomColors>()!;
             showDialog(
               context: context,
               builder: (context) {
+
+                var quadWinnerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId ? Mixin.quad?.quadUsrId : Mixin.quad?.quadAgainstId;
+                log('------------------------------$quadWinnerId------------------------------dwinder');
+
+                Quad quad = Quad()
+                  ..quadState = result.name.toUpperCase()
+                  ..quadWinnerId = quadWinnerId
+                  ..quadId = Mixin.quad?.quadId;
+
+                Mixin.quadrixSocket?.emit('win', quad.toJson());
+
                 return AlertDialog(
-                  backgroundColor: (result == Result.draw)
-                      ? Theme.of(context).extension<CustomColors>()!.xSecondaryColor
-                      : Theme.of(context).extension<CustomColors>()!.xTrailing,
+                  actionsAlignment: MainAxisAlignment.spaceBetween,
+                  backgroundColor: color.xSecondaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  content: Text(
-                    (result == Result.draw)
-                        ? 'It\'s a tie'
-                        : (result == Result.player1)
-                        ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
-                        ? '${Mixin.quad?.quadUser} Wins' : '${Mixin.quad?.quadAgainst} Wins')
-                        : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
-                        ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins'),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
+                  content: Container(
+                    width: MediaQuery.of(context).size.width-20,
+                    padding: EdgeInsets.all(16.h),
+                    child: Text(
+                      (result == Result.draw)
+                          ? 'It\'s a tie'
+                          : (result == Result.player1)
+                          ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                          ? '${Mixin.quad?.quadUser} Wins' : '${Mixin.quad?.quadAgainst} Wins')
+                          : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                          ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins'),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: FONT_13,
+                        color: color.xTextColorSecondary,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ),
                   title: Text(
                     'GAME OVER!',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black,
-                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: color.xTextColor,
+                      fontSize: FONT_TITLE,
                     ),
                   ),
+                  actions: [
+                    IButton(
+                      text: "Hall of Fame",
+                      color: color.xPrimaryColor,
+                      textColor: Colors.white,
+                      height: 40.h,
+                      width: MediaQuery.of(context).size.width/3.5,
+                      onPress:(){
+                        Navigator.of(context).pop();
+                        // Mixin.pop(context,IQuadrixFameHall());
+                      },
+                    ),
+                    IButton(
+                      text: "Play Again",
+                      color: color.xTrailingAlt,
+                      height: 40.h,
+                      width: MediaQuery.of(context).size.width/3.5,
+                      textColor: Colors.white,
+                      onPress: () {
+                        // Navigator.of(context).pop();
+                        Mixin.navigate(context,IQuadrixScreen());
+                      },
+                    )
+                  ],
                 );
               },
             );

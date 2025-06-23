@@ -17,7 +17,6 @@ import '../../../provider/photo_provider.dart';
 import '../../../request/posts.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
-import '../../people/people_shimmer.dart';
 
 class IPhotos extends StatefulWidget {
   const IPhotos({super.key, required this.showFab});

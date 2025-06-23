@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
-import 'package:winksy/screen/people/people_shimmer.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 

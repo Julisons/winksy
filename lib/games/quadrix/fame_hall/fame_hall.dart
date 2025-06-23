@@ -7,24 +7,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
+import 'package:winksy/games/quadrix/fame_hall/fame_hall_shimmer.dart';
 import 'package:winksy/mixin/mixins.dart';
-import 'package:winksy/screen/people/people_card.dart';
-import 'package:winksy/screen/people/people_shimmer.dart';
-import '../../../mixin/constants.dart';
-import '../../component/popup.dart';
-import '../../provider/user_provider.dart';
-import '../../theme/custom_colors.dart';
+import '../../../component/popup.dart';
+import '../../../provider/user_provider.dart';
+import '../../../theme/custom_colors.dart';
+import 'fame_hall_card.dart';
 
 
-class IPeople extends StatefulWidget {
-  const IPeople({super.key, required this.showTitle});
+class IFameHall extends StatefulWidget {
+  const IFameHall({super.key, required this.showTitle});
   final bool showTitle;
 
   @override
-  State<IPeople> createState() => _IPeopleState();
+  State<IFameHall> createState() => _IFameHallState();
 }
 
-class _IPeopleState extends State<IPeople> {
+class _IFameHallState extends State<IFameHall> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();
@@ -95,7 +94,7 @@ class _IPeopleState extends State<IPeople> {
 
         Consumer<IUsersProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() :
+              return provider.isLoading() ? const IFameHallShimmer() :
               Column(
                 children: [
                   Expanded(
@@ -120,7 +119,7 @@ class _IPeopleState extends State<IPeople> {
                             childAspectRatio: .7, // Aspect ratio of each grid item
                           ),
                           itemBuilder: (context, index) {
-                            return IPeopleCard(
+                            return IFameHallCard(
                               user: provider.list[index],
                               onRefresh: () {
                                 setState(() {});

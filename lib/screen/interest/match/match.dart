@@ -10,11 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/like_me_provider.dart';
 import 'package:winksy/provider/match_provider.dart';
-import 'package:winksy/screen/people/people_shimmer.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
 import '../../../theme/custom_colors.dart';
+import '../../people/people_shimmer.dart';
 import 'match_card.dart';
 
 

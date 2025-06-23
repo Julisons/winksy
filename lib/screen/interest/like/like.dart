@@ -9,11 +9,11 @@ import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/like_me_provider.dart';
-import 'package:winksy/screen/people/people_shimmer.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
 import '../../../theme/custom_colors.dart';
+import '../../people/people_shimmer.dart';
 import 'like_card.dart';
 
 

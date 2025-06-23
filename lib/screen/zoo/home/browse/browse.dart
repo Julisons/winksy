@@ -9,11 +9,11 @@ import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
-import 'package:winksy/screen/people/people_shimmer.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
 import '../../../../provider/pet/browse_provider.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../people/people_shimmer.dart';
 import 'browse_card.dart';
 
 

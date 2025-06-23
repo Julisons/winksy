@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:winksy/games/quadrix/quadrix_dashboard.dart';
+import 'package:winksy/screen/home/home.dart';
 
+import '../../../component/button.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
@@ -134,20 +137,81 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                   );
                 });
           },
-          child: Container(
-            width: 130,
-            height: 50,
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: color.xPrimaryColor
-            ),
-            alignment: Alignment.center,
-            child:  Text(
-              'Give up',
-              style: TextStyle(
-                color: color.xTextColor,
-                fontSize: 18,
+          child: InkWell(
+            onTap: () {
+              showDialog(context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    actionsAlignment: MainAxisAlignment.spaceBetween,
+                    backgroundColor: color.xSecondaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    content: Container(
+                      width: MediaQuery.of(context).size.width-20,
+                      padding: EdgeInsets.all(16.h),
+                      child: Text('Giving up will end the game and count as a defeat!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: FONT_13,
+                          color: color.xTextColorSecondary,
+                          fontWeight: FontWeight.w100,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      'GiVE UP',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: color.xTextColor,
+                        fontSize: FONT_TITLE,
+                      ),
+                    ),
+                    actions: [
+                      IButton(
+                        text: "Resume",
+                        color: color.xPrimaryColor,
+                        textColor: Colors.white,
+                        height: 40.h,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        onPress:(){
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      IButton(
+                        text: "Give Up",
+                        color: color.xTrailingAlt,
+                        height: 40.h,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        textColor: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        onPress: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => IHome()),
+                          );
+                        },
+                      )
+                    ],
+                  );
+                },
+              );
+            },
+            child: Container(
+              width: 130,
+              height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: color.xPrimaryColor
+              ),
+              alignment: Alignment.center,
+              child:  Text(
+                'Give up',
+                style: TextStyle(
+                  color: color.xTextColor,
+                  fontSize: 18,
+                ),
               ),
             ),
           ),

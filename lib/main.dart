@@ -1,4 +1,5 @@
 import 'package:winksy/provider/chat_provider.dart';
+import 'package:winksy/provider/fame_hall_provider.dart';
 import 'package:winksy/provider/friend_provider.dart';
 import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
@@ -101,6 +102,8 @@ class MyApp extends StatelessWidget {
               create: (_) => IChatProvider().init()),
           ChangeNotifierProvider<IFriendsProvider>(
               create: (_) => IFriendsProvider().init()),
+          ChangeNotifierProvider<IFameHallProvider>(
+              create: (_) => IFameHallProvider().init()),
         ],
         child: ScreenUtilInit(
             designSize: const Size(490.9, 1075.0),
