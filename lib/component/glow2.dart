@@ -262,7 +262,7 @@ class GlowingLetter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      letter.toUpperCase(),
+      letter,
       style: TextStyle(
         fontSize: size,
         color: color,
@@ -490,7 +490,7 @@ class GlowingLetterPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final textPainter = TextPainter(
       text: TextSpan(
-        text: letter.toUpperCase(),
+        text: letter,
         style: TextStyle(
           fontSize: size.width * 0.8,
           fontWeight: FontWeight.bold,

@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                home: ITicTacToe(),
+                home: ISplashScreen(),
                 theme: ThemeDataStyle.lighter,
                 darkTheme: ThemeDataStyle.darker,
               );

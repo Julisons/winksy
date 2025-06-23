@@ -11,6 +11,7 @@ import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
 import ' tic_tac_toe/tic_tac_toe.dart';
+import ' tic_tac_toe/tic_tac_toe_dashboard.dart';
 import '../component/app_bar.dart';
 import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
@@ -95,7 +96,7 @@ class _IGamesState extends State<IGames> {
                           Mixin.navigate(context, IQuadrixDashboard());
                           break;
                         case 'Tic Tac Toe':
-                          Mixin.navigate(context, ITicTacToe());
+                          Mixin.navigate(context, ITicTacToeDashboard());
                           break;
                         case 'Crazy8':
                           ScaffoldMessenger.of(context).showSnackBar(
