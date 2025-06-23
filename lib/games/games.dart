@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/games/chess/chess_dashboard.dart';
 
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
@@ -97,6 +98,9 @@ class _IGamesState extends State<IGames> {
                           break;
                         case 'Tic Tac Toe':
                           Mixin.navigate(context, ITicTacToeDashboard());
+                          break;
+                        case 'Chess':
+                          Mixin.navigate(context, IChessDashboard());
                           break;
                         case 'Crazy8':
                           ScaffoldMessenger.of(context).showSnackBar(

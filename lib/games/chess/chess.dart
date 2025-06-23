@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/games/%20tic_tac_toe/tic_tac_toe_game.dart';
+import 'package:winksy/games/chess/chess_game.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
@@ -27,15 +29,15 @@ class ListItem {
   ListItem({required this.title, required this.desc, required this.icon});
 }
 
-class IQuadrix extends StatefulWidget {
+class IChess extends StatefulWidget {
 
-  IQuadrix({super.key});
+  IChess({super.key});
 
   @override
-  State<IQuadrix> createState() => _IQuadrixState();
+  State<IChess> createState() => _IChessState();
 }
 
-class _IQuadrixState extends State<IQuadrix> {
+class _IChessState extends State<IChess> {
   late Timer _timer;
   late var _loading = '...';
   final String loading1 = '.';
@@ -88,7 +90,7 @@ class _IQuadrixState extends State<IQuadrix> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Quadrix', leading: false,),
+      appBar:IAppBar(title: 'Chess', leading: true,),
       body: Padding(
         padding:  EdgeInsets.all(16.0.r),
         child: Column(
@@ -101,7 +103,7 @@ class _IQuadrixState extends State<IQuadrix> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 100.h,),
+                  SizedBox(height: 20.h,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,12 +114,20 @@ class _IQuadrixState extends State<IQuadrix> {
                           child: Text(_loading, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
                     ],
                   ),
-                  SizedBox(height: 20,),
-                  Text('Welcome to Quadrix! This is a game where you can challenge your friends and family in a fun and strategic way. Choose from various game modes and customize your experience to suit your preferences.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: FONT_13,
-                      color: color.xTextColor,
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/1.5,
+                    child: Text(
+                      'Welcome to Chess! '
+                          'Enter the battlefield of kings and queens in this ultimate strategy game. '
+                          'Outsmart your opponent with clever tactics and masterful moves. '
+                          'Play casually with friends or challenge yourself in competitive mode. '
+                          'Think ahead, plan wisely — every move counts in the game of champions.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: FONT_13,
+                        color: color.xTextColor,
+                      ),
                     ),
                   ),
                 ],
@@ -152,9 +162,9 @@ class _IQuadrixState extends State<IQuadrix> {
 
     Mixin.quadrixSocket?.onConnect((_) {
        Mixin.quad = Quad()
-         ..quadType = QUADRIX
-         ..quadUser =  Mixin.user?.usrFullNames
-         ..quadUsrId = Mixin.user?.usrId;
+       ..quadType = CHESS
+       ..quadUser =  Mixin.user?.usrFullNames
+       ..quadUsrId = Mixin.user?.usrId;
        Mixin.quadrixSocket?.emit('joinRoom', Mixin.quad?.toJson());
     });
 
@@ -177,7 +187,7 @@ class _IQuadrixState extends State<IQuadrix> {
             _waiting = 'Gaming with ${Mixin.quad?.quadAgainst}';
 
             Future.delayed(Duration(seconds: 4), () {
-               Mixin.navigate(context,IQuadrixScreen());
+               Mixin.navigate(context,IChessGame());
             });
           });
         }else {
@@ -200,7 +210,7 @@ class _IQuadrixState extends State<IQuadrix> {
           _waiting = 'Gaming with ${Mixin.quad?.quadUser}';
 
           Future.delayed(Duration(seconds: 4), () {
-              Mixin.navigate(context,IQuadrixScreen());
+              Mixin.navigate(context,IChessGame());
           });
         });
 

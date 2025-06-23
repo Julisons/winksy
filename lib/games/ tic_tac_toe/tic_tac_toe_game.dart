@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../component/app_bar.dart';
 import '../../component/glow2.dart';
 import '../../mixin/mixins.dart';
+import '../../model/quad.dart';
 import '../../theme/custom_colors.dart';
 
 
@@ -20,10 +23,19 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
 
   List<List<String>> board = [];
   String currentPlayer = '';
-
+  late Quad _quad = Quad();
+  String quadPlayer = '';
   @override
   void initState() {
     super.initState();
+
+    if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+      quadPlayer = "You start";
+    }else{
+      quadPlayer = Mixin.quad?.quadPlayer+" starts";
+    }
+
+    _play();
     initializeGame();
   }
 
@@ -36,7 +48,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   }
 
   void onCellTapped(int row, int col) {
-    Mixin.playerSound.play(AssetSource('sound/tick.wav')); // Your sound file
+   // Mixin.playerSound.play(AssetSource('sound/tick.wav')); // Your sound file
     if (board[row][col].isEmpty) {
       setState(() {
         board[row][col] = currentPlayer;
@@ -44,7 +56,16 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
       });
 
       String winner = checkForWinner();
+
       if (winner.isNotEmpty) {
+
+        Quad quad = Quad()
+          ..quadState = winner.toUpperCase()
+          ..quadWinnerId = (currentPlayer == 'X')  ? Mixin.user?.usrId : Mixin.quad?.quadId
+          ..quadId = Mixin.quad?.quadId;
+
+        Mixin.quadrixSocket?.emit('win', quad.toJson());
+
         _end(winner);
         showWinnerDialog(winner);
       }
@@ -126,7 +147,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                 alignment: Alignment.center,
                 child: Text(
                   textAlign: TextAlign.justify,
-                  'Current Player: $currentPlayer',
+                  quadPlayer,
                   style: TextStyle(fontSize: 24),
                 ),
               ),
@@ -143,7 +164,38 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                 final row = index ~/ 3;
                 final col = index % 3;
                 return GestureDetector(
-                  onTap: () => onCellTapped(row, col),
+                  onTap: () {
+
+                    /**
+                     * IF ITS NOT YOUR TURN , DON'T PLAY
+                     */
+                    if(_quad.quadPlayerId == null){
+                      if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+                        return;
+                      }
+                    }else {
+                      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+                        return;
+                      }
+                    }
+
+                    if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+                      quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+                    }else {
+                      quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+                    }
+
+                    Quad quad = Quad()
+                      ..quadRow = row
+                      ..quadColumn = col
+                      ..quadUsrId = Mixin.user?.usrId
+                      ..quadPlayer = Mixin.user?.usrFullNames
+                      ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+                      ..quadId = Mixin.quad?.quadId;
+
+                    Mixin.quadrixSocket?.emit('played', quad.toJson());
+                    onCellTapped(row, col);
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(),
@@ -179,6 +231,27 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
         ],
       ),
     );
+  }
+
+  void _play(){
+    Mixin.quadrixSocket?.on('play', (message) async {
+      print(jsonEncode(message));
+      _quad = Quad.fromJson(message);
+
+      /**
+       * THIS MOVE IS FROM ME, SO JUST IGNORE
+       */
+      if(Mixin.user?.usrId.toString() == _quad.quadUsrId.toString()) {
+        return;
+      }
+
+      if(Mixin.user?.usrId.toString() == _quad.quadPlayerId.toString()) {
+        quadPlayer = 'Your turn';
+      }else {
+        quadPlayer = '${_quad.quadPlayer}\'s turn';
+      }
+      onCellTapped(int.parse(_quad.quadRow.toString()),int.parse(_quad.quadColumn.toString()));
+    });
   }
 
   void _end(String winner){

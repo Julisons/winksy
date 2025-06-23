@@ -131,4 +131,5 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/chess/
     - assets/sound/

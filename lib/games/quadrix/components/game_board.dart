@@ -225,6 +225,8 @@ class GameBoardState extends State<GameBoard> {
 
   void _play(){
     Mixin.quadrixSocket?.on('play', (message) async {
+
+
       print(jsonEncode(message));
       _quad = Quad.fromJson(message);
 
@@ -248,8 +250,8 @@ class GameBoardState extends State<GameBoard> {
         color: Theme.of(context).extension<CustomColors>()!.xSecondaryColor,
       ),
 
-          playerTurnKey: widget.playerTurnKey,
-          gameBoardKey: widget.gameBoardKey);
+      playerTurnKey: widget.playerTurnKey,
+      gameBoardKey: widget.gameBoardKey);
 
       setState(()  {
         if (end == false) {

@@ -90,7 +90,7 @@ class _ITicTacToeState extends State<ITicTacToe> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Quadrix', leading: false,),
+      appBar:IAppBar(title: 'Tic Tac Toe', leading: true,),
       body: Padding(
         padding:  EdgeInsets.all(16.0.r),
         child: Column(
@@ -114,12 +114,19 @@ class _ITicTacToeState extends State<ITicTacToe> {
                           child: Text(_loading, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
                     ],
                   ),
-                  SizedBox(height: 20,),
-                  Text('Welcome to Quadrix! This is a game where you can challenge your friends and family in a fun and strategic way. Choose from various game modes and customize your experience to suit your preferences.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: FONT_13,
-                      color: color.xTextColor,
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/1.5,
+                    child: Text('Welcome to Tic Tac Toe! '
+                        'Outsmart your opponent in this timeless game of Xs and Os.'
+                        'Play against friends or challenge yourself in single-player mode.'
+                        'Customize your board, choose your symbol, and make your move!'
+                        'It\'s simple, fast, and fun — every tap could be the winning one.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: FONT_13,
+                        color: color.xTextColor,
+                      ),
                     ),
                   ),
                 ],
@@ -154,8 +161,9 @@ class _ITicTacToeState extends State<ITicTacToe> {
 
     Mixin.quadrixSocket?.onConnect((_) {
        Mixin.quad = Quad()
-      ..quadUser =  Mixin.user?.usrFullNames
-      ..quadUsrId = Mixin.user?.usrId;
+       ..quadType = TIC_TAC_TOE
+       ..quadUser =  Mixin.user?.usrFullNames
+       ..quadUsrId = Mixin.user?.usrId;
        Mixin.quadrixSocket?.emit('joinRoom', Mixin.quad?.toJson());
     });
 
@@ -178,7 +186,7 @@ class _ITicTacToeState extends State<ITicTacToe> {
             _waiting = 'Gaming with ${Mixin.quad?.quadAgainst}';
 
             Future.delayed(Duration(seconds: 4), () {
-               Mixin.navigate(context,IQuadrixScreen());
+               Mixin.navigate(context,ITicTacToeGame());
             });
           });
         }else {

@@ -21,6 +21,7 @@ import '../../model/quad.dart';
 import '../../model/user.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
+import 'chess.dart';
 
 
 
@@ -31,15 +32,15 @@ class ListItem {
   ListItem({required this.title, required this.desc, required this.icon});
 }
 
-class ITicTacToeDashboard extends StatefulWidget {
+class IChessDashboard extends StatefulWidget {
 
-  ITicTacToeDashboard({super.key});
+  IChessDashboard({super.key});
 
   @override
-  State<ITicTacToeDashboard> createState() => _ITicTacToeDashboardState();
+  State<IChessDashboard> createState() => _IChessDashboardState();
 }
 
-class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
+class _IChessDashboardState extends State<IChessDashboard> {
 
   @override
   void initState() {
@@ -65,7 +66,7 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Tic Tac Toe', leading: false,),
+      appBar:IAppBar(title: 'Chess', leading: false,),
       body: Padding(
         padding:  EdgeInsets.all(16.0.r),
         child: Column(
@@ -73,13 +74,13 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
             Expanded(
               child: Column(
                 children: [
-                  SizedBox(height: 60.h,),
+                  SizedBox(height: 20.h,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AnimatedGlowingLetter(
-                        letter: 'TIC TAC TOE',
+                        letter: 'CHESS',
                         size: FONT_APP_BAR,
                         color: color.xTrailingAlt,
                         animationType: AnimationType.breathe,
@@ -92,11 +93,12 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                   SizedBox(height: 10,),
                   SizedBox(
                     width: MediaQuery.of(context).size.width/1.5,
-                    child: Text('Welcome to Tic Tac Toe! '
-                      'Outsmart your opponent in this timeless game of Xs and Os.'
-                      'Play against friends or challenge yourself in single-player mode.'
-                      'Customize your board, choose your symbol, and make your move!'
-                      'It\'s simple, fast, and fun — every tap could be the winning one.',
+                    child: Text(
+                      'Welcome to Chess! '
+                          'Enter the battlefield of kings and queens in this ultimate strategy game. '
+                          'Outsmart your opponent with clever tactics and masterful moves. '
+                          'Play casually with friends or challenge yourself in competitive mode. '
+                          'Think ahead, plan wisely — every move counts in the game of champions.',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         fontSize: FONT_13,
@@ -129,7 +131,7 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                       onTap: () {
                         switch(items[index].title.toUpperCase()){
                           case 'START GAME':
-                            Mixin.navigate(context, ITicTacToe());
+                            Mixin.navigate(context, IChess());
                             break;
                           case 'HOW TO PLAY':
                             Mixin.navigate(context, IQuadrix());

@@ -80,7 +80,9 @@ const String LIGHT = "LIGHT";
 const String CONN_JOIN = "CONN_JOIN";
 const String CONN_JOINED = "CONN_JOINED";
 const String PAIRED = "PAIRED";
-const String PRESCRIPTION = "Medication";
+const String CHESS = "CHESS";
+const String TIC_TAC_TOE = "TIC_TAC_TOE";
+const String QUADRIX = "QUADRIX";
 const bool leading = false;
 
 final double FONT_START = 24.5.sp;

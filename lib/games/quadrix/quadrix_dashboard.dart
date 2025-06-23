@@ -78,7 +78,7 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AnimatedGlowingLetter(
-                        letter: 'Quadrix',
+                        letter: 'QUADRIX',
                         size: FONT_APP_BAR,
                         color: color.xTrailingAlt,
                         animationType: AnimationType.breathe,
