@@ -114,14 +114,14 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                       child: Column(
                         children: [
                           Text(
-                            'Select Number of Players',
+                            'SELECT NUMBER OF PLAYERS',
                             style: TextStyle(
                                 fontSize: FONT_TITLE,
                                 fontWeight: FontWeight.bold,
                                 color: color.xTextColorSecondary),
                           ),
                           Divider(color: color.xSecondaryColor,height: 30,),
-                          SizedBox(height: 50.h),
+                          SizedBox(height: 40.h),
                           IButton(
                             onPress: () {
                               Navigator.push(

@@ -247,17 +247,6 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     });
   }
 
-
-  /// Download image from URL and save locally
-  Future<String> _downloadAndSaveFile(String url, String fileName) async {
-    final directory = await getTemporaryDirectory();
-    final filePath = '${directory.path}/$fileName';
-    final response = await http.get(Uri.parse(url));
-    final file = File(filePath);
-    await file.writeAsBytes(response.bodyBytes);
-    return filePath;
-  }
-
   Future<void> _showBigPictureNotificationURL(
     RemoteNotification? notification,
     String id,
@@ -501,6 +490,7 @@ Future<void> showChatNotification(
 
 /// Download image from URL and save locally
 Future<String> _downloadAndSaveFile(String url, String fileName) async {
+  url = url.startsWith('http') ? url : '${IUrls.IMAGE_URL}/file/secured/$url';
   final directory = await getTemporaryDirectory();
   final filePath = '${directory.path}/$fileName';
   final response = await http.get(Uri.parse(url));
