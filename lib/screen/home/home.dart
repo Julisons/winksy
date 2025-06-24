@@ -73,7 +73,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
   List<PersistentBottomNavBarItem> navBarsItems() {
     return [
       tabItem('Home  ', icon: const Icon(Icons.dashboard_customize_outlined)),
-      tabItem('People', icon: const Icon(Icons.favorite_border_rounded)),
+      tabItem('Match', icon: const Icon(Icons.favorite_border_rounded)),
       tabItem('Messages', icon: const Icon(Icons.question_answer_outlined)),
       tabItem('Games', icon: const Icon(Icons.sports_esports_outlined)),
       tabItem('Account', icon: const Icon(Icons.person_outline)),
