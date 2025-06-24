@@ -7,11 +7,13 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/screen/home/home.dart';
 // user files
 
 import '../../component/button.dart';
 import '../../component/glow2.dart';
 import '../../mixin/constants.dart';
+import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
 import 'ludo.dart';
 
@@ -441,30 +443,59 @@ class _GameAppState extends State<GameApp> {
   }
 
   void _showExitConfirmationDialog() {
+    final color = Theme.of(context).extension<CustomColors>()!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Exit Game'),
-          content: const Text('Do you really want to exit the game?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
-              },
-              child: const Text('No'),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor: color.xSecondaryColor,
+          title: Text(
+            'QUIT GAME',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color.xTextColorSecondary,
+              fontSize: FONT_TITLE,
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width/1.5,
+            padding: EdgeInsets.all(16.h),
+            child: Text('Are you sure you want to quit the game?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: FONT_13,
+                color: color.xTextColorSecondary,
+                fontWeight: FontWeight.w100,
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            IButton(
+              text: "Resume",
+              color: color.xPrimaryColor,
+              textColor: Colors.white,
+              height: 40.h,
+              width: MediaQuery.of(context).size.width/3.5,
+              onPress:(){
+                Navigator.of(context).pop();
+              },
+            ),
+            IButton(
+              text: "Quit game",
+              color: color.xTrailingAlt,
+              height: 40.h,
+              width: MediaQuery.of(context).size.width/3.5,
+              textColor: Colors.white,
+              fontWeight: FontWeight.bold,
+              onPress: () {
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const ILudoDashboard(),
-                  ),
+                  MaterialPageRoute(builder: (context) => IHome()),
                 );
               },
-              child: const Text('Yes'),
-            ),
+            )
           ],
         );
       },

@@ -147,9 +147,9 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     content: Container(
-                      width: MediaQuery.of(context).size.width-20,
+                      width: MediaQuery.of(context).size.width/1.5,
                       padding: EdgeInsets.all(16.h),
-                      child: Text('Giving up will end the game and count as a defeat!',
+                      child: Text('Quitting will end the game and count as a defeat!',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: FONT_13,
@@ -159,11 +159,11 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                       ),
                     ),
                     title: Text(
-                      'GiVE UP',
+                      'QUIT GAME',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: color.xTextColor,
+                        color: color.xTextColorSecondary,
                         fontSize: FONT_TITLE,
                       ),
                     ),
@@ -179,7 +179,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                         },
                       ),
                       IButton(
-                        text: "Give Up",
+                        text: "Quit game",
                         color: color.xTrailingAlt,
                         height: 40.h,
                         width: MediaQuery.of(context).size.width/3.5,
