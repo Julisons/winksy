@@ -391,7 +391,7 @@ class _IWinkserState extends State<IWinkser> {
                               ProfileField(label: 'Phone : ', value: Mixin.winkser?.usrMobileNumber ?? ''),
                               ProfileField(label: 'Place : ', value: '${Mixin.winkser?.usrCountry}, ${Mixin.winkser?.usrAdministrativeArea}'),
                               ProfileField(label: 'Bio : ', value:' '),
-                              Text( Mixin.winkser?.usrDesc ??'', style: TextStyle(fontSize: FONT_13), ),
+                              Text( Mixin.winkser?.usrDesc ??'', style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary), ),
                             ],
                           ),
                         ),

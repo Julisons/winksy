@@ -430,6 +430,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
           children: [
             Flexible(
               child: TextField(
+                style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary),
                 controller: _messageController,
                 onChanged: (text) {
                   setState(() {

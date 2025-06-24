@@ -214,7 +214,7 @@ class _IProfileState extends State<IProfile> {
                             ProfileField(label: 'Phone : ', value: Mixin.user?.usrMobileNumber ?? ''),
                             ProfileField(label: 'Place : ', value: '${Mixin.user?.usrCountry}, ${Mixin.user?.usrAdministrativeArea}'),
                             ProfileField(label: 'About me : ', value:' '),
-                            Text( Mixin.user?.usrDesc ??'', style: TextStyle(fontSize: FONT_13), ),
+                            Text( Mixin.user?.usrDesc ??'', style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary), ),
                           ],
                         ),
                       ),
