@@ -7,12 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:winksy/component/glass_coat.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
 import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import '../../component/Glass.dart';
 import '../../mixin/constants.dart';
 import '../../model/chat.dart';
 import '../../model/user.dart';
@@ -87,63 +89,71 @@ class _IPeopleCardState extends State<IPeopleCard> {
                 ),
               ),
               Positioned(
-                bottom: 40,
-                left: 10,
+                bottom: 3,
+                left: 3,
                 child:
-
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("${widget.user.usrFirstName}, ${'${widget.user.usrDob}'.age()}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FONT_TITLE,
-                        shadows: [
-                          Shadow(
-                              offset: Offset(0, 1),
-                              blurRadius: 1.0,
-                              color: Colors.black
+                GlassCoat(
+                  color: color.xTextColor,
+                  borderRadius: CORNER,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text("${widget.user.usrFirstName}, ${'${widget.user.usrDob}'.age()}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                              shadows: [
+                                Shadow(
+                                    offset: Offset(0, 1),
+                                    blurRadius: 1.0,
+                                    color: Colors.black
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 3,),
+                          Visibility(
+                            visible: true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue, // Background color for the badge
+                              ),
+                              padding: EdgeInsets.all(2), // Padding for the circle
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.white, // Checkmark color
+                                size: 13.r, // Adjust size as needed
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(width: 3,),
-                    Visibility(
-                      visible: true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue, // Background color for the badge
+                      Text(
+                        (widget.user.usrDistance == null || widget.user.usrDistance.isEmpty
+                            ? '${widget.user.usrLocality}'
+                            : '${widget.user.usrDistance} (${widget.user.usrLocality})').replaceAll('null', ''),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: FONT_13,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(0, 1),
+                                blurRadius: 1.0,
+                                color: Colors.black
+                            ),
+                           /* Shadow(
+                                offset: Offset(0, 1),
+                                blurRadius: 10.0,
+                                color: Colors.black
+                            ),*/
+                          ],
                         ),
-                        padding: EdgeInsets.all(2), // Padding for the circle
-                        child: Icon(
-                          Icons.verified,
-                          color: Colors.white, // Checkmark color
-                          size: 13.r, // Adjust size as needed
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 20,
-                left: 10,
-                child: Text(
-                  (widget.user.usrDistance == null || widget.user.usrDistance.isEmpty
-                      ? '${widget.user.usrLocality}'
-                      : '${widget.user.usrDistance} (${widget.user.usrLocality})').replaceAll('null', ''),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: FONT_13,
-                    shadows: [
-                      Shadow(
-                          offset: Offset(0, 1),
-                          blurRadius: 10.0,
-                          color: Colors.black
-                      ),
+                      )
                     ],
                   ),
                 ),

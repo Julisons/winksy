@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:winksy/mixin/constants.dart';
 
 import '../../component/app_bar.dart';
 import '../../component/glow2.dart';
@@ -48,7 +49,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   }
 
   void onCellTapped(int row, int col) {
-   // Mixin.playerSound.play(AssetSource('sound/tick.wav')); // Your sound file
+    Mixin.playerSound.play(AssetSource('sound/tick.wav')); // Your sound file
     if (board[row][col].isEmpty) {
       setState(() {
         board[row][col] = currentPlayer;
@@ -147,7 +148,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                 child: Text(
                   textAlign: TextAlign.justify,
                   quadPlayer,
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: FONT_APP_BAR, color: color.xTextColorSecondary),
                 ),
               ),
             ),

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:winksy/component/glass_coat.dart';
 //import 'package:winksy/games/chess/chess_dashboard.dart';
 
 import 'package:winksy/games/quadrix/core/game_screen.dart';

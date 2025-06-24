@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:winksy/component/glass_coat.dart';
 import 'package:winksy/mixin/extentions.dart';
 import '../../component/app_bar.dart';
 import '../../component/button.dart';
@@ -140,58 +141,60 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                                       ),
                                     ),
                                     Positioned(
-                                      bottom: 40,
-                                      child:    Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text("${_user.usrFirstName}, ${'${_user.usrDob}'.age()}",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: FONT_TITLE,
-                                              shadows: [
-                                                Shadow(
-                                                    offset: Offset(0, 1),
-                                                    blurRadius: 1.0,
-                                                    color: Colors.black
+                                      bottom: 10,
+                                      child: GlassCoat(
+                                        borderRadius: CORNER,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text("${_user.usrFirstName}, ${'${_user.usrDob}'.age()}",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: FONT_TITLE,
+                                                    shadows: [
+                                                      Shadow(
+                                                          offset: Offset(0, 1),
+                                                          blurRadius: 1.0,
+                                                          color: Colors.black
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(width: 3,),
-                                          Visibility(
-                                            visible: true,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.blue, // Background color for the badge
+                                                SizedBox(width: 3,),
+                                                Visibility(
+                                                  visible: true,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.blue, // Background color for the badge
+                                                    ),
+                                                    padding: EdgeInsets.all(2), // Padding for the circle
+                                                    child: Icon(
+                                                      Icons.verified,
+                                                      color: Colors.white, // Checkmark color
+                                                      size: 16, // Adjust size as needed
+                                                    ),
+                                                  ),
+                                                ),
+                                              ]),
+                                             Text((_user.usrDistance == null || _user.usrDistance.isEmpty
+                                                  ? '${_user.usrLocality}'
+                                                  : '${_user.usrDistance} (${_user.usrLocality})').replaceAll("null", ''),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: FONT_13,
+                                                shadows: [
+                                                  Shadow(
+                                                      offset: Offset(0, 1),
+                                                      blurRadius: 10.0,
+                                                      color: Colors.black
+                                                  ),
+                                                ],
                                               ),
-                                              padding: EdgeInsets.all(2), // Padding for the circle
-                                              child: Icon(
-                                                Icons.verified,
-                                                color: Colors.white, // Checkmark color
-                                                size: 16, // Adjust size as needed
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 20,
-                                      child: Text(
-                                        (_user.usrDistance == null || _user.usrDistance.isEmpty
-                                            ? '${_user.usrLocality}'
-                                            : '${_user.usrDistance} (${_user.usrLocality})').replaceAll("null", ''),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: FONT_13,
-                                          shadows: [
-                                            Shadow(
-                                                offset: Offset(0, 1),
-                                                blurRadius: 10.0,
-                                                color: Colors.black
                                             ),
                                           ],
                                         ),
