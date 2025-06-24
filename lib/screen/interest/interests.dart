@@ -236,7 +236,7 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                                 Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,))
                               },
                               child: const Icon(
-                                Icons.chat_bubble_outline_rounded,
+                                Icons.question_answer_outlined,
                                 color: Colors.white,
                               ),
                             ),

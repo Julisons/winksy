@@ -30,6 +30,7 @@ class IChatShimmerCard extends StatelessWidget {
         child: Shimmer.fromColors(
           baseColor: color.xSecondaryColor,
           highlightColor: color.xPrimaryColor,
+          direction: ShimmerDirection.ttb,
           child: Container(
             width: 60,
             height: 60,

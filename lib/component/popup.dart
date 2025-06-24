@@ -41,7 +41,7 @@ class _IPopupState extends State<IPopup> {
         return { 'Edit Profile','Terms & Conditions', 'Contact Us','Settings', auth,}.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
-            child: Text(choice, style: TextStyle(color: Colors.white),),
+            child: Text(choice, style: TextStyle(color: color.xTextColor),),
           );
         }).toList();
       },

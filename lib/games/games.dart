@@ -47,15 +47,15 @@ class _IGamesState extends State<IGames> {
     ListItem(
         title: 'My Account',
         desc: 'Manage your account settings',
-        icon: FaIcon(FontAwesomeIcons.circleUser)),
+        icon: FaIcon(FontAwesomeIcons.userLarge)),
     ListItem(
         title: 'My Recent Opponents',
         desc: 'Players you recently competed against',
-        icon: FaIcon(FontAwesomeIcons.userGroup)),
+        icon: FaIcon(FontAwesomeIcons.peopleGroup)),
     ListItem(
         title: 'Game Settings',
         desc: 'Customize your gameplay preferences',
-        icon: FaIcon(FontAwesomeIcons.screwdriver)),
+        icon: FaIcon(FontAwesomeIcons.screwdriverWrench)),
   ];
 
   final List<Item> games = [
