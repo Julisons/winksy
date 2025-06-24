@@ -9,13 +9,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/screen/home/home.dart';
 // user files
-
-import '../ tic_tac_toe/tic_tac_toe.dart';
 import '../../component/button.dart';
 import '../../component/glow2.dart';
 import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
+import '../chess/chess.dart';
 import 'ludo.dart';
 
 final List<ListItem> items = [

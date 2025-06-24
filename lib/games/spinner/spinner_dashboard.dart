@@ -10,6 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/fame_hall/fame_hall.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
+import 'package:winksy/games/spinner/spinner_wheel.dart';
+import 'package:winksy/games/tic_tac_toe/tic_tac_toe.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
@@ -20,7 +22,6 @@ import '../../model/quad.dart';
 import '../../model/user.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
-import 'chess.dart';
 
 
 
@@ -31,15 +32,15 @@ class ListItem {
   ListItem({required this.title, required this.desc, required this.icon});
 }
 
-class IChessDashboard extends StatefulWidget {
+class ISpinnerDashboard extends StatefulWidget {
 
-  IChessDashboard({super.key});
+  ISpinnerDashboard({super.key});
 
   @override
-  State<IChessDashboard> createState() => _IChessDashboardState();
+  State<ISpinnerDashboard> createState() => _ISpinnerDashboardState();
 }
 
-class _IChessDashboardState extends State<IChessDashboard> {
+class _ISpinnerDashboardState extends State<ISpinnerDashboard> {
 
   @override
   void initState() {
@@ -53,8 +54,6 @@ class _IChessDashboardState extends State<IChessDashboard> {
 
   final List<ListItem> items = [
     ListItem(title: 'Start Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
-    ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
-    ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
     ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
   ];
@@ -89,31 +88,26 @@ class _IChessDashboardState extends State<IChessDashboard> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         AnimatedGlowingLetter(
-                          letter: 'CHESS',
+                          letter: 'DAILY SPIN',
                           size: GAME_TITLE,
                           color: color.xTrailingAlt,
                           animationType: AnimationType.breathe,
                         ),
-                        SizedBox(
-                            width: 30.w,
-                            child: Text('', style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
+                        SizedBox(width: 30.w),
                       ],
                     ),
-                    SizedBox(height: 10.h,),
-                    Flexible(
-                      child: Padding(
-                        padding:  EdgeInsets.only(left: 16.w,right: 16.w),
-                        child: Text(
-                          'Welcome to Chess! '
-                              'Enter the battlefield of kings and queens in this ultimate strategy game. '
-                              'Outsmart your opponent with clever tactics and masterful moves. '
-                              'Play casually with friends or challenge yourself in competitive mode. '
-                              'Think ahead, plan wisely — every move counts in the game of champions.',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: FONT_13,
-                            color: color.xTextColor,
-                          ),
+                    SizedBox(height: 20,),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/1.2,
+                      child: Text(
+                        'Welcome to Daily Spin! '
+                            'Spin the wheel once a day for your chance to win exciting rewards. '
+                            'From bonus coins to rare prizes, every spin brings something new. '
+                            'Come back daily, try your luck, and don’t miss out on the fun!',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: FONT_13,
+                          color: color.xTextColor,
                         ),
                       ),
                     ),
@@ -142,7 +136,7 @@ class _IChessDashboardState extends State<IChessDashboard> {
                         onTap: () {
                           switch(items[index].title.toUpperCase()){
                             case 'START GAME':
-                              Mixin.navigate(context, IChess());
+                              Mixin.navigate(context, ISpinner());
                               break;
                             case 'HOW TO PLAY':
                               Mixin.navigate(context, IQuadrix());

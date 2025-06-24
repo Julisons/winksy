@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../mixin/constants.dart';
 import 'custom_colors.dart';
@@ -7,6 +8,7 @@ class ThemeDataStyle {
   static ThemeData light = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    textTheme: GoogleFonts.notoSansTextTheme(), // Set globally
     colorScheme: ColorScheme.light(
       surface: Colors.white,
       primary: Colors.white,
@@ -49,6 +51,7 @@ class ThemeDataStyle {
   static ThemeData dark = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    textTheme: GoogleFonts.notoSansTextTheme(), // Set globally
     colorScheme: ColorScheme.dark(
       surface: Colors.black,
       primary: HexColor.fromHex('#666666'),

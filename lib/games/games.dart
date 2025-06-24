@@ -10,11 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/games/quadrix/quadrix_dashboard.dart';
+import 'package:winksy/games/spinner/spinner_dashboard.dart';
+import 'package:winksy/games/tic_tac_toe/tic_tac_toe_dashboard.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
-import ' tic_tac_toe/tic_tac_toe.dart';
-import ' tic_tac_toe/tic_tac_toe_dashboard.dart';
 import '../component/app_bar.dart';
 import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
@@ -130,6 +130,9 @@ class _IGamesState extends State<IGames> {
                           break;
                         case 'Ludo':
                           Mixin.navigate(context, ILudoDashboard());
+                          break;
+                        case 'Daily Spin':
+                          Mixin.navigate(context, ISpinnerDashboard());
                           break;
                       }
                     },

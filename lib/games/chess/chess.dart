@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:winksy/games/%20tic_tac_toe/tic_tac_toe_game.dart';
 import 'package:winksy/games/chess/chess_game.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/mixin/constants.dart';

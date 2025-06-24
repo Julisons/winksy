@@ -69,7 +69,7 @@ class _IMessageCardState extends State<IMessageCard> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
+                    padding:  EdgeInsets.only(
                         top: 12, left: 12, right: 12, bottom: 6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start, // Align content to left
@@ -77,12 +77,18 @@ class _IMessageCardState extends State<IMessageCard> {
                       children: [
                         Text(
                           widget.message.msgText ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: TextStyle(
+                             color:  color.xTextColor,
+                            fontSize: FONT_13
+                          )
                         ),
                         const SizedBox(height: 5),
                         Text(
                           time,
-                          style: const TextStyle(fontSize: 10),
+                            style: TextStyle(
+                                color:  color.xTextColor,
+                                fontSize: FONT_13
+                            )
                         ),
                       ],
                     ),
@@ -128,12 +134,18 @@ class _IMessageCardState extends State<IMessageCard> {
                       children: [
                         Text(
                           widget.message.msgText ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                            style: TextStyle(
+                                color:  color.xTextColor,
+                                fontSize: FONT_13
+                            )
                         ),
                         const SizedBox(height: 5),
                         Text(
                           time,
-                          style: const TextStyle(fontSize: 10),
+                          style: TextStyle(
+                              color:  color.xTextColor,
+                              fontSize: FONT_13
+                          ),
                         ),
                       ],
                     ),
