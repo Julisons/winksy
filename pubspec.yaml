@@ -75,6 +75,8 @@ dependencies:
   google_mlkit_face_detection: ^0.13.1
   camera: ^0.10.5+5
   simple_ripple_animation: ^0.0.9
+  flame: ^1.21.0
+  flame_audio: ^2.10.5
 
 dev_dependencies:
   flutter_test:
@@ -136,3 +138,5 @@ flutter:
     - assets/sound/
     - assets/images/dice/
     - assets/images/crown/
+    - assets/audio/move.mp3
+    - assets/audio/dice.mp3

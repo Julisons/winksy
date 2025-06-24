@@ -87,6 +87,7 @@ const bool leading = false;
 
 final double FONT_START = 24.5.sp;
 final double FONT_APP_BAR = 24.sp;
+final double GAME_TITLE = 30.sp;
 final double FONT_ICON = 54.sp;
 final double FONT_TITLE = 14.5.sp;
 final double FONT_13 = 13.sp;

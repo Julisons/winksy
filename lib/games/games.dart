@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:winksy/games/chess/chess_dashboard.dart';
+//import 'package:winksy/games/chess/chess_dashboard.dart';
 
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
@@ -18,8 +18,8 @@ import ' tic_tac_toe/tic_tac_toe_dashboard.dart';
 import '../component/app_bar.dart';
 import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
-import 'ludo/ludo_provider.dart';
-import 'ludo/main_screen.dart';
+import 'chess/chess_dashboard.dart';
+import 'ludo/ludo_dashboard.dart';
 
 class ListItem {
   final String title;
@@ -129,8 +129,7 @@ class _IGamesState extends State<IGames> {
                           Mixin.navigate(context, IChessDashboard());
                           break;
                         case 'Ludo':
-                          Provider.of<LudoProvider>(context, listen: false).startGame();
-                          Mixin.navigate(context, MainScreen());
+                          Mixin.navigate(context, ILudoDashboard());
                           break;
                       }
                     },

@@ -66,7 +66,6 @@ class _IChessDashboardState extends State<IChessDashboard> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Chess', leading: false,),
       body: Padding(
         padding:  EdgeInsets.all(16.0.r),
         child: Column(
@@ -74,14 +73,14 @@ class _IChessDashboardState extends State<IChessDashboard> {
             Expanded(
               child: Column(
                 children: [
-                  SizedBox(height: 20.h,),
+                  SizedBox(height: 100.h,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AnimatedGlowingLetter(
                         letter: 'CHESS',
-                        size: FONT_APP_BAR,
+                        size: GAME_TITLE,
                         color: color.xTrailingAlt,
                         animationType: AnimationType.breathe,
                       ),
@@ -90,19 +89,21 @@ class _IChessDashboardState extends State<IChessDashboard> {
                           child: Text('', style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
                     ],
                   ),
-                  SizedBox(height: 10,),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width/1.5,
-                    child: Text(
-                      'Welcome to Chess! '
-                          'Enter the battlefield of kings and queens in this ultimate strategy game. '
-                          'Outsmart your opponent with clever tactics and masterful moves. '
-                          'Play casually with friends or challenge yourself in competitive mode. '
-                          'Think ahead, plan wisely — every move counts in the game of champions.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: FONT_13,
-                        color: color.xTextColor,
+                  SizedBox(height: 10.h,),
+                  Flexible(
+                    child: Padding(
+                      padding:  EdgeInsets.only(left: 16.w,right: 16.w),
+                      child: Text(
+                        'Welcome to Chess! '
+                            'Enter the battlefield of kings and queens in this ultimate strategy game. '
+                            'Outsmart your opponent with clever tactics and masterful moves. '
+                            'Play casually with friends or challenge yourself in competitive mode. '
+                            'Think ahead, plan wisely — every move counts in the game of champions.',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: FONT_13,
+                          color: color.xTextColor,
+                        ),
                       ),
                     ),
                   ),

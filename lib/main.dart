@@ -26,10 +26,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'games/ tic_tac_toe/tic_tac_toe.dart';
-import 'games/ludo/ludo_provider.dart';
-import 'games/quadrix/quadric_promotion.dart';
-import 'games/quadrix/quadrix_dashboard.dart';
 import 'mixin/constants.dart';
 import 'mixin/mixins.dart';
 
@@ -106,8 +102,6 @@ class MyApp extends StatelessWidget {
               create: (_) => IFriendsProvider().init()),
           ChangeNotifierProvider<IFameHallProvider>(
               create: (_) => IFameHallProvider().init()),
-          ChangeNotifierProvider(create: (_) => LudoProvider(),
-          ),
         ],
         child: ScreenUtilInit(
             designSize: const Size(490.9, 1075.0),
