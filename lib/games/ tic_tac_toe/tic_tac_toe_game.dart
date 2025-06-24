@@ -135,7 +135,6 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Tic Tac Toe', leading: false,),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -225,7 +224,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
             padding: const EdgeInsets.all(18.0),
             child: ElevatedButton(
               onPressed: resetGame,
-              child: Text('Reset Game'),
+              child: Text('Quit Game'),
             ),
           ),
         ],

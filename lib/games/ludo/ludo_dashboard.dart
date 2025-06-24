@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/screen/home/home.dart';
 // user files
 
+import '../ tic_tac_toe/tic_tac_toe.dart';
 import '../../component/button.dart';
 import '../../component/glow2.dart';
 import '../../mixin/constants.dart';
@@ -17,6 +18,10 @@ import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
 import 'ludo.dart';
 
+final List<ListItem> items = [
+  ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
+  ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
+];
 
 class ILudoDashboard extends StatefulWidget {
   const ILudoDashboard({super.key, this.selectedPlayerCount});
@@ -38,51 +43,50 @@ class ILudoDashboardState extends State<ILudoDashboard> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
+      backgroundColor: color.xPrimaryColor,
       body: Container(
         decoration:  BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              color.xPrimaryColor,
               color.xSecondaryColor,
+              color.xPrimaryColor,
             ],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AnimatedGlowingLetter(
-                        letter: 'LUDO',
-                        size: GAME_TITLE,
-                        color: color.xTrailingAlt,
-                        animationType: AnimationType.breathe,
-                      ),
-                      SizedBox(
-                          width: 30.w,
-                          child: Text('', style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
-                    ],
-                  ),
-                  SizedBox(height: 10.h,),
-                  Flexible(
-                    child: Padding(
-                      padding:  EdgeInsets.only(left: 16.w,right: 16.w),
+        child: Padding(
+          padding:  EdgeInsets.all(16.0.r),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: 100.h,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AnimatedGlowingLetter(
+                          letter: 'LUDO',
+                          size: GAME_TITLE,
+                          color: color.xTrailingAlt,
+                          animationType: AnimationType.breathe,
+                        ),
+                        SizedBox(width: 30.w),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/1.2,
                       child: Text(
-                        'Welcome to Chess! '
-                            'Enter the battlefield of kings and queens in this ultimate strategy game. '
-                            'Outsmart your opponent with clever tactics and masterful moves. '
-                            'Play casually with friends or challenge yourself in competitive mode. '
-                            'Think ahead, plan wisely — every move counts in the game of champions.',
+                        'Welcome to Ludo! '
+                            'Roll the dice and race your tokens to the finish in this classic board game. '
+                            'Challenge friends or play solo as you strategize and outmaneuver your opponents. '
+                            'Use smart moves and a bit of luck to send others home and claim victory. '
+                            'Fun, fast, and full of surprises — every roll brings a new chance to win!',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: FONT_13,
@@ -90,59 +94,108 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-             Expanded(
-               flex: 1,
-               child: Column(
-                 children: [
-                   Text(
-                    'Select Number of Players',
-                    style: TextStyle(
-                        fontSize: FONT_TITLE,
-                        fontWeight: FontWeight.bold,
-                        color: color.xTextColorSecondary),
-                               ),
-                   SizedBox(height: 50.h),
-                               IButton(
-                    onPress: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                          const SecondScreen(selectedPlayerCount: 2),
-                        ),
-                      );
-                    },
-                    isBlack: false,
-                    text: "2  player game",
-                    color: color.xTrailing,
-                    textColor: Colors.white,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                               ),
-                               const SizedBox(height: 20),
-                               IButton(
-                    onPress: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const GameApp(
-                              selectedTeams: ['BP', 'RP', 'GP', 'YP']),
-                        ),
-                      );
-                    },
-                    isBlack: false,
-                    text: "4  player game",
-                    color: color.xTrailing,
-                    textColor: Colors.white,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                               ),
-                 ],
-               ),
-             ),
-          ],
+              SizedBox(height: 20.h),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: color.xSecondaryColor, width: 3),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding:  EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Select Number of Players',
+                            style: TextStyle(
+                                fontSize: FONT_TITLE,
+                                fontWeight: FontWeight.bold,
+                                color: color.xTextColorSecondary),
+                          ),
+                          Divider(color: color.xSecondaryColor,height: 30,),
+                          SizedBox(height: 50.h),
+                          IButton(
+                            onPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                  const SecondScreen(selectedPlayerCount: 2),
+                                ),
+                              );
+                            },
+                            isBlack: false,
+                            text: "2  player game",
+                            color: color.xTrailing,
+                            textColor: Colors.white,
+                            width: MediaQuery.of(context).size.width * 0.8,
+                          ),
+                          const SizedBox(height: 20),
+                          IButton(
+                            onPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const GameApp(
+                                      selectedTeams: ['BP', 'RP', 'GP', 'YP']),
+                                ),
+                              );
+                            },
+                            isBlack: false,
+                            text: "4  player game",
+                            color: color.xTrailing,
+                            textColor: Colors.white,
+                            width: MediaQuery.of(context).size.width * 0.8,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Flexible(
+                      child: ListView.builder(
+                        itemCount: items.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Card(
+                            color: color.xSecondaryColor,
+                            elevation: ELEVATION,
+                            margin: EdgeInsets.only(bottom: 16.r),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
+                              leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
+                              title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                              subtitle: Padding(
+                                padding:  EdgeInsets.only(top: 6.r),
+                                child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                              ),
+                              onTap: () {
+                                switch(items[index].title.toUpperCase()){
+                                  case 'HOW TO PLAY':
+
+                                    break;
+                                  case 'HALL OF FAME':
+
+                                    break;
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -490,10 +543,7 @@ class _GameAppState extends State<GameApp> {
               textColor: Colors.white,
               fontWeight: FontWeight.bold,
               onPress: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => IHome()),
-                );
+                Mixin.pop(context, IHome());
               },
             )
           ],

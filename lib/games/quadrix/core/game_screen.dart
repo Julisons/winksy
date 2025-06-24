@@ -186,10 +186,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                         textColor: Colors.white,
                         fontWeight: FontWeight.bold,
                         onPress: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => IHome()),
-                          );
+                          Mixin.pop(context, IHome());
                         },
                       )
                     ],

@@ -65,86 +65,95 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      appBar:IAppBar(title: 'Tic Tac Toe', leading: false,),
-      body: Padding(
-        padding:  EdgeInsets.all(16.0.r),
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  SizedBox(height: 60.h,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AnimatedGlowingLetter(
-                        letter: 'TIC TAC TOE',
-                        size: FONT_APP_BAR,
-                        color: color.xTrailingAlt,
-                        animationType: AnimationType.breathe,
-                      ),
-                      SizedBox(
-                          width: 30.w,
-                          child: Text('', style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width/1.5,
-                    child: Text('Welcome to Tic Tac Toe! '
-                      'Outsmart your opponent in this timeless game of Xs and Os.'
-                      'Play against friends or challenge yourself in single-player mode.'
-                      'Customize your board, choose your symbol, and make your move!'
-                      'It\'s simple, fast, and fun — every tap could be the winning one.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: FONT_13,
-                        color: color.xTextColor,
+      body: Container(
+        decoration:  BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              color.xSecondaryColor,
+              color.xPrimaryColor,
+            ],
+          ),
+        ),
+        child: Padding(
+          padding:  EdgeInsets.all(16.0.r),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: 100.h,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AnimatedGlowingLetter(
+                          letter: 'TIC TAC TOE',
+                          size: GAME_TITLE,
+                          color: color.xTrailingAlt,
+                          animationType: AnimationType.breathe,
+                        ),
+                        SizedBox(width: 30.w),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/1.2,
+                      child: Text('Welcome to Tic Tac Toe! '
+                        'Outsmart your opponent in this timeless game of Xs and Os.'
+                        'Play against friends or challenge yourself in single-player mode.'
+                        'Customize your board, choose your symbol, and make your move!'
+                        'It\'s simple, fast, and fun — every tap could be the winning one.',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: FONT_13,
+                          color: color.xTextColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20.h),
-            Expanded(
-              flex: 2,
-              child: ListView.builder(
-                itemCount: items.length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: color.xSecondaryColor,
-                    elevation: ELEVATION,
-                    margin: EdgeInsets.only(bottom: 16.r),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                      leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                      title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
-                      subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 6.r),
-                        child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+              SizedBox(height: 20.h),
+              Expanded(
+                flex: 2,
+                child: ListView.builder(
+                  itemCount: items.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: color.xSecondaryColor,
+                      elevation: ELEVATION,
+                      margin: EdgeInsets.only(bottom: 16.r),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
+                        leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
+                        title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                        subtitle: Padding(
+                          padding:  EdgeInsets.only(top: 6.r),
+                          child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                        ),
+                        onTap: () {
+                          switch(items[index].title.toUpperCase()){
+                            case 'START GAME':
+                              Mixin.navigate(context, ITicTacToe());
+                              break;
+                            case 'HOW TO PLAY':
+                              Mixin.navigate(context, IQuadrix());
+                              break;
+                            case 'HALL OF FAME':
+                              Mixin.navigate(context, IFameHall());
+                              break;
+                          }
+                        },
                       ),
-                      onTap: () {
-                        switch(items[index].title.toUpperCase()){
-                          case 'START GAME':
-                            Mixin.navigate(context, ITicTacToe());
-                            break;
-                          case 'HOW TO PLAY':
-                            Mixin.navigate(context, IQuadrix());
-                            break;
-                          case 'HALL OF FAME':
-                            Mixin.navigate(context, IFameHall());
-                            break;
-                        }
-                      },
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
