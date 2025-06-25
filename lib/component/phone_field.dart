@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../mixin/constants.dart';
+import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
 
 class PhoneField extends StatelessWidget {
@@ -71,10 +72,12 @@ class PhoneField extends StatelessWidget {
                     color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
-
                   fillColor: color.xPrimaryColor,
                   filled: true,
                 ),
+                onChanged: (value){
+                  Mixin.user?.usrEmail = value;
+                },
               )),
         ],
       ),

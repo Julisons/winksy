@@ -19,8 +19,8 @@ import '../../theme/theme_data_style.dart';
 import '../authenticate/select/intro.dart';
 import '../authenticate/sign_up.dart';
 import '../home/home.dart';
-import 'account.dart';
 import 'contact.dart';
+import 'editor/account.dart';
 
 class ISettings extends StatefulWidget {
   const ISettings({Key? key}) : super(key: key);

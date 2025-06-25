@@ -4,6 +4,7 @@ import 'package:winksy/screen/account/profile.dart';
 import '../mixin/constants.dart';
 import '../mixin/mixins.dart';
 import '../screen/account/contact.dart';
+import '../screen/account/editor/stepper.dart';
 import '../screen/account/logout.dart';
 import '../screen/account/settings.dart';
 import '../screen/account/terms.dart';
@@ -59,7 +60,7 @@ class _IPopupState extends State<IPopup> {
         Mixin.navigate(context, const ILogout());
         break;
       case 'Edit Profile':
-        Mixin.navigate(context, IProfile());
+        Mixin.navigate(context, IStepper());
         break;
       case 'Contact Us':
         Mixin.navigate(context, const IContactUs());

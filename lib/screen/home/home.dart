@@ -322,7 +322,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
   Future<void> _location() async {
     var position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
-    ).timeout(Duration(seconds: 10));
+    ).timeout(Duration(seconds: 100));
 
     List<Placemark> placemarks = await placemarkFromCoordinates(
       position.latitude,

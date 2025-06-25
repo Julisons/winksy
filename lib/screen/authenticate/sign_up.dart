@@ -97,7 +97,9 @@ class _ISignUpState extends State<ISignUp> {
             .width,
         padding:
         const EdgeInsets.only(bottom: 16, left: 24, right: 24, top: 16),
-        child: Column(
+        child:
+
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

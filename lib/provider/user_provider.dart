@@ -30,6 +30,7 @@ class IUsersProvider with ChangeNotifier {
     await XRequest().getData({
       'meId': Mixin.user?.usrId,
       'start':_start,
+      'usrGender': Mixin.user?.usrOsType,
       'limit':_limit
     }, IUrls.USERS('')).then((data) {
       if (data.statusCode == 200) {
@@ -60,6 +61,7 @@ class IUsersProvider with ChangeNotifier {
 
     await XRequest().getData({
       'meId': Mixin.user?.usrId,
+      'usrGender': Mixin.user?.usrOsType,
       'start':_start,
       'limit':_limit
     }, IUrls.USERS('')).then((data) {

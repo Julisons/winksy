@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:winksy/screen/account/editor/stepper.dart';
 
+import '../mixin/mixins.dart';
 import '../request/urls.dart';
+import '../screen/account/editor/account.dart';
 import '../theme/custom_colors.dart';
 import 'button.dart';
 
@@ -62,7 +65,7 @@ class ProfileProgressWidget extends StatelessWidget {
                 child: IButton(
                   color: color.xTrailing,
                   onPress: () {
-                    // handle edit
+                    Mixin.navigate(context,  IStepper());
                   },
                   isBlack: true,
                   text: "Edit",
