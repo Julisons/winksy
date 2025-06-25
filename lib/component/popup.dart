@@ -1,8 +1,12 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:winksy/screen/account/profile.dart';
 import '../mixin/constants.dart';
 import '../mixin/mixins.dart';
+import '../screen/account/contact.dart';
 import '../screen/account/logout.dart';
+import '../screen/account/settings.dart';
+import '../screen/account/terms.dart';
 import '../screen/splash/splash_screen.dart';
 import '../theme/custom_colors.dart';
 
@@ -53,24 +57,18 @@ class _IPopupState extends State<IPopup> {
     switch (value) {
       case 'Log Out':
         Mixin.navigate(context, const ILogout());
-
-        /*Mixin.clear();
-        setState(() {
-          auth = 'Login';
-        });
-        Mixin.pop(context, const ISplashScreen());*/
         break;
       case 'Edit Profile':
-        //Mixin.navigate(context, const IAccount());
+        Mixin.navigate(context, IProfile());
         break;
       case 'Contact Us':
-       // Mixin.navigate(context, const IContactUs());
+        Mixin.navigate(context, const IContactUs());
         break;
       case 'Terms & Conditions':
-        //Mixin.navigate(context, const ITerms());
+        Mixin.navigate(context, const ITerms());
         break;
       case 'Settings':
-        //Mixin.navigate(context, const ISettings());
+        Mixin.navigate(context, const ISettings());
         break;
     }
   }
