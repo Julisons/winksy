@@ -61,7 +61,7 @@ class _SocialIntroState extends State<SocialIntro> {
                   ),
                   Text(
                     textAlign: TextAlign.center,
-                    "Sign Up",
+                    "Sign up",
                     style: TextStyle(
                       fontSize: FONT_START,
                       fontWeight: FontWeight.bold,
@@ -93,12 +93,12 @@ class _SocialIntroState extends State<SocialIntro> {
             SizedBox(height: 16.h,),
             IGoogle(onPress: (){
               _handleSignIn(context);
-            }, text: 'Sign Up with Google', width: MediaQuery.of(context).size.width,textColor:color.xTextColor,
+            }, text: 'Sign up with Google', width: MediaQuery.of(context).size.width,textColor:color.xTextColor,
               color: color.xSecondaryColor,isBlack: false,),
             SizedBox(height: 16.h,),
             IButton(onPress: (){
               Mixin.navigate(context, const ISignUp());
-            }, text: 'Sign Up', width: MediaQuery.of(context).size.width,
+            }, text: 'Sign up', width: MediaQuery.of(context).size.width,
               color: color.xTrailing,isBlack: false,textColor: Colors.white,),
             SizedBox(height: 26.h,),
             Align(
@@ -113,9 +113,9 @@ class _SocialIntroState extends State<SocialIntro> {
                     style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                     children: <TextSpan>[
                       TextSpan(
-                          text: '  Sign In Here  ',
+                          text: '  Sign in Here  ',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary)),
+                              fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing)),
                     ],
                   ),
                 ),
@@ -134,7 +134,7 @@ class _SocialIntroState extends State<SocialIntro> {
     });
     try {
      // await _googleSignIn.signOut();
-      // Trigger the Google Sign-In flow
+      // Trigger the Google Sign-in flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {

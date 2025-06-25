@@ -85,7 +85,7 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                   TextSpan(
                     text: " Please fill below ",
                     style: TextStyle(
-                      color: color.xTextColor,
+                      color: color.xTextColorSecondary,
                       fontWeight: FontWeight.normal,
                       fontSize: FONT_APP_BAR,
                     ),
@@ -99,9 +99,9 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                         ),
                       ),
                       TextSpan(
-                        text: "\nTo get started .",
+                        text: "\nTo get started.",
                         style: TextStyle(
-                          color: color.xTextColor,
+                          color: color.xTextColorSecondary,
                           fontWeight: FontWeight.normal,
                           fontSize: FONT_APP_BAR,
                         ),
@@ -413,7 +413,7 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                             if (state) {
                                 Mixin.showToast(context, res, INFO);
                                 Mixin.prefString(pref:jsonEncode(Mixin.user), key: CURR);
-                                Mixin.pop(context, const IHome());
+                               Mixin.pop(context, const IHome());
                             } else {
                               Mixin.errorDialog(context, 'ERROR', res);
                             }

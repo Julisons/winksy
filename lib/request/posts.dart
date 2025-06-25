@@ -13,6 +13,7 @@ import '../model/response.dart';
 class IPost {
   static Future postData(dynamic data, Function updateUI, String url) async {
     final token = await Mixin.getPrefString(key: TOKEN);
+    log('------$token----');
     log(url.toString());
     var body = jsonEncode(data);
     http.Response? response;
@@ -33,7 +34,9 @@ class IPost {
     String message = jsonResponse.message;
     log('---------------------$state------$message-----$res');
     if (state) {
-      Mixin.prefString(pref: jsonResponse.token, key: TOKEN);
+      if(jsonResponse.token != null) {
+        Mixin.prefString(pref: jsonResponse.token, key: TOKEN);
+      }
     }
     updateUI(state, message, jsonResponse.result);
 

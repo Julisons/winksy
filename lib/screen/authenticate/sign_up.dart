@@ -19,6 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../request/posts.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
+import '../account/terms.dart';
 import '../home/home.dart';
 
 class ISignUp extends StatefulWidget {
@@ -75,7 +76,7 @@ class _ISignUpState extends State<ISignUp> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: color.xPrimaryColor,
-        title: Text('Sign Up', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold),),
+        title: Text('Sign up', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold),),
         centerTitle: true, // Center the title
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: color.xTrailing),
@@ -312,7 +313,7 @@ class _ISignUpState extends State<ISignUp> {
                   ..usrFirstName = _firstNameController.text.trim()
                   ..usrLastName = _lastNameController.text.trim()
                   ..usrEmail = _emailController.text.trim()
-                  ..usrType = 'SIGN-UP'
+                  ..usrType = 'NORMAL'
                   ..usrFullNames = '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}'
                   ..usrMobileNumber = _phoneController.text.trim()
                   ..usrEncryptedPassword = _pinController.text.trim()
@@ -320,7 +321,7 @@ class _ISignUpState extends State<ISignUp> {
                   ..usrUsername = _emailController.text.trim();
 
                 setState(() {
-                 // _isLoading = true;
+                  _isLoading = true;
                 });
 
                 IPost.postData(user, (state, res, value) {
@@ -330,7 +331,9 @@ class _ISignUpState extends State<ISignUp> {
                       Mixin.showToast(context, res, INFO);
                       Mixin.getUser().then((value) => {
                         Mixin.user = value,
+                        if(Mixin.user?.usrId != null){
                           Mixin.navigate(context, const IBio())
+                        }
                       });
                     } else {
                       Mixin.errorDialog(context, 'ERROR', res);
@@ -346,7 +349,7 @@ class _ISignUpState extends State<ISignUp> {
             SizedBox(height: 16.h,),
             IGoogle(onPress: (){
               _handleSignIn(context);
-            }, text: 'Sign Up with Google', width: MediaQuery.of(context).size.width,textColor: color.xTextColor,
+            }, text: 'Sign up with Google', width: MediaQuery.of(context).size.width,textColor: color.xTextColor,
               color: color.xSecondaryColor,isBlack: false,),
              SizedBox(height: 24.h),
             Align(
@@ -361,7 +364,7 @@ class _ISignUpState extends State<ISignUp> {
                     style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                     children: <TextSpan>[
                       TextSpan(
-                          text: '  Sign In  ',
+                          text: '  Sign in  ',
                           style: TextStyle(color: color.xTrailing,
                               fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM)),
                     ],
@@ -374,7 +377,7 @@ class _ISignUpState extends State<ISignUp> {
               width: 300.w,
               child: InkWell(
                 onTap: () {
-                 //Mixin.navigate(context, const ITerms());
+                 Mixin.navigate(context, const ITerms());
                 },
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -387,7 +390,7 @@ class _ISignUpState extends State<ISignUp> {
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing,
                               decoration: TextDecoration.underline)),
                       TextSpan(
-                          text: 'and to receive Winksy emails & updates and acknowledge that you read our ',
+                          text: 'and to receive Wink emails & updates and acknowledge that you read our',
                           style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: color.xTextColor)),
                       TextSpan(
                           text: ' Privacy Policy.',
@@ -410,7 +413,7 @@ class _ISignUpState extends State<ISignUp> {
     });
     try {
       // await _googleSignIn.signOut();
-      // Trigger the Google Sign-In flow
+      // Trigger the Google Sign-in flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {

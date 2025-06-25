@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import '../mixin/constants.dart';
 import '../mixin/mixins.dart';
+import '../screen/account/logout.dart';
 import '../screen/splash/splash_screen.dart';
 import '../theme/custom_colors.dart';
 
@@ -41,7 +42,7 @@ class _IPopupState extends State<IPopup> {
         return { 'Edit Profile','Terms & Conditions', 'Contact Us','Settings', auth,}.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
-            child: Text(choice, style: TextStyle(color: color.xTextColor),),
+            child: Text(choice, style: TextStyle(color: color.xTextColorSecondary),),
           );
         }).toList();
       },
@@ -51,7 +52,13 @@ class _IPopupState extends State<IPopup> {
   void handleClick(String value, BuildContext context) {
     switch (value) {
       case 'Log Out':
-       // Mixin.navigate(context, const ILogout());
+        Mixin.navigate(context, const ILogout());
+
+        /*Mixin.clear();
+        setState(() {
+          auth = 'Login';
+        });
+        Mixin.pop(context, const ISplashScreen());*/
         break;
       case 'Edit Profile':
         //Mixin.navigate(context, const IAccount());

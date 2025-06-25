@@ -49,12 +49,11 @@ class _ISignInState extends State<ISignIn> {
 
     final color = Theme.of(context).extension<CustomColors>()!;
 
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: color.xPrimaryColor,
-        title: Text('Sign In', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR),),
+        title: Text('Sign in', style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR),),
         centerTitle: true, // Center the title
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: color.xTrailing,),
@@ -93,7 +92,7 @@ class _ISignInState extends State<ISignIn> {
                     borderSide: BorderSide(color: color.xTrailing),
                   ),
                   border: InputBorder.none,
-                  labelText: 'Mobile Number',
+                  labelText: 'Email or Mobile Number',
                   labelStyle: TextStyle(
                     color: color.xTextColor,
                     fontSize: FONT_13,
@@ -160,7 +159,7 @@ class _ISignInState extends State<ISignIn> {
                       style: TextStyle(color: color.xTrailing, fontSize: FONT_13, fontWeight: FontWeight.bold),
                       children: <TextSpan>[
                         TextSpan(
-                            text: '  Password ? ',
+                            text: '  password ? ',
                             style: TextStyle(color: color.xTrailing,fontWeight: FontWeight.bold, fontSize: FONT_13)),
                       ],
                     ),
@@ -341,7 +340,7 @@ class _ISignInState extends State<ISignIn> {
                       Mixin.errorDialog(context, 'ERROR', res);
                     }
                   });
-                }, IUrls.SEND_OTP("phone=${_emailController.text}"));
+                }, IUrls.RESET_PASSWORD());
               },
             ),
           ],
@@ -435,6 +434,7 @@ class _ISignInState extends State<ISignIn> {
 
                 User user = User()
                   ..usrUsername = _emailController.text.trim()
+                  ..usrType = 'NORMAL'
                   ..usrEncryptedPassword = _pinController.text.trim();
 
                 IPost.postData(user, (state, res, value) {
@@ -661,6 +661,7 @@ class _ISignInState extends State<ISignIn> {
       User user = User()
         ..usrFirstName = _nameController.text
         ..usrLastName =  _nameController.text
+        ..usrType = 'GOOGLE'
         ..usrFullNames =  _nameController.text
         ..usrNationalId =  _emailController.text
         ..usrEmail = _emailController.text

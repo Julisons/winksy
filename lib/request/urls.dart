@@ -1,8 +1,8 @@
 class IUrls {
 
- //static String BASE = 'http://192.168.100.36';
+ static String BASE = 'http://192.168.100.36';
 //static String BASE = 'http://10.10.1.28';
-  static String BASE = 'http://212.47.74.158';
+ // static String BASE = 'http://212.47.74.158';
  static String BASE_IMAGE = 'http://212.47.74.158';
 
 static String IMAGE_URL = '$BASE_IMAGE:5000';
@@ -118,17 +118,22 @@ static String BASE_URL = '$BASE:5000';
     return "$BASE_URL/auth/sign_in";
   }
 
+
+  static String VERIFY_OTP() {
+    return "$BASE_URL/auth/verify_otp";
+  }
+
   static String CHAT() {
     return "$BASE_URL/chat/save_chat";
   }
 
 
   static String RESET_PASSWORD() {
-    return "$BASE_URL/usr/reset_password";
+    return "$BASE_URL/auth/reset_password";
   }
 
-  static String SEND_OTP(params) {
-    return "$BASE_URL/usr/send_one_time_pin?$params";
+  static String UPDATE_PASSWORD() {
+    return "$BASE_URL/auth/update_password";
   }
 
   static String PUSH_STK(phone,ref,amount) {

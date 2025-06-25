@@ -51,7 +51,7 @@ class Mixin {
           return null;
         }
 
-      log('----------------DATA---{$data}');
+      log('----------------DATA---$data');
 
       return User.fromJson(jsonDecode(data!));
     } else {
@@ -119,30 +119,23 @@ class Mixin {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          backgroundColor:color.xPrimaryColor,
+          actionsAlignment: MainAxisAlignment.end,
+          backgroundColor:color.xSecondaryColor,
           title: Text(title, style:  TextStyle(color: color.xTrailing)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(message, style: TextStyle(color:  color.xTextColor)),
+                Text(message, style: TextStyle(color:  color.xTextColorSecondary)),
               ],
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text('Cancel', style: TextStyle(color:  color.xTextColorSecondary),),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-
             IButton(
               onPress: () {
                 Navigator.of(context).pop();
               },
               isBlack: false,
-              text: 'Buy wnk points',
+              text: 'Ok',
               color:  color.xTrailing,
               textColor:  Colors.white,
               fontWeight: FontWeight.normal,

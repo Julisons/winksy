@@ -146,7 +146,7 @@ class _ISplashScreenState extends State<ISplashScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Winksy', style: TextStyle(color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold),),
+                      Text('Wink', style: TextStyle(color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold),),
                       Text('®', style: TextStyle(color: color.xTrailing, fontSize: FONT_TITLE, fontWeight: FontWeight.bold),),
                     ],
                   )

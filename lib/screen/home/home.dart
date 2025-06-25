@@ -355,13 +355,6 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
   }
 }
 
-/*// Required for background handling (must be a top-level function)
-@pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse response) {
-  log('------------------------------------------------Notification tapped in background: ${response.id}');
- // _handleNotificationResponse(response);
-}*/
-
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
   // ignore: avoid_print
@@ -370,10 +363,8 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
       ' payload: ${notificationResponse.payload}');
   if (notificationResponse.input?.isNotEmpty ?? false) {
     // ignore: avoid_print
-    print(
-        'notification action tapped with input: ${notificationResponse.input}');
+    print('notification action tapped with input: ${notificationResponse.input}');
   }
-
   _handleNotificationResponse(notificationResponse);
 }
 
