@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/gift/treat_provider.dart';
 import 'package:winksy/screen/account/winker/treats/treats_card.dart';
 import 'package:winksy/screen/account/winker/treats/treats_shimmer.dart';
+import '../../../../component/loader.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../theme/custom_colors.dart';
 
@@ -77,7 +78,7 @@ class _ITreatsState extends State<ITreats> {
               if(provider.isLoadingMore())
                 Container(
                     padding: EdgeInsets.all(14.h),
-                    child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
+                    child: Loading(dotColor: color.xTrailing))
             ],
           );
         });

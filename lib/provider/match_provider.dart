@@ -31,9 +31,8 @@ class IMatchProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'];
-          log('---${res}');
 
           var items = res.map<User>((json) {
             return  User.fromJson(json);

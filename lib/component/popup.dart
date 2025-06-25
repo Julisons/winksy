@@ -19,7 +19,7 @@ class IPopup extends StatefulWidget {
 }
 
 class _IPopupState extends State<IPopup> {
-  late String auth = 'Log Out';
+  late String auth = 'Sign out';
   @override
   void initState() {
     super.initState();

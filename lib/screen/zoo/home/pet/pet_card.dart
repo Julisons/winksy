@@ -15,8 +15,10 @@ import '../../../../component/button.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../model/pet.dart';
+import '../../../../model/user.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../account/winker/winkser.dart';
 
 
 class IPetCard extends StatefulWidget {
@@ -36,7 +38,9 @@ class _IPetCardState extends State<IPetCard> {
 
     return InkWell(
       onTap: () {
-
+        Mixin.winkser = User.fromJson(widget.pet.toJson());
+        log("Winkser: ${Mixin.winkser?.usrId}");
+        Mixin.navigate(context, IWinkser());
       },
       child: Card(
         elevation: ELEVATION,

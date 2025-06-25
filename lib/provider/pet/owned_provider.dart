@@ -37,7 +37,7 @@ class IOwnedProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'] ;
 
           var items = res.map<Pet>((json) {
@@ -67,7 +67,7 @@ class IOwnedProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'];
           log('---${res}');
 

@@ -38,7 +38,7 @@ class IPetProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'];
           pet = Pet.fromJson((jsonResponse.result));
 
@@ -69,7 +69,7 @@ class IPetProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'] ;
           log('---${res}');
 

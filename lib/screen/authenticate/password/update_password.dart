@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../component/button.dart';
+import '../../../component/loader.dart';
 import '../../../component/logo.dart';
 import '../../../component/phone_field.dart';
 import '../../../mixin/constants.dart';
@@ -13,6 +14,7 @@ import '../../../mixin/mixins.dart';
 import '../../../model/user.dart';
 import '../../../request/posts.dart';
 import '../../../request/urls.dart';
+import '../../../theme/custom_colors.dart';
 import '../../home/home.dart';
 
 class IUpdatePassword extends StatefulWidget {
@@ -38,7 +40,8 @@ class _IUpdatePasswordState extends State<IUpdatePassword> {
 
   @override
   Widget build(BuildContext context) {
-    
+    final color = Theme.of(context).extension<CustomColors>()!;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -159,8 +162,8 @@ class _IUpdatePasswordState extends State<IUpdatePassword> {
                ),
 
               _isLoading ? Center(
-                  child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.tertiary)) :
+                  child: Loading(
+                    dotColor: color.xTrailing,)) :
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -352,8 +355,8 @@ class _IUpdatePasswordState extends State<IUpdatePassword> {
                 showDialog(
                     context: navigatorKey.currentContext!,
                     builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: xBlueColor,
+                      child: Loading(
+                        dotColor: xBlueColor,
                       ),
                     )
                 );

@@ -15,14 +15,17 @@ import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 
 import '../../../../component/button.dart';
+import '../../../../component/loader.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../model/pet.dart';
 import '../../../../model/transaction.dart';
+import '../../../../model/user.dart';
 import '../../../../model/wish.dart';
 import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../account/winker/winkser.dart';
 
 
 class IBrowseCard extends StatefulWidget {
@@ -47,7 +50,9 @@ class _IBrowseCardState extends State<IBrowseCard> {
 
     return InkWell(
       onTap: () {
-
+        Mixin.winkser = User.fromJson(widget.pet.toJson());
+        log("Winkser: ${Mixin.winkser?.usrId}");
+        Mixin.navigate(context, IWinkser());
       },
       child: Card(
         elevation: ELEVATION,
@@ -59,26 +64,33 @@ class _IBrowseCardState extends State<IBrowseCard> {
           children: [
             SizedBox(width: 3,),
             ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: widget.pet.usrImage.toString(),
-                width: 150.h,
-                height: 150.h,
-                fit: BoxFit.fitHeight,
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: xShimmerBase,
-                  highlightColor: xShimmerHighlight,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width/2,
-                  //  height: MediaQuery.of(context).size.width/2,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  Mixin.winkser = User.fromJson(widget.pet.toJson());
+                  log("Winkser: ${Mixin.winkser?.usrId}");
+                  Mixin.navigate(context, IWinkser());
+                },
+                child: CachedNetworkImage(
+                  imageUrl: widget.pet.usrImage.toString(),
+                  width: 150.h,
+                  height: 150.h,
+                  fit: BoxFit.fitHeight,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: xShimmerBase,
+                    highlightColor: xShimmerHighlight,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width/2,
+                    //  height: MediaQuery.of(context).size.width/2,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                errorWidget: (context, url, error) => CircleAvatar(
-                  backgroundColor: color.xSecondaryColor,
-                  child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                  errorWidget: (context, url, error) => CircleAvatar(
+                    backgroundColor: color.xSecondaryColor,
+                    child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                  ),
                 ),
               ),
             ),
@@ -226,8 +238,8 @@ class _IBrowseCardState extends State<IBrowseCard> {
                       width: 120.w,
                       height: 40.h,
                       child: Center(
-                          child: CircularProgressIndicator(
-                              color: color.xTrailing)),
+                          child: Loading(
+                              dotColor: color.xTrailing)),
                     )
                         :
                     Row(
@@ -258,7 +270,7 @@ class _IBrowseCardState extends State<IBrowseCard> {
                             color:  color.xPrimaryColor,
                             textColor:  color.xTextColor,
                             fontWeight: FontWeight.normal,
-                            width: 120.w,
+                            width: 121.w,
                             height: 35.h,
                             font: FONT_13,
                           ),

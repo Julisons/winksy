@@ -15,6 +15,7 @@ import 'package:winksy/provider/pet/wish_provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 
 import '../../../../component/button.dart';
+import '../../../../component/loader.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../model/pet.dart';
@@ -221,8 +222,8 @@ class _IWishCardState extends State<IWishCard> {
                       width: 120.w,
                       height: 40.h,
                       child: Center(
-                          child: CircularProgressIndicator(
-                              color: color.xTrailing)),
+                          child: Loading(
+                              dotColor: color.xTrailing)),
                     )
                         :
                     Row(

@@ -25,6 +25,7 @@ import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../component/face_detector.dart';
+import '../../../component/loader.dart';
 import '../../home/home.dart';
 
 
@@ -277,10 +278,7 @@ class _IAlignmentState extends State<IAlignment> with TickerProviderStateMixin {
                   height: 20.h,
                 ),
                 _isLoading
-                    ?  Center(
-                  child: CircularProgressIndicator(
-                    color:  color.xTrailing,
-                  ),
+                    ?  Center(child: Loading(dotColor:  color.xTrailing),
                 )
                     :
                 Align(

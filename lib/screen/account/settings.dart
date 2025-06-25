@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:winksy/screen/account/editor/stepper.dart';
 import 'package:winksy/screen/account/profile.dart';
 import 'package:winksy/screen/account/terms.dart';
 
@@ -89,29 +90,7 @@ class _ISettingsState extends State<ISettings> {
                       ],
                     ),
                     onTap: () {
-                      Mixin.navigate(context,  IAccount());
-                    },
-                  ),
-                  SizedBox(height: 6.w),
-                  InkWell(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Change Mobile No.",
-                          style: TextStyle(
-                              color: color.xTextColorSecondary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_APP_BAR),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Theme.of(context).colorScheme.tertiary,
-                        )
-                      ],
-                    ),
-                    onTap: () {
-                      Mixin.navigate(context, IProfile());
+                      Mixin.navigate(context,  IStepper());
                     },
                   ),
                   SizedBox(height: 6.w),
@@ -180,9 +159,9 @@ class _ISettingsState extends State<ISettings> {
             )),
             Image.asset('assets/images/icon.png'),
             SizedBox(
-              width: 193.w,
+              width: 203.w,
               child: Text(
-                  "Designed & Developed in Nairobi.© 2025 Wink Technologies Limited.Closed Beta V1.0.",
+                  "Designed & Developed in Nairobi. ©2025\nWink Technologies Limited.\nClosed Beta V1.0.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,

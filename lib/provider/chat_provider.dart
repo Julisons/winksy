@@ -30,7 +30,7 @@ class IChatProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'];
           log('---${res}');
 
@@ -57,7 +57,7 @@ class IChatProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'] ?? [];
           log('---${res}');
 

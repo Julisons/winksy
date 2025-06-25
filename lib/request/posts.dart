@@ -32,7 +32,6 @@ class IPost {
 
     bool state = jsonResponse.success;
     String message = jsonResponse.message;
-    log('---------------------$state------$message-----$res');
     if (state) {
       if(jsonResponse.token != null) {
         Mixin.prefString(pref: jsonResponse.token, key: TOKEN);

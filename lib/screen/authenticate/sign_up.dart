@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../../mixin/constants.dart';
 import '../../component/button.dart';
 import '../../component/google.dart';
+import '../../component/loader.dart';
 import '../../component/logo.dart';
 import '../../component/phone_field.dart';
 import '../../mixin/mixins.dart';
@@ -272,8 +273,8 @@ class _ISignUpState extends State<ISignUp> {
              SizedBox(height: 44.h),
             _isLoading
                 ?  Center(
-              child: CircularProgressIndicator(
-                color: color.xTrailing,
+              child: Loading(
+                dotColor: color.xTrailing,
               ),
             )
                 :

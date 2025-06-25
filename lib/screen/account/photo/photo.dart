@@ -11,6 +11,7 @@ import 'package:winksy/screen/account/photo/photo_card.dart';
 import 'package:winksy/screen/account/photo/photo_shimmer.dart';
 
 import '../../../component/face_detector.dart';
+import '../../../component/loader.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../provider/photo_provider.dart';
@@ -101,7 +102,7 @@ class _IPhotosState extends State<IPhotos> {
                   Container(
                       color: color.xSecondaryColor,
                       padding: EdgeInsets.all(14.h),
-                      child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
+                      child: Loading(dotColor: color.xTrailing))
               ],
             );
           }),

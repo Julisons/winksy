@@ -36,9 +36,8 @@ class IFriendProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('---here0-----${jsonResponse.data}');
           var res = jsonResponse.data['result'];
-
+          log('-----${jsonResponse.data}');
           var items = res.map<Friend>((json) {
             return  Friend.fromJson(json);
           }).toList();
@@ -66,7 +65,7 @@ class IFriendProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          log('${jsonResponse.data}');
+          
           var res = jsonResponse.data['result'] ;
           log('---${res}');
 

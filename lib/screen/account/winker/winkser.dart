@@ -17,6 +17,7 @@ import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../request/urls.dart';
 import '../../../component/button.dart';
+import '../../../component/loader.dart';
 import '../../../component/popup.dart';
 import '../../../component/profile_card.dart';
 import '../../../games/games.dart';
@@ -294,8 +295,8 @@ class _IWinkserState extends State<IWinkser> {
                               Consumer<IFriendProvider>(
                                   builder: (context, provider, child) {
                                     return _isLoading ? Center(
-                                      child: CircularProgressIndicator(
-                                        color: Theme.of(context).colorScheme.tertiary,
+                                      child: Loading(
+                                        dotColor: color.xTrailing,
                                       )):
                                     SizedBox(
                                       height: 40.h,
@@ -314,7 +315,7 @@ class _IWinkserState extends State<IWinkser> {
                                             ..frndUsrId = Mixin.user?.usrId
                                             ..frndFolId = Mixin.winkser?.usrId
                                             ..frndDesc = 'Liked ${Mixin.winkser?.usrFullNames}'
-                                            ..frndStatus = 'Requested'
+                                            ..frndStatus = 'FRIENDS'
                                             ..frndCode = 'LIKE'
                                             ..frndInstId = Mixin.user?.usrInstId
                                             ..frndType = 'USER';

@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
+import '../../../../component/loader.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../people/people_shimmer.dart';
 import 'owned_card.dart';
@@ -93,7 +94,7 @@ class _IOwnedState extends State<IOwned> {
                   if(provider.isLoadingMore())
                     Container(
                         padding: EdgeInsets.all(14.h),
-                        child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
+                        child: Loading(dotColor: color.xTrailing,))
                 ],
               );
             }),

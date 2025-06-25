@@ -40,17 +40,8 @@ class _IPeopleCardState extends State<IPeopleCard> {
     return InkWell(
       onTap: () {
         Mixin.winkser = widget.user;
-
-        log("Winkser: ${Mixin.winkser?.usrGender}");
-        Chat chat = Chat()
-        ..chatReceiverId = widget.user.usrId
-        ..chatSenderId = Mixin.user?.usrId
-        ..chatCreatedBy = Mixin.user?.usrId
-        ..usrReceiver = widget.user.usrFullNames;
-        //Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
-
+        log("Winkser: ${Mixin.winkser?.usrId}");
         Mixin.navigate(context, IWinkser());
-
       },
       child: Card(
         elevation: ELEVATION,

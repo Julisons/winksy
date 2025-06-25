@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../component/button.dart';
 import '../../component/google.dart';
+import '../../component/loader.dart';
 import '../../component/logo.dart';
 import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
@@ -168,8 +169,8 @@ class _ISignInState extends State<ISignIn> {
               ),
               SizedBox(height: 34.h),
               _isLoading ? Center(
-                child: CircularProgressIndicator(
-                  color: color.xTrailing))
+                child: Loading(
+                  dotColor: color.xTrailing))
                   :
               IButton(
                 onPress: () {
@@ -320,8 +321,8 @@ class _ISignInState extends State<ISignIn> {
                 showDialog(
                     context: navigatorKey.currentContext!,
                     builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: xBlueColor,
+                      child: Loading(
+                        dotColor: xBlueColor,
                       ),
                     )
                 );
@@ -426,8 +427,8 @@ class _ISignInState extends State<ISignIn> {
                 showDialog(
                     context: navigatorKey.currentContext!,
                     builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: xBlueColor,
+                      child: Loading(
+                        dotColor: xBlueColor,
                       ),
                     )
                 );
@@ -588,8 +589,8 @@ class _ISignInState extends State<ISignIn> {
                 showDialog(
                     context: navigatorKey.currentContext!,
                     builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: xBlueColor,
+                      child: Loading(
+                        dotColor: xBlueColor,
                       ),
                     )
                 );

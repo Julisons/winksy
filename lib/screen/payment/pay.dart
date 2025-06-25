@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../component/button.dart';
 import '../../../request/posts.dart';
 import '../../../request/urls.dart';
+import '../../component/loader.dart';
 import '../../component/popup.dart';
 
 class IPay extends StatefulWidget {
@@ -138,8 +139,8 @@ class _IPayState extends State<IPay> {
                       bottom: 16,
                       width: 50,
                       height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
+                            child: Loading(
+                              dotColor: Colors.red,
                             ),
                           ) : Positioned(
                       bottom: 10,

@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/screen/people/people_card.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 import '../../../mixin/constants.dart';
+import '../../component/loader.dart';
 import '../../component/popup.dart';
 import '../../provider/user_provider.dart';
 import '../../theme/custom_colors.dart';
@@ -135,7 +136,7 @@ class _IPeopleState extends State<IPeople> {
                   if(provider.isLoadingMore())
                     Container(
                         padding: EdgeInsets.all(14.h),
-                        child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
+                        child: Loading(dotColor: color.xTrailing))
                 ],
               );
             }),

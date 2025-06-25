@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../component/button.dart';
+import '../../../component/loader.dart';
 import '../../../component/logo.dart';
 import '../../../component/phone_field.dart';
 import '../../../mixin/constants.dart';
@@ -127,8 +128,8 @@ class _IResetPasswordState extends State<IResetPassword> {
                ),
 
               _isLoading ? Center(
-                  child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.tertiary)) :
+                  child: Loading(
+                    dotColor: color.xTrailing,)) :
 
               IButton(
                   onPress: () {
@@ -311,9 +312,9 @@ class _IResetPasswordState extends State<IResetPassword> {
 
                 showDialog(
                     context: navigatorKey.currentContext!,
-                    builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: xBlueColor,
+                    builder: (context) => Center(
+                      child: Loading(
+                        dotColor: color.xTrailing,
                       ),
                     )
                 );
@@ -476,9 +477,9 @@ class _IResetPasswordState extends State<IResetPassword> {
 
                 showDialog(
                     context: navigatorKey.currentContext!,
-                    builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: xBlueColor,
+                    builder: (context) =>  Center(
+                      child: Loading(
+                        dotColor: color.xTrailing,
                       ),
                     )
                 );

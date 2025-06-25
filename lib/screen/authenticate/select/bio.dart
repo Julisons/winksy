@@ -25,6 +25,7 @@ import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../component/face_detector.dart';
+import '../../../component/loader.dart';
 import '../../home/home.dart';
 
 
@@ -371,8 +372,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                 ),
                 _isLoading
                     ?  Center(
-                  child: CircularProgressIndicator(
-                    color:  color.xTrailing,
+                  child: Loading(
+                    dotColor:  color.xTrailing,
                   ),
                 )
                     :

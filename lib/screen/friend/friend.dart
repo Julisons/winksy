@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/friend_provider.dart';
 import 'package:winksy/screen/friend/friend_shimmer.dart';
 import '../../../mixin/constants.dart';
+import '../../component/loader.dart';
 import '../../component/popup.dart';
 import '../../provider/friends_provider.dart';
 import '../../provider/user_provider.dart';
@@ -137,7 +138,7 @@ class _IFriendState extends State<IFriend> {
                   if(provider.isLoadingMore())
                     Container(
                         padding: EdgeInsets.all(14.h),
-                        child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
+                        child: Loading(dotColor: color.xTrailing))
                 ],
               );
             }),

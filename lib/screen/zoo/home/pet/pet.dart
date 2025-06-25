@@ -9,6 +9,7 @@ import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
+import '../../../../component/loader.dart';
 import '../../../../component/popup.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../provider/pet/pet_provider.dart';
@@ -92,7 +93,7 @@ class _IPetState extends State<IPet> {
                   if(provider.isLoadingMore())
                     Container(
                         padding: EdgeInsets.all(14.h),
-                        child: CircularProgressIndicator(color: color.xTrailing,strokeWidth: 1,))
+                        child: Loading(dotColor: color.xTrailing,))
                 ],
               );
             }),

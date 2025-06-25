@@ -89,7 +89,7 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 730.h,
+      height: 760.h,
       padding: EdgeInsets.all(6.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,13 +97,13 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 320.h,
+            height: 330.h,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 50.h,
+                  height: 7.h,
                 ),
                 Stack(
                   alignment: Alignment.center,
@@ -193,8 +193,8 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
                   text: "Edit",
                   icon: Icon(Icons.edit, color: Colors.white, size: 16.r),
                   color: color.xTrailing,
-                  width: 80,
-                  height: 35,
+                  width: 95.h,
+                  height: 35.h,
                 ),
                 SizedBox(height: 10.h),
                 Text(

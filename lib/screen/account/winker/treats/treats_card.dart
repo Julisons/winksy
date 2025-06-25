@@ -14,6 +14,7 @@ import 'package:winksy/model/gift.dart';
 import 'package:winksy/model/treat.dart';
 import 'package:confetti/confetti.dart';
 import '../../../../component/google.dart';
+import '../../../../component/loader.dart';
 import '../../../../component/mpesa_pay.dart';
 import '../../../../component/payment_configurations.dart';
 import '../../../../mixin/mixins.dart';
@@ -176,8 +177,8 @@ class _ITreatCardState extends State<ITreatCard> {
                         type: GooglePayButtonType.buy,
                         margin: const EdgeInsets.only(top: 15.0),
                         onPaymentResult: onGooglePayResult,
-                        loadingIndicator: const Center(
-                          child: CircularProgressIndicator(),
+                        loadingIndicator:  Center(
+                          child: Loading(dotColor: color.xTrailing),
                         ),
                       ),
                       IMpesaPay(onPress: (){
