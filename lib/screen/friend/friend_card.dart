@@ -17,7 +17,7 @@ import '../../mixin/constants.dart';
 import '../../model/chat.dart';
 import '../../model/friend.dart';
 import '../../model/user.dart';
-import '../account/winker/winkser.dart';
+import '../account/winker/winker.dart';
 import '../message/message.dart';
 
 

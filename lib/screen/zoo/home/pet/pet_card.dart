@@ -18,7 +18,7 @@ import '../../../../model/pet.dart';
 import '../../../../model/user.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
-import '../../../account/winker/winkser.dart';
+import '../../../account/winker/winker.dart';
 
 
 class IPetCard extends StatefulWidget {

@@ -14,7 +14,7 @@ import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/user.dart';
 import '../../../request/urls.dart';
-import '../../../screen/account/winker/winkser.dart';
+import '../../../screen/account/winker/winker.dart';
 import '../../../theme/custom_colors.dart';
 
 

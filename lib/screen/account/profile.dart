@@ -13,6 +13,7 @@ import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
+import '../../provider/friend_provider.dart';
 import '../../provider/friends_provider.dart';
 import '../../provider/gift/gift_provider.dart';
 import '../../provider/pet/pet_provider.dart';
@@ -40,7 +41,6 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
 
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
         switch(_tabController.index){
           case 1:
             Provider.of<IFriendsProvider>(context, listen: false).refresh('', false);
@@ -52,7 +52,12 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
             Provider.of<IPetProvider>(context, listen: false).refresh('', false);
             break;
         }
-      }
+    });
+
+    Future.delayed(Duration(seconds: 1), () {
+      Provider.of<IGiftProvider>(context, listen: false).refresh('', false);
+      Provider.of<IFriendsProvider>(context, listen: false).refresh('',false);
+      Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
     });
   }
 
@@ -112,9 +117,7 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
         ),
         actions: <Widget>[IPopup()],
       ),
-      body: DefaultTabController(
-        length: 4,
-        child: NestedScrollView(
+      body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
@@ -250,7 +253,7 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
             ),
           ),
         ),
-      ),
+
     );
   }
 }

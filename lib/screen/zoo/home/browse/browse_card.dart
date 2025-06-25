@@ -25,7 +25,7 @@ import '../../../../model/wish.dart';
 import '../../../../request/posts.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
-import '../../../account/winker/winkser.dart';
+import '../../../account/winker/winker.dart';
 
 
 class IBrowseCard extends StatefulWidget {
