@@ -53,20 +53,20 @@ class _IAlignmentState extends State<IAlignment> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final color = Theme.of(context).extension<CustomColors>()!;
 
     _girl = Mixin.user?.usrGender == 'FEMALE';
     _boy = Mixin.user?.usrGender == 'MALE';
     _boyInt = Mixin.user?.usrOsType == 'MALE';
     _girlInt = Mixin.user?.usrOsType == 'FEMALE';
     _bioController.text = Mixin.user?.usrDesc ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).extension<CustomColors>()!;
 
     return  SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: 700.h,
             width: MediaQuery.of(context).size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -269,7 +269,7 @@ class _IAlignmentState extends State<IAlignment> with TickerProviderStateMixin {
                         filled: true
                     ),
                     onChanged: (value) {
-                      Mixin.user?.usrDesc = _bioController.text;
+                      Mixin.user?.usrDesc = value;
                     },
                   ),
                 ),

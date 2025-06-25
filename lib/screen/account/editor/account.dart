@@ -293,9 +293,11 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
                 color: color.xTextColor,
                 fontSize: FONT_13,
               ),
+
               suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
               fillColor: color.xPrimaryColor,
               filled: true,
+              enabled: false
             ),
             onChanged: (value){
               Mixin.user?.usrEmail = value;
@@ -309,7 +311,6 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
           const SizedBox(height: 24),
           TextFormField(
             controller: _ageController,
-            keyboardType: TextInputType.emailAddress,
             style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
             onTap: () {
               _selectDate(context);

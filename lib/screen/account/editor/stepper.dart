@@ -143,6 +143,7 @@ class _IStepperState extends State<IStepper> {
                   ),
                 ],
                 controlsBuilder: (BuildContext context, ControlsDetails details) {
+                  if (_index == 1) return const SizedBox.shrink();
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +151,7 @@ class _IStepperState extends State<IStepper> {
                       IButton(
                         onPress: details.onStepCancel,
                         text: 'Cancel',
-                        textColor: Colors.white,
+                        textColor: color.xTextColor,
                         color: color.xSecondaryColor,
                         width: MediaQuery.of(context).size.width/3.5,
                       ),

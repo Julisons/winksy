@@ -23,17 +23,15 @@ class IInterestProvider with ChangeNotifier {
     list.clear();
     setLoading(true);
 
-
     await XRequest().getData({
-      'meId': Mixin.user?.usrId
+      'meId': Mixin.user?.usrId,
+      'usrGender': Mixin.user?.usrOsType,
     }, IUrls.USERS('')).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           log('${jsonResponse.data}');
           var res = jsonResponse.data['result'];
-          log('---${res}');
-
           var items = res.map<User>((json) {
             return  User.fromJson(json);
           }).toList();

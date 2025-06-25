@@ -78,7 +78,7 @@ class _IMessageCardState extends State<IMessageCard> {
                         Text(
                           widget.message.msgText ?? '',
                           style: TextStyle(
-                             color:  color.xTextColor,
+                             color:  color.xTextColorSecondary,
                             fontSize: FONT_13
                           )
                         ),
@@ -135,7 +135,7 @@ class _IMessageCardState extends State<IMessageCard> {
                         Text(
                           widget.message.msgText ?? '',
                             style: TextStyle(
-                                color:  color.xTextColor,
+                                color:  color.xTextColorSecondary,
                                 fontSize: FONT_13
                             )
                         ),

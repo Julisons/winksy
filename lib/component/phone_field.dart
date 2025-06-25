@@ -76,7 +76,7 @@ class PhoneField extends StatelessWidget {
                   filled: true,
                 ),
                 onChanged: (value){
-                  Mixin.user?.usrEmail = value;
+                  Mixin.user?.usrMobileNumber = value;
                 },
               )),
         ],

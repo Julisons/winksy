@@ -385,10 +385,10 @@ class _IWinkserState extends State<IWinkser> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ProfileField(label: 'Name : ', value: Mixin.winkser?.usrFullNames ?? ''),
-                              ProfileField(label: 'Email : ', value: Mixin.winkser?.usrEmail ?? ''),
+                              ProfileField(label: 'Email : ', value: /*Mixin.winkser?.usrEmail ?? */'****************'),
                               ProfileField(label: 'Age : ', value: '${'${Mixin.winkser?.usrDob}'.age()} Years'),
                               ProfileField(label: 'Gender : ', value: '${Mixin.winkser?.usrGender}' ?? ''),
-                              ProfileField(label: 'Phone : ', value: Mixin.winkser?.usrMobileNumber ?? ''),
+                              ProfileField(label: 'Phone : ', value: /*Mixin.winkser?.usrMobileNumber ??*/ '****************'),
                               ProfileField(label: 'Place : ', value: '${Mixin.winkser?.usrCountry}, ${Mixin.winkser?.usrAdministrativeArea}'),
                               ProfileField(label: 'Bio : ', value:' '),
                               Text( Mixin.winkser?.usrDesc ??'', style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary), ),

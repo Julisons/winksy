@@ -56,7 +56,7 @@ class _IPopupState extends State<IPopup> {
 
   void handleClick(String value, BuildContext context) {
     switch (value) {
-      case 'Log Out':
+      case 'Sign out':
         Mixin.navigate(context, const ILogout());
         break;
       case 'Edit Profile':
