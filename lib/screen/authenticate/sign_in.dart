@@ -212,7 +212,7 @@ class _ISignInState extends State<ISignIn> {
                   }, IUrls.SIGN_IN());
                 },
                 isBlack: false,
-                text: "Sign In",
+                text: "Sign in",
                 color: color.xTrailing,
                 textColor: Colors.white,
               ),

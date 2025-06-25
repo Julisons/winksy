@@ -87,9 +87,7 @@ class _ILogoutState extends State<ILogout> with TickerProviderStateMixin {
               },
             ),
             title: Text("Sign out", style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR),),
-            actions: <Widget>[
-              IPopup()
-            ]),
+           ),
         body: Container(
           padding: EdgeInsets.only(right: 16.h, left: 16.h),
           child: Column(
