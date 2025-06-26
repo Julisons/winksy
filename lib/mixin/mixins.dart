@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,7 +31,6 @@ class Mixin {
   static PlatformWebViewController ? webController;
   static PageController? pageController;
   static Map<String, num> positions = {};
-  static final playerSound = AudioPlayer();
   static Quad? quad ;
   static IO.Socket? quadrixSocket;
   static Invoice? invoice;
@@ -297,6 +295,15 @@ class Mixin {
   static void vibrate() async {
     if (await Vibration.hasCustomVibrationsSupport()) {
       Vibration.vibrate(duration: 80, amplitude: 8);
+    } else {
+      Vibration.vibrate();
+      await Future.delayed(Duration(milliseconds: 500));
+      Vibration.vibrate();
+    }
+  }
+  static void vib() async {
+    if (await Vibration.hasCustomVibrationsSupport()) {
+      Vibration.vibrate(duration: 29, amplitude: 1);
     } else {
       Vibration.vibrate();
       await Future.delayed(Duration(milliseconds: 500));

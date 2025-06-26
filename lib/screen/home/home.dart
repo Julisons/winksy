@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:geocoding/geocoding.dart';
@@ -178,6 +179,8 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
     _buildFCM();
     _location();
+
+    FlameAudio.audioCache.load('sound/droper.wav');
   }
 
   void _updateToken(token) async {

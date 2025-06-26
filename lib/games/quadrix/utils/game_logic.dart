@@ -1,13 +1,13 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
-
-import '../../../mixin/mixins.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
+import 'package:winksy/mixin/mixins.dart';
 import '../models/coin.dart';
 
 
 
 void playDropSound() {
-  Mixin.playerSound.play(AssetSource('sound/droper.wav')); // Your sound file
+
 }
 
 Color playerOneColor = const Color(0xffff4d4d); // Vibrant Red
@@ -150,6 +150,10 @@ Future<void> onPlay(
     {required Coin coin,
     required GlobalKey playerTurnKey,
     required GlobalKey gameBoardKey}) async {
+
+
+  Mixin.vib();
+
   int column = coin.column;
   int i = 6;
 
@@ -167,9 +171,7 @@ Future<void> onPlay(
       player: player,
     );
 
-
-    // 🎵 Play sound here (after animation ends)
-    playDropSound(); // <- your custom method to play sound
+    FlameAudio.play('sound/droper.wav');
 
     gameState[i][column]['value'] = player;
     turns++;

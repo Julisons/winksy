@@ -30,6 +30,7 @@ class GameBoard extends StatefulWidget {
 
 class GameBoardState extends State<GameBoard> {
   late Quad _quad = Quad();
+  bool play = true;
 
   @override
   void initState() {
@@ -58,7 +59,9 @@ class GameBoardState extends State<GameBoard> {
               return InkWell(
                 onTap: () async {
                   if (end == false) {
+
                     /**
+                     *
                      * IF ITS NOT YOUR TURN , DON'T PLAY
                      */
                     if(_quad.quadPlayerId == null){
@@ -69,6 +72,15 @@ class GameBoardState extends State<GameBoard> {
                       if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
                         return;
                       }
+                    }
+
+                    if(!play){
+                      log('$play');
+                      return;
+                    }
+
+                    if(play) {
+                      play = false;
                     }
 
                     if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
@@ -97,10 +109,8 @@ class GameBoardState extends State<GameBoard> {
 
                     Result result = didEnd();
                     _end(result);
-                    // if(result == Result.play)
-                        {
-                      Mixin.quadrixSocket?.emit('played', quad.toJson());
-                    }
+
+                    Mixin.quadrixSocket?.emit('played', quad.toJson());
 
                     //stop the game if the game has ended
                     if (result != Result.play) {
@@ -224,8 +234,7 @@ class GameBoardState extends State<GameBoard> {
   }
 
   void _play(){
-    Mixin.quadrixSocket?.on('play', (message) async {
-
+      Mixin.quadrixSocket?.on('play', (message) async {
 
       print(jsonEncode(message));
       _quad = Quad.fromJson(message);
@@ -253,6 +262,8 @@ class GameBoardState extends State<GameBoard> {
       playerTurnKey: widget.playerTurnKey,
       gameBoardKey: widget.gameBoardKey);
 
+      play = true;
+
       setState(()  {
         if (end == false) {
           Result result = didEnd();
@@ -264,7 +275,6 @@ class GameBoardState extends State<GameBoard> {
             showDialog(
               context: context,
               builder: (context) {
-
                 var quadWinnerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId ? Mixin.quad?.quadUsrId : Mixin.quad?.quadAgainstId;
                 log('------------------------------$quadWinnerId------------------------------dwinder');
 
@@ -358,9 +368,11 @@ class GameBoardState extends State<GameBoard> {
 
   void _end(Result result){
     if(result == Result.draw) {
-      Mixin.playerSound.play(AssetSource('sound/win.wav')); // Your sound file
-    }else {
-      Mixin.playerSound.play(AssetSource('sound/win2.wav')); // Your sound file
+      Mixin.vib();
+      AudioPlayer().play(AssetSource('audio/sound/win.wav')); // Your sound file
+    }else if(result == Result.player1 || result == Result.player2){
+      Mixin.vib();
+      AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
   }
 }

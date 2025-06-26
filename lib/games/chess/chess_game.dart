@@ -674,9 +674,9 @@ class _IChessGameState extends State<IChessGame> {
 
   void _end(String winner){
     if(winner == 'Draw') {
-      Mixin.playerSound.play(AssetSource('sound/win.wav')); // Your sound file
+      AudioPlayer().play(AssetSource('sound/win.wav')); // Your sound file
     }else {
-      Mixin.playerSound.play(AssetSource('sound/win2.wav')); // Your sound file
+      AudioPlayer().play(AssetSource('sound/win2.wav')); // Your sound file
     }
   }
 }

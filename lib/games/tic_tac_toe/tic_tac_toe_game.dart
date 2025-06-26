@@ -49,7 +49,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   }
 
   void onCellTapped(int row, int col) {
-    Mixin.playerSound.play(AssetSource('sound/tick.wav')); // Your sound file
+    AudioPlayer().play(AssetSource('sound/tick.wav')); // Your sound file
     if (board[row][col].isEmpty) {
       setState(() {
         board[row][col] = currentPlayer;
@@ -256,9 +256,9 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
 
   void _end(String winner){
     if(winner == 'Draw') {
-      Mixin.playerSound.play(AssetSource('sound/win.wav')); // Your sound file
+      AudioPlayer().play(AssetSource('sound/win.wav')); // Your sound file
     }else {
-      Mixin.playerSound.play(AssetSource('sound/win2.wav')); // Your sound file
+      AudioPlayer().play(AssetSource('sound/win2.wav')); // Your sound file
     }
   }
 }

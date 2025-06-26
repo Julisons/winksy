@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vibration/vibration.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/fame_hall/fame_hall.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
@@ -128,10 +131,10 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
                           padding:  EdgeInsets.only(top: 6.r),
                           child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
                         ),
-                        onTap: () {
+                        onTap: () async {
                           switch(items[index].title.toUpperCase()){
                             case 'START GAME':
-                              Mixin.navigate(context, IQuadrix());
+                             Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HOW TO PLAY':
                               Mixin.navigate(context, IQuadrix());
