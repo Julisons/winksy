@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import '../../../provider/fame_hall_provider.dart';
 import '../../../theme/custom_colors.dart';
 import '../../component/glow2.dart';
+import '../../component/loader.dart';
 import '../../mixin/constants.dart';
 import 'fame_hall_card.dart';
-import 'fame_hall_shimmer.dart';
 
 
 class IQuadrixFameHall extends StatefulWidget {
@@ -95,7 +95,7 @@ class _IQuadrixFameHallState extends State<IQuadrixFameHall> {
             Flexible(
               child: Consumer<IFameHallProvider>(
                   builder: (context, provider, child) {
-                    return provider.isLoading() ? const IFameHallShimmer() :
+                    return provider.isLoading() ? Center(child: Loading(dotColor: color.xTrailing)) :
                     Column(
                       children: [
                         Expanded(
