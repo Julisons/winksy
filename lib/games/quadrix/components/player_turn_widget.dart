@@ -27,7 +27,7 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
           buildColorBox(selectedPlayer: player, selected: player == 1, color: color.xPrimaryColor),
           const SizedBox(width: 10),
           const Spacer(),
-          buildText(text: quadPlayer, color: color.xTextColor),
+          buildText(text: quadPlayer, color: color.xTrailing),
           const Spacer(),
           buildColorBox(selectedPlayer: player, selected: player == 2, color: color.xPrimaryColor),
           const SizedBox(width: 10),

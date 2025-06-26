@@ -15,14 +15,14 @@ import '../../../theme/custom_colors.dart';
 import 'fame_hall_card.dart';
 
 
-class IFameHall extends StatefulWidget {
-  const IFameHall({super.key});
+class IQuadrixFameHall extends StatefulWidget {
+  const IQuadrixFameHall({super.key});
 
   @override
-  State<IFameHall> createState() => _IFameHallState();
+  State<IQuadrixFameHall> createState() => _IQuadrixFameHallState();
 }
 
-class _IFameHallState extends State<IFameHall> {
+class _IQuadrixFameHallState extends State<IQuadrixFameHall> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();

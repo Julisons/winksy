@@ -148,7 +148,7 @@ class _IChessDashboardState extends State<IChessDashboard> {
                               Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HALL OF FAME':
-                              Mixin.navigate(context, IFameHall());
+                              Mixin.navigate(context, IQuadrixFameHall());
                               break;
                           }
                         },

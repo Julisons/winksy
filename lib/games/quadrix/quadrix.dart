@@ -153,7 +153,7 @@ class _IQuadrixState extends State<IQuadrix> {
     Mixin.quadrixSocket?.onConnect((_) {
        Mixin.quad = Quad()
          ..quadType = QUADRIX
-         ..quadUser =  Mixin.user?.usrFullNames
+         ..quadUser =  Mixin.user?.usrFirstName
          ..quadUsrId = Mixin.user?.usrId;
        Mixin.quadrixSocket?.emit('joinRoom', Mixin.quad?.toJson());
     });

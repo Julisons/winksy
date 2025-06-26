@@ -142,7 +142,7 @@ class _ISpinnerDashboardState extends State<ISpinnerDashboard> {
                               Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HALL OF FAME':
-                              Mixin.navigate(context, IFameHall());
+                              Mixin.navigate(context, IQuadrixFameHall());
                               break;
                           }
                         },

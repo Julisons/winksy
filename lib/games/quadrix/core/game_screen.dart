@@ -46,7 +46,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
             child: Stack(
               alignment: AlignmentDirectional.centerStart,
               children: [
-                Text("Quadrix",
+                Text("",
                   style: GoogleFonts.poppins(
                     color: color.xTrailing, fontSize: 34, fontWeight: FontWeight.bold,
                   ),
@@ -95,6 +95,9 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
               key: gameBoardKey,
               playerTurnKey: playerTurnKey,
               gameBoardKey: gameBoardKey,
+              onRefresh: () {
+                setState(() {});
+              },
             ),
             Positioned(
               top: (MediaQuery.of(context).size.height -

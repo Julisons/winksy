@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/games/games.dart';
 
 import '../../../component/button.dart';
 import '../../../component/game_button.dart';
@@ -13,6 +16,7 @@ import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
 import '../core/game_screen.dart';
+import '../fame_hall/fame_hall.dart';
 import '../models/coin.dart';
 import '../quadrix_dashboard.dart';
 import '../utils/game_logic.dart';
@@ -20,9 +24,10 @@ import 'game_coin_widget.dart';
 
 // ignore: must_be_immutable
 class GameBoard extends StatefulWidget {
-  GameBoard({super.key, required this.playerTurnKey, required this.gameBoardKey});
+  GameBoard({super.key, required this.playerTurnKey, required this.gameBoardKey, required this.onRefresh});
   GlobalKey gameBoardKey;
   GlobalKey playerTurnKey;
+  final Function() onRefresh;
 
   @override
   State<GameBoard> createState() => GameBoardState();
@@ -31,6 +36,8 @@ class GameBoard extends StatefulWidget {
 class GameBoardState extends State<GameBoard> {
   late Quad _quad = Quad();
   bool play = true;
+  int _seconds = 15;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -41,14 +48,39 @@ class GameBoardState extends State<GameBoard> {
     }else{
       quadPlayer = Mixin.quad?.quadPlayer+" starts";
     }
-
-    _play();
+    _remotePlay();
+    _startTimer();
   }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        _seconds--;
+        if (_seconds == 0) {
+          autoPlayer();
+        }
+        if(quadPlayer.contains('You start')) {
+          quadPlayer = 'You start $_seconds';
+          widget.onRefresh();
+        }
+       else if(quadPlayer.contains('Your turn')) {
+          quadPlayer = 'Your turn $_seconds';
+          widget.onRefresh();
+        }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.width - 20,
       width: MediaQuery.of(context).size.width - 20,
       child: ListView(
@@ -58,143 +90,7 @@ class GameBoardState extends State<GameBoard> {
             children: row.map((coin) {
               return InkWell(
                 onTap: () async {
-                  if (end == false) {
-
-                    /**
-                     *
-                     * IF ITS NOT YOUR TURN , DON'T PLAY
-                     */
-                    if(_quad.quadPlayerId == null){
-                      if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
-                        return;
-                      }
-                    }else {
-                      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
-                        return;
-                      }
-                    }
-
-                    if(!play){
-                      log('$play');
-                      return;
-                    }
-
-                    if(play) {
-                      play = false;
-                    }
-
-                    if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
-                      quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
-                    }else {
-                      quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
-                    }
-
-                    await onPlay(
-                        coin: Coin(
-                          row: coin['row'] as int,
-                          column: coin['column'] as int,
-                          selected: false,
-                          color: color.xSecondaryColor,
-                        ),
-                        playerTurnKey: widget.playerTurnKey,
-                        gameBoardKey: widget.gameBoardKey);
-
-                    Quad quad = Quad()
-                      ..quadRow = coin['row'] as int
-                      ..quadColumn =  coin['column'] as int
-                      ..quadUsrId = Mixin.user?.usrId
-                      ..quadPlayer = Mixin.user?.usrFullNames
-                      ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
-                      ..quadId = Mixin.quad?.quadId;
-
-                    Result result = didEnd();
-                    _end(result);
-
-                    Mixin.quadrixSocket?.emit('played', quad.toJson());
-
-                    //stop the game if the game has ended
-                    if (result != Result.play) {
-                      setState(() {});
-                      showDialog(context: context,
-                        builder: (context) {
-
-                          Quad quad = Quad()
-                            ..quadState = result.name.toString().toUpperCase()
-                            ..quadWinnerId = (result == Result.player1) ? Mixin.user?.usrId : Mixin.quad?.quadId
-                            ..quadId = Mixin.quad?.quadId;
-
-                          Mixin.quadrixSocket?.emit('win', quad.toJson());
-
-                          return AlertDialog(
-                            actionsAlignment: MainAxisAlignment.spaceBetween,
-                            backgroundColor: color.xSecondaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            content: Container(
-                              width: MediaQuery.of(context).size.width-20,
-                              padding: EdgeInsets.all(16.h),
-                              child: Text('You Win',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: FONT_13,
-                                  color: color.xTextColorSecondary,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'GAME OVER!',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: color.xTextColor,
-                                fontSize: FONT_TITLE,
-                              ),
-                            ),
-                            actions: [
-                              IButton(
-                                text: "Hall of Fame",
-                                color: color.xPrimaryColor,
-                                textColor: Colors.white,
-                                height: 40.h,
-                                width: MediaQuery.of(context).size.width/3.5,
-                                onPress:(){
-                                  Navigator.of(context).pop();
-                                  // Mixin.pop(context,IQuadrixFameHall());
-                                },
-                              ),
-                              IButton(
-                                text: "Play Again",
-                                color: color.xTrailingAlt,
-                                height: 40.h,
-                                width: MediaQuery.of(context).size.width/3.5,
-                                textColor: Colors.white,
-                                onPress: () {
-                                  // Navigator.of(context).pop();
-                                  Mixin.navigate(context,IQuadrixScreen());
-                                },
-                              )
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  } else {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Game Over!',
-                          style: GoogleFonts.aBeeZee(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                        backgroundColor: Colors.black,
-                      ),
-                    );
-                  }
+                  _localPlay(coin,row);
                 },
                 child: GameCoinWidget(
                   coin: (coin['value'] == 0)
@@ -233,7 +129,173 @@ class GameBoardState extends State<GameBoard> {
     );
   }
 
-  void _play(){
+
+  void autoPlayer() {
+    final random = Random();
+    int rand = random.nextInt(7);
+    var row = gameState.toList()[3];
+    var coin = row.toList()[3];
+
+    debugPrint(" --------------$rand-------------------");
+
+    gameState.map((row){
+      row.map((coin) {
+       // debugPrint("row : ${coin['row']}  column : ${coin['column']} 15 seconds elapsed! Function x() called.");
+      }).toList();
+    }).toList();
+
+    _localPlay(coin,row);
+  }
+
+  Future<void> _localPlay(coin,row) async {
+    /**
+     * RESTART COUNTER
+     */
+    _timer?.cancel();
+    _seconds = 15;
+
+    final color = Theme.of(context).extension<CustomColors>()!;
+    if (end == false) {
+
+      /**
+       *
+       * IF ITS NOT YOUR TURN , DON'T PLAY
+       */
+      if(_quad.quadPlayerId == null){
+        if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+          return;
+        }
+      }else {
+        if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+          return;
+        }
+      }
+
+      if(!play){
+        debugPrint('$play');
+        return;
+      }
+
+      if(play) {
+        play = false;
+      }
+
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+        quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+      }else {
+        quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+      }
+
+      await onPlay(
+        coin: Coin(
+          row: coin['row'] as int,
+          column: coin['column'] as int,
+          selected: false,
+          color: color.xSecondaryColor,
+        ),
+      playerTurnKey: widget.playerTurnKey,
+      gameBoardKey: widget.gameBoardKey);
+
+      Result result = didEnd();
+
+      Quad quad = Quad()
+        ..quadRow = coin['row'] as int
+        ..quadColumn =  coin['column'] as int
+        ..quadUsrId = Mixin.user?.usrId
+        ..quadState = result.name.toString().toUpperCase()
+        ..quadPlayer = Mixin.user?.usrFirstName
+        ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+        ..quadId = Mixin.quad?.quadId;
+
+      _end(result);
+      Mixin.quadrixSocket?.emit('played', quad.toJson());
+
+      //stop the game if the game has ended
+      if (result != Result.play) {
+        setState(() {});
+        showDialog(context: context,
+          builder: (context) {
+
+            Quad quad = Quad()
+              ..quadState = result.name.toString().toUpperCase()
+              ..quadWinnerId = Mixin.user?.usrId
+              ..quadId = Mixin.quad?.quadId;
+
+            Mixin.quadrixSocket?.emit('win', quad.toJson());
+
+            return AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceBetween,
+              backgroundColor: color.xSecondaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              content: Container(
+                width: MediaQuery.of(context).size.width-20,
+                padding: EdgeInsets.all(16.h),
+                child: Text('You Win',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: FONT_13,
+                    color: color.xTextColorSecondary,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ),
+              title: Text(
+                'GAME OVER!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: color.xTextColor,
+                  fontSize: FONT_TITLE,
+                ),
+              ),
+              actions: [
+                IButton(
+                  text: "Hall of Fame",
+                  color: color.xPrimaryColor,
+                  textColor: Colors.white,
+                  height: 40.h,
+                  width: MediaQuery.of(context).size.width/3.5,
+                  onPress:(){
+                    Navigator.of(context).pop();
+                    Mixin.pop(context,IQuadrixFameHall());
+                  },
+                ),
+                IButton(
+                  text: "Play Again",
+                  color: color.xTrailing,
+                  height: 40.h,
+                  width: MediaQuery.of(context).size.width/3.5,
+                  textColor: Colors.white,
+                  onPress: () {
+                    Navigator.of(context).pop();
+                    Mixin.pop(context,IQuadrixDashboard());
+                  },
+                )
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Game Over!',
+            style: GoogleFonts.aBeeZee(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+          backgroundColor: Colors.black,
+        ),
+      );
+    }
+  }
+
+  void _remotePlay(){
       Mixin.quadrixSocket?.on('play', (message) async {
 
       print(jsonEncode(message));
@@ -248,6 +310,7 @@ class GameBoardState extends State<GameBoard> {
 
       if(Mixin.user?.usrId.toString() == _quad.quadPlayerId.toString()) {
         quadPlayer = 'Your turn';
+        _startTimer();
       }else {
         quadPlayer = '${_quad.quadPlayer}\'s turn';
       }
@@ -275,23 +338,13 @@ class GameBoardState extends State<GameBoard> {
             showDialog(
               context: context,
               builder: (context) {
-                var quadWinnerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId ? Mixin.quad?.quadUsrId : Mixin.quad?.quadAgainstId;
-                log('------------------------------$quadWinnerId------------------------------dwinder');
-
-                Quad quad = Quad()
-                  ..quadState = result.name.toUpperCase()
-                  ..quadWinnerId = quadWinnerId
-                  ..quadId = Mixin.quad?.quadId;
-
-                Mixin.quadrixSocket?.emit('win', quad.toJson());
-
                 return AlertDialog(
                   actionsAlignment: MainAxisAlignment.spaceBetween,
                   backgroundColor: color.xSecondaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   content: Container(
-                    width: MediaQuery.of(context).size.width-20,
+                    width: MediaQuery.of(context).size.width/1.2,
                     padding: EdgeInsets.all(16.h),
                     child: Text(
                       (result == Result.draw)
@@ -327,18 +380,18 @@ class GameBoardState extends State<GameBoard> {
                       width: MediaQuery.of(context).size.width/3.5,
                       onPress:(){
                         Navigator.of(context).pop();
-                        // Mixin.pop(context,IQuadrixFameHall());
+                        Mixin.pop(context,IQuadrixFameHall());
                       },
                     ),
                     IButton(
                       text: "Play Again",
-                      color: color.xTrailingAlt,
+                      color: color.xTrailing,
                       height: 40.h,
                       width: MediaQuery.of(context).size.width/3.5,
                       textColor: Colors.white,
                       onPress: () {
-                        // Navigator.of(context).pop();
-                        Mixin.navigate(context,IQuadrixScreen());
+                        Navigator.of(context).pop();
+                        Mixin.pop(context,IQuadrixDashboard());
                       },
                     )
                   ],
