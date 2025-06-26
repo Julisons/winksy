@@ -301,7 +301,7 @@ class Mixin {
       Vibration.vibrate();
     }
   }
-  static void vib() async {
+  static void vibe() async {
     if (await Vibration.hasCustomVibrationsSupport()) {
       Vibration.vibrate(duration: 29, amplitude: 1);
     } else {

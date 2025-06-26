@@ -95,7 +95,7 @@ class _IQuadrixFameHallState extends State<IQuadrixFameHall> {
             Flexible(
               child: Consumer<IFameHallProvider>(
                   builder: (context, provider, child) {
-                    return provider.isLoading() ? Center(child: Loading(dotColor: color.xTrailing)) :
+                    return provider.isLoading() ? Center(child: Loading(dotColor: color.xTrailing,size: LOADER,)) :
                     Column(
                       children: [
                         Expanded(

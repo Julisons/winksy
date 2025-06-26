@@ -25,12 +25,10 @@ class IQuadrixScreen extends StatefulWidget {
 }
 
 class _IQuadrixScreenState extends State<IQuadrixScreen> {
-  late Quad _quad;
 
   GlobalKey<GameBoardState> gameBoardKey = GlobalKey<GameBoardState>();
 
-  GlobalKey<PlayerTurnWidgetState> playerTurnKey =
-  GlobalKey<PlayerTurnWidgetState>();
+  GlobalKey<PlayerTurnWidgetState> playerTurnKey = GlobalKey<PlayerTurnWidgetState>();
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +187,9 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                         textColor: Colors.white,
                         fontWeight: FontWeight.bold,
                         onPress: () {
+                          dispose();
                           Mixin.pop(context, IHome());
+
                         },
                       )
                     ],
@@ -225,7 +225,18 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
 
-
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    gameBoardKey.currentState?.dispose();
+    playerTurnKey.currentState?.dispose();
+    return onRestart(
+      gameBoardKey: gameBoardKey,
+      playerTurnKey: playerTurnKey,
+      context: context,
+    );
   }
 }

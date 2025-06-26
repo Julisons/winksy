@@ -43,6 +43,7 @@ class GameBoardState extends State<GameBoard> {
   @override
   void initState() {
     super.initState();
+    _seconds = 15;
 
     fullColumns.clear();
     if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
@@ -457,10 +458,10 @@ class GameBoardState extends State<GameBoard> {
 
   void _end(Result result){
     if(result == Result.draw) {
-      Mixin.vib();
+      Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win.wav')); // Your sound file
     }else if(result == Result.player1 || result == Result.player2){
-      Mixin.vib();
+      Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
   }

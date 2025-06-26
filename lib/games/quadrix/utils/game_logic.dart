@@ -154,7 +154,7 @@ Future<void> onPlay(
     required GlobalKey gameBoardKey}) async {
 
 
-  Mixin.vib();
+  Mixin.vibe();
 
   int column = coin.column;
   int i = 6;

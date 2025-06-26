@@ -20,6 +20,7 @@ import 'package:winksy/model/message.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../component/loader.dart';
 import '../../../model/chat.dart';
 import '../../../model/user.dart';
 import '../../../provider/chat_provider.dart';
@@ -94,7 +95,7 @@ class _IChatState extends State<IChat> {
             padding: EdgeInsets.only(top: 10.h),
             child: Consumer<IChatProvider>(builder: (context, provider, child) {
               return provider.isLoading()
-                  ? const IChatShimmer()
+                  ? Center(child: Loading(dotColor: color.xTrailing,size: LOADER))
                   : SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,

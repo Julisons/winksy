@@ -85,6 +85,7 @@ const String TIC_TAC_TOE = "TIC_TAC_TOE";
 const String QUADRIX = "QUADRIX";
 const bool leading = false;
 
+final double LOADER = 124.5.sp;
 final double FONT_START = 24.5.sp;
 final double FONT_APP_BAR = 24.sp;
 final double GAME_TITLE = 30.sp;

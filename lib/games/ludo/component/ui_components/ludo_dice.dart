@@ -44,6 +44,8 @@ class LudoDice extends PositionComponent with TapCallbacks {
       return; // Exit if the player cannot roll the dice
     }
 
+    debugPrint('---------here--------------');
+
     // Disable dice to prevent multiple taps
     final world = parent?.parent?.parent?.parent?.parent;
     GameState().hidePointer();

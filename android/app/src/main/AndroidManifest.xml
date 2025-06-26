@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:label="Winksy"
+        android:label="Wink"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
