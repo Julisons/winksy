@@ -53,7 +53,8 @@ class _IPetCardState extends State<IPetCard> {
             SizedBox(width: 3,),
             ClipOval(
               child: CachedNetworkImage(
-                imageUrl: widget.pet.usrImage.toString(),
+                imageUrl: '${widget.pet.usrImage}'.startsWith('http') ? widget.pet.usrImage
+                    : '${IUrls.IMAGE_URL}/file/secured/${widget.pet.usrImage}',
                 width: 150.r,
                 height: 150.r,
                 fit: BoxFit.fitHeight,

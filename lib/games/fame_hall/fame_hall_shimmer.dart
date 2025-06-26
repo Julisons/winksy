@@ -25,7 +25,7 @@ class IFameHallShimmer extends StatelessWidget {
       body:Column(
         children: [
           Expanded(
-            child: GridView.builder(
+            child: ListView.builder(
               padding: const EdgeInsets.only(
                   bottom: 6,
                   top: 6,
@@ -34,12 +34,6 @@ class IFameHallShimmer extends StatelessWidget {
               scrollDirection: Axis.vertical,
               physics: const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
-              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: Mixin.isTab(context) ? 3 : 2, // Number of items per row
-                crossAxisSpacing: 6.0, // Spacing between columns
-                mainAxisSpacing: 6.0, // Spacing between rows
-                childAspectRatio: .7, // Aspect ratio of each grid item
-              ),
               itemBuilder: (context, index) {
                 return IFameHallShimmerCard();
               },

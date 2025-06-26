@@ -15,8 +15,9 @@ import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
+import '../../fame_hall/fame_hall.dart';
+import '../ai/ai.dart';
 import '../core/game_screen.dart';
-import '../fame_hall/fame_hall.dart';
 import '../models/coin.dart';
 import '../quadrix_dashboard.dart';
 import '../utils/game_logic.dart';
@@ -160,6 +161,12 @@ class GameBoardState extends State<GameBoard> {
   }
 
 
+  void ai(){
+    List<List<int>> board = List.generate(6, (_) => List.filled(7, 0));
+    int aiMove = getAIMove(board);
+    drop(board, aiMove, 2); // AI plays
+  }
+
   void autoPlayer() {
 
     int rand = 3;//default  /*random.nextInt(7);*/
@@ -287,7 +294,7 @@ class GameBoardState extends State<GameBoard> {
                   width: MediaQuery.of(context).size.width/3.5,
                   onPress:(){
                     Navigator.of(context).pop();
-                    Mixin.pop(context,IQuadrixFameHall());
+                    Mixin.pop(context,IQuadrixFameHall(quadType: 'QUADRIX',));
                   },
                 ),
                 IButton(
@@ -409,7 +416,7 @@ class GameBoardState extends State<GameBoard> {
                       width: MediaQuery.of(context).size.width/3.5,
                       onPress:(){
                         Navigator.of(context).pop();
-                        Mixin.pop(context,IQuadrixFameHall());
+                        Mixin.pop(context,IQuadrixFameHall(quadType: 'QUADRIX',));
                       },
                     ),
                     IButton(

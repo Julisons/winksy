@@ -7,8 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:winksy/games/quadrix/core/game_screen.dart';
-import 'package:winksy/games/quadrix/fame_hall/fame_hall.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe.dart';
 import 'package:winksy/mixin/constants.dart';
@@ -21,6 +19,7 @@ import '../../model/quad.dart';
 import '../../model/user.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
+import '../fame_hall/fame_hall.dart';
 
 
 
@@ -143,7 +142,7 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                               Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HALL OF FAME':
-                              Mixin.navigate(context, IQuadrixFameHall());
+                              Mixin.navigate(context, IQuadrixFameHall(quadType: TIC_TAC_TOE));
                               break;
                           }
                         },

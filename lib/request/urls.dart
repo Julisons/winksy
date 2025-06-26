@@ -83,6 +83,10 @@ static String BASE_URL = '$BASE:5000';
     return Uri.parse("$BASE_URL/user/fetch_users");
   }
 
+  static Uri FAME_HALL() {
+    return Uri.parse("$BASE_URL/user/fetch_users_fame_hall");
+  }
+
   static Uri MY_FRIENDS() {
     return Uri.parse("$BASE_URL/friend/fetch_friends");
   }

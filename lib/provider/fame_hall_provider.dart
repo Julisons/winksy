@@ -1,29 +1,27 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
 import '../../mixin/mixins.dart';
 import '../../model/pet.dart';
 import '../../model/response.dart';
 import '../../request/gets.dart';
+import '../model/friend.dart';
+import '../model/user.dart';
 
 class IFameHallProvider with ChangeNotifier {
-  List<Pet> list = [];
+  List<User> list = [];
   late String errorMessage;
   bool _loading = false;
   bool _loadingMore = false;
   int _start = 0;
-  final int _limit = 20;
+  final int _limit = 10;
 
   IFameHallProvider init() {
-    if( Mixin.user != null) {
-      refresh('', true);
-    }
     return this;
   }
 
-  Future<bool> refresh(String search, bool loud) async {
+  Future<bool> refresh(search, loud, quadType) async {
     _start = 0;
     if(loud) {
       list.clear();
@@ -31,19 +29,17 @@ class IFameHallProvider with ChangeNotifier {
     setLoading(true, loud);
 
     await XRequest().getData({
-      'petOwnerId': Mixin.user?.usrId,
-      'wishUsrId': Mixin.user?.usrId,
+      'quadType': quadType,
+      'quadUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.OWNED_PETS()).then((data) {
+    }, IUrls.FAME_HALL()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          
-          var res = jsonResponse.data['result'] ?? [];
-
-          var items = res.map<Pet>((json) {
-            return  Pet.fromJson(json);
+          var res = jsonResponse.data['result'];
+          var items = res.map<User>((json) {
+            return  User.fromJson(json);
           }).toList();
 
           setData(items);
@@ -57,25 +53,23 @@ class IFameHallProvider with ChangeNotifier {
     return isLoaded();
   }
 
-  Future<bool> loadMore(search) async {
+  Future<bool> loadMore(search,quadType) async {
     _start += _limit;
     setLoadingMore(true);
 
     await XRequest().getData({
-      'petOwnerId': Mixin.user?.usrId,
-      'wishUsrId': Mixin.user?.usrId,
+      'quadType': quadType,
+      'quadUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
-    }, IUrls.OWNED_PETS()).then((data) {
+    }, IUrls.FAME_HALL()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          
-          var res = jsonResponse.data['result'] ?? [];
-          log('---${res}');
+          var res = jsonResponse.data['result'] ;
 
-          var items = res.map<Pet>((json) {
-            return  Pet.fromJson(json);
+          var items = res.map<User>((json) {
+            return  User.fromJson(json);
           }).toList();
 
           setDataMore(items);
@@ -115,17 +109,16 @@ class IFameHallProvider with ChangeNotifier {
     setLoading(false, true);
   }
 
-
   void setDataMore(value) {
     list.addAll(value);
     setLoadingMore(false);
   }
 
-  List<Pet> getHouses() {
+  List<User> getHouses() {
     return list;
   }
 
-  List<Pet> getRecommended() {
+  List<User> getRecommended() {
     return list;
   }
 

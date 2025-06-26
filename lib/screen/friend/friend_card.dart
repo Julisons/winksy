@@ -54,7 +54,8 @@ class _IFriendCardState extends State<IFriendCard> {
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
                 child: CachedNetworkImage(
-                  imageUrl: widget.user.usrImage.toString(),
+                  imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
+                      : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
                   width: MediaQuery.of(context).size.width/2,
                   height: MediaQuery.of(context).size.width/1.2,
                   fit: BoxFit.fitHeight,

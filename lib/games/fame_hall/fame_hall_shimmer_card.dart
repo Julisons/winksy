@@ -22,9 +22,10 @@ class IFameHallShimmerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
 
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width/1.5,
+      height: 100.h,
+      padding: EdgeInsets.only(bottom: 10),
       child: ClipRect(
         child: Shimmer.fromColors(
           baseColor: color.xSecondaryColor,
