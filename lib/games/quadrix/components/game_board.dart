@@ -43,6 +43,7 @@ class GameBoardState extends State<GameBoard> {
   void initState() {
     super.initState();
 
+    fullColumns.clear();
     if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
       quadPlayer = "You start";
     }else{
