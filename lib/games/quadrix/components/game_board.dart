@@ -130,20 +130,44 @@ class GameBoardState extends State<GameBoard> {
   }
 
 
+  int column(List<int> fullColumns, int start) {
+    int max = 6;
+    int min = 0;
+
+    int offset = 0;
+
+    while (true) {
+      int candidate = start + offset;
+      if (candidate <= max && !fullColumns.contains(candidate)) {
+        return candidate;
+      }
+
+      if (offset != 0) {
+        candidate = start - offset;
+        if (candidate >= min && !fullColumns.contains(candidate)) {
+          return candidate;
+        }
+      }
+
+      offset++;
+      if (start - offset < min && start + offset > max) {
+        break; // all taken
+      }
+    }
+
+    throw Exception('No available column'); // or return -1 if preferred
+  }
+
+
   void autoPlayer() {
-    final random = Random();
-    int rand = random.nextInt(7);
-    var row = gameState.toList()[3];
-    var coin = row.toList()[3];
+
+    int rand = 3;//default  /*random.nextInt(7);*/
+    rand = column(fullColumns,rand);
+
+    var row = gameState.toList()[rand];
+    var coin = row.toList()[rand];
 
     debugPrint(" --------------$rand-------------------");
-
-    gameState.map((row){
-      row.map((coin) {
-       // debugPrint("row : ${coin['row']}  column : ${coin['column']} 15 seconds elapsed! Function x() called.");
-      }).toList();
-    }).toList();
-
     _localPlay(coin,row);
   }
 
@@ -185,6 +209,10 @@ class GameBoardState extends State<GameBoard> {
       }else {
         quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
       }
+
+
+      //row----4-----column---5
+      debugPrint('row----${coin['row']}-----column---${coin['column']}');
 
       await onPlay(
         coin: Coin(

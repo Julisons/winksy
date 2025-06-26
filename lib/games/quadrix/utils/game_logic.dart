@@ -28,6 +28,8 @@ bool end = false;
 //player2 means the game was won by player2
 enum Result { play, draw, player1, player2 }
 
+List<int> fullColumns = [];
+
 List<List<Map<String, int>>> gameState = [
   [
     {'row': 0, 'column': 0, 'value': 0},
@@ -160,6 +162,11 @@ Future<void> onPlay(
   //get the topmost position where we the coin will be dropped into
   while (i >= 0 && gameState[i][column]['value'] != 0) {
     i--;
+  }
+
+  if (i == 0)//full columns
+  {
+      fullColumns.add(column);
   }
 
   //if i < 0 that means that the column is full and no coin can be inserted in that column
