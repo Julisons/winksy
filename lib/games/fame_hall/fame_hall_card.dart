@@ -83,7 +83,7 @@ class _IFameHallCardState extends State<IFameHallCard> {
                     Flexible(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text("${widget.user.usrFullNames}",
                             style: TextStyle(

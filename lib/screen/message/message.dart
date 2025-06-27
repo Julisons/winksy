@@ -22,6 +22,7 @@ import '../../../model/user.dart';
 import '../../../request/posts.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import '../../component/chat_typing_demo.dart';
 import '../../mixin/constants.dart' as color;
 import '../../model/chat.dart';
 import '../../model/response.dart';
@@ -63,7 +64,9 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
               },
               child: ClipOval(
                 child: CachedNetworkImage(
-                  imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ? '${Mixin.winkser?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
+                  imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http')
+                      ? '${Mixin.winkser?.usrImage}'
+                      : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                   width: 50,
                   height: 50,
                   fit: BoxFit.fitHeight,
@@ -98,7 +101,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).extension<CustomColors>()!.xTextColor,
+                color: Theme.of(context).extension<CustomColors>()!.xTextColorSecondary,
                 fontSize: FONT_TITLE,
               ),
             )
@@ -218,14 +221,19 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
       appBar: AppBar(
-       // automaticallyImplyLeading: widget.showTitle,
+        // automaticallyImplyLeading: widget.showTitle,
         automaticallyImplyLeading: false,
-        leading: widget.showTitle ? IconButton(
-        icon:  Icon(Icons.arrow_back_ios_new_rounded, color: color.xTrailing,),
-        onPressed: () {
-        Navigator.pop(context);
-        },
-        ) : null,
+        leading: widget.showTitle
+            ? IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: color.xTrailing,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            : null,
         backgroundColor: color.xPrimaryColor,
         surfaceTintColor: color.xPrimaryColor,
         title: search,
@@ -237,7 +245,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
             onPressed: () {
               setState(() {
                 if (icon.icon == Icons.search) {
-                  icon = Icon(Icons.clear, color: color.xTrailing,);
+                  icon = Icon(Icons.clear, color: color.xTrailing);
                   search = Padding(
                     padding: const EdgeInsets.only(top: 0),
                     child: TextField(
@@ -293,7 +301,12 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                               },
                               child: ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ? '${Mixin.winkser?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
+                                  imageUrl:
+                                      '${Mixin.winkser?.usrImage}'.startsWith(
+                                        'http',
+                                      )
+                                      ? '${Mixin.winkser?.usrImage}'
+                                      : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.fitHeight,
@@ -330,9 +343,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(
-                                  context,
-                                ).extension<CustomColors>()!.xTextColor,
+                                color: Theme.of(context).extension<CustomColors>()!.xTextColorSecondary,
                                 fontSize: FONT_TITLE,
                               ),
                             )
@@ -390,16 +401,15 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                 ),
               ),
               _isTyping
-                  ? const SizedBox(
-                      height: 25,
+                  ? Align(
+                      alignment: Alignment.bottomLeft,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'typing...',
-                            style: TextStyle(color: Colors.green),
-                          ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: ChatTypingBubble(
+                          bubbleColor: color.xSecondaryColor,
+                          dotColor: color.xTrailingAlt,
+                          typingText:'${Mixin.winkser?.usrFullNames ?? widget.chat.usrReceiver} is typing',
+                          animationStyle: TypingAnimationStyle.bounce,
                         ),
                       ),
                     )
@@ -430,7 +440,10 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
           children: [
             Flexible(
               child: TextField(
-                style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary),
+                style: TextStyle(
+                  fontSize: FONT_13,
+                  color: color.xTextColorSecondary,
+                ),
                 controller: _messageController,
                 onChanged: (text) {
                   setState(() {
@@ -444,7 +457,8 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                 decoration: InputDecoration(
                   labelText: 'Send a message',
                   hintText: 'Send a message',
-                  helperText: 'Messaging ${Mixin.winkser?.usrFullNames ?? widget.chat.usrReceiver} ',
+                  helperText:
+                      'Messaging ${Mixin.winkser?.usrFullNames ?? widget.chat.usrReceiver} ',
                   fillColor: color.xSecondaryColor,
                   filled: true,
                   border: OutlineInputBorder(
@@ -540,7 +554,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
     // socket?.emit('add user', '$room#$senderId#$receiverId');
     _socket?.emit('chat message', jsonEncode(message.toJson()));
 
-   /* IPost.postData(message, (state, res, value) {
+    /* IPost.postData(message, (state, res, value) {
       setState(() {
         if (state) {
         } else {
@@ -607,7 +621,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
       log(message.toString());
       var res = jsonDecode(message.toString());
 
-      if( res['msgSenderId'] == Mixin.user?.usrId.toString()) {
+      if (res['msgSenderId'] == Mixin.user?.usrId.toString()) {
         return; // Ignore messages sent by the current user
       }
       _receiveSubmitted(Message.fromJson(res));
@@ -660,7 +674,9 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
               ? InkWell(
                   child: ClipOval(
                     child: CachedNetworkImage(
-                      imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http') ? '${Mixin.winkser?.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
+                      imageUrl: '${Mixin.winkser?.usrImage}'.startsWith('http')
+                          ? '${Mixin.winkser?.usrImage}'
+                          : '${IUrls.IMAGE_URL}/file/secured/${Mixin.winkser?.usrImage}',
                       width: 90,
                       height: 90,
                       fit: BoxFit.fitHeight,

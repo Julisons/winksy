@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +28,22 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   String currentPlayer = '';
   late Quad _quad = Quad();
   String quadPlayer = '';
+  bool play = true;
+  int _seconds = 15;
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
+    _seconds = 15;
 
     if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
       quadPlayer = "You start";
+      _startTimer();
     }else{
       quadPlayer = Mixin.quad?.quadPlayer+" starts";
     }
-
-    _play();
+    _remotePlay();
     initializeGame();
   }
 
@@ -48,9 +55,103 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
     });
   }
 
-  void onCellTapped(int row, int col) {
+  void _startTimer() {
+    debugPrint('--------------RETURNING -------------$board------NULLLLL--------------');
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _seconds--;
+      if (_seconds == 0) {
+        autoPlayer();
+      }
+      debugPrint('--------$_seconds');
+      if(quadPlayer.contains('You start')) {
+        quadPlayer = 'You start $_seconds';
+        setState(() {});
+      }
+      else if(quadPlayer.contains('Your turn')) {
+        quadPlayer = 'Your turn $_seconds';
+        setState(() {});
+      }
+    });
+  }
+
+  Map<String, int>? emptyCells() {
+    final random = Random();
+    final int maxAttempts = 100; // Avoid infinite loop
+    final int rowCount = board.length;
+    final int colCount = board[0].length;
+
+    for (int i = 0; i < maxAttempts; i++) {
+      int row = random.nextInt(rowCount);
+      int col = random.nextInt(colCount);
+
+      if (board[row][col].isEmpty) {
+        return {"row": row, "col": col};
+      }
+    }
+    return null;
+  }
+
+
+  void autoPlayer() {
+    Map<String, int>? cell = emptyCells();
+    var row = cell?['row'] ?? 0;
+    var col = cell?['col'] ?? 0;
+
+    if (board[row][col].isEmpty) {
+      _localPlay(row, col);
+    }else{
+      debugPrint(" ----------IKO----$row-----coin--$col------------");
+    }
+  }
+
+  void _localPlay(int row, int col) {
+    /**
+     * IF ITS NOT YOUR TURN , DON'T PLAY
+     */
+    if(_quad.quadPlayerId == null){
+      if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+        return;
+      }
+    }else {
+      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+        return;
+      }
+    }
     Mixin.vibe();
     AudioPlayer().play(AssetSource('audio/sound/tick.wav')); // Your sound file
+
+    if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+      quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+    }else {
+      quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+    }
+
+    Quad quad = Quad()
+      ..quadRow = row
+      ..quadColumn = col
+      ..quadUsrId = Mixin.user?.usrId
+      ..quadPlayer = Mixin.user?.usrFirstName
+      ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+      ..quadId = Mixin.quad?.quadId;
+
+    Mixin.quadrixSocket?.emit('played', quad.toJson());
+
+    /**
+     * RESTART COUNTER
+     */
+    _timer?.cancel();
+    _seconds = 15;
+
+    if(!play){
+      debugPrint('$play');
+      return;
+    }
+
+    if(play) {
+      play = false;
+    }
+
     if (board[row][col].isEmpty) {
       setState(() {
         board[row][col] = currentPlayer;
@@ -107,7 +208,6 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   }
 
   void showWinnerDialog(String winner) {
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -149,7 +249,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                 child: Text(
                   textAlign: TextAlign.justify,
                   quadPlayer,
-                  style: TextStyle(fontSize: FONT_APP_BAR, color: color.xTextColorSecondary),
+                  style: TextStyle(fontSize: FONT_APP_BAR, color: color.xTrailing),
                 ),
               ),
             ),
@@ -166,36 +266,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                 final col = index % 3;
                 return GestureDetector(
                   onTap: () {
-
-                    /**
-                     * IF ITS NOT YOUR TURN , DON'T PLAY
-                     */
-                    if(_quad.quadPlayerId == null){
-                      if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
-                        return;
-                      }
-                    }else {
-                      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
-                        return;
-                      }
-                    }
-
-                    if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
-                      quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
-                    }else {
-                      quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
-                    }
-
-                    Quad quad = Quad()
-                      ..quadRow = row
-                      ..quadColumn = col
-                      ..quadUsrId = Mixin.user?.usrId
-                      ..quadPlayer = Mixin.user?.usrFullNames
-                      ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
-                      ..quadId = Mixin.quad?.quadId;
-
-                    Mixin.quadrixSocket?.emit('played', quad.toJson());
-                    onCellTapped(row, col);
+                    _localPlay(row, col);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -226,7 +297,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
             padding: const EdgeInsets.all(18.0),
             child: ElevatedButton(
               onPressed: resetGame,
-              child: Text('Quit Game'),
+              child: Text('Quit game', style: TextStyle(color: color.xTextColor, fontSize: FONT_13),),
             ),
           ),
         ],
@@ -234,7 +305,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
     );
   }
 
-  void _play(){
+  void _remotePlay(){
     Mixin.quadrixSocket?.on('play', (message) async {
       print(jsonEncode(message));
       _quad = Quad.fromJson(message);
@@ -248,17 +319,39 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
 
       if(Mixin.user?.usrId.toString() == _quad.quadPlayerId.toString()) {
         quadPlayer = 'Your turn';
+        play = true;
+        _startTimer();
       }else {
         quadPlayer = '${_quad.quadPlayer}\'s turn';
       }
-      onCellTapped(int.parse(_quad.quadRow.toString()),int.parse(_quad.quadColumn.toString()));
+
+      int row = int.parse(_quad.quadRow.toString());
+      int col = int.parse(_quad.quadColumn.toString());
+      Mixin.vibe();
+      AudioPlayer().play(AssetSource('audio/sound/tick.wav')); // Your sound file
+
+      if (board[row][col].isEmpty) {
+        setState(() {
+          board[row][col] = currentPlayer;
+          currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        });
+
+        String winner = checkForWinner();
+
+        if (winner.isNotEmpty) {
+          _end(winner);
+          showWinnerDialog(winner);
+        }
+      }
     });
   }
 
   void _end(String winner){
     if(winner == 'Draw') {
+      Mixin.vibe();
       AudioPlayer().play(AssetSource('sound/win.wav')); // Your sound file
     }else {
+      Mixin.vibe();
       AudioPlayer().play(AssetSource('sound/win2.wav')); // Your sound file
     }
   }

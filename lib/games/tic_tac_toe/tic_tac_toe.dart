@@ -162,7 +162,7 @@ class _ITicTacToeState extends State<ITicTacToe> {
     Mixin.quadrixSocket?.onConnect((_) {
        Mixin.quad = Quad()
        ..quadType = TIC_TAC_TOE
-       ..quadUser =  Mixin.user?.usrFullNames
+       ..quadUser =  Mixin.user?.usrFirstName
        ..quadUsrId = Mixin.user?.usrId;
        Mixin.quadrixSocket?.emit('joinRoom', Mixin.quad?.toJson());
     });

@@ -48,11 +48,12 @@ class GameBoardState extends State<GameBoard> {
     fullColumns.clear();
     if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
       quadPlayer = "You start";
+      _startTimer();
     }else{
       quadPlayer = Mixin.quad?.quadPlayer+" starts";
     }
     _remotePlay();
-    _startTimer();
+
   }
 
   void _startTimer() {
@@ -157,7 +158,6 @@ class GameBoardState extends State<GameBoard> {
         break; // all taken
       }
     }
-
     throw Exception('No available column'); // or return -1 if preferred
   }
 
@@ -181,11 +181,7 @@ class GameBoardState extends State<GameBoard> {
   }
 
   Future<void> _localPlay(coin,row) async {
-    /**
-     * RESTART COUNTER
-     */
-    _timer?.cancel();
-    _seconds = 15;
+
 
     final color = Theme.of(context).extension<CustomColors>()!;
     if (end == false) {
@@ -204,6 +200,12 @@ class GameBoardState extends State<GameBoard> {
         }
       }
 
+      /**
+       * RESTART COUNTER
+       */
+      _timer?.cancel();
+      _seconds = 15;
+
       if(!play){
         debugPrint('$play');
         return;
@@ -218,7 +220,6 @@ class GameBoardState extends State<GameBoard> {
       }else {
         quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
       }
-
 
       //row----4-----column---5
       debugPrint('row----${coin['row']}-----column---${coin['column']}');
