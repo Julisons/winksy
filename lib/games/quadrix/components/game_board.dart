@@ -291,12 +291,12 @@ class GameBoardState extends State<GameBoard> {
                 IButton(
                   text: "Hall of Fame",
                   color: color.xPrimaryColor,
-                  textColor: Colors.white,
+                  textColor: color.xTextColor,
                   height: 40.h,
                   width: MediaQuery.of(context).size.width/3.5,
                   onPress:(){
                     Navigator.of(context).pop();
-                    Mixin.pop(context,IQuadrixFameHall(quadType: 'QUADRIX',));
+                    Mixin.pop(context,IFameHall(quadType: 'QUADRIX',));
                   },
                 ),
                 IButton(
@@ -413,12 +413,12 @@ class GameBoardState extends State<GameBoard> {
                     IButton(
                       text: "Hall of Fame",
                       color: color.xPrimaryColor,
-                      textColor: Colors.white,
+                      textColor: color.xTextColor,
                       height: 40.h,
                       width: MediaQuery.of(context).size.width/3.5,
                       onPress:(){
                         Navigator.of(context).pop();
-                        Mixin.pop(context,IQuadrixFameHall(quadType: 'QUADRIX',));
+                        Mixin.pop(context,IFameHall(quadType: 'QUADRIX',));
                       },
                     ),
                     IButton(

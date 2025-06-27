@@ -142,7 +142,7 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                               Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HALL OF FAME':
-                              Mixin.navigate(context, IQuadrixFameHall(quadType: TIC_TAC_TOE));
+                              Mixin.navigate(context, IFameHall(quadType: TIC_TAC_TOE));
                               break;
                           }
                         },

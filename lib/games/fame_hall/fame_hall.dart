@@ -10,15 +10,15 @@ import '../../mixin/constants.dart';
 import 'fame_hall_card.dart';
 
 
-class IQuadrixFameHall extends StatefulWidget {
-  const IQuadrixFameHall({super.key, required this.quadType});
+class IFameHall extends StatefulWidget {
+  const IFameHall({super.key, required this.quadType});
   final quadType;
 
   @override
-  State<IQuadrixFameHall> createState() => _IQuadrixFameHallState();
+  State<IFameHall> createState() => _IFameHallState();
 }
 
-class _IQuadrixFameHallState extends State<IQuadrixFameHall> {
+class _IFameHallState extends State<IFameHall> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();

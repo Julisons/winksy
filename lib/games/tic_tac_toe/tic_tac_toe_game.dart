@@ -5,13 +5,16 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:winksy/games/tic_tac_toe/tic_tac_toe_dashboard.dart';
 import 'package:winksy/mixin/constants.dart';
 
 import '../../component/app_bar.dart';
+import '../../component/button.dart';
 import '../../component/glow2.dart';
 import '../../mixin/mixins.dart';
 import '../../model/quad.dart';
 import '../../theme/custom_colors.dart';
+import '../fame_hall/fame_hall.dart';
 
 
 
@@ -164,7 +167,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
 
         Quad quad = Quad()
           ..quadState = winner.toUpperCase()
-          ..quadWinnerId = (currentPlayer == 'X')  ? Mixin.user?.usrId : Mixin.quad?.quadId
+          ..quadWinnerId = Mixin.user?.usrId
           ..quadId = Mixin.quad?.quadId;
 
         Mixin.quadrixSocket?.emit('win', quad.toJson());
@@ -208,6 +211,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   }
 
   void showWinnerDialog(String winner) {
+    final color = Theme.of(context).extension<CustomColors>()!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -223,6 +227,70 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
           ),
         ],
       ),
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor: color.xSecondaryColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15)),
+          content: Container(
+            width: MediaQuery.of(context).size.width/1.2,
+            padding: EdgeInsets.all(16.h),
+            child: Text(
+                winner == 'Draw'
+                  ? 'It\'s a tie'
+                  : (winner == 'X')
+                  ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                  ? '${Mixin.quad?.quadUser} Wins' : '${Mixin.quad?.quadAgainst} Wins')
+                  : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                  ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: FONT_13,
+                color: color.xTextColorSecondary,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          title: Text(
+            'GAME OVER!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color.xTextColor,
+              fontSize: FONT_TITLE,
+            ),
+          ),
+          actions: [
+            IButton(
+              text: "Hall of Fame",
+              color: color.xPrimaryColor,
+              textColor: color.xTextColor,
+              height: 40.h,
+              width: MediaQuery.of(context).size.width/3.5,
+              onPress:(){
+                Navigator.of(context).pop();
+                Mixin.pop(context,IFameHall(quadType: TIC_TAC_TOE,));
+              },
+            ),
+            IButton(
+              text: "Play Again",
+              color: color.xTrailing,
+              height: 40.h,
+              width: MediaQuery.of(context).size.width/3.5,
+              textColor: Colors.white,
+              onPress: () {
+                Navigator.of(context).pop();
+                Mixin.pop(context,ITicTacToeDashboard());
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
@@ -347,6 +415,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   }
 
   void _end(String winner){
+    _timer?.cancel();
     if(winner == 'Draw') {
       Mixin.vibe();
       AudioPlayer().play(AssetSource('sound/win.wav')); // Your sound file
