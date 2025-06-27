@@ -175,6 +175,7 @@ class _ITicTacToeState extends State<ITicTacToe> {
       * I AM THE INITIATOR
       */
       if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+        Mixin.vibrate();
         if(Mixin.quad?.quadStatus == PAIRED){
           Mixin.winkser = User()
             ..usrId = Mixin.quad?.quadAgainstId
@@ -198,7 +199,7 @@ class _ITicTacToeState extends State<ITicTacToe> {
          * I JOINED A WAITING USER
          */
       if(Mixin.user?.usrId.toString() == Mixin.quad?.quadAgainstId.toString()){
-
+        Mixin.vibrate();
         Mixin.winkser = User()
           ..usrId = Mixin.quad?.quadUsrId
           ..usrFullNames = Mixin.quad?.quadUser;

@@ -173,7 +173,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
         Mixin.quadrixSocket?.emit('win', quad.toJson());
 
         _end(winner);
-        showWinnerDialog(winner);
+        showWinnerDialog(winner, LOCAL);
       }
     }
   }
@@ -210,25 +210,8 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
     return '';
   }
 
-  void showWinnerDialog(String winner) {
+  void showWinnerDialog(String winner, String type) {
     final color = Theme.of(context).extension<CustomColors>()!;
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Game Over'),
-        content: Text(winner == 'Draw' ? 'It\'s a draw!' : 'Player $winner wins!'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              resetGame();
-              Navigator.pop(context);
-            },
-            child: Text('Play Again'),
-          ),
-        ],
-      ),
-    );
-
     showDialog(
       context: context,
       builder: (context) {
@@ -243,11 +226,11 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
             child: Text(
                 winner == 'Draw'
                   ? 'It\'s a tie'
-                  : (winner == 'X')
+                  : type == LOCAL ? 'You Win' : ((winner == 'X')
                   ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
                   ? '${Mixin.quad?.quadUser} Wins' : '${Mixin.quad?.quadAgainst} Wins')
                   : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
-                  ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins'),
+                  ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins')),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: FONT_13,
@@ -311,61 +294,71 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
         children: <Widget>[
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(28.0),
+              padding: const EdgeInsets.only(),
               child: Align(
-                alignment: Alignment.center,
+                alignment: Alignment.bottomCenter,
                 child: Text(
                   textAlign: TextAlign.justify,
                   quadPlayer,
-                  style: TextStyle(fontSize: FONT_APP_BAR, color: color.xTrailing),
+                  style: TextStyle(fontSize: FONT_TITLE, color: color.xTrailing,fontWeight: FontWeight.bold,),
                 ),
               ),
             ),
           ),
           Expanded(
             flex: 4,
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-              ),
-              itemCount: 9,
-              itemBuilder: (context, index) {
-                final row = index ~/ 3;
-                final col = index % 3;
-                return GestureDetector(
-                  onTap: () {
-                    _localPlay(row, col);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      color: color.xSecondaryColor
-                    ),
-                    child: Center(
-                      child: board[row][col] == 'O' ?
-                      AnimatedGlowingLetter(
-                        letter: board[row][col],
-                        size: 85.sp,
-                        color: color.xTrailing,
-                        animationType: AnimationType.breathe,
-                      ) :
-                      AnimatedGlowingLetter(
-                        letter: board[row][col],
-                        size: 85.sp,
-                        color: color.xTrailingAlt,
-                        animationType: AnimationType.breathe
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                itemCount: 9,
+                itemBuilder: (context, index) {
+                  final row = index ~/ 3;
+                  final col = index % 3;
+                  return GestureDetector(
+                    onTap: () {
+                      _localPlay(row, col);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: color.xSecondaryColor, // Background color
+                        border: Border.all(
+                          color: color.xPrimaryColor,     // Border color
+                          width: 2.0,                 // Optional: border thickness
+                        ),
+                        borderRadius: BorderRadius.circular(8.0), // Optional: rounded corners
+                      ),
+                      child: Center(
+                        child: board[row][col] == 'O' ?
+                        AnimatedGlowingLetter(
+                          letter: board[row][col],
+                          size: 90.sp,
+                          color: color.xTrailing,
+                          animationType: AnimationType.breathe,
+                        ) :
+                        AnimatedGlowingLetter(
+                          letter: board[row][col],
+                          size: 90.sp,
+                          color: color.xTrailingAlt,
+                          animationType: AnimationType.breathe
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(18.0),
-            child: ElevatedButton(
-              onPressed: resetGame,
-              child: Text('Quit game', style: TextStyle(color: color.xTextColor, fontSize: FONT_13),),
+            child: IButton(
+              onPress: resetGame,
+              text: 'Quit Game',
+              textColor: color.xTextColor,
+              color: color.xSecondaryColor,
+              width: 140.h,
             ),
           ),
         ],
@@ -408,7 +401,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
 
         if (winner.isNotEmpty) {
           _end(winner);
-          showWinnerDialog(winner);
+          showWinnerDialog(winner, REMOTE);
         }
       }
     });
@@ -418,10 +411,10 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
     _timer?.cancel();
     if(winner == 'Draw') {
       Mixin.vibe();
-      AudioPlayer().play(AssetSource('sound/win.wav')); // Your sound file
+      AudioPlayer().play(AssetSource('audio/sound/win.wav')); // Your sound file
     }else {
       Mixin.vibe();
-      AudioPlayer().play(AssetSource('sound/win2.wav')); // Your sound file
+      AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
   }
 }

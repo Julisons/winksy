@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/mixin/constants.dart';
 
 import '../../../theme/custom_colors.dart';
 import '../utils/game_logic.dart';
@@ -58,7 +59,7 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
       style: GoogleFonts.aBeeZee(
         color: color,
         fontWeight: FontWeight.bold,
-        fontSize: 22,
+        fontSize: FONT_TITLE,
       ),
       textAlign: TextAlign.center,
     );
