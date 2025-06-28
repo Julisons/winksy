@@ -120,28 +120,49 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
                     return Card(
                       color: color.xSecondaryColor,
                       elevation: ELEVATION,
-                      margin: EdgeInsets.only(bottom: 16.r),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                        leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                        title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
-                        subtitle: Padding(
-                          padding:  EdgeInsets.only(top: 6.r),
-                          child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                    //  margin: EdgeInsets.only(bottom: 16.r),
+                      child: SizedBox(
+                        height: 100.h,
+                        child: ListTile(
+                          titleAlignment: ListTileTitleAlignment.center,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.r, // Balanced left and right padding
+                            vertical: 12.r,   // Equal top and bottom padding
+                          ),
+                          leading: Icon(
+                            Icons.arrow_forward_ios,
+                            color: color.xTextColorSecondary,
+                          ),
+                          title: Text(
+                            items[index].title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_TITLE,
+                              color: color.xTextColorSecondary,
+                            ),
+                          ),
+                          subtitle: Text(
+                            items[index].desc,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_13,
+                              color: color.xTextColor,
+                            ),
+                          ),
+                          onTap: () async {
+                            switch(items[index].title.toUpperCase()){
+                              case 'START GAME':
+                                Mixin.navigate(context, IQuadrix());
+                                break;
+                              case 'HOW TO PLAY':
+                                Mixin.navigate(context, IQuadrix());
+                                break;
+                              case 'HALL OF FAME':
+                                Mixin.navigate(context, IFameHall(quadType: 'QUADRIX',));
+                                break;
+                            }
+                          },
                         ),
-                        onTap: () async {
-                          switch(items[index].title.toUpperCase()){
-                            case 'START GAME':
-                             Mixin.navigate(context, IQuadrix());
-                              break;
-                            case 'HOW TO PLAY':
-                              Mixin.navigate(context, IQuadrix());
-                              break;
-                            case 'HALL OF FAME':
-                              Mixin.navigate(context, IFameHall(quadType: 'QUADRIX',));
-                              break;
-                          }
-                        },
                       ),
                     );
                   },

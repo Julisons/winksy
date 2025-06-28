@@ -184,12 +184,11 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                         color: color.xTrailingAlt,
                         height: 40.h,
                         width: MediaQuery.of(context).size.width/3.5,
-                        textColor: Colors.white,
+                        textColor: color.xTextColor,
                         fontWeight: FontWeight.bold,
                         onPress: () {
                           dispose();
                           Mixin.pop(context, IHome());
-
                         },
                       )
                     ],
