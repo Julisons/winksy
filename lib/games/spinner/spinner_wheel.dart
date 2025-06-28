@@ -141,9 +141,8 @@ class _ISpinnerState extends State<ISpinner> {
                 ),),
               ),
             ),
-
             SizedBox(
-              height: MediaQuery.of(context).size.height / 1.3,
+              height: MediaQuery.of(context).size.height / 1.2,
               width: MediaQuery.of(context).size.width ,
               child: Consumer<ISpinnerProvider>(
                 builder: (context, provider, child) {
