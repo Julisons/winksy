@@ -48,162 +48,165 @@ class _IPetCardState extends State<IPetCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
         ),
-        child: Row(
-          children: [
-            SizedBox(width: 3,),
-            ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: '${widget.pet.usrImage}'.startsWith('http') ? widget.pet.usrImage
-                    : '${IUrls.IMAGE_URL}/file/secured/${widget.pet.usrImage}',
-                width: 150.r,
-                height: 150.r,
-                fit: BoxFit.fitHeight,
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: xShimmerBase,
-                  highlightColor: xShimmerHighlight,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width/2,
-                  //  height: MediaQuery.of(context).size.width/2,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 10.h),
+          child: Row(
+            children: [
+              SizedBox(width: 3,),
+              ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl: '${widget.pet.usrImage}'.startsWith('http') ? widget.pet.usrImage
+                      : '${IUrls.IMAGE_URL}/file/secured/${widget.pet.usrImage}',
+                  width: IMAGE_RADIUS,
+                  height: IMAGE_RADIUS,
+                  fit: BoxFit.fitHeight,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: xShimmerBase,
+                    highlightColor: xShimmerHighlight,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width/2,
+                    //  height: MediaQuery.of(context).size.width/2,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                errorWidget: (context, url, error) => CircleAvatar(
-                  backgroundColor: color.xSecondaryColor,
-                  child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20,top: 8,right: 8,bottom: 8),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${widget.pet.usrFullNames}",
-                          style: TextStyle(
-                            color: color.xTextColorSecondary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
-                          ),
-                        ),
-                        SizedBox(width: 3,),
-                        Flexible(
-                          child: Visibility(
-                            visible: true,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue, // Background color for the badge
-                              ),
-                              padding: EdgeInsets.all(2), // Padding for the circle
-                              child: Icon(
-                                Icons.verified,
-                                color: Colors.white, // Checkmark color
-                                size: 10.r, // Adjust size as needed
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text('Value: ',
-                          style: TextStyle(
-                            color: color.xTextColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: FONT_13,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text( '${widget.pet.petValue} wnks',
-                            style: TextStyle(
-                              color: color.xTrailing,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('Cash: ',
-                          style: TextStyle(
-                            color: color.xTextColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: FONT_13,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text( '${'${widget.pet.petCash}'.kes()} wnks',
-                            style: TextStyle(
-                              color: color.xTrailing,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Assets: ',
-                          style: TextStyle(
-                            color: color.xTextColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: FONT_13,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text( "${'${widget.pet.petAssets}'.kes()} wnks",
-                            style: TextStyle(
-                              color: color.xTrailing,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Last Active: ',
-                          style: TextStyle(
-                            color: color.xTextColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: FONT_13,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
-                            style: TextStyle(
-                              color: color.xTrailing,
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  errorWidget: (context, url, error) => CircleAvatar(
+                    backgroundColor: color.xSecondaryColor,
+                    child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                  ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20,top: 8,right: 8,bottom: 8),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${widget.pet.usrFullNames}",
+                            style: TextStyle(
+                              color: color.xTextColorSecondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_TITLE,
+                            ),
+                          ),
+                          SizedBox(width: 3,),
+                          Flexible(
+                            child: Visibility(
+                              visible: true,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.blue, // Background color for the badge
+                                ),
+                                padding: EdgeInsets.all(2), // Padding for the circle
+                                child: Icon(
+                                  Icons.verified,
+                                  color: Colors.white, // Checkmark color
+                                  size: 10.r, // Adjust size as needed
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text('Value: ',
+                            style: TextStyle(
+                              color: color.xTextColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: FONT_13,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text( '${widget.pet.petValue} wnks',
+                              style: TextStyle(
+                                color: color.xTrailing,
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Cash: ',
+                            style: TextStyle(
+                              color: color.xTextColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: FONT_13,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text( '${'${widget.pet.petCash}'.kes()} wnks',
+                              style: TextStyle(
+                                color: color.xTrailing,
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Assets: ',
+                            style: TextStyle(
+                              color: color.xTextColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: FONT_13,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text( "${'${widget.pet.petAssets}'.kes()} wnks",
+                              style: TextStyle(
+                                color: color.xTrailing,
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Last Active: ',
+                            style: TextStyle(
+                              color: color.xTextColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: FONT_13,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
+                              style: TextStyle(
+                                color: color.xTrailing,
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

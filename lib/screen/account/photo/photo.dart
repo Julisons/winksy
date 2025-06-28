@@ -60,7 +60,12 @@ class _IPhotosState extends State<IPhotos> {
       backgroundColor: color.xSecondaryColor,
       body: Consumer<IPhotoProvider>(
           builder: (context, provider, child) {
-            return provider.isLoading() ? const IPhotoShimmer() :
+            return provider.isLoading() ?
+            Center(
+              child: Loading(
+                dotColor: color.xTrailing,
+              ),
+            ):
             Column(
               children: [
                 Expanded(

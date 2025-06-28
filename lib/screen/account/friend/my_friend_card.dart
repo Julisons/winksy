@@ -51,16 +51,15 @@ class _IFriendCardState extends State<IFriendCard> {
           borderRadius: BorderRadius.circular(CORNER),
         ),
         child: Padding(
-          padding: EdgeInsets.all(.0.h),
-          child: Stack(
+          padding: EdgeInsets.only(bottom: 10.h),
+          child: Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
+              ClipOval(
                 child: CachedNetworkImage(
                   imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
                       : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
-                  width: MediaQuery.of(context).size.width/2,
-                  height: MediaQuery.of(context).size.width/1.2,
+                  width: IMAGE_RADIUS,
+                  height: IMAGE_RADIUS,
                   fit: BoxFit.fitHeight,
                   placeholder: (context, url) => Shimmer.fromColors(
                     baseColor: xShimmerBase,
@@ -80,67 +79,50 @@ class _IFriendCardState extends State<IFriendCard> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 40,
-                left: 10,
-                child:
-
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("${widget.user.usrFirstName}, ${'${widget.user.usrDob}'.age()}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FONT_TITLE,
-                        shadows: [
-                          Shadow(
-                              offset: Offset(0, 1),
-                              blurRadius: 1.0,
-                              color: Colors.black
+              SizedBox(width: 30.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("${widget.user.usrFullNames}, ${'${widget.user.usrDob}'.age()}",
+                          style: TextStyle(
+                            color: color.xTextColorSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_TITLE,
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 3,),
-                    Visibility(
-                      visible: true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue, // Background color for the badge
                         ),
-                        padding: EdgeInsets.all(2), // Padding for the circle
-                        child: Icon(
-                          Icons.verified,
-                          color: Colors.white, // Checkmark color
-                          size: 16, // Adjust size as needed
+                        SizedBox(width: 3,),
+                        Visibility(
+                          visible: true,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.blue, // Background color for the badge
+                            ),
+                            padding: EdgeInsets.all(2), // Padding for the circle
+                            child: Icon(
+                              Icons.verified,
+                              color: Colors.white, // Checkmark color
+                              size: 16, // Adjust size as needed
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 20,
-                left: 10,
-                child: Text(
-                  (widget.user.usrDistance == null || widget.user.usrDistance.isEmpty
-                      ? '${widget.user.usrLocality}'
-                      : '${widget.user.usrDistance} (${widget.user.usrLocality})').replaceAll('null', ''),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: FONT_13,
-                    shadows: [
-                      Shadow(
-                          offset: Offset(0, 1),
-                          blurRadius: 10.0,
-                          color: Colors.black
+                  Text(
+                      (widget.user.usrDistance == null || widget.user.usrDistance.isEmpty
+                          ? '${widget.user.usrLocality}'
+                          : '${widget.user.usrDistance} (${widget.user.usrLocality})').replaceAll('null', ''),
+                      style: TextStyle(
+                        color: color.xTextColor,
+                        fontWeight: FontWeight.normal,
+                        fontSize: FONT_TITLE,
                       ),
-                    ],
                   ),
-                ),
+                ],
               ),
             ],
           ),

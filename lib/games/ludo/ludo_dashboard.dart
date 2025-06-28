@@ -61,6 +61,7 @@ class ILudoDashboardState extends State<ILudoDashboard> {
           padding:  EdgeInsets.all(16.0.r),
           child: Column(
             children: [
+              // Top section with title and description
               Expanded(
                 child: Column(
                   children: [
@@ -97,118 +98,107 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
-              Expanded(
-                flex: 2,
+
+              // Middle section with player selection buttons
+              Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  border: Border.all(color: color.xSecondaryColor, width: 3),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding:  EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: color.xSecondaryColor, width: 3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding:  EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
-                      child: Column(
-                        children: [
-                          Text(
-                            'SELECT NUMBER OF PLAYERS',
-                            style: TextStyle(
-                                fontSize: FONT_TITLE,
-                                fontWeight: FontWeight.bold,
-                                color: color.xTextColorSecondary),
-                          ),
-                          Divider(color: color.xSecondaryColor,height: 30,),
-                          SizedBox(height: 40.h),
-                          IButton(
-                            onPress: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ILudoSync(),
-                                ),
-                              );
-                            },
-                            isBlack: false,
-                            text: "2  player game (Online)",
-                            color: color.xTrailingAlt,
-                            textColor: Colors.white,
-                            width: MediaQuery.of(context).size.width * 0.8,
-                          ),
-                          const SizedBox(height: 20),
-                          IButton(
-                            onPress: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                  const SecondScreen(selectedPlayerCount: 2),
-                                ),
-                              );
-                            },
-                            isBlack: false,
-                            text: "2  player game (Local)",
-                            color: color.xTrailing,
-                            textColor: Colors.white,
-                            width: MediaQuery.of(context).size.width * 0.8,
-                          ),
-                          const SizedBox(height: 20),
-                          IButton(
-                            onPress: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const GameApp(
-                                      selectedTeams: ['BP', 'RP', 'GP', 'YP']),
-                                ),
-                              );
-                            },
-                            isBlack: false,
-                            text: "4  player game (Local)",
-                            color: color.xTrailing,
-                            textColor: Colors.white,
-                            width: MediaQuery.of(context).size.width * 0.8,
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'SELECT NUMBER OF PLAYERS',
+                      style: TextStyle(
+                          fontSize: FONT_TITLE,
+                          fontWeight: FontWeight.bold,
+                          color: color.xTextColorSecondary),
                     ),
-
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: items.length,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Card(
-                            color: color.xSecondaryColor,
-                            elevation: ELEVATION,
-                            margin: EdgeInsets.only(bottom: 16.r),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                              leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                              title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
-                              subtitle: Padding(
-                                padding:  EdgeInsets.only(top: 6.r),
-                                child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
-                              ),
-                              onTap: () {
-                                switch(items[index].title.toUpperCase()){
-                                  case 'HOW TO PLAY':
-
-                                    break;
-                                  case 'HALL OF FAME':
-
-                                    break;
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                    Divider(color: color.xSecondaryColor,height: 30,),
+                    SizedBox(height: 40.h),
+                    IButton(
+                      onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ILudoSync(),
+                          ),
+                        );
+                      },
+                      isBlack: false,
+                      text: "2  player game (Online)",
+                      color: color.xTrailingAlt,
+                      textColor: Colors.white,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                    const SizedBox(height: 20),
+                    IButton(
+                      onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                            const SecondScreen(selectedPlayerCount: 2),
+                          ),
+                        );
+                      },
+                      isBlack: false,
+                      text: "2  player game (Local)",
+                      color: color.xTrailing,
+                      textColor: Colors.white,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                    const SizedBox(height: 20),
+                    IButton(
+                      onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GameApp(
+                                selectedTeams: ['BP', 'RP', 'GP', 'YP']),
+                          ),
+                        );
+                      },
+                      isBlack: false,
+                      text: "4  player game (Local)",
+                      color: color.xTrailing,
+                      textColor: Colors.white,
+                      width: MediaQuery.of(context).size.width * 0.8,
                     ),
                   ],
                 ),
+              ),
+
+              SizedBox(height: 16.h),
+
+              // Bottom section with ListView - now properly aligned at bottom
+              Column(
+                children: items.map((item) => Card(
+                  color: color.xSecondaryColor,
+                  elevation: ELEVATION,
+                  margin: EdgeInsets.only(bottom: 16.r),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
+                    leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
+                    title: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                    subtitle: Padding(
+                      padding:  EdgeInsets.only(top: 6.r),
+                      child: Text(item.desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                    ),
+                    onTap: () {
+                      switch(item.title.toUpperCase()){
+                        case 'HOW TO PLAY':
+
+                          break;
+                        case 'HALL OF FAME':
+
+                          break;
+                      }
+                    },
+                  ),
+                )).toList(),
               ),
             ],
           ),
@@ -307,7 +297,7 @@ class SecondScreenState extends State<SecondScreen> {
                                 backgroundColor:color.xSecondaryColor,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(2.0)),
+                                  BorderRadius.all(Radius.circular(2.0)),
                                 ),
                               ),
                               onPressed: () {
@@ -482,32 +472,32 @@ class _GameAppState extends State<GameApp> {
         _showExitConfirmationDialog();
       },
       child: Scaffold(
-          body: Container(
-            decoration:  BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  color.xTrailingAlt,
-                  color.xPrimaryColor,
-                ],
-              ),
+        body: Container(
+          decoration:  BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                color.xTrailingAlt,
+                color.xPrimaryColor,
+              ],
             ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: FittedBox(
-                    child: SizedBox(
-                        width: screenWidth,
-                        height: screenWidth + screenWidth * 0.70,
-                        child: GameWidget(game: game!)),
-                  ),
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: FittedBox(
+                  child: SizedBox(
+                      width: screenWidth,
+                      height: screenWidth + screenWidth * 0.70,
+                      child: GameWidget(game: game!)),
                 ),
               ),
             ),
           ),
         ),
+      ),
     );
   }
 
@@ -581,8 +571,8 @@ class TokenDisplay extends StatelessWidget {
       size: Size(36.h, 36.h), // Adjust size as needed
       painter: TokenPainter(
         fillPaint: Paint()..color = color
-                          ..strokeWidth = 50
-                          ..blendMode = BlendMode.darken,
+          ..strokeWidth = 50
+          ..blendMode = BlendMode.darken,
         borderPaint: Paint()
           ..color = colors.xPrimaryColor
           ..strokeWidth = 1.0

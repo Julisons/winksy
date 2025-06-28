@@ -197,8 +197,8 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
               );
             },
             child: Container(
-              width: 130,
-              height: 50,
+              width: 130.w,
+              height: 45.h,
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
@@ -209,7 +209,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                 'Give up',
                 style: TextStyle(
                   color: color.xTextColor,
-                  fontSize: 18,
+                  fontSize: FONT_13,
                 ),
               ),
             ),

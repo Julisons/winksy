@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
+import 'package:winksy/component/loader.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
@@ -53,14 +54,22 @@ class _IMyFriendState extends State<IMyFriend> {
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<IFriendsProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPhotoShimmer() : SizedBox(
+              return provider.isLoading() ?
+
+                  Center(
+                    child: Loading(
+                      dotColor: color.xTrailing,
+                    ),
+                  )
+
+                  : SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: RefreshIndicator(
                     color: color.xTrailing,
                     backgroundColor: color.xPrimaryColor,
                     onRefresh: () => provider.refresh('',true),
-                    child: GridView.builder(
+                    child: ListView.builder(
                       padding: const EdgeInsets.only(
                           bottom: 6,
                           top: 6,
@@ -69,12 +78,6 @@ class _IMyFriendState extends State<IMyFriend> {
                       scrollDirection: Axis.vertical,
                       physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: Mixin.isTab(context) ? 3 : 2, // Number of items per row
-                        crossAxisSpacing: .0, // Spacing between columns
-                        mainAxisSpacing: 6.0, // Spacing between rows
-                        childAspectRatio: .7, // Aspect ratio of each grid item
-                      ),
                       itemBuilder: (context, index) {
                         return IFriendCard(
                           user: provider.list[index],

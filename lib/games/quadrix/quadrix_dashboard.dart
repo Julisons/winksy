@@ -22,8 +22,6 @@ import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
 import '../fame_hall/fame_hall.dart';
 
-
-
 class ListItem {
   final String title;
   final String desc;
@@ -32,7 +30,6 @@ class ListItem {
 }
 
 class IQuadrixDashboard extends StatefulWidget {
-
   IQuadrixDashboard({super.key});
 
   @override
@@ -40,7 +37,6 @@ class IQuadrixDashboard extends StatefulWidget {
 }
 
 class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
-
   @override
   void initState() {
     super.initState();
@@ -62,10 +58,11 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
       body: Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -76,97 +73,90 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
           ),
         ),
         child: Padding(
-          padding:  EdgeInsets.all(16.0.r),
+          padding: EdgeInsets.all(16.0.r),
           child: Column(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    SizedBox(height: 100.h,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AnimatedGlowingLetter(
-                          letter: 'QUADRIX',
-                          size: GAME_TITLE,
-                          color: color.xTrailingAlt,
-                          animationType: AnimationType.breathe,
-                        ),
-                        SizedBox(width: 30.w,),
-                      ],
-                    ),
-                    SizedBox(height: 20,),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width/1.2,
-                      child: Text('Welcome to Quadrix! This is a game where you can challenge your friends and family in a fun and strategic way. Choose from various game modes and customize your experience to suit your preferences.',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: FONT_13,
-                          color: color.xTextColor,
-                        ),
-                      ),
-                    ),
-                  ],
+              SizedBox(height: 100.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AnimatedGlowingLetter(
+                    letter: 'QUADRIX',
+                    size: GAME_TITLE,
+                    color: color.xTrailingAlt,
+                    animationType: AnimationType.breathe,
+                  ),
+                  SizedBox(width: 30.w),
+                ],
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 1.2,
+                child: Text(
+                  'Welcome to Quadrix! This is a game where you can challenge your friends and family in a fun and strategic way. Choose from various game modes and customize your experience to suit your preferences.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: FONT_13,
+                    color: color.xTextColor,
+                  ),
                 ),
               ),
-              SizedBox(height: 20.h),
-              Expanded(
-                flex: 2,
-                child: ListView.builder(
-                  itemCount: items.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: color.xSecondaryColor,
-                      elevation: ELEVATION,
-                    //  margin: EdgeInsets.only(bottom: 16.r),
-                      child: SizedBox(
-                        height: 100.h,
-                        child: ListTile(
-                          titleAlignment: ListTileTitleAlignment.center,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.r, // Balanced left and right padding
-                            vertical: 12.r,   // Equal top and bottom padding
-                          ),
-                          leading: Icon(
-                            Icons.arrow_forward_ios,
+              Spacer(), // This pushes the ListView to the bottom
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: items.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: color.xSecondaryColor,
+                    elevation: ELEVATION,
+                    margin: EdgeInsets.only(bottom: 8.r), // Added margin back for spacing
+                    child: SizedBox(
+                      height: 100.h,
+                      child: ListTile(
+                        titleAlignment: ListTileTitleAlignment.center,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.r, // Balanced left and right padding
+                          vertical: 12.r,   // Equal top and bottom padding
+                        ),
+                        leading: Icon(
+                          Icons.arrow_forward_ios,
+                          color: color.xTextColorSecondary,
+                        ),
+                        title: Text(
+                          items[index].title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_TITLE,
                             color: color.xTextColorSecondary,
                           ),
-                          title: Text(
-                            items[index].title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_TITLE,
-                              color: color.xTextColorSecondary,
-                            ),
-                          ),
-                          subtitle: Text(
-                            items[index].desc,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: FONT_13,
-                              color: color.xTextColor,
-                            ),
-                          ),
-                          onTap: () async {
-                            switch(items[index].title.toUpperCase()){
-                              case 'START GAME':
-                                Mixin.navigate(context, IQuadrix());
-                                break;
-                              case 'HOW TO PLAY':
-                                Mixin.navigate(context, IQuadrix());
-                                break;
-                              case 'HALL OF FAME':
-                                Mixin.navigate(context, IFameHall(quadType: 'QUADRIX',));
-                                break;
-                            }
-                          },
                         ),
+                        subtitle: Text(
+                          items[index].desc,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: FONT_13,
+                            color: color.xTextColor,
+                          ),
+                        ),
+                        onTap: () async {
+                          switch (items[index].title.toUpperCase()) {
+                            case 'START GAME':
+                              Mixin.navigate(context, IQuadrix());
+                              break;
+                            case 'HOW TO PLAY':
+                              Mixin.navigate(context, IQuadrix());
+                              break;
+                            case 'HALL OF FAME':
+                              Mixin.navigate(context, IFameHall(quadType: 'QUADRIX'));
+                              break;
+                          }
+                        },
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

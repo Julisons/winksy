@@ -26,7 +26,6 @@ import '../../../model/user.dart';
 import '../../../provider/chat_provider.dart';
 import '../../../request/urls.dart';
 import 'chat_card.dart';
-import 'chat_shimmer.dart';
 
 class IChat extends StatefulWidget {
   const IChat({super.key, required this.user});
@@ -94,7 +93,7 @@ class _IChatState extends State<IChat> {
             color: color.xPrimaryColor,
             padding: EdgeInsets.only(top: 10.h),
             child: Consumer<IChatProvider>(builder: (context, provider, child) {
-              return (provider.isLoading() || provider.list.isEmpty)
+              return (provider.loading || provider.list.isEmpty)
                   ? Center(child: Loading(dotColor: color.xTrailing,size: LOADER))
                   : SizedBox(
                       height: MediaQuery.of(context).size.height,
@@ -118,7 +117,7 @@ class _IChatState extends State<IChat> {
                                 },
                               );
                             },
-                            itemCount: provider.getCount(),
+                            itemCount: provider.list.length
                           )),
                     );
             }),

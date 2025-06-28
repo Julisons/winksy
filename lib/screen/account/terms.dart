@@ -97,7 +97,7 @@ class _ITermsState extends State<ITerms> {
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    color: Colors.white,
+                    color: color.xTextColor,
                     fontSize: FONT_MEDIUM,
                   ),
                 ),

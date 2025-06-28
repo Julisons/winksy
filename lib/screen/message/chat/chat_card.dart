@@ -48,7 +48,7 @@ class _IChatCardState extends State<IChatCard> {
       elevation: ELEVATION,
       color: color.xPrimaryColor,
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: color.xSecondaryColor, width: 2),
+          side: BorderSide(color: color.xPrimaryColor, width: 0),
           borderRadius: BorderRadius.circular(CORNER)),
       child: Padding(
         padding: EdgeInsets.all(16.0.h),

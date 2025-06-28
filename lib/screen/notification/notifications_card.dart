@@ -40,45 +40,44 @@ class _INotificationsCardState extends State<INotificationsCard> with TickerProv
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
-      child: SizedBox(
-        height: 100,
-        child: InkWell(
-          child: Card(
-            color: color.xPrimaryColor,
-            elevation: ELEVATION,
-            margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-            semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(widget.notification.notiTitle??''),
-                      const SizedBox(width: 10),
-                      Text( timeago.format(DateTime.parse(widget.notification.notiCreatedTime)),
-                          style: GoogleFonts.workSans(fontSize: FONT_SMALL,fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Flexible(child: Text(widget.notification.notiMessage??'',
-                    style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13),))
-                ],
-              ),
+    return Container(
+      height: 100.h,
+      color: color.xPrimaryColor,
+      margin: EdgeInsets.all(8.h),
+      child: InkWell(
+        child: Card(
+          color: color.xSecondaryColor,
+          elevation: ELEVATION,
+          margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+          semanticContainer: true,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(CORNER),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(widget.notification.notiTitle??'', style: TextStyle(fontSize: FONT_TITLE, color: color.xTextColor, fontWeight: FontWeight.bold),),
+                    const SizedBox(width: 10),
+                    Text( timeago.format(DateTime.parse(widget.notification.notiCreatedTime)),
+                        style: GoogleFonts.workSans(fontSize: FONT_SMALL,fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Flexible(child: Text(widget.notification.notiMessage??'',
+                  style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13),))
+              ],
             ),
           ),
-          onTap: () {
-          },
         ),
+        onTap: () {
+        },
       ),
     );
   }

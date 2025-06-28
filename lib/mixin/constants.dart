@@ -98,6 +98,8 @@ final double ICON = 24.h;
 final double FONT_MEDIUM = 14.sp;
 final double FONT_SMALL = 10.sp;
 
+final double IMAGE_RADIUS = 140.5.sp;
+
 final double APP_BAR = 50.w;
 final double TILE_HEIGHT = 110.w;
 final double ELEVATION = 0.w;

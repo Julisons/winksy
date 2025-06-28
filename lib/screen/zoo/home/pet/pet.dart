@@ -59,7 +59,11 @@ class _IPetState extends State<IPet> {
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<IPetProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() :
+              return provider.isLoading() ? Center(
+                child: Loading(
+                  dotColor: color.xTrailing,
+                ),
+              ):
               Column(
                 children: [
                   Expanded(

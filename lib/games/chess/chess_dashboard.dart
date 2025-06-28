@@ -22,8 +22,6 @@ import '../../theme/custom_colors.dart';
 import '../fame_hall/fame_hall.dart';
 import 'chess.dart';
 
-
-
 class ListItem {
   final String title;
   final String desc;
@@ -80,6 +78,7 @@ class _IChessDashboardState extends State<IChessDashboard> {
           padding:  EdgeInsets.all(16.0.r),
           child: Column(
             children: [
+              // Top section with title and description
               Expanded(
                 child: Column(
                   children: [
@@ -120,42 +119,38 @@ class _IChessDashboardState extends State<IChessDashboard> {
                   ],
                 ),
               ),
+
               SizedBox(height: 20.h),
-              Expanded(
-                flex: 2,
-                child: ListView.builder(
-                  itemCount: items.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: color.xSecondaryColor,
-                      elevation: ELEVATION,
-                      margin: EdgeInsets.only(bottom: 16.r),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                        leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                        title: Text(items[index].title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
-                        subtitle: Padding(
-                          padding:  EdgeInsets.only(top: 6.r),
-                          child: Text(items[index].desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
-                        ),
-                        onTap: () {
-                          switch(items[index].title.toUpperCase()){
-                            case 'START GAME':
-                              Mixin.navigate(context, IChess());
-                              break;
-                            case 'HOW TO PLAY':
-                              Mixin.navigate(context, IQuadrix());
-                              break;
-                            case 'HALL OF FAME':
-                              Mixin.navigate(context, IFameHall(quadType: CHESS));
-                              break;
-                          }
-                        },
-                      ),
-                    );
-                  },
-                ),
+
+              // Bottom section with ListView items - now properly aligned
+              Column(
+                children: items.map((item) => Card(
+                  color: color.xSecondaryColor,
+                  elevation: ELEVATION,
+                  margin: EdgeInsets.only(bottom: 16.r),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
+                    leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
+                    title: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                    subtitle: Padding(
+                      padding:  EdgeInsets.only(top: 6.r),
+                      child: Text(item.desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                    ),
+                    onTap: () {
+                      switch(item.title.toUpperCase()){
+                        case 'START GAME':
+                          Mixin.navigate(context, IChess());
+                          break;
+                        case 'HOW TO PLAY':
+                          Mixin.navigate(context, IQuadrix());
+                          break;
+                        case 'HALL OF FAME':
+                          Mixin.navigate(context, IFameHall(quadType: CHESS));
+                          break;
+                      }
+                    },
+                  ),
+                )).toList(),
               ),
             ],
           ),

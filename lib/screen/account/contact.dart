@@ -68,7 +68,7 @@ class _IContactUsState extends State<IContactUs> {
                   textAlign: TextAlign.center,
                   style: TextStyle( fontWeight: FontWeight.bold, color: color.xTrailing, fontSize: FONT_MEDIUM,letterSpacing: 1,wordSpacing: 3)),
               SizedBox(height: 16.h),
-              Text("www.wink.com",
+              Text("www.winksy.co.ke",
                   textAlign: TextAlign.center,
                   style: TextStyle( fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.tertiary, fontSize: FONT_MEDIUM)),
               SizedBox(height: 40.h),

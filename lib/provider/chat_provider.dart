@@ -25,12 +25,12 @@ class IChatProvider with ChangeNotifier {
     list.clear();
     setLoading(true);
     await XRequest().getData({
-     'usrId': Mixin.user?.usrId,
+      'usrId': Mixin.user?.usrId,
     }, IUrls.CHATS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          
+
           var res = jsonResponse.data['result'];
           log('---${res}');
 
@@ -49,15 +49,16 @@ class IChatProvider with ChangeNotifier {
   }
 
   Future<bool> reload(search) async {
-    list.clear();
-    //setLoading(true);
+    // DON'T clear the list here - do it atomically in setHouses
+    // list.clear(); // REMOVE THIS LINE
+
     await XRequest().getData({
       'usrId': Mixin.user?.usrId,
     }, IUrls.CHATS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          
+
           var res = jsonResponse.data['result'] ?? [];
           log('---${res}');
 
@@ -67,9 +68,11 @@ class IChatProvider with ChangeNotifier {
           setHouses(items);
         } catch (e) {
           log(e.toString());
+          // On error, don't clear the list - keep showing existing data
         }
       } else {
         setMessage(data.headers['message']);
+        // On error, don't clear the list - keep showing existing data
       }
     });
     return isLoaded();
@@ -85,9 +88,12 @@ class IChatProvider with ChangeNotifier {
   }
 
   void setHouses(value) {
+    // Atomic operation - clear and add in one go to prevent race conditions
     list.clear();
     list.addAll(value);
     setLoading(false);
+    // Only notify listeners after the list is fully updated
+    notifyListeners();
   }
 
   List<Chat> getHouses() {
