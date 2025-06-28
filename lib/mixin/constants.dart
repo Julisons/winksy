@@ -73,6 +73,7 @@ const String CONNECTION = "Check your internet connection";
 const int CONN = -1;
 const String TOKEN = "TOKEN";
 const String CURR = "USER";
+const String SPIN_DATE = "SPIN_DATE";
 const String DOC = "DOCTOR";
 const String THEME = "THEME";
 const String DARK = "DARK";

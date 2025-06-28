@@ -1,7 +1,7 @@
 class IUrls {
 
- static String BASE = 'http://192.168.100.36';
-//static String BASE = 'http://10.10.1.28';
+// static String BASE = 'http://192.168.100.36';
+static String BASE = 'http://10.10.1.28';
 
  // static String BASE = 'http://212.47.74.158';
  static String BASE_IMAGE = 'http://212.47.74.158';
@@ -111,6 +111,10 @@ static String BASE_URL = '$BASE:5000';
     return Uri.parse("$BASE_URL/user_gift/fetch_usergifts");
   }
 
+  static Uri SPINNERS() {
+    return Uri.parse("$BASE_URL/spinner/fetch_spinners");
+  }
+
   static Uri TREATS() {
     return Uri.parse("$BASE_URL/gift/fetch_gifts");
   }
@@ -123,6 +127,9 @@ static String BASE_URL = '$BASE:5000';
     return "$BASE_URL/auth/sign_in";
   }
 
+  static String PET() {
+    return "$BASE_URL/pet/save_pet";
+  }
 
   static String VERIFY_OTP() {
     return "$BASE_URL/auth/verify_otp";

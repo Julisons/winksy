@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -6,6 +7,7 @@ import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/geometry.dart';
 // user files
+import '../../../../mixin/mixins.dart';
 import 'dice_face_component.dart';
 import '../../state/game_state.dart';
 import '../../state/audio_manager.dart';
@@ -14,6 +16,7 @@ import '../../ludo_board.dart';
 import '../controller/lower_controller.dart';
 import 'token.dart';
 import '../../ludo.dart';
+import '../../../../../model/quad.dart'  as Q;
 
 class LudoDice extends PositionComponent with TapCallbacks {
   static const double borderRadiusFactor =
@@ -30,7 +33,9 @@ class LudoDice extends PositionComponent with TapCallbacks {
   late final RectangleComponent innerRectangle; // inner rectangle component
   late final DiceFaceComponent diceFace; // The dice face showing dots
 
+  String quadPlayer = '';
   final Player player;
+  late Q.Quad _quad = Q.Quad();
 
   void playSound() async {
     await AudioManager.playDiceSound();
@@ -64,11 +69,59 @@ class LudoDice extends PositionComponent with TapCallbacks {
     if (world is! World) return; // Ensure the world is available
 
     // Handle dice roll based on the number
-    final handleRoll =
-        GameState().diceNumber == 6 ? _handleSixRoll : _handleNonSixRoll;
-    handleRoll(
-        world, GameState().ludoBoard as LudoBoard, GameState().diceNumber);
+    final handleRoll = GameState().diceNumber == 6 ? _handleSixRoll : _handleNonSixRoll;
+    handleRoll(world, GameState().ludoBoard as LudoBoard, GameState().diceNumber);
+
+    _localPlay(GameState().diceNumber);
   }
+
+
+  Future<void> _localPlay(int diceNumber) async {
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+        quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+      }else {
+        quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+      }
+
+      Q.Quad quad = Q.Quad()
+        ..quadUsrId = Mixin.user?.usrId
+        ..quadState = 'PROGRESS'
+        ..quadRow = diceNumber
+        ..quadPlayer = Mixin.user?.usrFirstName
+        ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+        ..quadId = Mixin.quad?.quadId;
+
+      Mixin.quadrixSocket?.emit('played', quad.toJson());
+  }
+
+  Future<void> rollDice() async {
+    if (!player.enableDice ||
+        !player.isCurrentTurn ||
+        player != GameState().currentPlayer) {
+      return;
+    }
+
+    final world = parent?.parent?.parent?.parent?.parent;
+    GameState().hidePointer();
+    player.enableDice = false;
+
+    GameState().diceNumber = Random().nextInt(6) + 1;
+    diceFace.updateDiceValue(GameState().diceNumber);
+
+    playSound();
+    _applyDiceRollEffect();
+
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (world is! World) return;
+
+    final handleRoll = GameState().diceNumber == 6
+        ? _handleSixRoll
+        : _handleNonSixRoll;
+    handleRoll(world, GameState().ludoBoard as LudoBoard, GameState().diceNumber);
+
+  }
+
 
   // Apply a 360-degree rotation effect to the dice
   FutureOr<void> _applyDiceRollEffect() {

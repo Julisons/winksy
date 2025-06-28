@@ -15,6 +15,7 @@ import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
 import '../chess/chess.dart';
+import 'component/ludo_sync.dart';
 import 'ludo.dart';
 
 final List<ListItem> items = [
@@ -126,13 +127,29 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
+                                  builder: (context) => ILudoSync(),
+                                ),
+                              );
+                            },
+                            isBlack: false,
+                            text: "2  player game (Online)",
+                            color: color.xTrailingAlt,
+                            textColor: Colors.white,
+                            width: MediaQuery.of(context).size.width * 0.8,
+                          ),
+                          const SizedBox(height: 20),
+                          IButton(
+                            onPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
                                   builder: (context) =>
                                   const SecondScreen(selectedPlayerCount: 2),
                                 ),
                               );
                             },
                             isBlack: false,
-                            text: "2  player game",
+                            text: "2  player game (Local)",
                             color: color.xTrailing,
                             textColor: Colors.white,
                             width: MediaQuery.of(context).size.width * 0.8,
@@ -149,7 +166,7 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                               );
                             },
                             isBlack: false,
-                            text: "4  player game",
+                            text: "4  player game (Local)",
                             color: color.xTrailing,
                             textColor: Colors.white,
                             width: MediaQuery.of(context).size.width * 0.8,
@@ -272,7 +289,7 @@ class SecondScreenState extends State<SecondScreen> {
                       ),
                       SizedBox(height: 100.h),
                       Text(
-                        'Select Number of Players',
+                        'Select color combination',
                         style: TextStyle(
                             fontSize: FONT_TITLE,
                             fontWeight: FontWeight.bold,
@@ -471,7 +488,7 @@ class _GameAppState extends State<GameApp> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  color.xPrimaryColor,
+                  color.xTrailingAlt,
                   color.xPrimaryColor,
                 ],
               ),

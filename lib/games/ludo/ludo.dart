@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -7,6 +8,8 @@ import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart';
 
+import '../../mixin/mixins.dart';
+import '../../model/quad.dart' as Q;
 import 'state/player.dart';
 import 'component/home/home.dart';
 import 'state/token_manager.dart';
@@ -22,8 +25,7 @@ import 'component/ui_components/spot.dart';
 import 'component/ui_components/ludo_dice.dart';
 import 'component/ui_components/rank_modal_component.dart';
 
-class Ludo extends FlameGame
-    with HasCollisionDetection, KeyboardEvents, TapDetector {
+class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDetector {
   List<String> teams;
   final BuildContext context;
 
@@ -49,6 +51,8 @@ class Ludo extends FlameGame
   @override
   void onLoad() async {
     super.onLoad();
+    _remotePlay();
+
     camera = CameraComponent.withFixedResolution(
       width: width,
       height: height,
@@ -116,6 +120,89 @@ class Ludo extends FlameGame
     await startGame();
   }
 
+  late Q.Quad _quad = Q.Quad();
+
+  void _remotePlay(){
+    Mixin.quadrixSocket?.on('play', (message) async {
+      print(jsonEncode(message));
+      _quad = Q.Quad.fromJson(message);
+
+      /**
+       * THIS MOVE IS FROM ME, SO JUST IGNORE
+       */
+      if(Mixin.user?.usrId.toString() == _quad.quadUsrId.toString()) {
+        return;
+      }
+
+      debugPrint('------ROLLING THE DICE----');
+      callRollDice();
+
+      if(Mixin.user?.usrId.toString() == _quad.quadPlayerId.toString()) {
+       // quadPlayer = 'Your turn';
+        //_startTimer();
+      }else {
+        //quadPlayer = '${_quad.quadPlayer}\'s turn';
+      }
+    });
+  }
+
+  // In your Ludo class
+  void callRollDice() {
+    // Get the current player
+    final currentPlayer = GameState().currentPlayer;
+
+    // Find the appropriate controller based on player
+    if (currentPlayer.playerId == 'BP') {
+      // Blue player - lower left dice
+      final lowerController = world.children.whereType<LowerController>().first;
+      final lowerControllerComponents = lowerController.children.toList();
+      final leftDice = lowerControllerComponents[0]
+          .children
+          .whereType<RectangleComponent>()
+          .first;
+      final leftDiceContainer = leftDice.children.whereType<RectangleComponent>().first;
+      final ludoDice = leftDiceContainer.children.whereType<LudoDice>().firstOrNull;
+
+      ludoDice?.rollDice();
+    } else if (currentPlayer.playerId == 'GP') {
+      // Green player - upper right dice
+      final upperController = world.children.whereType<UpperController>().first;
+      final upperControllerComponents = upperController.children.toList();
+      final rightDice = upperControllerComponents[2]
+          .children
+          .whereType<RectangleComponent>()
+          .first;
+      final rightDiceContainer = rightDice.children.whereType<RectangleComponent>().first;
+      final ludoDice = rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
+
+      ludoDice?.rollDice();
+    } else if (currentPlayer.playerId == 'YP') {
+      // Yellow player - lower right dice
+      final lowerController = world.children.whereType<LowerController>().first;
+      final lowerControllerComponents = lowerController.children.toList();
+      final rightDice = lowerControllerComponents[2]
+          .children
+          .whereType<RectangleComponent>()
+          .first;
+      final rightDiceContainer = rightDice.children.whereType<RectangleComponent>().first;
+      final ludoDice = rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
+
+      ludoDice?.rollDice();
+    } else if (currentPlayer.playerId == 'RP') {
+      // Red player - upper left dice
+      final upperController = world.children.whereType<UpperController>().first;
+      final upperControllerComponents = upperController.children.toList();
+      final leftDice = upperControllerComponents[0]
+          .children
+          .whereType<RectangleComponent>()
+          .first;
+      final rightDiceContainer = leftDice.children.whereType<RectangleComponent>().first;
+      final ludoDice = rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
+
+      ludoDice?.rollDice();
+    }
+  }
+
   void switchOffPointer() {
     final player = GameState().players[GameState().currentPlayerIndex];
     final lowerController = world.children.whereType<LowerController>().first;
@@ -159,15 +246,13 @@ class Ludo extends FlameGame
         .whereType<RectangleComponent>()
         .first;
 
-    final rightDiceContainer =
-        leftDice.children.whereType<RectangleComponent>().first;
+    final rightDiceContainer = leftDice.children.whereType<RectangleComponent>().first;
 
     // Add the appropriate effect based on shouldBlink
     homePlate.add(shouldBlink ? _redBlinkEffect! : _redStaticEffect!);
 
     if (shouldBlink) {
-      final ludoDice =
-          rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
+      final ludoDice = rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
       if (ludoDice == null) {
         if (GameState().players.isNotEmpty) {
           final player = GameState().players[GameState().currentPlayerIndex];
@@ -179,8 +264,7 @@ class Ludo extends FlameGame
         }
       }
     } else {
-      final ludoDice =
-          rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
+      final ludoDice = rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
       if (ludoDice != null) {
         rightDiceContainer.remove(ludoDice);
       }

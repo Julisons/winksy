@@ -3,6 +3,7 @@ import 'package:winksy/provider/fame_hall_provider.dart';
 import 'package:winksy/provider/friend_provider.dart';
 import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
+import 'package:winksy/provider/gift/spinner_provider.dart';
 import 'package:winksy/provider/gift/treat_provider.dart';
 import 'package:winksy/provider/interest_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
@@ -67,6 +68,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
               create: (_) => IBrowseProvider().init()),
+          ChangeNotifierProvider<ISpinnerProvider>(
+              create: (_) => ISpinnerProvider().init()),
           ChangeNotifierProvider<IFriendProvider>(
               create: (_) => IFriendProvider().init()),
           ChangeNotifierProvider<ITreatProvider>(

@@ -53,7 +53,6 @@ class GameBoardState extends State<GameBoard> {
       quadPlayer = Mixin.quad?.quadPlayer+" starts";
     }
     _remotePlay();
-
   }
 
   void _startTimer() {
