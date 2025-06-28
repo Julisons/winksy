@@ -156,17 +156,6 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
                                     width: 50.w,
                                     height: 50.w,
                                     fit: BoxFit.contain,
-                                    placeholder: (context, url) =>
-                                        Shimmer.fromColors(
-                                          baseColor: xShimmerBase,
-                                          highlightColor: xShimmerHighlight,
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
                                     errorWidget: (context, url, error) =>
                                         CircleAvatar(
                                           backgroundColor: color.xSecondaryColor,

@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
+import '../../../../component/empty_state_widget.dart';
 import '../../../../component/loader.dart';
 import '../../../../provider/pet/wish_provider.dart';
 import '../../../../theme/custom_colors.dart';
@@ -61,7 +62,20 @@ class _IWishState extends State<IWish> {
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<IWishProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() :
+              return provider.isLoading() ?
+                  Center(
+                    child: Loading(dotColor: color.xTrailing,),
+                  )
+                  : provider.list.isEmpty ?
+              EmptyStateWidget(
+                type: EmptyStateType.users,
+                showCreate: false,
+                description: 'These lovable companions are waiting for you to make a move',
+                title: '🐾 Pets on Your Radar',
+                onReload: () async {
+                  provider.refresh('', true);
+                },
+              ) :
               Column(
                 children: [
                   Expanded(

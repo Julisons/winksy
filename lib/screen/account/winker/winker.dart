@@ -175,17 +175,6 @@ class _IWinkserState extends State<IWinkser> {
                                   fit: BoxFit.cover,
                                   height: 150.w,
                                   width: 150.w,
-                                  placeholder: (context, url) =>
-                                      Shimmer.fromColors(
-                                        baseColor: color.xSecondaryColor,
-                                        highlightColor: color.xSecondaryColor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(12.0),
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
                                   errorWidget: (context, url, error) =>
                                       CircleAvatar(
                                           backgroundColor: color.xSecondaryColor,

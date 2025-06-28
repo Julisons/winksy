@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
+import '../../../../component/empty_state_widget.dart';
 import '../../../../component/loader.dart';
 import '../../../../provider/pet/browse_provider.dart';
 import '../../../../theme/custom_colors.dart';
@@ -61,7 +62,25 @@ class _IBrowseState extends State<IBrowse> {
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<IBrowseProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() :
+              return provider.isLoading() ?
+
+                  Center(
+                    child: Loading(
+                      dotColor: color.xTrailing,
+                    ),
+                  )
+                  : provider.list.isEmpty ?
+              EmptyStateWidget(
+                type: EmptyStateType.users,
+                showCreate: false,
+                description: 'New pets are being prepared for adoption. Keep checking in for their arrival!',
+                title: '🐱 New Pets Loading…',
+                onReload: () async {
+                  provider.refresh('', true);
+                },
+              ) :
+
+
               Column(
                 children: [
                   Expanded(

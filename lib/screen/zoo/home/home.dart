@@ -240,7 +240,7 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
           controller: _tabController,
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
-            IPet(),
+            IPet(showCreate: false,),
             IOwned(),
             IWish(),
           ],

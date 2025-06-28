@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
 
+import '../../../../component/empty_state_widget.dart';
 import '../../../../component/loader.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../people/people_shimmer.dart';
@@ -60,7 +61,24 @@ class _IOwnedState extends State<IOwned> {
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<IOwnedProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() :
+              return provider.isLoading() ?
+
+                  Center(
+                    child: Loading(
+                      dotColor: color.xTrailing,
+                    ),
+                  )
+                  : provider.list.isEmpty ?
+              EmptyStateWidget(
+                type: EmptyStateType.users,
+                showCreate: false,
+                description: 'Every pet you’ve owned tells a story - revisit them here.',
+                title: '🐕‍🦺 Former Furry Friends',
+                onReload: () async {
+                  provider.refresh('', true);
+                },
+              ) :
+
               Column(
                 children: [
                   Expanded(

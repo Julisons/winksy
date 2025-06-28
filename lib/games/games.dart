@@ -11,9 +11,11 @@ import 'package:winksy/component/glass_coat.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/games/quadrix/quadrix_dashboard.dart';
+import 'package:winksy/games/setting/settings.dart';
 import 'package:winksy/games/spinner/spinner_dashboard.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe_dashboard.dart';
 import 'package:winksy/mixin/constants.dart';
+import 'package:winksy/screen/account/profile.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
 import '../component/app_bar.dart';
@@ -196,9 +198,24 @@ class _IGamesState extends State<IGames> {
                         ),
                       ),
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('${items[index].title} tapped')),
-                        );
+
+                        switch (items[index].title) {
+                          case 'My Account':
+                            Mixin.navigate(context, IProfile());
+                            break;
+                          case 'My Recent Opponents':
+                            Mixin.navigate(context, IQuadrixDashboard());
+                            break;
+                          case 'Game Settings':
+                            Mixin.navigate(context, IGameSettings());
+                            break;
+                          default:
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('${items[index].title} tapped')),
+                            );
+                        }
+
+
                       },
                     ),
                   );

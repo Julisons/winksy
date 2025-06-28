@@ -55,7 +55,7 @@ class _ITreatCardState extends State<ITreatCard> {
     final color = Theme.of(context).extension<CustomColors>()!;
     return InkWell(
       child: Card(
-        elevation: 4,
+        elevation: ELEVATION,
         color: color.xSecondaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
@@ -132,6 +132,7 @@ class _ITreatCardState extends State<ITreatCard> {
                 width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
+                  SizedBox(height: 74.h,),
                   CachedNetworkImage(
                     imageUrl: widget.treat.giftPath.startsWith('http')
                         ? widget.treat.giftPath
@@ -160,33 +161,10 @@ class _ITreatCardState extends State<ITreatCard> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 44.h,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GooglePayButton(
-                        paymentConfiguration: defaultGooglePayConfig,
-                        paymentItems: [
-                          PaymentItem(
-                            label: 'Total',
-                            amount: widget.treat.giftAmount.toString(),
-                            status: PaymentItemStatus.final_price,
-                          )
-                        ],
-                        type: GooglePayButtonType.buy,
-                        margin: const EdgeInsets.only(top: 15.0),
-                        onPaymentResult: onGooglePayResult,
-                        loadingIndicator:  Center(
-                          child: Loading(dotColor: color.xTrailing),
-                        ),
-                      ),
-                      IMpesaPay(onPress: (){
-
-                      }, width: MediaQuery.of(context).size.width/2.4,textColor: color.xTextColor,
-                        color: color.xSecondaryColor,isBlack: false,),
-                    ],
-                  )
+                  SizedBox(height: 74.h,),
+                  IMpesaPay(onPress: (){
+                  }, width: MediaQuery.of(context).size.width/2.1,textColor: color.xTextColor,
+                    color: color.xSecondaryColor,isBlack: false,)
                 ],
               )
             );

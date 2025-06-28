@@ -20,11 +20,13 @@ import 'package:winksy/model/message.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../component/empty_state_widget.dart';
 import '../../../component/loader.dart';
 import '../../../model/chat.dart';
 import '../../../model/user.dart';
 import '../../../provider/chat_provider.dart';
 import '../../../request/urls.dart';
+import '../../home/home.dart';
 import 'chat_card.dart';
 
 class IChat extends StatefulWidget {
@@ -95,7 +97,22 @@ class _IChatState extends State<IChat> {
             child: Consumer<IChatProvider>(builder: (context, provider, child) {
               return (provider.loading || provider.list.isEmpty)
                   ? Center(child: Loading(dotColor: color.xTrailing,size: LOADER))
-                  : SizedBox(
+                  : provider.list.isEmpty ?
+                  EmptyStateWidget(
+                    type: EmptyStateType.sms,
+                    showCreate: true,
+                    createButtonText: 'Message',
+                    onCreate: (){
+                      Mixin.navigate(context, IHome());
+                    },
+                    tagline: 'Tap on someone to start a conversation.',
+                    description: 'Start a conversation to see your chats here.',
+                    title: '🤫 It\'s Quiet in Here',
+                    onReload: () async {
+                      provider.refresh('');
+                    },
+                  ) :
+                    SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: RefreshIndicator(

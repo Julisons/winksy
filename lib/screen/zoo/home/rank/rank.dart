@@ -8,28 +8,28 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
+import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/zoo/home/pet/pet_card.dart';
-import 'package:winksy/screen/zoo/zoo.dart';
+
 import '../../../../component/empty_state_widget.dart';
 import '../../../../component/loader.dart';
-import '../../../../component/popup.dart';
-import '../../../../mixin/constants.dart';
-import '../../../../provider/pet/pet_provider.dart';
+import '../../../../provider/pet/wish_provider.dart';
 import '../../../../theme/custom_colors.dart';
 import '../../../people/people_shimmer.dart';
+import 'rank_card.dart';
 
 
 
-class IPet extends StatefulWidget {
-  const IPet({super.key, this.showCreate = false});
-  final bool showCreate;
+
+class IRank extends StatefulWidget {
+  const IRank({super.key});
 
 
   @override
-  State<IPet> createState() => _IPetState();
+  State<IRank> createState() => _IRankState();
 }
 
-class _IPetState extends State<IPet> {
+class _IRankState extends State<IRank> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();
@@ -41,7 +41,7 @@ class _IPetState extends State<IPet> {
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
         if (_scrollController.position.pixels != 0) {
-          Provider.of<IPetProvider>(context, listen: false).loadMore(_searchController.text);
+          Provider.of<IOwnedProvider>(context, listen: false).loadMore(_searchController.text);
         }}});
   }
 
@@ -60,23 +60,18 @@ class _IPetState extends State<IPet> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: 10.h),
-        child: Consumer<IPetProvider>(
+        child: Consumer<IWishProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? Center(
-                child: Loading(
-                  dotColor: color.xTrailing,
-                ),
-              )
+              return provider.isLoading() ?
+                  Center(
+                    child: Loading(dotColor: color.xTrailing,),
+                  )
                   : provider.list.isEmpty ?
               EmptyStateWidget(
                 type: EmptyStateType.users,
-                showCreate: widget.showCreate,
-                createButtonText: 'Buy pets',
-                onCreate: () {
-                  Mixin.navigate(context, IZoo());
-                },
-                description: 'Collect adorable companions and grow your Friends Zoo!',
-                title: '🐕 This is where your pets hang out',
+                showCreate: false,
+                description: 'A new era of rankings is coming. Will you be the #1 pet owner?',
+                title: '📊 Pet Leaderboard Incoming',
                 onReload: () async {
                   provider.refresh('', true);
                 },
@@ -87,7 +82,7 @@ class _IPetState extends State<IPet> {
                     child: RefreshIndicator(
                         color: color.xTrailing,
                         backgroundColor: color.xPrimaryColor,
-                        onRefresh: () => provider.refresh('', false),
+                        onRefresh: () => provider.refresh('', true),
                         child: ListView.builder(
                           controller: _scrollController,
                           padding: const EdgeInsets.only(
@@ -96,10 +91,10 @@ class _IPetState extends State<IPet> {
                               right: 6,
                               left: 6),
                           scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            return IPetCard(
+                            return IRankCard(
                               pet: provider.list[index],
                               onRefresh: () {
                                 setState(() {});
@@ -114,7 +109,7 @@ class _IPetState extends State<IPet> {
                   if(provider.isLoadingMore())
                     Container(
                         padding: EdgeInsets.all(14.h),
-                        child: Loading(dotColor: color.xTrailing,))
+                        child: Loading(dotColor: color.xTrailing))
                 ],
               );
             }),

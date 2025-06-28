@@ -7,8 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
+import 'package:winksy/component/loader.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/like_me_provider.dart';
+import '../../../component/empty_state_widget.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
@@ -47,12 +49,22 @@ class _ILikeState extends State<ILike> {
 
     return Scaffold(
       backgroundColor: color.xPrimaryColor,
-      body:
-      Container(
+      body: Container(
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<ILikeMeProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IPeopleShimmer() : SizedBox(
+              return provider.isLoading() ? Center(child: Loading(dotColor: color.xTrailing,))
+                  : provider.list.isEmpty ?
+              EmptyStateWidget(
+                type: EmptyStateType.users,
+                showCreate: false,
+                description: 'Admirers will appear here - someone special might be waiting!',
+                title: '❤️ Those who like you appear here.',
+                onReload: () async {
+                  provider.refresh('');
+                },
+              )
+              :SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: RefreshIndicator(

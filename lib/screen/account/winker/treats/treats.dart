@@ -42,7 +42,6 @@ class _ITreatsState extends State<ITreats> {
     return Consumer<ITreatProvider>(
         builder: (context, provider, child) {
 
-
           return provider.isLoading() ? const ITreatShimmer() :
           Column(
             children: [

@@ -171,11 +171,6 @@ class AppUpdateManager {
   }
 }
 
-// Main method - Entry point of the app
-void main() {
-  runApp(MyApp());
-}
-
 // Usage Example in main app
 class MyApp extends StatefulWidget {
   @override
@@ -256,11 +251,11 @@ class InAppUpdateChecker {
   static Future<void> checkForUpdate() async {
     try {
       final info = await InAppUpdate.checkForUpdate();
-      
+
       if (info.updateAvailability == UpdateAvailability.updateAvailable) {
         // For immediate updates (force update)
         await InAppUpdate.performImmediateUpdate();
-        
+
         // OR for flexible updates (optional update)
         // await InAppUpdate.startFlexibleUpdate();
       }

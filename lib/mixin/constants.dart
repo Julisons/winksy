@@ -87,6 +87,10 @@ const String TIC_TAC_TOE = "TIC_TAC_TOE";
 const String QUADRIX = "QUADRIX";
 const bool leading = false;
 
+const String GAME_SOUND = "GAME_SOUND";
+const String GAME_HAPTICS = "GAME_HAPTICS";
+const String GAME_THEME = "GAME_THEME";
+
 final double LOADER = 124.5.sp;
 final double FONT_START = 24.5.sp;
 final double FONT_APP_BAR = 24.sp;

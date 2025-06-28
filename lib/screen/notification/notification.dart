@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../component/app_bar.dart';
+import '../../component/empty_state_widget.dart';
+import '../../component/loader.dart';
 import '../../component/loading.dart';
 import '../../component/no_result.dart';
 import '../../component/popup.dart';
@@ -29,9 +31,18 @@ class _INotificationsState extends State<INotifications> {
       body:Consumer<INotificationProvider>(
           builder: (context, provider, child) {
             return provider.isLoading()
-                ? const ILoading()
-                : provider.getCount() > 0
-                ? RefreshIndicator(
+                ? Center(child:  Loading(dotColor: color.xTrailing,))
+                : provider.list.isEmpty ?
+            EmptyStateWidget(
+              type: EmptyStateType.notification,
+              showCreate: false,
+              tagline: 'We\'ll notify you when there\'s something new.',
+              description: 'Notifications will show up as they happen.',
+              title: '🔔 No Notifications Yet',
+              onReload: () async {
+                provider.refresh('', true);
+              },
+            ) : RefreshIndicator(
               color: color.xTrailing,
                 onRefresh: () => provider.refresh('', true),
                 child:  ListView.builder(
@@ -48,13 +59,7 @@ class _INotificationsState extends State<INotifications> {
                     return INotificationsCard(notification: provider.list[index]);
                   },
                   itemCount: provider.getCount(),
-                )) :
-            IZeroResult(
-              onRefresh: () {
-                provider.refresh('', true);
-              },
-              message: EMPTY,
-            );
+                )) ;
           }),
     );
   }

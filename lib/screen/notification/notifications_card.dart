@@ -18,21 +18,28 @@ class INotificationsCard extends StatefulWidget {
   State<INotificationsCard> createState() => _INotificationsCardState();
 }
 
-class _INotificationsCardState extends State<INotificationsCard> with TickerProviderStateMixin{
+class _INotificationsCardState extends State<INotificationsCard> with TickerProviderStateMixin {
 
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 2),
-    vsync: this,
-  )..repeat(reverse: true);
+  AnimationController? _controller;
+  Animation<double>? _animation;
 
-  late final Animation<double> _animation = CurvedAnimation(
-    parent: _controller,
-    curve: Curves.easeIn,
-  );
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = CurvedAnimation(
+      parent: _controller!,
+      curve: Curves.easeIn,
+    );
+  }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -63,20 +70,41 @@ class _INotificationsCardState extends State<INotificationsCard> with TickerProv
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.notification.notiTitle??'', style: TextStyle(fontSize: FONT_TITLE, color: color.xTextColor, fontWeight: FontWeight.bold),),
+                    Text(widget.notification.notiTitle ?? '',
+                      style: TextStyle(
+                          fontSize: FONT_TITLE,
+                          color: color.xTextColor,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
                     const SizedBox(width: 10),
-                    Text( timeago.format(DateTime.parse(widget.notification.notiCreatedTime)),
-                        style: GoogleFonts.workSans(fontSize: FONT_SMALL,fontWeight: FontWeight.w500)),
+                    Text(
+                        timeago.format(DateTime.parse(widget.notification.notiCreatedTime)),
+                        style: GoogleFonts.workSans(
+                            fontSize: FONT_SMALL,
+                            fontWeight: FontWeight.w500,
+                            color: color.xTextColor
+                        )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                Flexible(child: Text(widget.notification.notiMessage??'',
-                  style: TextStyle( fontWeight: FontWeight.normal, color: color.xTextColor, fontSize: FONT_13),))
+                Flexible(
+                    child: Text(
+                      widget.notification.notiMessage ?? '',
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: color.xTextColor,
+                          fontSize: FONT_13
+                      ),
+                    )
+                )
               ],
             ),
           ),
         ),
         onTap: () {
+          // Add your onTap logic here
         },
       ),
     );

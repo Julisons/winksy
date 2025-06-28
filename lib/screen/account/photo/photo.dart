@@ -10,6 +10,7 @@ import 'package:winksy/model/photo.dart';
 import 'package:winksy/screen/account/photo/photo_card.dart';
 import 'package:winksy/screen/account/photo/photo_shimmer.dart';
 
+import '../../../component/empty_state_widget.dart';
 import '../../../component/face_detector.dart';
 import '../../../component/loader.dart';
 import '../../../mixin/constants.dart';
@@ -65,7 +66,17 @@ class _IPhotosState extends State<IPhotos> {
               child: Loading(
                 dotColor: color.xTrailing,
               ),
-            ):
+            )
+                : provider.list.isEmpty ?
+            EmptyStateWidget(
+              type: EmptyStateType.photos,
+              showCreate: false,
+              description: 'Start sharing your favorite photos to personalize your profile!',
+              title: '📸 Upload your photos',
+              onReload: () async {
+                provider.refresh('', true);
+              },
+            ) :
             Column(
               children: [
                 Expanded(

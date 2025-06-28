@@ -12,6 +12,7 @@ import '../../../theme/custom_colors.dart';
 import 'home/browse/browse.dart';
 import 'home/home.dart';
 import 'home/pet/pet.dart';
+import 'home/rank/rank.dart';
 import 'home/wish/wish.dart';
 
 class IZoo extends StatefulWidget {
@@ -81,7 +82,7 @@ class _IZooState extends State<IZoo> {
           children: <Widget>[
             IPetHome(),
             IBrowse(),
-            IWish(),
+            IRank(),
           ],
         ),
       ),

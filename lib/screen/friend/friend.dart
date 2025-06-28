@@ -11,6 +11,7 @@ import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/friend_provider.dart';
 import 'package:winksy/screen/friend/friend_shimmer.dart';
 import '../../../mixin/constants.dart';
+import '../../component/empty_state_widget.dart';
 import '../../component/loader.dart';
 import '../../component/popup.dart';
 import '../../provider/friends_provider.dart';
@@ -98,7 +99,17 @@ class _IFriendState extends State<IFriend> {
 
         Consumer<IFriendsProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IFriendShimmer() :
+              return provider.isLoading() ? const IFriendShimmer()
+                  : provider.list.isEmpty ?
+              EmptyStateWidget(
+                type: EmptyStateType.users,
+                showCreate: false,
+                description: 'People who match with you will appear here.',
+                title: 'No matches yet - keep playing!',
+                onReload: () async {
+                  provider.refresh('', true);
+                },
+              ) :
               Column(
                 children: [
                   Expanded(

@@ -116,7 +116,7 @@ class IOwnedProvider with ChangeNotifier {
 
   void setDataMore(value) {
     list.addAll(value);
-    setLoadingMore(false);
+    //setLoadingMore(false);
   }
 
   List<Pet> getHouses() {

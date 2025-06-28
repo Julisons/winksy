@@ -11,6 +11,7 @@ import 'package:winksy/component/loader.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/friends_provider.dart';
 import 'package:winksy/provider/like_me_provider.dart';
+import '../../../component/empty_state_widget.dart';
 import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
@@ -62,7 +63,16 @@ class _IMyFriendState extends State<IMyFriend> {
                     ),
                   )
 
-                  : SizedBox(
+                  : provider.list.isEmpty ?
+              EmptyStateWidget(
+                type: EmptyStateType.users,
+                showCreate: false,
+                description: 'Your friends will show up here once you connect!',
+                title: '🤝 Connected Friends',
+                onReload: () async {
+                  provider.refresh('', true);
+                },
+              ) : SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: RefreshIndicator(
