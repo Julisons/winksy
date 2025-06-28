@@ -72,7 +72,7 @@ class PhoneField extends StatelessWidget {
                     color: color.xTextColor,
                     fontSize: FONT_13,
                   ),
-                  fillColor: color.xPrimaryColor,
+                  fillColor: color.xSecondaryColor,
                   filled: true,
                 ),
                 onChanged: (value){

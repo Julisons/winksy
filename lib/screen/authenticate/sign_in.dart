@@ -93,7 +93,7 @@ class _ISignInState extends State<ISignIn> {
                     borderSide: BorderSide(color: color.xTrailing),
                   ),
                   border: InputBorder.none,
-                  labelText: 'Email or Mobile Number',
+                  labelText: 'Email address',
                   labelStyle: TextStyle(
                     color: color.xTextColor,
                     fontSize: FONT_13,
@@ -101,7 +101,7 @@ class _ISignInState extends State<ISignIn> {
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: color.xTrailing),
                   ),
-                  fillColor: Theme.of(context).colorScheme.surface,
+                  fillColor: color.xSecondaryColor,
                   filled: true,
                 ),
               ),
@@ -129,7 +129,7 @@ class _ISignInState extends State<ISignIn> {
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: color.xTrailing),
                   ),
-                fillColor: Theme.of(context).colorScheme.surface,
+                fillColor: color.xSecondaryColor,
                   filled: true,
                   suffixIcon: IconButton(
                     icon: Icon(

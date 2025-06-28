@@ -411,6 +411,10 @@ _showNotification(RemoteNotification? notification, Map<String, dynamic> data) {
     INotification notification = INotification.fromJson(json.decode(payload));
     _showNormalNotification(notification, id,channel);
     }
+  else if(channel == INTEREST_NOTIFICATION){
+    INotification notification = INotification.fromJson(json.decode(payload));
+    _showNormalNotification(notification, id,channel);
+    }
   else
       {
         sms.Message message = sms.Message.fromJson(json.decode(payload));

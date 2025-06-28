@@ -25,6 +25,7 @@ class IInterestProvider with ChangeNotifier {
 
     await XRequest().getData({
       'meId': Mixin.user?.usrId,
+      'likedUsrId': Mixin.user?.usrId,
       'usrGender': Mixin.user?.usrOsType,
     }, IUrls.USERS('')).then((data) {
       if (data.statusCode == 200) {

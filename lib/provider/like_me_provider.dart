@@ -26,7 +26,7 @@ class ILikeMeProvider with ChangeNotifier {
 
     await XRequest().getData({
       //'meId': Mixin.user?.usrId,
-      'intUsrId': Mixin.winkser?.usrId
+      'intUsrId': Mixin.user?.usrId
     }, IUrls.USERS('')).then((data) {
       if (data.statusCode == 200) {
         try {

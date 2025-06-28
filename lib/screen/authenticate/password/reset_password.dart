@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:winksy/screen/authenticate/sign_up.dart';
@@ -15,6 +16,7 @@ import '../../../model/user.dart';
 import '../../../request/posts.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
+import '../../account/terms.dart';
 import '../../home/home.dart';
 
 class IResetPassword extends StatefulWidget {
@@ -35,6 +37,9 @@ class _IResetPasswordState extends State<IResetPassword> {
   bool isPasswordVisible = false;
   bool isLoading = false;
   final User user = User();
+  late int _seconds;
+  bool _enterPin = false;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -58,13 +63,192 @@ class _IResetPasswordState extends State<IResetPassword> {
           },
         ),
       ),
-      body:
-      Container(
-        color:Theme.of(context).colorScheme.surface,
+      body: Container(
+        color:color.xPrimaryColor,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.only(bottom: 16, left: 24, right: 24, top: 16),
-        child: SizedBox(
+        child:  _enterPin ?
+          SizedBox(
+            width: MediaQuery.of(context).size.width/1.2,
+            height: 180.h,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Enter One Time Pin (OTP)', style: TextStyle(color: color.xTrailing, fontSize: FONT_TITLE), textAlign: TextAlign.center, ),
+                      const SizedBox(height: 20),
+                      Text('Enter One Time Pin(OTP)',style: TextStyle(color: color.xTextColorSecondary, fontSize: FONT_13)),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _pinController,
+                        keyboardType: TextInputType.text,
+                        obscureText: !isPasswordVisible,
+                        style: TextStyle(fontSize: FONT_13,  color: color.xTextColorSecondary),
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: color.xTrailing),
+                          ),
+                          border: InputBorder.none,
+                          hintText: 'PIN',
+                          hintStyle: const TextStyle(
+                            color: Color.fromRGBO(153, 153, 153, 1),
+                            fontSize: 16,
+                          ),
+                          labelText: 'PIN',
+                          labelStyle: TextStyle(
+                            color: color.xTextColor,
+                            fontSize: FONT_13,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: color.xTrailing),
+                          ),
+                          fillColor: color.xSecondaryColor,
+                          filled: true,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                                isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: color.xTrailing
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                _isLoading ? Loading(
+                  dotColor: color.xTrailing,
+                ) : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Resend One Time Pin (OTP) in ${formatSeconds(_seconds)}', style: TextStyle(color: color.xTextColor),),
+                    SizedBox(width: 20.h,),
+                    IButton(
+                      onPress: _seconds > 0 ? (){
+
+                      } : () {
+                        if (_emailController.text.isEmpty) {
+                          Mixin.showToast(context,  "Email or Mobile Number cannot be empty", ERROR);
+                          return;
+                        }
+
+                        User user = User()
+                          ..usrUsername = _emailController.text.trim();
+
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        IPost.postData(user, (state, res, value) {
+                          setState(() {
+                            if (state) {
+                              Mixin.showToast(context, 'OTP SENT', INFO);
+                              _startTimer();
+                            } else {
+                              Mixin.errorDialog(context, 'ERROR', res);
+                            }
+                            _isLoading = false;
+                          });
+                        }, IUrls.RESET_PASSWORD());
+
+                      },
+                      isBlack: false,
+                      text: "Resend pin",
+                      color: _seconds == 0 ? color.xTrailing : color.xSecondaryColor,
+                      textColor: Colors.white,
+                      width: MediaQuery.of(context).size.width/4
+                    )
+                  ],
+                ),
+                SizedBox(height: 50.h,),
+                IButton(
+                  text: 'Validate',
+                  color: color.xTrailing,
+                  textColor: Colors.white,
+                  onPress: () {
+
+                    if (_pinController.text.isEmpty) {
+                      Mixin.showToast(context,  "One time pin cannot be empty", ERROR);
+                      return;
+                    }
+
+                    showDialog(
+                        context: navigatorKey.currentContext!,
+                        builder: (context) => Center(
+                          child: Loading(
+                            dotColor: color.xTrailing,
+                          ),
+                        )
+                    );
+
+                    User user = User()
+                      ..usrUsername = _emailController.text.trim()
+                      ..usrCode = _pinController.text.trim();
+
+                    IPost.postData(user, (state, res, value) {
+                      setState(() {
+                        if (state) {
+                          FocusScope.of(context).unfocus();
+                          _phoneController.text = '';
+                          _pinController.text = '';
+                          Mixin.user = User.fromJson(jsonDecode(jsonEncode(value)));
+                          Mixin.showToast(context,res, INFO);
+                          Future.delayed(const Duration(seconds: 3), () {updatePassword(Mixin.user!);});
+                        } else {
+                          Mixin.errorDialog(context, 'ERROR', res);
+                        }
+                      });
+                    }, IUrls.VERIFY_OTP());
+                  },
+                ),
+                SizedBox(height: 46.h),
+
+                SizedBox(
+                  width: 300.w,
+                  child: InkWell(
+                    onTap: () {
+                      // Mixin.navigate(context, const ITerms());
+                    },
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text:  TextSpan(
+                        text: "By signing up, you agree to our",
+                        style: TextStyle(color: Colors.white, fontSize: FONT_MEDIUM),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ' Terms of Use ',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary,
+                                  decoration: TextDecoration.underline)),
+                          TextSpan(
+                              text: 'and to receive Kiurate emails & updates and acknowledge that you read our ',
+                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: Colors.white)),
+                          TextSpan(
+                              text: ' Privacy Policy.',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary, decoration: TextDecoration.underline)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40.h),
+              ],
+            ),
+          )
+        : SizedBox(
           width: MediaQuery.of(context).size.width-10,
           height: 200,
           child: Column(
@@ -85,12 +269,7 @@ class _IResetPasswordState extends State<IResetPassword> {
                          children: [
                             TextSpan(text: 'Enter the '),
                             TextSpan(
-                             text: 'email',
-                             style: TextStyle(color: color.xTextColorSecondary,fontSize: FONT_13,fontWeight: FontWeight.bold),
-                           ),
-                            TextSpan(text: ' or '),
-                            TextSpan(
-                             text: 'mobile number',
+                             text: 'email address',
                              style: TextStyle(color: color.xTextColorSecondary,fontSize: FONT_13,fontWeight: FontWeight.bold),
                            ),
                             TextSpan(text: '\nassociated with your account.'),
@@ -98,9 +277,6 @@ class _IResetPasswordState extends State<IResetPassword> {
                        ),
                      ),
                      SizedBox(height: 46.h),
-                     /*PhoneField(
-                      textEditingController: _phoneController,
-                      onCodeChange: (code) {}),*/
 
                      TextFormField(
                        controller: _emailController,
@@ -111,7 +287,7 @@ class _IResetPasswordState extends State<IResetPassword> {
                            borderSide: BorderSide(color: color.xTrailing),
                          ),
                          border: InputBorder.none,
-                         labelText: 'Email or Mobile Number',
+                         labelText: 'Email address',
                          labelStyle: TextStyle(
                            color: color.xTextColor,
                            fontSize: FONT_13,
@@ -119,7 +295,7 @@ class _IResetPasswordState extends State<IResetPassword> {
                          focusedBorder: UnderlineInputBorder(
                            borderSide: BorderSide(color: color.xTrailing),
                          ),
-                         fillColor: Theme.of(context).colorScheme.surface,
+                         fillColor: color.xSecondaryColor,
                          filled: true,
                        ),
                      ),
@@ -167,7 +343,11 @@ class _IResetPasswordState extends State<IResetPassword> {
                                   IButton(
                                     onPress: () {
                                       Navigator.of(context).pop();
-                                      validatePin();
+                                      _startTimer();
+                                      setState(() {
+                                        _isLoading = false;
+                                        _enterPin = true;
+                                      });
                                     },
                                     isBlack: false,
                                     text: 'Ok',
@@ -201,7 +381,7 @@ class _IResetPasswordState extends State<IResetPassword> {
                 width: 300.w,
                 child: InkWell(
                   onTap: () {
-                   // Mixin.navigate(context, const ITerms());
+                    Mixin.navigate(context, const ITerms());
                   },
                   child: RichText(
                     textAlign: TextAlign.center,
@@ -214,7 +394,7 @@ class _IResetPasswordState extends State<IResetPassword> {
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary,
                                 decoration: TextDecoration.underline)),
                         TextSpan(
-                            text: 'and to receive Kiurate emails & updates and acknowledge that you read our ',
+                            text: 'and to receive Wink emails & updates and acknowledge that you read our ',
                             style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: Colors.white)),
                         TextSpan(
                             text: ' Privacy Policy.',
@@ -233,6 +413,26 @@ class _IResetPasswordState extends State<IResetPassword> {
     );
   }
 
+  void _startTimer() {
+    _seconds = 120;
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds--;
+        if (_seconds <= 0) {
+            _seconds = 0;
+            _timer?.cancel();
+        }
+      });
+    });
+  }
+
+  String formatSeconds(int totalSeconds) {
+    final minutes = totalSeconds ~/ 60;
+    final seconds = totalSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
 
   Future<void> validatePin() async {
     final color = Theme.of(context).extension<CustomColors>()!;
@@ -240,7 +440,9 @@ class _IResetPasswordState extends State<IResetPassword> {
       context: navigatorKey.currentContext!,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
+        return
+
+          AlertDialog(
           actionsAlignment: MainAxisAlignment.end,
           backgroundColor: color.xSecondaryColor,
           title: Text('Enter One Time Pin (OTP)', style: TextStyle(color: color.xTrailing, fontSize: FONT_TITLE), textAlign: TextAlign.center, ),
@@ -277,7 +479,7 @@ class _IResetPasswordState extends State<IResetPassword> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: color.xTrailing),
                     ),
-                    fillColor: Theme.of(context).colorScheme.surface,
+                    fillColor: color.xSecondaryColor,
                     filled: true,
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -326,6 +528,10 @@ class _IResetPasswordState extends State<IResetPassword> {
                 IPost.postData(user, (state, res, value) {
                   setState(() {
                     if (state) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+
                       FocusScope.of(context).unfocus();
                       _phoneController.text = '';
                       _pinController.text = '';
