@@ -193,15 +193,12 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
     final color = Theme.of(context).extension<CustomColors>()!;
     final version = await PlayStoreVersionChecker.getPlayStoreVersion();
     final currVersion = await PlayStoreVersionChecker.getCurrentAppVersion();
-
     final storeVersion = Version.parse('$version');
     final localVersion = Version.parse('${currVersion['version']}');
-
-    debugPrint('---localVersion----$localVersion------storeVersion is-------$storeVersion--------------');
-
     if (storeVersion > localVersion) {
       showDialog(context: context,
         barrierDismissible: false, // Prevent dismissal unless updated
+        barrierColor: color.xSecondaryColor.withOpacity(.5),
         builder: (context) => AlertDialog(
           title:  Row(
             children: [
