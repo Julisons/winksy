@@ -94,7 +94,7 @@ class _IChatState extends State<IChat> {
             color: color.xPrimaryColor,
             padding: EdgeInsets.only(top: 10.h),
             child: Consumer<IChatProvider>(builder: (context, provider, child) {
-              return provider.isLoading()
+              return (provider.isLoading() || provider.list.isEmpty)
                   ? Center(child: Loading(dotColor: color.xTrailing,size: LOADER))
                   : SizedBox(
                       height: MediaQuery.of(context).size.height,
