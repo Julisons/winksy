@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:winksy/model/chat.dart';
 import 'package:winksy/model/notification.dart';
 import 'package:winksy/provider/payment_provider.dart';
@@ -21,6 +22,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../component/button.dart';
+import '../../component/package_chcker.dart';
 import '../../games/games.dart';
 import '../../main.dart';
 import '../../mixin/constants.dart';
@@ -121,14 +123,19 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
           onItemSelected: (value) async {
             if (value == 0) {
               // log('-------------------Home');
+              _checkPackage(context);
             } else if (value == 1) {
               // log('-------------------People');
+              _checkPackage(context);
             } else if (value == 2) {
               // log('-------------------Messages');
+              _checkPackage(context);
             } else if (value == 3) {
               // log('-------------------Games');
+              _checkPackage(context);
             } else if (value == 4) {
               // log('-------------------Account');
+              _checkPackage(context);
               Mixin.winkser = User()
                 ..usrId = Mixin.user?.usrId
                 ..usrImage = Mixin.user?.usrImage
@@ -180,8 +187,71 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
     _buildFCM();
     _location();
+  }
 
-    FlameAudio.audioCache.load('sound/droper.wav');
+  Future<void> _checkPackage(BuildContext context) async {
+    final color = Theme.of(context).extension<CustomColors>()!;
+    final version = await PlayStoreVersionChecker.getPlayStoreVersion();
+    final currVersion = await PlayStoreVersionChecker.getCurrentAppVersion();
+
+    final storeVersion = Version.parse('$version');
+    final localVersion = Version.parse('${currVersion['version']}');
+
+    debugPrint('---localVersion----$localVersion------storeVersion is-------$storeVersion--------------');
+
+    if (storeVersion > localVersion) {
+      showDialog(context: context,
+        barrierDismissible: false, // Prevent dismissal unless updated
+        builder: (context) => AlertDialog(
+          title:  Row(
+            children: [
+              Icon(Icons.system_update, color: color.xTextColor,),
+              SizedBox(width: 6.w,),
+              Text('Update Available',
+                style: TextStyle(
+                color: color.xTrailing
+              ),),
+            ],
+          ),
+          content:  Text(
+            'A new version of the app is available. Please update to continue using the app with the latest features and improvements.',
+            style: TextStyle(
+                color: color.xTextColorSecondary
+            ),
+          ),
+          actions: [
+            IButton(
+              onPress: () async {
+                try {
+                  await launchPlayStore();
+                  SystemNavigator.pop(); // Exit app after redirecting
+                } catch (e) {
+                  Navigator.of(context).pop(); // Close dialog on error
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error opening Play Store: $e')),
+                  );
+                }
+              },
+              text: 'Update Now',
+              textColor: color.xTextColorSecondary,
+              width: 140.w,
+              color: color.xTrailing,
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+
+  // Launch Play Store
+  static Future<void> launchPlayStore() async {
+    final uri = Uri.parse( 'https://play.google.com/store/apps/details?id=ir.cyren.winksy');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch Play Store';
+    }
   }
 
   void _updateToken(token) async {

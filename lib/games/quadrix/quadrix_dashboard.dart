@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/cupertino.dart';

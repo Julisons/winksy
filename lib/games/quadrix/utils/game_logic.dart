@@ -1,6 +1,5 @@
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:winksy/mixin/mixins.dart';
 import '../models/coin.dart';
 
