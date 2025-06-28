@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:winksy/mixin/constants.dart';
 
 /// A reusable chat typing bubble widget with animated dots
 class ChatTypingBubble extends StatefulWidget {
@@ -112,7 +113,7 @@ class _ChatTypingBubbleState extends State<ChatTypingBubble>
               widget.typingText,
               style: TextStyle(
                 color: widget.dotColor,
-                fontSize: 14,
+                fontSize: FONT_TITLE,
                 fontStyle: FontStyle.italic,
               ),
             ),

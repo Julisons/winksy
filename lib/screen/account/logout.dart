@@ -79,7 +79,7 @@ class _ILogoutState extends State<ILogout> with TickerProviderStateMixin {
             backgroundColor: color.xPrimaryColor,
             automaticallyImplyLeading: false,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.tertiary),
+              icon: Icon(Icons.arrow_back_ios, color: color.xTextColor),
               onPressed: () {
                 Navigator.pop(context); // Pops the current screen from the stack
               },
@@ -129,7 +129,7 @@ class _ILogoutState extends State<ILogout> with TickerProviderStateMixin {
                                   errorWidget: (context, url, error) => const Icon(Icons.error),
                                 ),
                               )
-                                  : Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.tertiary,),
+                                  : Icon(Icons.person, size: 50, color: color.xTextColor,),
                             ),
                           ),
                         ],
@@ -144,7 +144,7 @@ class _ILogoutState extends State<ILogout> with TickerProviderStateMixin {
                       SizedBox(height: 10.h),
                       Text(
                         '${Mixin.user?.usrUsername}'.toLowerCase(),
-                        style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
@@ -172,18 +172,18 @@ class _ILogoutState extends State<ILogout> with TickerProviderStateMixin {
                     textAlign: TextAlign.center,
                     text:  TextSpan(
                       text: "By signing up, you agree to our",
-                      style: TextStyle(color: Colors.white, fontSize: FONT_MEDIUM),
+                      style: TextStyle(color: color.xTextColor, fontSize: FONT_MEDIUM),
                       children: <TextSpan>[
                         TextSpan(
                             text: ' Terms of Use ',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing,
                                 decoration: TextDecoration.underline)),
                         TextSpan(
                             text: 'and to receive Wink emails & updates and acknowledge that you read our ',
-                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: Colors.white)),
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: FONT_MEDIUM, color: color.xTextColor)),
                         TextSpan(
                             text: ' Privacy Policy.',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: Theme.of(context).colorScheme.tertiary, decoration: TextDecoration.underline)),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: FONT_MEDIUM, color: color.xTrailing, decoration: TextDecoration.underline)),
                       ],
                     ),
                   ),

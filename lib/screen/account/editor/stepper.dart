@@ -13,14 +13,12 @@ import '../../../theme/custom_colors.dart';
 import 'account.dart';
 import 'alignment.dart';
 
-
 class IStepper extends StatefulWidget {
   const IStepper({super.key});
 
   @override
   State<IStepper> createState() => _IStepperState();
 }
-
 
 class _IStepperState extends State<IStepper> {
   int _index = 0;
@@ -41,10 +39,20 @@ class _IStepperState extends State<IStepper> {
 
     return Scaffold(
       appBar: IAppBar(title: 'Edit account', leading: true,),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stepper(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Option 1: Use Theme to disable Stepper's internal scroll physics
+            Theme(
+              data: Theme.of(context).copyWith(
+                // Disable the stepper's internal scrolling
+                scrollbarTheme: ScrollbarThemeData(
+                  thumbVisibility: MaterialStateProperty.all(false),
+                ),
+              ),
+              child: Stepper(
+                // Add this property to disable internal scrolling
+                physics: const NeverScrollableScrollPhysics(),
                 elevation: ELEVATION,
                 currentStep: _index,
                 onStepCancel: () {
@@ -102,11 +110,11 @@ class _IStepperState extends State<IStepper> {
                         end: Alignment.bottomRight,
                       ),
                       indexStyle: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FONT_13
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: FONT_13
                       ),
-                  ),
+                    ),
                     content: IAccount(),
                   ),
                   Step(
@@ -167,9 +175,10 @@ class _IStepperState extends State<IStepper> {
                   );
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

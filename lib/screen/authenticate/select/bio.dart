@@ -161,7 +161,7 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     )
-                        : Icon(Icons.person, size: 100, color: color.xPrimaryColor),
+                        : Icon(Icons.person, size: 100.h, color: color.xPrimaryColor),
                   ),
                 ),
                 SizedBox(height: 34.h),
@@ -192,8 +192,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(16)),
                         color: color.xSecondaryColor,
                         child: SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: 100.h,
+                            height: 100.h,
                             child: Icon(
                               Icons.girl,
                               color: Colors.pink,
@@ -229,8 +229,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(16)),
                         color: color.xSecondaryColor,
                         child: SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: 100.h,
+                            height: 100.h,
                             child: Icon(
                               Icons.boy,
                               color: Colors.blue,
@@ -279,8 +279,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(16)),
                         color: color.xSecondaryColor,
                         child: SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: 100.h,
+                            height: 100.h,
                             child: Icon(
                               Icons.girl,
                               color: Colors.pink,
@@ -312,8 +312,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(16)),
                         color: color.xSecondaryColor,
                         child: SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: 100.h,
+                            height: 100.h,
                             child: Icon(
                               Icons.boy,
                               color: Colors.blue,
@@ -367,16 +367,8 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                _isLoading
-                    ?  Center(
-                  child: Loading(
-                    dotColor:  color.xTrailing,
-                  ),
-                )
-                    :
+                SizedBox(height: 20.h),
+                _isLoading ?  Center(child: Loading(dotColor:  color.xTrailing)) :
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
@@ -401,7 +393,6 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                         }
 
                         Mixin.user?.usrDesc = _bioController.text;
-
                         Mixin.user?.usrGender = _girl ? 'FEMALE' : 'MALE';
                         Mixin.user?.usrOsType = _girlInt ? 'FEMALE' : 'MALE';
 
@@ -424,7 +415,7 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                       },
                       isBlack: true,
                       text: "Get Started",
-                      width: 150,
+                      width: 150.h,
                       textColor: Colors.white,
                     ),
                   ),

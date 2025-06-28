@@ -46,6 +46,18 @@ class _ISignInState extends State<ISignIn> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _imageController.dispose();
+    _nameController.dispose();
+    _pinController.dispose();
+    _pinConfirmController.dispose();
+    _passwordController.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
 
     final color = Theme.of(context).extension<CustomColors>()!;

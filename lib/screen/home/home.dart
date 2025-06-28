@@ -61,6 +61,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
   PersistentBottomNavBarItem tabItem(title, {required Widget icon, screen}) {
     return PersistentBottomNavBarItem(
+      iconSize: ICON,
       textStyle: GoogleFonts.workSans(textStyle: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.normal)),
       icon: icon,
       title: (title),
@@ -73,11 +74,11 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
   List<PersistentBottomNavBarItem> navBarsItems() {
     return [
-      tabItem('Home  ', icon: const Icon(Icons.dashboard_customize_outlined)),
-      tabItem('Match', icon: const Icon(Icons.favorite_border_rounded)),
-      tabItem('Messages', icon: const Icon(Icons.question_answer_outlined)),
-      tabItem('Games', icon: const Icon(Icons.sports_esports_outlined)),
-      tabItem('Account', icon: const Icon(Icons.person_outline)),
+      tabItem('Home  ', icon: Icon(Icons.dashboard_customize_outlined,size: ICON,)),
+      tabItem('Match ', icon: Icon(Icons.favorite_border_rounded,size: ICON,)),
+      tabItem('Messages ', icon: Icon(Icons.question_answer_outlined,size: ICON,)),
+      tabItem('Games ', icon: Icon(Icons.sports_esports_outlined,size: ICON,)),
+      tabItem('Account ', icon: Icon(Icons.person_outline,size: ICON,)),
     ];
   }
 

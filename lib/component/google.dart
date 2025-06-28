@@ -46,7 +46,7 @@ class IGoogle extends StatelessWidget {
                 onPress();
               },
         child: Container(
-           height:height,
+            height:height == 45 ? 45.h : height,
             decoration: BoxDecoration(
                 color: /*isDisabled
                     ? xDisabledColor
@@ -72,8 +72,8 @@ class IGoogle extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/images/google.png',
-              width: 30,
-              height: 30,
+              width: 30.h,
+              height: 30.h,
               fit: BoxFit.cover, // Adjust the image's scaling
             ),
             SizedBox(width: 10,),

@@ -72,6 +72,11 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _ageController.dispose();
   }
 
   @override
@@ -89,8 +94,8 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 760.h,
-      padding: EdgeInsets.all(6.h),
+     // height: 760.h,
+      padding: EdgeInsets.only(bottom: 20.h, left: 6.h,right: 6.h,top: 6.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -200,11 +205,11 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
                 Text(
                   '${Mixin.user?.usrFirstName}  ${Mixin.user?.usrLastName}',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: color.xTextColorSecondary,
                       fontWeight: FontWeight.bold,
                       fontSize: FONT_APP_BAR),
                 ),
-                SizedBox(height: 10.h),
+                //SizedBox(height: 10.h),
               ],
             ),
           ),
@@ -232,7 +237,7 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
                   fontSize: FONT_13,
                 ),
                 suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
-                fillColor: color.xPrimaryColor,
+                fillColor: color.xSecondaryColor,
                 filled: true
             ),
             onChanged: (value){
@@ -263,7 +268,7 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
                 fontSize: FONT_13,
               ),
               suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
-              fillColor: color.xPrimaryColor,
+              fillColor: color.xSecondaryColor,
               filled: true,
             ),
             onChanged: (value){
@@ -295,7 +300,7 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
               ),
 
               suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
-              fillColor: color.xPrimaryColor,
+              fillColor: color.xSecondaryColor,
               filled: true,
               enabled: false
             ),
@@ -334,7 +339,7 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
                 fontSize: FONT_13,
               ),
               suffixIcon: Icon(Icons.star,color: color.xTrailing, size: 1,),
-              fillColor: color.xPrimaryColor,
+              fillColor: color.xSecondaryColor,
               filled: true,
             ),
           ),

@@ -94,6 +94,7 @@ final double GAME_TITLE = 30.sp;
 final double FONT_ICON = 54.sp;
 final double FONT_TITLE = 14.5.sp;
 final double FONT_13 = 13.sp;
+final double ICON = 24.h;
 final double FONT_MEDIUM = 14.sp;
 final double FONT_SMALL = 10.sp;
 

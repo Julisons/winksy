@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/mixin/extentions.dart';
@@ -433,6 +434,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
       data: IconThemeData(color: Theme.of(context).colorScheme.secondary),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        height: 160.h,
         padding: EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -457,8 +459,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                 decoration: InputDecoration(
                   labelText: 'Send a message',
                   hintText: 'Send a message',
-                  helperText:
-                      'Messaging ${Mixin.winkser?.usrFullNames ?? widget.chat.usrReceiver} ',
+                  helperText:'Messaging ${Mixin.winkser?.usrFullNames ?? widget.chat.usrReceiver} ',
                   fillColor: color.xSecondaryColor,
                   filled: true,
                   border: OutlineInputBorder(
@@ -502,9 +503,9 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                       backgroundColor: color.xTrailing,
                       radius: 24,
                       child: IconButton(
-                        icon: const Icon(
+                        icon:  Icon(
                           Icons.send,
-                          size: 24,
+                          size: 20,
                           color: Colors.white,
                         ),
                         onPressed: _isComposing

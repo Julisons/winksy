@@ -101,7 +101,7 @@ class _IWinkserState extends State<IWinkser> {
               backgroundColor: Colors.transparent,
               title:
                 Text('${Mixin.winkser?.usrFullNames}   ',
-                style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold),
+                style: TextStyle(color: color.xTextColor, fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR),
               ),
               actions: <Widget>[IPopup()]),
           body: NestedScrollView(
@@ -223,7 +223,7 @@ class _IWinkserState extends State<IWinkser> {
                                 ),
                               ],
                             ),
-                          SizedBox(height: 20.h,),
+                          SizedBox(height: 16.h,),
                           Column(
                             children: [
                               Row(
@@ -232,35 +232,14 @@ class _IWinkserState extends State<IWinkser> {
                                 children:List.generate(gifts.length, (index) {
                                   return Padding(
                                     padding: EdgeInsets.only(left: 12.0.r,right: 12.0.r),
-                                    child: FloatingActionButton(
-                                      elevation: ELEVATION,
-                                      mini: false,
-                                      tooltip: gifts[index].title,
-                                      backgroundColor: color.xTrailing,
-                                      onPressed: () {
-                                        if (gifts[index].title == 'Message') {
-                                          Chat chat = Chat()
-                                            ..chatReceiverId = Mixin.winkser?.usrId
-                                            ..chatSenderId = Mixin.user?.usrId
-                                            ..chatCreatedBy = Mixin.user?.usrId
-                                            ..usrReceiver = Mixin.winkser?.usrFullNames;
-                                          Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
-                                        } else if (gifts[index].title == 'Nudge') {
-
-                                        } else if (gifts[index].title == 'Gift') {
-                                          showModalBottomSheet<void>(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return SizedBox(
-                                                height: 200,
-                                                child:  ITreats(),
-                                              );
-                                            },
-                                          );
-                                        }
-                                       },
-                                      child: IconButton(
-                                        color: Colors.white,
+                                    child: SizedBox(
+                                      height: 45.h,
+                                      width: 45.h,
+                                      child: FloatingActionButton(
+                                        elevation: ELEVATION,
+                                        mini: false,
+                                        tooltip: gifts[index].title,
+                                        backgroundColor: color.xTrailing,
                                         onPressed: () {
                                           if (gifts[index].title == 'Message') {
                                             Chat chat = Chat()
@@ -276,16 +255,41 @@ class _IWinkserState extends State<IWinkser> {
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return SizedBox(
-                                                  height: MediaQuery.of(context).size.height/1.2,
-                                                  width: MediaQuery.of(context).size.width,
+                                                  height: 200,
                                                   child:  ITreats(),
                                                 );
                                               },
                                             );
                                           }
-                                        },
-                                        icon: gifts[index].icon,
-                                        iconSize: 24.r,
+                                         },
+                                        child: IconButton(
+                                          color: Colors.white,
+                                          onPressed: () {
+                                            if (gifts[index].title == 'Message') {
+                                              Chat chat = Chat()
+                                                ..chatReceiverId = Mixin.winkser?.usrId
+                                                ..chatSenderId = Mixin.user?.usrId
+                                                ..chatCreatedBy = Mixin.user?.usrId
+                                                ..usrReceiver = Mixin.winkser?.usrFullNames;
+                                              Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+                                            } else if (gifts[index].title == 'Nudge') {
+
+                                            } else if (gifts[index].title == 'Gift') {
+                                              showModalBottomSheet<void>(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return SizedBox(
+                                                    height: MediaQuery.of(context).size.height/1.2,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child:  ITreats(),
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          icon: gifts[index].icon,
+                                          iconSize: 20.r,
+                                        ),
                                       ),
                                     ),
                                   );
@@ -296,11 +300,10 @@ class _IWinkserState extends State<IWinkser> {
                                   builder: (context, provider, child) {
                                     return _isLoading ? Center(
                                       child: Loading(
-                                        dotColor: color.xTrailing,
-                                      )):
+                                        dotColor: color.xTrailing,)):
                                     SizedBox(
                                       height: 40.h,
-                                      width: 156.h,
+                                      width: 149.w,
                                       child: FloatingActionButton.extended(
                                         elevation: ELEVATION,
                                         shape: RoundedRectangleBorder(
@@ -326,17 +329,24 @@ class _IWinkserState extends State<IWinkser> {
                                               Provider.of<IFriendProvider>(context, listen: false).refresh('', false);
                                             } else {Mixin.errorDialog(context, 'ERROR', res);
                                             }});}, IUrls.FRIEND());
-
                                         },
-                                        label: Text(provider.getCount() > 0 ? provider.list[0].frndStatus : 'Add Friend',
-                                        style: TextStyle(fontSize: FONT_13, color:provider.getCount() > 0 ? color.xTextColor : Colors.white)),
-                                        icon: IconButton(
-                                          color: provider.getCount() > 0 ? color.xTextColor : Colors.white,
-                                          onPressed: () {
-
-                                          },
-                                          icon: FaIcon(provider.getCount() > 0 ? FontAwesomeIcons.userCheck : FontAwesomeIcons.userPlus),
-                                          iconSize: 20.r,
+                                        label: SizedBox(
+                                          width: 100.h,
+                                          child: Text(
+                                              textAlign: TextAlign.start,
+                                              provider.getCount() > 0 ? provider.list[0].frndStatus : 'Add Friend',
+                                          style: TextStyle(fontSize: FONT_13,
+                                              color:provider.getCount() > 0 ? color.xTextColor : Colors.white)),
+                                        ),
+                                        icon: Padding(
+                                          padding: EdgeInsets.only(left: 20.h),
+                                          child: IconButton(
+                                            color: provider.getCount() > 0 ? color.xTextColor : Colors.white,
+                                            onPressed: () {
+                                            },
+                                            icon: FaIcon(provider.getCount() > 0 ? FontAwesomeIcons.userCheck : FontAwesomeIcons.userPlus),
+                                            iconSize: 20.r,
+                                          ),
                                         ),
                                       ),
                                     );

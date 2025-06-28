@@ -67,7 +67,6 @@ class _IAlignmentState extends State<IAlignment> with TickerProviderStateMixin {
     final color = Theme.of(context).extension<CustomColors>()!;
 
     return  SizedBox(
-            height: 700.h,
             width: MediaQuery.of(context).size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

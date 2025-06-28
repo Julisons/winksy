@@ -47,7 +47,7 @@ class IButton extends StatelessWidget {
                 onPress();
               },
         child: Container(
-           height:height == 45 ? 40.h : height,
+           height:height == 45 ? 45.h : height,
             decoration: BoxDecoration(
                 color: /*isDisabled
                     ? xDisabledColor

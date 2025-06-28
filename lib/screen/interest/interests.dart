@@ -213,8 +213,7 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                             FloatingActionButton(
                               elevation: 12,
                               backgroundColor: color.xTrailing,
-                              shape:
-                                  const CircleBorder(), // Ensures circular shape
+                              shape: const CircleBorder(), // Ensures circular shape
                               onPressed: () => _cardController
                                   .swipe(CardSwiperDirection.left),
                               child: const Icon(
@@ -244,31 +243,14 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                               ),
                             ),
 
-                            SizedBox(
-                              width: 66.h,
-                            ),
+                            SizedBox(width: 66.h,),
                             FloatingActionButton(
                               elevation: 12,
                               backgroundColor: xGreenPrimary,
                               shape: const CircleBorder(), // Ensures circular shape
                               onPressed: () => {
-
                                 _cardController.swipe(CardSwiperDirection.right),
-                                _user = provider.list[_currentIndex],
-                                _interest = Interest()
-                                  ..intUsrId = Mixin.user?.usrId
-                                  ..intFolId = _user.usrId
-                                  ..intDesc = 'Liked ${_user.usrFullNames}'
-                                  ..intStatus = 'ACTIVE'
-                                  ..intCode = 'LIKE'
-                                  ..intInstId = _user.usrInstId
-                                  ..intType = 'USER',
-
-                                IPost.postData(_interest, (state, res, value) {setState(() {
-                                if (state) {
-                                } else {Mixin.errorDialog(context, 'ERROR', res);
-                                }});}, IUrls.INTEREST()),
-
+                                _like()
                               },
                               child: const Icon(
                                 Icons.check,
@@ -286,27 +268,42 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
     );
   }
 
+  void _like(){
+    _user =  Provider.of<IInterestProvider>(context, listen: false).list[_currentIndex];
+    _interest = Interest()
+    ..intUsrId = Mixin.user?.usrId
+    ..intFolId = _user.usrId
+    ..intDesc = 'Liked ${_user.usrFullNames}'
+    ..intStatus = 'ACTIVE'
+    ..intCode = 'LIKE'
+    ..intInstId = _user.usrInstId
+    ..intType = 'USER';
+
+    IPost.postData(_interest, (state, res, value) {setState(() {
+    if (state) {
+    } else {Mixin.errorDialog(context, 'ERROR', res);
+    }});}, IUrls.INTEREST());
+  }
+
   bool _onSwipe(
     int previousIndex,
     int? currentIndex,
-    CardSwiperDirection direction,
-  ) {
-    _currentIndex = currentIndex!;
-    debugPrint(
-      'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
-    );
+    CardSwiperDirection direction) {
+    _currentIndex = previousIndex;
+    debugPrint('The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',);
+
+    if(direction.name == 'right'){
+      _like();
+    }
     return true;
   }
 
   bool _onUndo(
     int? previousIndex,
     int currentIndex,
-    CardSwiperDirection direction,
-  ) {
+    CardSwiperDirection direction) {
     _currentIndex = currentIndex;
-    debugPrint(
-      'The card $currentIndex was undod from the ${direction.name}',
-    );
+    debugPrint('The card $currentIndex was undod from the ${direction.name}',);
     return true;
   }
 }
