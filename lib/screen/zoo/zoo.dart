@@ -45,7 +45,7 @@ class _IZooState extends State<IZoo> {
               children: [
                 Text('Friend Zoo',
                   style: GoogleFonts.poppins(
-                    color: color.xTrailing, fontSize: 34, fontWeight: FontWeight.bold,
+                    color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
                           offset: Offset(0, 1),

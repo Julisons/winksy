@@ -73,7 +73,7 @@ class _IOwnedState extends State<IOwned> {
                 type: EmptyStateType.users,
                 showCreate: false,
                 description: 'Every pet you’ve owned tells a story - revisit them here.',
-                title: '🐕‍🦺 Former Furry Friends',
+                title: '🐕‍🦺 Former Owned Friends',
                 onReload: () async {
                   provider.refresh('', true);
                 },

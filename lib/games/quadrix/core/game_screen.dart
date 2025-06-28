@@ -94,7 +94,9 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
               playerTurnKey: playerTurnKey,
               gameBoardKey: gameBoardKey,
               onRefresh: () {
-                setState(() {});
+                setState(() {
+                  // This will trigger a rebuild when game state changes
+                });
               },
             ),
             Positioned(
@@ -111,36 +113,72 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
         ),
       ),
       floatingActionButton: Tooltip(
-        message: 'Restart game',
+        message: end ? 'Play again' : 'Give up',
         child: InkWell(
           onTap: () {
-            setState(() {});
-            showDialog(
+            if (end) {
+              // Game has ended - show play again dialog
+              showDialog(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    backgroundColor: Colors.white,
+                    actionsAlignment: MainAxisAlignment.spaceBetween,
+                    backgroundColor: color.xSecondaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    title: Text("Do You Really Want To Restart ?"),
+                    content: Container(
+                      width: MediaQuery.of(context).size.width/1.5,
+                      padding: EdgeInsets.all(16.h),
+                      child: Text(_getGameEndMessage(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: FONT_13,
+                          color: color.xTextColorSecondary,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      'GAME OVER',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: color.xTextColorSecondary,
+                        fontSize: FONT_TITLE,
+                      ),
+                    ),
                     actions: [
-                      TextButton(
-                          onPressed: (() {
-                            Navigator.pop(context);
-                            return onRestart(
-                              gameBoardKey: gameBoardKey,
-                              playerTurnKey: playerTurnKey,
-                              context: context,
-                            );
-                          }),
-                          child: Text("Yes"))
+                      IButton(
+                        text: "Home",
+                        color: color.xTrailingAlt,
+                        height: 40.h,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        textColor: color.xTextColor,
+                        fontWeight: FontWeight.bold,
+                        onPress: () {
+                          dispose();
+                          Mixin.pop(context, IHome());
+                        },
+                      ),
+                      IButton(
+                        text: "Play Again",
+                        color: color.xPrimaryColor,
+                        textColor: Colors.white,
+                        height: 40.h,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        onPress: () {
+                          Navigator.of(context).pop();
+                          Mixin.pop(context, IQuadrixDashboard());
+                        },
+                      ),
                     ],
                   );
-                });
-          },
-          child: InkWell(
-            onTap: () {
-              showDialog(context: context,
+                },
+              );
+            } else {
+              // Game is ongoing - show quit dialog
+              showDialog(
+                context: context,
                 builder: (context) {
                   return AlertDialog(
                     actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -195,28 +233,44 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                   );
                 },
               );
-            },
-            child: Container(
-              width: 130.w,
-              height: 45.h,
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: color.xPrimaryColor
-              ),
-              alignment: Alignment.center,
-              child:  Text(
-                'Give up',
-                style: TextStyle(
-                  color: color.xTextColor,
-                  fontSize: FONT_13,
-                ),
+            }
+          },
+          child: Container(
+            width: 130.w,
+            height: 45.h,
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: end ? color.xTrailing : color.xPrimaryColor
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              end ? 'Play Again' : 'Give up',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: FONT_13,
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  String _getGameEndMessage() {
+    final result = didEnd();
+    if (result == Result.draw) {
+      return "It's a draw! Well played!";
+    } else if (result == Result.player1) {
+      return Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()
+          ? "Congratulations! You won!"
+          : "${Mixin.quad?.quadUser ?? 'Player 1'} wins!";
+    } else if (result == Result.player2) {
+      return Mixin.quad?.quadFirstPlayerId.toString() != Mixin.user?.usrId.toString()
+          ? "Congratulations! You won!"
+          : "${Mixin.quad?.quadAgainst ?? 'Player 2'} wins!";
+    }
+    return "Game Over!";
   }
 
   @override

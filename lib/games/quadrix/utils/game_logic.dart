@@ -192,7 +192,30 @@ Future<void> onPlay(
   return Future.value();
 }
 
+class WinningCombination {
+  final List<Position> positions;
+  final String direction;
+
+  WinningCombination({required this.positions, required this.direction});
+}
+
+class Position {
+  final int row;
+  final int col;
+
+  Position(this.row, this.col);
+
+  @override
+  String toString() => '($row, $col)';
+}
+
+// Add this as a class property to store winning combinations
+List<WinningCombination> winningCombinations = [];
+
 Result didEnd() {
+  // Clear previous winning combinations
+  winningCombinations.clear();
+
   if (turns == 49) {
     end = true;
     return Result.draw;
@@ -215,8 +238,20 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i, j - 1),
+              Position(i, j - 2),
+              Position(i, j - 3),
+            ],
+            direction: 'horizontal'
+        ));
+
         gameState[i][j]['value'] = gameState[i][j - 1]['value'] =
-            gameState[i][j - 2]['value'] = gameState[i][j - 3]['value'] = 3;
+        gameState[i][j - 2]['value'] = gameState[i][j - 3]['value'] = 3;
         return result;
       }
 
@@ -234,8 +269,20 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i, j + 1),
+              Position(i, j + 2),
+              Position(i, j + 3),
+            ],
+            direction: 'horizontal'
+        ));
+
         gameState[i][j]['value'] = gameState[i][j + 1]['value'] =
-            gameState[i][j + 2]['value'] = gameState[i][j + 3]['value'] = 3;
+        gameState[i][j + 2]['value'] = gameState[i][j + 3]['value'] = 3;
         return result;
       }
 
@@ -253,8 +300,20 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i - 1, j),
+              Position(i - 2, j),
+              Position(i - 3, j),
+            ],
+            direction: 'vertical'
+        ));
+
         gameState[i][j]['value'] = gameState[i - 1][j]['value'] =
-            gameState[i - 2][j]['value'] = gameState[i - 3][j]['value'] = 3;
+        gameState[i - 2][j]['value'] = gameState[i - 3][j]['value'] = 3;
         return result;
       }
 
@@ -272,8 +331,20 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i + 1, j),
+              Position(i + 2, j),
+              Position(i + 3, j),
+            ],
+            direction: 'vertical'
+        ));
+
         gameState[i][j]['value'] = gameState[i + 1][j]['value'] =
-            gameState[i + 2][j]['value'] = gameState[i + 3][j]['value'] = 3;
+        gameState[i + 2][j]['value'] = gameState[i + 3][j]['value'] = 3;
         return result;
       }
 
@@ -295,9 +366,21 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i - 1, j - 1),
+              Position(i - 2, j - 2),
+              Position(i - 3, j - 3),
+            ],
+            direction: 'diagonal-up-left'
+        ));
+
         gameState[i][j]['value'] = gameState[i - 1][j - 1]['value'] =
-            gameState[i - 2][j - 2]['value'] =
-                gameState[i - 3][j - 3]['value'] = 3;
+        gameState[i - 2][j - 2]['value'] =
+        gameState[i - 3][j - 3]['value'] = 3;
         return result;
       }
 
@@ -319,9 +402,21 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i - 1, j + 1),
+              Position(i - 2, j + 2),
+              Position(i - 3, j + 3),
+            ],
+            direction: 'diagonal-up-right'
+        ));
+
         gameState[i][j]['value'] = gameState[i - 1][j + 1]['value'] =
-            gameState[i - 2][j + 2]['value'] =
-                gameState[i - 3][j + 3]['value'] = 3;
+        gameState[i - 2][j + 2]['value'] =
+        gameState[i - 3][j + 3]['value'] = 3;
         return result;
       }
 
@@ -343,9 +438,21 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i + 1, j + 1),
+              Position(i + 2, j + 2),
+              Position(i + 3, j + 3),
+            ],
+            direction: 'diagonal-down-right'
+        ));
+
         gameState[i][j]['value'] = gameState[i + 1][j + 1]['value'] =
-            gameState[i + 2][j + 2]['value'] =
-                gameState[i + 3][j + 3]['value'] = 3;
+        gameState[i + 2][j + 2]['value'] =
+        gameState[i + 3][j + 3]['value'] = 3;
         return result;
       }
 
@@ -367,9 +474,21 @@ Result didEnd() {
           end = true;
           result = Result.player2;
         }
+
+        // Store winning combination
+        winningCombinations.add(WinningCombination(
+            positions: [
+              Position(i, j),
+              Position(i + 1, j - 1),
+              Position(i + 2, j - 2),
+              Position(i + 3, j - 3),
+            ],
+            direction: 'diagonal-down-left'
+        ));
+
         gameState[i][j]['value'] = gameState[i + 1][j - 1]['value'] =
-            gameState[i + 2][j - 2]['value'] =
-                gameState[i + 3][j - 3]['value'] = 3;
+        gameState[i + 2][j - 2]['value'] =
+        gameState[i + 3][j - 3]['value'] = 3;
         return result;
       }
     }
@@ -377,6 +496,41 @@ Result didEnd() {
 
   //if the control flow reaches here that means the game hasn't ended yet!
   return Result.play;
+}
+
+// Helper function to get winning positions for animation
+List<Position> getWinningPositions() {
+  List<Position> allPositions = [];
+  for (var combination in winningCombinations) {
+    allPositions.addAll(combination.positions);
+  }
+  return allPositions;
+}
+
+// Helper function to animate winning balls sequentially
+void animateWinningBalls() {
+  for (int i = 0; i < winningCombinations.length; i++) {
+    var combination = winningCombinations[i];
+
+    // Animate each position in the winning combination
+    for (int j = 0; j < combination.positions.length; j++) {
+      var position = combination.positions[j];
+
+      // Add your animation logic here
+      // Example: Delayed animation for each ball
+      Future.delayed(Duration(milliseconds: j * 200), () {
+        // Animate the ball at position (position.row, position.col)
+        animateBallAt(position.row, position.col);
+      });
+    }
+  }
+}
+
+// Placeholder for your animation function
+void animateBallAt(int row, int col) {
+  // Implement your ball animation logic here
+  // This could involve scaling, color changes, pulsing, etc.
+  print('----------------------------------Animating ball at position ($row, $col)');
 }
 
 void onRestart(

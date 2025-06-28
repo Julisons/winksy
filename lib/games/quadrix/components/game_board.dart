@@ -37,13 +37,12 @@ class GameBoard extends StatefulWidget {
 class GameBoardState extends State<GameBoard> {
   late Quad _quad = Quad();
   bool play = true;
-  int _seconds = 15;
+  late int _seconds;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _seconds = 15;
 
     fullColumns.clear();
     if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
@@ -56,6 +55,7 @@ class GameBoardState extends State<GameBoard> {
   }
 
   void _startTimer() {
+    _seconds = 15;
     _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
         _seconds--;
@@ -95,7 +95,8 @@ class GameBoardState extends State<GameBoard> {
                 onTap: () async {
                   _localPlay(coin,row);
                 },
-                child: GameCoinWidget(
+                child:
+                GameCoinWidget(
                   coin: (coin['value'] == 0)
                       ? Coin(
                     row: coin['row'] as int,
@@ -160,16 +161,9 @@ class GameBoardState extends State<GameBoard> {
     throw Exception('No available column'); // or return -1 if preferred
   }
 
-
-  void ai(){
-    List<List<int>> board = List.generate(6, (_) => List.filled(7, 0));
-    int aiMove = getAIMove(board);
-    drop(board, aiMove, 2); // AI plays
-  }
-
   void autoPlayer() {
 
-    int rand = 3;//default  /*random.nextInt(7);*/
+    int rand = 3;
     rand = column(fullColumns,rand);
 
     var row = gameState.toList()[rand];
@@ -250,7 +244,10 @@ class GameBoardState extends State<GameBoard> {
       //stop the game if the game has ended
       if (result != Result.play) {
         setState(() {});
-        showDialog(context: context,
+
+        quadPlayer = 'You won';
+
+        /*showDialog(context: context,
           builder: (context) {
 
             Quad quad = Quad()
@@ -312,7 +309,7 @@ class GameBoardState extends State<GameBoard> {
               ],
             );
           },
-        );
+        );*/
       }
     } else {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -371,8 +368,17 @@ class GameBoardState extends State<GameBoard> {
           //stop the game if the game has ended
           if (result != Result.play) {
             setState(() {});
-            final color = Theme.of(context).extension<CustomColors>()!;
-            showDialog(
+            //final color = Theme.of(context).extension<CustomColors>()!;
+
+            quadPlayer = (result == Result.draw)
+                ? 'It\'s a tie'
+                : (result == Result.player1)
+                ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                ? 'You lost' : 'You lost')
+                : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
+                ? 'You lost' : 'You lost');
+
+          /*  showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
@@ -434,7 +440,7 @@ class GameBoardState extends State<GameBoard> {
                   ],
                 );
               },
-            );
+            );*/
           }
         } else {
           ScaffoldMessenger.of(context).clearSnackBars();
@@ -457,6 +463,7 @@ class GameBoardState extends State<GameBoard> {
   }
 
   void _end(Result result){
+    _timer?.cancel();
     if(result == Result.draw) {
       Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win.wav')); // Your sound file
@@ -464,5 +471,6 @@ class GameBoardState extends State<GameBoard> {
       Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
+    widget.onRefresh();
   }
 }
