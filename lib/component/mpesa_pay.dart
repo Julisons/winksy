@@ -25,7 +25,7 @@ class IMpesaPay extends StatelessWidget {
       this.isBlack = false,
       this.textColor = Colors.black,
       this.padding = 0,
-        this.color = xBlueColor,
+        this.color = Colors.black,
         this.width = 0.0,
         this.height = 45,
         this.font = 10,

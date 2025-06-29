@@ -546,9 +546,13 @@ void onRestart(
       gameState[i][j]['value'] = 0;
     }
   }
-  ScaffoldMessenger.of(context).clearSnackBars();
-  // ignore: invalid_use_of_protected_member
-  gameBoardKey.currentState!.setState(() {});
-  // ignore: invalid_use_of_protected_member
-  playerTurnKey.currentState!.setState(() {});
+  if(gameBoardKey.currentState != null) {
+    // ignore: invalid_use_of_protected_member
+    gameBoardKey.currentState!.setState(() {});
+  }
+
+  if(playerTurnKey.currentState != null) {
+    // ignore: invalid_use_of_protected_member
+    playerTurnKey.currentState!.setState(() {});
+  }
 }

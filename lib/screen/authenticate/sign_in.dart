@@ -270,6 +270,7 @@ class _ISignInState extends State<ISignIn> {
     );
   }
 
+/*
   Future<void> password() async {
     return showDialog<void>(
       context: navigatorKey.currentContext!,
@@ -361,8 +362,9 @@ class _ISignInState extends State<ISignIn> {
       },
     );
   }
+*/
 
-  Future<void> validatePin() async {
+/*  Future<void> validatePin() async {
     return showDialog<void>(
       context: navigatorKey.currentContext!,
       barrierDismissible: false, // user must tap button!
@@ -438,9 +440,9 @@ class _ISignInState extends State<ISignIn> {
 
                 showDialog(
                     context: navigatorKey.currentContext!,
-                    builder: (context) => const Center(
+                    builder: (context) =>  Center(
                       child: Loading(
-                        dotColor: xBlueColor,
+                        dotColor: color.,
                       ),
                     )
                 );
@@ -470,9 +472,9 @@ class _ISignInState extends State<ISignIn> {
         );
       },
     );
-  }
+  }*/
 
-  Future<void> updatePassword(User user) async {
+  /*Future<void> updatePassword(User user) async {
     return showDialog<void>(
       context: navigatorKey.currentContext!,
       barrierDismissible: false, // user must tap button!
@@ -628,7 +630,7 @@ class _ISignInState extends State<ISignIn> {
         );
       },
     );
-  }
+  }*/
 
   Future<void> _handleSignIn(context) async {
     setState(() {

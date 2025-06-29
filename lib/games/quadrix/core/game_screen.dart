@@ -150,23 +150,31 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                     actions: [
                       IButton(
                         text: "Home",
-                        color: color.xTrailingAlt,
+                        color: color.xPrimaryColor,
                         height: 40.h,
                         width: MediaQuery.of(context).size.width/3.5,
                         textColor: color.xTextColor,
                         fontWeight: FontWeight.bold,
                         onPress: () {
-                          dispose();
+                          onRestart(
+                            gameBoardKey: gameBoardKey,
+                            playerTurnKey: playerTurnKey,
+                            context: context,
+                          );
                           Mixin.pop(context, IHome());
                         },
                       ),
                       IButton(
                         text: "Play Again",
-                        color: color.xPrimaryColor,
+                        color: color.xTrailingAlt,
                         textColor: Colors.white,
                         height: 40.h,
                         width: MediaQuery.of(context).size.width/3.5,
                         onPress: () {
+                          onRestart(
+                            gameBoardKey: gameBoardKey,
+                            playerTurnKey: playerTurnKey,
+                            context: context,);
                           Navigator.of(context).pop();
                           Mixin.pop(context, IQuadrixDashboard());
                         },
@@ -219,13 +227,25 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
                       ),
                       IButton(
                         text: "Quit game",
-                        color: color.xTrailingAlt,
+                        color: color.xTrailing,
                         height: 40.h,
                         width: MediaQuery.of(context).size.width/3.5,
-                        textColor: color.xTextColor,
+                        textColor: Colors.white,
                         fontWeight: FontWeight.bold,
                         onPress: () {
-                          dispose();
+
+                          Quad quad = Quad()
+                            ..quadState = 'GAVE_UP'
+                            ..quadWinnerId = Mixin.user?.usrId == Mixin.quad?.quadUsrId ? Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+                            ..quadId = Mixin.quad?.quadId;
+
+                          Mixin.quadrixSocket?.emit('give_up', quad.toJson());
+
+                           onRestart(
+                            gameBoardKey: gameBoardKey,
+                            playerTurnKey: playerTurnKey,
+                            context: context);
+
                           Mixin.pop(context, IHome());
                         },
                       )
@@ -240,7 +260,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
             height: 45.h,
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(5),
                 color: end ? color.xTrailing : color.xPrimaryColor
             ),
             alignment: Alignment.center,
@@ -249,6 +269,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: FONT_13,
+                fontWeight: FontWeight.bold
               ),
             ),
           ),
@@ -284,8 +305,6 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
   @override
   void dispose() {
     super.dispose();
-    gameBoardKey.currentState?.dispose();
-    playerTurnKey.currentState?.dispose();
     return onRestart(
       gameBoardKey: gameBoardKey,
       playerTurnKey: playerTurnKey,

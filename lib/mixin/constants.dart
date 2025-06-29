@@ -47,7 +47,7 @@ const MaterialColor limePrimary = MaterialColor(
 );
 
 
-const Color xBlueColor = Color.fromRGBO(0,0,0,1);
+ Color xBlueColor = HexColor.fromHex('#007fff');
 const Color xGreyColor = Color.fromRGBO(247, 247, 247, 1);
 const Color xBorderColor = Color.fromRGBO(198, 206, 208, 1);
 const Color xDisabledColor = Color.fromRGBO(198, 206, 208, 1);

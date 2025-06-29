@@ -52,24 +52,25 @@ class GameBoardState extends State<GameBoard> {
       quadPlayer = Mixin.quad?.quadPlayer+" starts";
     }
     _remotePlay();
+    _onGaveUpPlay();
   }
 
   void _startTimer() {
     _seconds = 15;
     _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        _seconds--;
-        if (_seconds == 0) {
-          autoPlayer();
-        }
-        if(quadPlayer.contains('You start')) {
-          quadPlayer = 'You start $_seconds';
-          widget.onRefresh();
-        }
-       else if(quadPlayer.contains('Your turn')) {
-          quadPlayer = 'Your turn $_seconds';
-          widget.onRefresh();
-        }
+      _seconds--;
+      if (_seconds == 0) {
+        autoPlayer();
+      }
+      if(quadPlayer.contains('You start')) {
+        quadPlayer = 'You start $_seconds';
+        widget.onRefresh();
+      }
+      else if(quadPlayer.contains('Your turn')) {
+        quadPlayer = 'Your turn $_seconds';
+        widget.onRefresh();
+      }
     });
   }
 
@@ -175,7 +176,6 @@ class GameBoardState extends State<GameBoard> {
 
   Future<void> _localPlay(coin,row) async {
 
-
     final color = Theme.of(context).extension<CustomColors>()!;
     if (end == false) {
 
@@ -218,14 +218,14 @@ class GameBoardState extends State<GameBoard> {
       debugPrint('row----${coin['row']}-----column---${coin['column']}');
 
       await onPlay(
-        coin: Coin(
-          row: coin['row'] as int,
-          column: coin['column'] as int,
-          selected: false,
-          color: color.xSecondaryColor,
-        ),
-      playerTurnKey: widget.playerTurnKey,
-      gameBoardKey: widget.gameBoardKey);
+          coin: Coin(
+            row: coin['row'] as int,
+            column: coin['column'] as int,
+            selected: false,
+            color: color.xSecondaryColor,
+          ),
+          playerTurnKey: widget.playerTurnKey,
+          gameBoardKey: widget.gameBoardKey);
 
       Result result = didEnd();
 
@@ -243,73 +243,16 @@ class GameBoardState extends State<GameBoard> {
 
       //stop the game if the game has ended
       if (result != Result.play) {
+
+        Quad quad = Quad()
+          ..quadState = result.name.toString().toUpperCase()
+          ..quadWinnerId = Mixin.user?.usrId
+          ..quadId = Mixin.quad?.quadId;
+
+        Mixin.quadrixSocket?.emit('win', quad.toJson());
+
         setState(() {});
-
         quadPlayer = 'You won';
-
-        /*showDialog(context: context,
-          builder: (context) {
-
-            Quad quad = Quad()
-              ..quadState = result.name.toString().toUpperCase()
-              ..quadWinnerId = Mixin.user?.usrId
-              ..quadId = Mixin.quad?.quadId;
-
-            Mixin.quadrixSocket?.emit('win', quad.toJson());
-
-            return AlertDialog(
-              actionsAlignment: MainAxisAlignment.spaceBetween,
-              backgroundColor: color.xSecondaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              content: Container(
-                width: MediaQuery.of(context).size.width-20,
-                padding: EdgeInsets.all(16.h),
-                child: Text('You Win',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: FONT_13,
-                    color: color.xTextColorSecondary,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
-              title: Text(
-                'GAME OVER!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: color.xTextColor,
-                  fontSize: FONT_TITLE,
-                ),
-              ),
-              actions: [
-                IButton(
-                  text: "Hall of Fame",
-                  color: color.xPrimaryColor,
-                  textColor: color.xTextColor,
-                  height: 40.h,
-                  width: MediaQuery.of(context).size.width/3.5,
-                  onPress:(){
-                    Navigator.of(context).pop();
-                    Mixin.pop(context,IFameHall(quadType: 'QUADRIX',));
-                  },
-                ),
-                IButton(
-                  text: "Play Again",
-                  color: color.xTrailing,
-                  height: 40.h,
-                  width: MediaQuery.of(context).size.width/3.5,
-                  textColor: Colors.white,
-                  onPress: () {
-                    Navigator.of(context).pop();
-                    Mixin.pop(context,IQuadrixDashboard());
-                  },
-                )
-              ],
-            );
-          },
-        );*/
       }
     } else {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -330,7 +273,7 @@ class GameBoardState extends State<GameBoard> {
   }
 
   void _remotePlay(){
-      Mixin.quadrixSocket?.on('play', (message) async {
+    Mixin.quadrixSocket?.on('play', (message) async {
 
       print(jsonEncode(message));
       _quad = Quad.fromJson(message);
@@ -356,8 +299,8 @@ class GameBoardState extends State<GameBoard> {
         color: Theme.of(context).extension<CustomColors>()!.xSecondaryColor,
       ),
 
-      playerTurnKey: widget.playerTurnKey,
-      gameBoardKey: widget.gameBoardKey);
+          playerTurnKey: widget.playerTurnKey,
+          gameBoardKey: widget.gameBoardKey);
 
       play = true;
 
@@ -377,70 +320,6 @@ class GameBoardState extends State<GameBoard> {
                 ? 'You lost' : 'You lost')
                 : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
                 ? 'You lost' : 'You lost');
-
-          /*  showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  actionsAlignment: MainAxisAlignment.spaceBetween,
-                  backgroundColor: color.xSecondaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  content: Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    padding: EdgeInsets.all(16.h),
-                    child: Text(
-                      (result == Result.draw)
-                          ? 'It\'s a tie'
-                          : (result == Result.player1)
-                          ? (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
-                          ? '${Mixin.quad?.quadUser} Wins' : '${Mixin.quad?.quadAgainst} Wins')
-                          : (Mixin.quad?.quadFirstPlayerId.toString() == Mixin.quad?.quadUsrId.toString()
-                          ? '${Mixin.quad?.quadAgainst} Wins' : '${Mixin.quad?.quadUser} Wins'),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: FONT_13,
-                        color: color.xTextColorSecondary,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    'GAME OVER!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: color.xTextColor,
-                      fontSize: FONT_TITLE,
-                    ),
-                  ),
-                  actions: [
-                    IButton(
-                      text: "Hall of Fame",
-                      color: color.xPrimaryColor,
-                      textColor: color.xTextColor,
-                      height: 40.h,
-                      width: MediaQuery.of(context).size.width/3.5,
-                      onPress:(){
-                        Navigator.of(context).pop();
-                        Mixin.pop(context,IFameHall(quadType: 'QUADRIX',));
-                      },
-                    ),
-                    IButton(
-                      text: "Play Again",
-                      color: color.xTrailing,
-                      height: 40.h,
-                      width: MediaQuery.of(context).size.width/3.5,
-                      textColor: Colors.white,
-                      onPress: () {
-                        Navigator.of(context).pop();
-                        Mixin.pop(context,IQuadrixDashboard());
-                      },
-                    )
-                  ],
-                );
-              },
-            );*/
           }
         } else {
           ScaffoldMessenger.of(context).clearSnackBars();
@@ -462,15 +341,35 @@ class GameBoardState extends State<GameBoard> {
     });
   }
 
+  void _onGaveUpPlay(){
+    Mixin.quadrixSocket?.on('gave_up', (message) async {
+      print(jsonEncode(message));
+      _quad = Quad.fromJson(message);
+
+      var quitter =  Mixin.user?.usrId == Mixin.quad?.quadUsrId ? Mixin.quad?.quadAgainst : Mixin.quad?.quadUser;
+      setState(() {
+        _timer?.cancel();
+        AudioPlayer().play(AssetSource('audio/sound/win2.wav'));
+        quadPlayer = 'You won ';
+        Mixin.showToast(context,'$quitter gave up', INFO);
+        end = true;
+        widget.onRefresh();
+      });
+    });
+  }
+
+
   void _end(Result result){
-    _timer?.cancel();
     if(result == Result.draw) {
+      widget.onRefresh();
+      _timer?.cancel();
       Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win.wav')); // Your sound file
     }else if(result == Result.player1 || result == Result.player2){
+      widget.onRefresh();
+      _timer?.cancel();
       Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
-    widget.onRefresh();
   }
 }

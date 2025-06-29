@@ -40,8 +40,8 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
   Container buildColorBox(
       {required bool selected, required int selectedPlayer, required Color color}) {
     return Container(
-      height: 20,
-      width: 20,
+      height: 0,
+      width: 0,
       decoration: BoxDecoration(
         color: !selected
             ? color
@@ -56,10 +56,10 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
   Text buildText({required String text, required Color color}) {
     return Text(
       text,
-      style: GoogleFonts.aBeeZee(
+      style: GoogleFonts.quicksand(
         color: color,
         fontWeight: FontWeight.bold,
-        fontSize: FONT_TITLE,
+        fontSize: FONT_APP_BAR,
       ),
       textAlign: TextAlign.center,
     );
