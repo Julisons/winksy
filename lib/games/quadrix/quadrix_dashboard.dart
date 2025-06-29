@@ -147,7 +147,7 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
                               Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HOW TO PLAY':
-                              Mixin.navigate(context, HowToPlayScreen());
+                              Mixin.navigate(context, IQuadricPromotion());
                               break;
                             case 'HALL OF FAME':
                               Mixin.navigate(context, IFameHall(quadType: QUADRIX));

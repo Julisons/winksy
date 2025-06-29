@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe.dart';
+import 'package:winksy/games/tic_tac_toe/tic_tac_toe_promotion.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
@@ -151,7 +152,7 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                             Mixin.navigate(context, ITicTacToe());
                             break;
                           case 'HOW TO PLAY':
-                            Mixin.navigate(context, IQuadrix());
+                            Mixin.navigate(context, ITicTacToePromotion());
                             break;
                           case 'HALL OF FAME':
                             Mixin.navigate(context, IFameHall(quadType: TIC_TAC_TOE));

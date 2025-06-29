@@ -21,6 +21,7 @@ import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
 import '../fame_hall/fame_hall.dart';
 import 'chess.dart';
+import 'chess_promotion.dart';
 
 class ListItem {
   final String title;
@@ -142,7 +143,7 @@ class _IChessDashboardState extends State<IChessDashboard> {
                           Mixin.navigate(context, IChess());
                           break;
                         case 'HOW TO PLAY':
-                          Mixin.navigate(context, IQuadrix());
+                          Mixin.navigate(context, IChessPromotion());
                           break;
                         case 'HALL OF FAME':
                           Mixin.navigate(context, IFameHall(quadType: CHESS));

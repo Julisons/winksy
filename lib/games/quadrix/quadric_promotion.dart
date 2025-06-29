@@ -8,8 +8,8 @@ import '../../component/button.dart';
 import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
 
-class HowToPlayScreen extends StatelessWidget {
-  const HowToPlayScreen({Key? key}) : super(key: key);
+class IQuadricPromotion extends StatelessWidget {
+  const IQuadricPromotion({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

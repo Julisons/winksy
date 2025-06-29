@@ -17,6 +17,7 @@ import '../../theme/custom_colors.dart';
 import '../chess/chess.dart';
 import 'component/ludo_sync.dart';
 import 'ludo.dart';
+import 'ludo_promotion.dart';
 
 final List<ListItem> items = [
   ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
@@ -190,7 +191,7 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                     onTap: () {
                       switch(item.title.toUpperCase()){
                         case 'HOW TO PLAY':
-
+                          Mixin.navigate(context, ILudoPromotion());
                           break;
                         case 'HALL OF FAME':
 

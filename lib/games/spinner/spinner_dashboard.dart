@@ -149,7 +149,7 @@ class _ISpinnerDashboardState extends State<ISpinnerDashboard> {
                             Mixin.navigate(context, ISpinner());
                             break;
                           case 'HOW TO PLAY':
-                            Mixin.navigate(context, IQuadrix());
+                            Mixin.navigate(context, ISpinnerDashboard());
                             break;
                           case 'HALL OF FAME':
                             Mixin.navigate(context, IFameHall(quadType: 'QUADRIX'));
