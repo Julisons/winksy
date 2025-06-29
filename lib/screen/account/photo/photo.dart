@@ -8,8 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/model/photo.dart';
 import 'package:winksy/screen/account/photo/photo_card.dart';
-import 'package:winksy/screen/account/photo/photo_shimmer.dart';
-
 import '../../../component/empty_state_widget.dart';
 import '../../../component/face_detector.dart';
 import '../../../component/loader.dart';

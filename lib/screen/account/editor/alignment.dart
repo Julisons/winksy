@@ -316,6 +316,7 @@ class _IAlignmentState extends State<IAlignment> with TickerProviderStateMixin {
                             if (state) {
                                 Mixin.showToast(context, res, INFO);
                                 Mixin.prefString(pref:jsonEncode(value), key: CURR);
+                                Navigator.pop(context);
                             } else {
                               Mixin.errorDialog(context, 'ERROR', res);
                             }

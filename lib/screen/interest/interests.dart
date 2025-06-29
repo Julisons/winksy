@@ -259,6 +259,18 @@ class _IInterestState extends State<IInterest> with TickerProviderStateMixin {
                           color: Colors.white,
                         ),
                       ),
+                      SizedBox(width: 30.h,),
+                      FloatingActionButton.small(
+                        elevation: 8,
+                        backgroundColor: Colors.orange,
+                        shape: const CircleBorder(), // Ensures circular shape
+                        onPressed: () => _cardController.undo(),
+                        child: const Icon(
+                          Icons.undo,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
                     ],
                   ),
                 ),

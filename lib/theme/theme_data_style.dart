@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../mixin/constants.dart';
@@ -19,6 +20,13 @@ class ThemeDataStyle {
   );
 
   static final ThemeData darker = dark.copyWith(
+    appBarTheme: AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    ),
     extensions: <ThemeExtension<dynamic>>[
       CustomColors(
         xPrimaryColor: Colors.black,
@@ -34,6 +42,13 @@ class ThemeDataStyle {
   );
 
   static final ThemeData lighter = light.copyWith(
+    appBarTheme: AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+    ),
     extensions: <ThemeExtension<dynamic>>[
       CustomColors(
         xPrimaryColor: Colors.white,

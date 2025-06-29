@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:winksy/mixin/extentions.dart';
+import 'package:winksy/model/user.dart';
 import 'package:winksy/screen/account/photo/photo.dart';
 
 import '../../../component/popup.dart';
@@ -15,6 +16,7 @@ import '../../component/profile_card.dart';
 import '../../component/profile_icon.dart';
 import '../../provider/friend_provider.dart';
 import '../../provider/friends_provider.dart';
+import '../../provider/friend_request_provider.dart';
 import '../../provider/gift/gift_provider.dart';
 import '../../provider/pet/pet_provider.dart';
 import '../../provider/photo_provider.dart';
@@ -23,6 +25,8 @@ import '../notification/notification.dart';
 import '../zoo/home/home.dart';
 import '../zoo/home/pet/pet.dart';
 import 'friend/my_friend.dart';
+import 'friend/friends_with_requests.dart';
+import 'info/professional_info_tab.dart';
 
 class IProfile extends StatefulWidget {
   @override
@@ -39,11 +43,15 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    Mixin.winkser = User()
+       ..usrId = Mixin.user?.usrId;
+
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() {
         switch(_tabController.index){
           case 1:
             Provider.of<IFriendsProvider>(context, listen: false).refresh('', false);
+            Provider.of<IFriendRequestProvider>(context, listen: false).refresh('', false);
             break;
           case 2:
             Provider.of<IPhotoProvider>(context, listen: false).refresh('', false);
@@ -129,63 +137,31 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
                 forceElevated: innerBoxIsScrolled,
                 automaticallyImplyLeading: false,
                 toolbarHeight: height,
-                title: Container(
-                  margin: EdgeInsets.only(bottom: 16.h),
-                  width: MediaQuery.of(context).size.width,
-                  height: 340.h,
-                  padding: EdgeInsets.only(top: 8.h),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 100.h,
-                        child: Consumer<IGiftProvider>(
-                          builder: (context, provider, child) {
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: provider.getCount(),
-                              itemBuilder: (context, index) {
-                                final item = provider.list[index];
-                                return Container(
-                                  width: 50.w,
-                                  height: 50.w,
-                                  margin: EdgeInsets.all(8),
-                                  child: CachedNetworkImage(
-                                    imageUrl: item.giftPath.startsWith('http')
-                                        ? item.giftPath
-                                        : '${IUrls.IMAGE_URL}/file/secured/${item.giftPath}',
-                                    width: 50.w,
-                                    height: 50.w,
-                                    fit: BoxFit.contain,
-                                    errorWidget: (context, url, error) =>
-                                        CircleAvatar(
-                                          backgroundColor: color.xSecondaryColor,
-                                          child: Icon(Icons.person,
-                                              size: 50,
-                                              color: color.xPrimaryColor),
-                                        ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      ProfileProgressWidget(
-                        name: '${Mixin.user?.usrFullNames}',
-                        imageUrl: '${Mixin.user?.usrImage}',
-                        completion: profileCompletion,
-                      ),
-                    ],
-                  ),
+                title: ProfileProgressWidget(
+                  name: '${Mixin.user?.usrFullNames}',
+                  imageUrl: '${Mixin.user?.usrImage}',
+                  completion: profileCompletion,
                 ),
                 bottom: TabBar(
                   controller: _tabController,
-                  isScrollable: false,
+                  isScrollable: true,
                   tabs: [
-                    Tab(child: Text("Details", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold))),
-                    Tab(child: Text("Friends", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold))),
-                    Tab(child: Text("Photos", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold))),
-                    Tab(child: Text("Friend Zoo", style: TextStyle(fontSize: FONT_MEDIUM, fontWeight: FontWeight.bold))),
+                    Tab(
+                      icon: Icon(Icons.person, size: 20.r),
+                      child: Text("Info", style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold)),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.people, size: 20.r),
+                      child: Text("Friends", style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold)),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.photo_library, size: 20.r),
+                      child: Text("Photos", style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold)),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.pets, size: 20.r),
+                      child: Text("Zoo", style: TextStyle(fontSize: FONT_13, fontWeight: FontWeight.bold)),
+                    ),
                   ],
                   labelColor: color.xTextColor,
                   unselectedLabelColor: color.xTextColorTertiary,
@@ -214,26 +190,8 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
                   controller: _tabController,
                   physics: const AlwaysScrollableScrollPhysics(),
                   children: <Widget>[
-                    SingleChildScrollView(
-                      padding: EdgeInsets.all(34.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProfileField(label: 'Name : ', value: Mixin.user?.usrFullNames ?? ''),
-                          ProfileField(label: 'Email : ', value: Mixin.user?.usrEmail ?? ''),
-                          ProfileField(label: 'Age : ', value: '${'${Mixin.user?.usrDob}'.age()} Years'),
-                          ProfileField(label: 'Gender : ', value: '${Mixin.user?.usrGender}' ?? ''),
-                          ProfileField(label: 'Phone : ', value: Mixin.user?.usrMobileNumber ?? ''),
-                          ProfileField(label: 'Place : ', value: '${Mixin.user?.usrCountry}, ${Mixin.user?.usrAdministrativeArea}'),
-                          ProfileField(label: 'About me : ', value: ''),
-                          Text(
-                            Mixin.user?.usrDesc ?? '',
-                            style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary),
-                          ),
-                        ],
-                      ),
-                    ),
-                    IMyFriend(),
+                    ProfessionalInfoTab(),
+                    IFriendsWithRequests(),
                     IPhotos(showFab: true),
                     IPet(),
                   ],

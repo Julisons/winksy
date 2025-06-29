@@ -41,7 +41,7 @@ class _IBrowseState extends State<IBrowse> {
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
         if (_scrollController.position.pixels != 0) {
-          Provider.of<IOwnedProvider>(context, listen: false).loadMore(_searchController.text);
+          Provider.of<IBrowseProvider>(context, listen: false).loadMore(_searchController.text);
         }}});
   }
 

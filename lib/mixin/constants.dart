@@ -110,6 +110,7 @@ final double ELEVATION = 0.w;
 final double CORNER = 5.w;
 
 const int ERROR = 1;
+const int SUCCESS = 0;
 const int INFO = 21;
 
 const String True = "true";

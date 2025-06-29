@@ -16,7 +16,6 @@ import '../../../component/popup.dart';
 import '../../../mixin/constants.dart';
 
 import '../../../theme/custom_colors.dart';
-import '../photo/photo_shimmer.dart';
 import 'my_friend_card.dart';
 
 

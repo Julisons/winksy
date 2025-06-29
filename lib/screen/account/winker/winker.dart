@@ -13,6 +13,7 @@ import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/screen/account/photo/photo.dart';
 import 'package:winksy/screen/account/winker/treats/treats.dart';
+import 'package:winksy/screen/account/winker/winker_info_tab.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../request/urls.dart';
@@ -378,24 +379,7 @@ class _IWinkserState extends State<IWinkser> {
                   child: TabBarView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(34.h),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ProfileField(label: 'Name : ', value: Mixin.winkser?.usrFullNames ?? ''),
-                              ProfileField(label: 'Email : ', value: /*Mixin.winkser?.usrEmail ?? */'****************'),
-                              ProfileField(label: 'Age : ', value: '${'${Mixin.winkser?.usrDob}'.age()} Years'),
-                              ProfileField(label: 'Gender : ', value: '${Mixin.winkser?.usrGender}' ?? ''),
-                              ProfileField(label: 'Phone : ', value: /*Mixin.winkser?.usrMobileNumber ??*/ '****************'),
-                              ProfileField(label: 'Place : ', value: '${Mixin.winkser?.usrCountry}, ${Mixin.winkser?.usrAdministrativeArea}'),
-                              ProfileField(label: 'Bio : ', value:' '),
-                              Text( Mixin.winkser?.usrDesc ??'', style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary), ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      WinkerInfoTab(),
 
                       IPhotos(showFab: false,),
                       IMyFriend(),

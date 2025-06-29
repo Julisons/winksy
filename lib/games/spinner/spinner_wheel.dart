@@ -50,6 +50,7 @@ class _ISpinnerState extends State<ISpinner> {
 
   Future<void> _checkIfTOSpin() async {
     String? stored = await Mixin.getPrefString(key: SPIN_DATE);
+    
     if (stored != null) {
       DateTime? savedDate = DateTime.tryParse(stored);
       DateTime now = DateTime.now();
@@ -60,13 +61,21 @@ class _ISpinnerState extends State<ISpinner> {
           savedDate.day == now.day;
 
       if (isToday) {
-        print('✔️ The date is today');
-      } else {
-        print('❌ The date is not today');
+        print('✔️ Already spun today - spin disabled');
         setState(() {
-          _shouldSpin = true;
+          _shouldSpin = false; // User already spun today
+        });
+      } else {
+        print('❌ Last spin was not today - spin enabled');
+        setState(() {
+          _shouldSpin = true; // User can spin (different day)
         });
       }
+    } else {
+      print('🆕 No previous spin date found - spin enabled');
+      setState(() {
+        _shouldSpin = true; // First time user or cleared data - allow spin
+      });
     }
   }
 
@@ -191,6 +200,7 @@ class _ISpinnerState extends State<ISpinner> {
                                 // Always reset spinning state when animation ends
                                 setState(() {
                                   _isSpinning = false;
+                                  _shouldSpin = false; // Disable further spinning after completing today's spin
                                 });
 
                                 if (outcome == 0) {

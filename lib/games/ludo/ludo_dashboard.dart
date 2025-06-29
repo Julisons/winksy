@@ -14,7 +14,7 @@ import '../../component/glow2.dart';
 import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
-import '../chess/chess.dart';
+import '../chess/chess_dashboard.dart';
 import 'component/ludo_sync.dart';
 import 'ludo.dart';
 import 'ludo_promotion.dart';

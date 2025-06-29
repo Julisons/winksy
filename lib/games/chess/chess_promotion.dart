@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:winksy/component/app_bar.dart';
-import 'package:winksy/games/chess/chess.dart';
+import 'package:winksy/games/chess/views/main_menu_view.dart';
 import 'package:winksy/mixin/constants.dart';
 
 import '../../component/button.dart';
@@ -173,7 +174,22 @@ class IChessPromotion extends StatelessWidget {
             Center(
               child: IButton(
                 onPress: () {
-                  Mixin.navigate(context, IChess());
+                  Mixin.navigate(context,
+
+                      CupertinoApp(
+                        debugShowCheckedModeBanner: false,
+                        title: 'Chess',
+                        theme: CupertinoThemeData(
+                          brightness: Brightness.dark,
+                          textTheme: CupertinoTextThemeData(
+                            textStyle: TextStyle(fontFamily: 'Jura', fontSize: 16),
+                            pickerTextStyle: TextStyle(fontFamily: 'Jura'),
+                          ),
+                        ),
+                        home: MainMenuView(),
+                      )
+
+                  );
                 },
                 text: '♔ Start Playing Chess!',
                 color: color.xTrailing,

@@ -95,6 +95,18 @@ static String BASE_URL = '$BASE:5000';
     return Uri.parse("$BASE_URL/friend/fetch_friends");
   }
 
+  static Uri FRIEND_REQUESTS() {
+    return Uri.parse("$BASE_URL/friend/fetch_friend_requests");
+  }
+
+  static Uri ACCEPT_FRIEND_REQUEST() {
+    return Uri.parse("$BASE_URL/friend/accept_friend_request");
+  }
+
+  static Uri REJECT_FRIEND_REQUEST() {
+    return Uri.parse("$BASE_URL/friend/reject_friend_request");
+  }
+
   static Uri OWNED_PETS() {
     return Uri.parse("$BASE_URL/pet/fetch_owned_pets");
   }

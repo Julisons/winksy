@@ -17,7 +17,7 @@ import '../../../model/quad.dart';
 import '../../../model/user.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
-import '../../chess/chess.dart';
+import '../../chess/chess_dashboard.dart';
 import '../ludo_dashboard.dart';
 
 

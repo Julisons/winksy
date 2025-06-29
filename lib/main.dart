@@ -1,8 +1,9 @@
-import 'package:winksy/games/chesa/model/app_model.dart' show AppModel;
+import 'package:winksy/games/chess/model/app_model.dart' show AppModel;
 import 'package:winksy/provider/chat_provider.dart';
 import 'package:winksy/provider/fame_hall_provider.dart';
 import 'package:winksy/provider/friend_provider.dart';
 import 'package:winksy/provider/friends_provider.dart';
+import 'package:winksy/provider/friend_request_provider.dart';
 import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/gift/spinner_provider.dart';
 import 'package:winksy/provider/gift/treat_provider.dart';
@@ -104,6 +105,8 @@ class MyApp extends StatelessWidget {
               create: (_) => IChatProvider().init()),
           ChangeNotifierProvider<IFriendsProvider>(
               create: (_) => IFriendsProvider().init()),
+          ChangeNotifierProvider<IFriendRequestProvider>(
+              create: (_) => IFriendRequestProvider().init()),
           ChangeNotifierProvider<IFameHallProvider>(
               create: (_) => IFameHallProvider().init()),
           ChangeNotifierProvider(create: (context) => AppModel(),

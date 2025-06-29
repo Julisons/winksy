@@ -15,8 +15,10 @@ class Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    SystemChrome.setSystemUIOverlayStyle(  SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarIconBrightness: Theme.of(context).brightness == Brightness.dark 
+            ? Brightness.light 
+            : Brightness.dark,
         statusBarColor: Theme.of(context).colorScheme.surface));
 
     final color = Theme.of(context).extension<CustomColors>()!;
