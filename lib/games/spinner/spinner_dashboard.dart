@@ -50,7 +50,6 @@ class _ISpinnerDashboardState extends State<ISpinnerDashboard> {
   final List<ListItem> items = [
     ListItem(title: 'Start Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
-    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
   ];
 
   @override
@@ -150,9 +149,6 @@ class _ISpinnerDashboardState extends State<ISpinnerDashboard> {
                             break;
                           case 'HOW TO PLAY':
                             Mixin.navigate(context, ISpinnerDashboard());
-                            break;
-                          case 'HALL OF FAME':
-                            Mixin.navigate(context, IFameHall(quadType: 'QUADRIX'));
                             break;
                         }
                       },
