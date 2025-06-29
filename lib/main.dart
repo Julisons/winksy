@@ -1,3 +1,4 @@
+import 'package:winksy/games/chesa/model/app_model.dart' show AppModel;
 import 'package:winksy/provider/chat_provider.dart';
 import 'package:winksy/provider/fame_hall_provider.dart';
 import 'package:winksy/provider/friend_provider.dart';
@@ -60,10 +61,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown,]);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
@@ -108,6 +106,8 @@ class MyApp extends StatelessWidget {
               create: (_) => IFriendsProvider().init()),
           ChangeNotifierProvider<IFameHallProvider>(
               create: (_) => IFameHallProvider().init()),
+          ChangeNotifierProvider(create: (context) => AppModel(),
+          ),
         ],
         child: ScreenUtilInit(
             designSize: const Size(490.9, 1075.0),
@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (BuildContext context, Widget? child) {
               return MaterialApp(
-                title: 'Wink',
+                title: 'Winksy',
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,

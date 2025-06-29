@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flame/flame.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/games/chesa/model/app_model.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/mixin/constants.dart';
@@ -19,6 +21,8 @@ import '../../model/quad.dart';
 import '../../model/user.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
+import '../chesa/logic/shared_functions.dart';
+import '../chesa/views/main_menu_view.dart';
 import '../fame_hall/fame_hall.dart';
 import 'chess.dart';
 import 'chess_promotion.dart';
@@ -43,6 +47,20 @@ class _IChessDashboardState extends State<IChessDashboard> {
   @override
   void initState() {
     super.initState();
+    _loadFlameAssets();
+  }
+
+  void _loadFlameAssets() async {
+    List<String> pieceImages = [];
+    for (var theme in PIECE_THEMES) {
+      for (var color in ['black', 'white']) {
+        for (var piece in ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn']) {
+          pieceImages
+              .add('pieces/${formatPieceTheme(theme)}/${piece}_$color.png');
+        }
+      }
+    }
+    await Flame.images.loadAll(pieceImages);
   }
 
   @override
@@ -140,7 +158,22 @@ class _IChessDashboardState extends State<IChessDashboard> {
                     onTap: () {
                       switch(item.title.toUpperCase()){
                         case 'START GAME':
-                          Mixin.navigate(context, IChess());
+                          Mixin.navigate(context,
+
+                              CupertinoApp(
+                                debugShowCheckedModeBanner: false,
+                                title: 'Chess',
+                                theme: CupertinoThemeData(
+                                  brightness: Brightness.dark,
+                                  textTheme: CupertinoTextThemeData(
+                                    textStyle: TextStyle(fontFamily: 'Jura', fontSize: 16),
+                                    pickerTextStyle: TextStyle(fontFamily: 'Jura'),
+                                  ),
+                                ),
+                                home: MainMenuView(),
+                              )
+
+                          );
                           break;
                         case 'HOW TO PLAY':
                           Mixin.navigate(context, IChessPromotion());
