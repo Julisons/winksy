@@ -178,7 +178,6 @@ Future<void> onPlay(
     );
 
     FlameAudio.play('piece_moved.mp3');
-
     gameState[i][column]['value'] = player;
     turns++;
     switchPlayer();
