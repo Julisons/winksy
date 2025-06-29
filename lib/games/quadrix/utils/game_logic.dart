@@ -177,7 +177,7 @@ Future<void> onPlay(
       player: player,
     );
 
-    FlameAudio.play('sound/droper.wav');
+    FlameAudio.play('piece_moved.mp3');
 
     gameState[i][column]['value'] = player;
     turns++;
