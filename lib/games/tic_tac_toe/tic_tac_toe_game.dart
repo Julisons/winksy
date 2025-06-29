@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe_dashboard.dart';
 import 'package:winksy/mixin/constants.dart';
 
@@ -300,7 +301,11 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                 child: Text(
                   textAlign: TextAlign.justify,
                   quadPlayer,
-                  style: TextStyle(fontSize: FONT_TITLE, color: color.xTrailing,fontWeight: FontWeight.bold,),
+                  style: GoogleFonts.quicksand(
+                    color: color.xTrailing,
+                    fontWeight: FontWeight.bold,
+                    fontSize: FONT_APP_BAR,
+                  ),
                 ),
               ),
             ),

@@ -140,3 +140,11 @@ flutter:
     - assets/audio/move.mp3
     - assets/audio/dice.mp3
     - assets/audio/sound/
+    - assets/images/pieces/classic/
+    - assets/images/pieces/letters/
+    - assets/images/pieces/angular/
+    - assets/images/pieces/8-bit/
+    - assets/images/pieces/videochess/
+    - assets/images/pieces/lewischessmen/
+    - assets/images/pieces/mexicocity/
+    - assets/audio/piece_moved.mp3
