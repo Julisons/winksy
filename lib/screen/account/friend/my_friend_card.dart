@@ -87,11 +87,13 @@ class _IFriendCardState extends State<IFriendCard> {
                   Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("${widget.user.usrFullNames}, ${'${widget.user.usrDob}'.age()}",
-                          style: TextStyle(
-                            color: color.xTextColorSecondary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_TITLE,
+                        Flexible(
+                          child: Text("${widget.user.usrFullNames}, ${'${widget.user.usrDob}'.age()}",
+                            style: TextStyle(
+                              color: color.xTextColorSecondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: FONT_TITLE,
+                            ),
                           ),
                         ),
                         SizedBox(width: 3,),
