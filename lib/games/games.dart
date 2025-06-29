@@ -23,6 +23,7 @@ import '../mixin/mixins.dart';
 import '../theme/custom_colors.dart';
 import 'chess/chess_dashboard.dart';
 import 'ludo/ludo_dashboard.dart';
+import 'opponent/opponent.dart';
 
 class ListItem {
   final String title;
@@ -204,7 +205,7 @@ class _IGamesState extends State<IGames> {
                             Mixin.navigate(context, IProfile());
                             break;
                           case 'My Recent Opponents':
-                            Mixin.navigate(context, IQuadrixDashboard());
+                            Mixin.navigate(context, IOpponent());
                             break;
                           case 'Game Settings':
                             Mixin.navigate(context, IGameSettings());
@@ -214,8 +215,6 @@ class _IGamesState extends State<IGames> {
                               SnackBar(content: Text('${items[index].title} tapped')),
                             );
                         }
-
-
                       },
                     ),
                   );

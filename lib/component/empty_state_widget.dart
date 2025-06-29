@@ -5,7 +5,7 @@ import 'package:winksy/mixin/constants.dart';
 import '../theme/custom_colors.dart';
 
 enum EmptyStateType {
-  general,
+  games,
   sms,
   users,
   notification,
@@ -43,7 +43,7 @@ class EmptyStateWidget extends StatefulWidget {
 
   const EmptyStateWidget({
     Key? key,
-    this.type = EmptyStateType.general,
+    this.type = EmptyStateType.users,
     this.title,
     this.description,
     this.onReload,
@@ -136,6 +136,14 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget>
       case EmptyStateType.photos:
         return  EmptyStateConfig(
           icon: Icons.photo_camera_back_outlined,
+          title: 'No Orders Found',
+          description: 'No orders match your criteria. New orders will appear here.',
+          gradientColors: [Theme.of(context).extension<CustomColors>()!.xPrimaryColor, Theme.of(context).extension<CustomColors>()!.xSecondaryColor],
+          iconColor: Theme.of(context).extension<CustomColors>()!.xTrailingAlt,
+        );
+        case EmptyStateType.games:
+        return  EmptyStateConfig(
+          icon: Icons.videogame_asset_outlined,
           title: 'No Orders Found',
           description: 'No orders match your criteria. New orders will appear here.',
           gradientColors: [Theme.of(context).extension<CustomColors>()!.xPrimaryColor, Theme.of(context).extension<CustomColors>()!.xSecondaryColor],

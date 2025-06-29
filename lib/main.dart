@@ -10,6 +10,7 @@ import 'package:winksy/provider/like_me_provider.dart';
 import 'package:winksy/provider/like_provider.dart';
 import 'package:winksy/provider/match_provider.dart';
 import 'package:winksy/provider/notification_provider.dart';
+import 'package:winksy/provider/opponents_provider.dart';
 import 'package:winksy/provider/payment_provider.dart';
 import 'package:winksy/provider/pet/browse_provider.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
@@ -68,6 +69,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<IBrowseProvider>(
               create: (_) => IBrowseProvider().init()),
+          ChangeNotifierProvider<IOpponentProvider>(
+              create: (_) => IOpponentProvider().init()),
           ChangeNotifierProvider<ISpinnerProvider>(
               create: (_) => ISpinnerProvider().init()),
           ChangeNotifierProvider<IFriendProvider>(

@@ -9,7 +9,6 @@ import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/mixin/mixins.dart';
 import 'package:winksy/provider/friend_provider.dart';
-import 'package:winksy/screen/friend/friend_shimmer.dart';
 import '../../../mixin/constants.dart';
 import '../../component/empty_state_widget.dart';
 import '../../component/loader.dart';
@@ -99,7 +98,14 @@ class _IFriendState extends State<IFriend> {
 
         Consumer<IFriendsProvider>(
             builder: (context, provider, child) {
-              return provider.isLoading() ? const IFriendShimmer()
+              return provider.isLoading() ?
+
+                  Center(
+                    child: Loading(
+                      dotColor: color.xTrailing,
+                    ),
+                  )
+
                   : provider.list.isEmpty ?
               EmptyStateWidget(
                 type: EmptyStateType.users,

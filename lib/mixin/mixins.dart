@@ -68,7 +68,7 @@ class Mixin {
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
+        timeInSecForIosWeb: 5,
         backgroundColor: type == ERROR ? xRedColor : xBlueColor,
         textColor: Colors.white,
        // fontSize: 20,

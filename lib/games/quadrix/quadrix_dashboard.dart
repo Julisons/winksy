@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/games/quadrix/quadric_promotion.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
@@ -20,6 +21,7 @@ import '../../model/user.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
 import '../fame_hall/fame_hall.dart';
+import '../opponent/opponent.dart';
 
 class ListItem {
   final String title;
@@ -48,10 +50,10 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
 
   final List<ListItem> items = [
     ListItem(title: 'Start Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
-    ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
+   // ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
     ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
-    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
+    ListItem(title: 'Recent Opponents', desc: 'Players you recently competed against', icon: Icons.settings),
   ];
 
   @override
@@ -145,10 +147,13 @@ class _IQuadrixDashboardState extends State<IQuadrixDashboard> {
                               Mixin.navigate(context, IQuadrix());
                               break;
                             case 'HOW TO PLAY':
-                              Mixin.navigate(context, IQuadrix());
+                              Mixin.navigate(context, HowToPlayScreen());
                               break;
                             case 'HALL OF FAME':
-                              Mixin.navigate(context, IFameHall(quadType: 'QUADRIX'));
+                              Mixin.navigate(context, IFameHall(quadType: QUADRIX));
+                              break;
+                            case 'RECENT OPPONENTS':
+                              Mixin.navigate(context, IOpponent(quadType: QUADRIX));
                               break;
                           }
                         },
