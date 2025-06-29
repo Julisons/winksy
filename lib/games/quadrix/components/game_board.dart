@@ -351,7 +351,7 @@ class GameBoardState extends State<GameBoard> {
         _timer?.cancel();
         AudioPlayer().play(AssetSource('audio/sound/win2.wav'));
         quadPlayer = 'You won ';
-        Mixin.showToast(context,'$quitter gave up', INFO);
+        Mixin.showToast(context,'$quitter  couldn\'t take it anymore;  Gave up in silence 😔', INFO);
         end = true;
         widget.onRefresh();
       });
