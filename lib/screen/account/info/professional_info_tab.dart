@@ -65,16 +65,16 @@ class ProfessionalInfoTab extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.xSecondaryColor,
         borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
+        /*boxShadow: [
           BoxShadow(
             color: color.xTextColor.withOpacity(0.05),
             blurRadius: 8.r,
             offset: Offset(0, 2.h),
           ),
-        ],
+        ],*/
       ),
       child: Padding(
-        padding: EdgeInsets.all(20.r),
+        padding: EdgeInsets.all(8.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -187,15 +187,15 @@ class ProfessionalInfoTab extends StatelessWidget {
         color: color.xSecondaryColor,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
-          BoxShadow(
+         /* BoxShadow(
             color: color.xTextColor.withOpacity(0.05),
             blurRadius: 8.r,
             offset: Offset(0, 2.h),
-          ),
+          ),*/
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.all(20.r),
+        padding: EdgeInsets.all(8.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
