@@ -255,6 +255,7 @@ class _INudgeCardState extends State<INudgeCard> {
     Map<String, dynamic> nudgeData = {
       'nudgeIntId': Mixin.winkser?.usrId,
       'nudgeNudgesId': widget.nudgeSound.nudgesId,
+      'nudgeDesc': widget.nudgeSound.nudgesName,
       'nudgeUsrId': Mixin.user?.usrId,
       'nudgeSound': widget.nudgeSound.nudgesPath};
 

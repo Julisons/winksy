@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:firebase_core/firebase_core.dart';
@@ -483,6 +485,14 @@ _showNotification(RemoteNotification? notification, Map<String, dynamic> data) {
     INotification notification = INotification.fromJson(json.decode(payload));
     _showNormalNotification(notification, id,channel);
     }
+  else if(channel == SOUND_ATTACK_NOTIFICATION){
+    INotification notification = INotification.fromJson(json.decode(payload));
+       AudioPlayer().play(UrlSource(notification.notiMessage.startsWith('http')
+           ?  notification.notiMessage
+           : '${IUrls.IMAGE_URL}/file/sounds/${ notification.notiMessage}'));
+
+    _showSilentNotification(notification, id,channel);
+    }
   else
       {
         sms.Message message = sms.Message.fromJson(json.decode(payload));
@@ -695,6 +705,34 @@ Future<void> _showNormalNotification(INotification notification,
     importance: Importance.max,
     priority: Priority.high,
     ticker: 'ticker',
+  );
+
+  NotificationDetails notificationDetails = NotificationDetails(
+    android: androidNotificationDetails,
+  );
+  await flutterLocalNotificationsPlugin.show(
+    DateTime.now().millisecond,
+    '${notification.notiTitle}',
+    '${notification.notiDesc}',
+    notificationDetails,
+    payload: notification.toJson().toString(),
+  );
+}
+
+Future<void> _showSilentNotification(INotification notification,
+    String id,channel,) async {
+  AndroidNotificationDetails androidNotificationDetails =
+  AndroidNotificationDetails(
+    icon: 'ic_launcher',
+    id,
+    'nudge_silent',
+    channelDescription: 'Nudge notifications with custom sound',
+    importance: Importance.high,
+    priority: Priority.high,
+    ticker: 'ticker',
+    playSound: false, // Disable default notification sound
+    enableVibration: true, // Keep vibration for better UX
+    vibrationPattern: Int64List.fromList([0, 250, 250, 250]), // Custom vibration pattern
   );
 
   NotificationDetails notificationDetails = NotificationDetails(
