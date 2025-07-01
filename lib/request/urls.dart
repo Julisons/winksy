@@ -43,6 +43,10 @@ static String BASE_URL = '$BASE:5000';
     return "$BASE_URL/auth/sign_up";
   }
 
+  static String DELETE_PHOTO() {
+    return "$BASE_URL/image/delete_image";
+  }
+
   static String GIFT() {
     return "$BASE_URL/user_gift/save_usergift";
   }

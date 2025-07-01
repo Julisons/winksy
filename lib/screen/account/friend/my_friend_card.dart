@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:winksy/mixin/extentions.dart';
+import 'package:winksy/screen/account/winker/winker.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
 import '../../../mixin/constants.dart';
@@ -38,11 +39,7 @@ class _IFriendCardState extends State<IFriendCard> {
     return InkWell(
       onTap: () {
         Mixin.winkser = widget.user;
-        Chat chat = Chat()
-        ..chatReceiverId = widget.user.usrId
-        ..chatSenderId = Mixin.user?.usrId
-        ..usrReceiver = widget.user.usrFullNames;
-        Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
+        Mixin.navigate(context, IWinkser());
       },
       child: Card(
         elevation: ELEVATION,

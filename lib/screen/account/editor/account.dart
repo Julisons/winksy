@@ -361,7 +361,7 @@ class _IAccountState extends State<IAccount> with TickerProviderStateMixin {
             } else {
               Mixin.errorDialog(context, 'ERROR', res);
             }
-          }, IUrls.SIGN_UP());
+          }, IUrls.UPDATE_USER());
         } else {
           Mixin.errorDialog(context, 'ERROR', res);
         }

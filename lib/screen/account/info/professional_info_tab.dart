@@ -63,18 +63,15 @@ class ProfessionalInfoTab extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: color.xSecondaryColor,
-        borderRadius: BorderRadius.circular(12.r),
-        /*boxShadow: [
-          BoxShadow(
-            color: color.xTextColor.withOpacity(0.05),
-            blurRadius: 8.r,
-            offset: Offset(0, 2.h),
-          ),
-        ],*/
+        color: color.xPrimaryColor.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: color.xTextColor.withOpacity(0.1),
+          width: 1,
+        ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(8.r),
+        padding: EdgeInsets.all(12.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -184,15 +181,12 @@ class ProfessionalInfoTab extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: color.xSecondaryColor,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-         /* BoxShadow(
-            color: color.xTextColor.withOpacity(0.05),
-            blurRadius: 8.r,
-            offset: Offset(0, 2.h),
-          ),*/
-        ],
+        color: color.xPrimaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: color.xTextColor.withOpacity(0.1),
+          width: 1,
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.all(8.r),
@@ -233,7 +227,7 @@ class ProfessionalInfoTab extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.all(16.r),
               decoration: BoxDecoration(
-                color: color.xPrimaryColor.withOpacity(0.3),
+                color: color.xSecondaryColor.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(
                   color: color.xTextColor.withOpacity(0.1),

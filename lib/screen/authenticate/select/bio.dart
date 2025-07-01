@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:intl/intl.dart';
 
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -41,10 +42,12 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
   bool _girlInt = false, _boyInt = false;
   bool _isLoading = false;
   final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
   CroppedFile? _croppedFile;
   Timer? _debounce;
   bool _isImage = false;
   XFile? _image;
+  DateTime? selectedDate;
 
   @override
   void dispose() {
@@ -54,6 +57,34 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // Initialize birthday if user already has date of birth
+    if (Mixin.user?.usrDob != null) {
+      try {
+        selectedDate = DateTime.parse(Mixin.user!.usrDob);
+        _birthdayController.text = DateFormat('dd-MM-yyyy').format(selectedDate!);
+      } catch (e) {
+        print('Error parsing birthday: $e');
+      }
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime latestAllowedDate = DateTime(now.year - 18, now.month, now.day);
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? latestAllowedDate,
+      firstDate: DateTime(1950),
+      lastDate: latestAllowedDate,
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+        _birthdayController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+      });
+    }
   }
 
   @override
@@ -75,9 +106,10 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
         ),
         backgroundColor: color.xPrimaryColor,
         body: SingleChildScrollView(
-          child: SizedBox(
+          child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(right: 16.w,left: 16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -332,9 +364,44 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                     )
                   ],
                 ),
+                
+                SizedBox(height: 34.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: TextFormField(
+                    controller: _birthdayController,
+                    readOnly: true,
+                    style: TextStyle(fontSize: FONT_13, color: color.xTextColorSecondary),
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: color.xTrailing),
+                      ),
+                      border: InputBorder.none,
+                      labelText: 'Date of Birth',
+                      labelStyle: TextStyle(
+                        color: color.xTextColor,
+                        fontSize: FONT_13,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: color.xTrailing),
+                      ),
+                      hintText: 'Select your birthday (18+ required)',
+                      hintStyle: TextStyle(
+                        color: color.xTextColor,
+                        fontSize: FONT_13,
+                      ),
+                      suffixIcon: Icon(Icons.calendar_today, color: color.xTrailing, size: 20),
+                      fillColor: color.xSecondaryColor,
+                      filled: true,
+                    ),
+                  ),
+                ),
 
                 Padding(
-                  padding:  EdgeInsets.only(top: 64.h, left: 16.w, right: 16.w),
+                  padding:  EdgeInsets.only(top: 34.h, left: 16.w, right: 16.w),
                   child: TextFormField(
                     controller: _bioController,
                     keyboardType: TextInputType.text,
@@ -392,9 +459,25 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                           return;
                         }
 
+                        if(_birthdayController.text.isEmpty || selectedDate == null){
+                          Mixin.showToast(context, "Date of birth is required", ERROR);
+                          return;
+                        }
+
+                        // Check if user is at least 18 years old
+                        if (selectedDate != null) {
+                          final DateTime now = DateTime.now();
+                          final DateTime eighteenYearsAgo = DateTime(now.year - 18, now.month, now.day);
+                          if (selectedDate!.isAfter(eighteenYearsAgo)) {
+                            Mixin.showToast(context, "You must be at least 18 years old to use this app!", ERROR);
+                            return;
+                          }
+                        }
+
                         Mixin.user?.usrDesc = _bioController.text;
                         Mixin.user?.usrGender = _girl ? 'FEMALE' : 'MALE';
                         Mixin.user?.usrOsType = _girlInt ? 'FEMALE' : 'MALE';
+                        Mixin.user?.usrDob = DateFormat('yyyy-MM-dd').format(selectedDate!);
 
                         setState(() {
                           _isLoading = true;

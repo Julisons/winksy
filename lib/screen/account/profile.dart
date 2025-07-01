@@ -176,27 +176,22 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
               ),
             ];
           },
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(CORNER * 8),
-              ),
-              elevation: ELEVATION,
-              color: color.xSecondaryColor,
-              child: Padding(
-                padding: EdgeInsets.all(12.r),
-                child: TabBarView(
-                  controller: _tabController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: <Widget>[
-                    ProfessionalInfoTab(),
-                    IFriendsWithRequests(),
-                    IPhotos(showFab: true),
-                    IPet(),
-                  ],
-                ),
-              ),
+          body: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(CORNER),
+            ),
+            elevation: ELEVATION,
+            color: color.xSecondaryColor,
+            margin: EdgeInsets.all(16.r),
+            child: TabBarView(
+              controller: _tabController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: <Widget>[
+                ProfessionalInfoTab(),
+                IFriendsWithRequests(),
+                IPhotos(showFab: true),
+                IPet(),
+              ],
             ),
           ),
         ),

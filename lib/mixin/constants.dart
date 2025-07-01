@@ -25,7 +25,13 @@ const url = 'https://videomed.co.ke/myimages/pixir/';
  Color payless = HexColor.fromHex('#fb0414');
 
 const List<String> scopes = <String>[
-  'email'
+  'email',
+  'profile',
+  'openid',
+  'https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/userinfo.email',
+  'https://www.googleapis.com/auth/user.birthday.read',
+  'https://www.googleapis.com/auth/user.gender.read',
 ];
 
 const int _limePrimaryValue = 0xFF99CC99;
@@ -107,7 +113,7 @@ final double IMAGE_RADIUS = 140.5.sp;
 final double APP_BAR = 50.w;
 final double TILE_HEIGHT = 110.w;
 final double ELEVATION = 0.w;
-final double CORNER = 5.w;
+final double CORNER = 16.w;
 
 const int ERROR = 1;
 const int SUCCESS = 0;

@@ -47,10 +47,7 @@ class _IMyFriendState extends State<IMyFriend> {
   Widget build(context) {
     final color = Theme.of(context).extension<CustomColors>()!;
 
-    return Scaffold(
-      backgroundColor: color.xSecondaryColor,
-      body:
-      Container(
+    return  Container(
         padding: EdgeInsets.only(top: 10.h),
         child: Consumer<IFriendsProvider>(
             builder: (context, provider, child) {
@@ -100,7 +97,6 @@ class _IMyFriendState extends State<IMyFriend> {
                     )),
               );
             }),
-      ),
-    );
+      );
   }
 }

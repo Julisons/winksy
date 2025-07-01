@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:winksy/component/button.dart';
@@ -34,6 +35,8 @@ class _SocialIntroState extends State<SocialIntro> {
   var name;
   var image;
   var email;
+  var gender;
+  var birthday;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +157,10 @@ class _SocialIntroState extends State<SocialIntro> {
       image = googleUser.photoUrl ?? "N/A";
       email = googleUser.email ?? "N/A";
 
-      print('-----------------------------------------------------------------name: $name image: $image email : $email');
+      // Fetch additional profile data including gender and birthday
+      await _fetchGoogleProfileData(accessToken!);
+
+      print('-----------------------------------------------------------------name: $name image: $image email : $email gender: $gender birthday: $birthday');
 
       if (accessToken == null) {
         // Handle error: missing token
@@ -179,7 +185,9 @@ class _SocialIntroState extends State<SocialIntro> {
         ..usrImage = image
         ..usrType = 'GOOGLE'
         ..usrEncryptedPassword = email+':'+email
-        ..usrUsername = email;
+        ..usrUsername = email
+        ..usrGender = gender ?? 'Not specified'
+        ..usrDob = birthday;
 
       IPost.postData(user, (state, res, value) {
         setState(() {
@@ -202,6 +210,65 @@ class _SocialIntroState extends State<SocialIntro> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _fetchGoogleProfileData(String accessToken) async {
+    try {
+      // Fetch user profile data from Google People API
+      final response = await http.get(
+        Uri.parse('https://people.googleapis.com/v1/people/me?personFields=genders,birthdays'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Google People API Response: $data');
+        
+        // Extract gender
+        if (data['genders'] != null && data['genders'].isNotEmpty) {
+          gender = data['genders'][0]['value'] ?? 'Not specified';
+          // Normalize gender values
+          switch (gender?.toLowerCase()) {
+            case 'male':
+              gender = 'Male';
+              break;
+            case 'female':
+              gender = 'Female';
+              break;
+            case 'other':
+              gender = 'Other';
+              break;
+            default:
+              gender = 'Not specified';
+          }
+        }
+        
+        // Extract birthday
+        if (data['birthdays'] != null && data['birthdays'].isNotEmpty) {
+          final birthdayData = data['birthdays'][0]['date'];
+          if (birthdayData != null) {
+            final year = birthdayData['year'];
+            final month = birthdayData['month'];
+            final day = birthdayData['day'];
+            
+            if (year != null && month != null && day != null) {
+              birthday = '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}T00:00:00.000Z';
+            }
+          }
+        }
+      } else {
+        print('Failed to fetch Google profile data: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error fetching Google profile data: $error');
+      // Set defaults if API call fails
+      gender = 'Not specified';
+      birthday = null;
     }
   }
 }

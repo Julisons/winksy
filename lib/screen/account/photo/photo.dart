@@ -102,7 +102,8 @@ class _IPhotosState extends State<IPhotos> {
                             photo: provider.list[index],
                             onRefresh: () {
                               setState(() {
-
+                                Provider.of<IPhotoProvider>(context, listen: false)
+                                    .refresh('', true);
                               });
                             },
                             text: 'View Details',

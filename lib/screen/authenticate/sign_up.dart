@@ -52,7 +52,7 @@ class _ISignUpState extends State<ISignUp> {
   DateTime? selectedDate;
   Future<void> _selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
-    final DateTime latestAllowedDate = DateTime(now.year - 12, now.month, now.day);
+    final DateTime latestAllowedDate = DateTime(now.year - 18, now.month, now.day);
 
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -214,7 +214,7 @@ class _ISignUpState extends State<ISignUp> {
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: color.xTrailing),
                 ),
-                hintText: 'Date of Birth',
+                hintText: 'Date of Birth (18+ required)',
                 hintStyle: TextStyle(
                   color: color.xTextColor,
                   fontSize: FONT_13,
@@ -295,6 +295,16 @@ class _ISignUpState extends State<ISignUp> {
                 if (_ageController.text.isEmpty) {
                   Mixin.showToast(context, "Date of birth cannot be empty!", ERROR);
                   return;
+                }
+
+                // Check if user is at least 18 years old
+                if (selectedDate != null) {
+                  final DateTime now = DateTime.now();
+                  final DateTime eighteenYearsAgo = DateTime(now.year - 18, now.month, now.day);
+                  if (selectedDate!.isAfter(eighteenYearsAgo)) {
+                    Mixin.showToast(context, "You must be at least 18 years old to use this app!", ERROR);
+                    return;
+                  }
                 }
 
                 if (_emailController.text.isEmpty) {

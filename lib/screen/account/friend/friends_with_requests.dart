@@ -53,12 +53,13 @@ class _IFriendsWithRequestsState extends State<IFriendsWithRequests>
           height: 50.h,
           decoration: BoxDecoration(
             color: color.xPrimaryColor,
-            borderRadius: BorderRadius.circular(CORNER * 2),
+            borderRadius: BorderRadius.circular(CORNER),
           ),
+          margin: EdgeInsets.all(16.r),
           child: TabBar(
             controller: _friendsTabController,
             indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(CORNER * 2),
+              borderRadius: BorderRadius.circular(CORNER),
               color: color.xTrailing,
             ),
             indicatorSize: TabBarIndicatorSize.tab,
@@ -68,6 +69,7 @@ class _IFriendsWithRequestsState extends State<IFriendsWithRequests>
             dividerHeight: 0,
             tabs: [
               Tab(
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -51,7 +51,7 @@ class IFriendRequestProvider with ChangeNotifier {
           log(e.toString());
         }
       } else {
-        setMessage(data.headers['message']);
+        setMessage('Error getting data');
       }
     });
     return isLoaded();
