@@ -3,22 +3,21 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:winksy/request/urls.dart';
-import '../mixin/mixins.dart';
-import '../model/friend.dart';
-import '../model/response.dart';
-import '../request/gets.dart';
-import '../request/posts.dart';
+import '../../mixin/mixins.dart';
+import '../../model/nudge_sound.dart';
+import '../../model/response.dart';
+import '../../request/gets.dart';
 
-class IFriendRequestProvider with ChangeNotifier {
-  List<Friend> list = [];
+class INudgeSoundProvider with ChangeNotifier {
+  List<NudgeSound> list = [];
   late String errorMessage;
   bool _loading = false;
   bool _loadingMore = false;
   int _start = 0;
   final int _limit = 20;
 
-  IFriendRequestProvider init() {
-    if(Mixin.user != null) {
+  INudgeSoundProvider init() {
+    if( Mixin.user != null) {
       refresh('', true);
     }
     return this;
@@ -32,18 +31,17 @@ class IFriendRequestProvider with ChangeNotifier {
     setLoading(true, loud);
 
     await XRequest().getData({
-      'usrId': Mixin.user?.usrId,
-      'start': _start,
-      'limit': _limit
-    }, IUrls.FRIEND_REQUESTS()).then((data) {
+      'start':_start,
+      'limit':_limit
+    }, IUrls.NUDGE_SOUNDS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
           var res = jsonResponse.data['result'] ?? [];
 
-          var items = res.map<Friend>((json) {
-            return Friend.fromJson(json);
+          var items = res.map<NudgeSound>((json) {
+            return  NudgeSound.fromJson(json);
           }).toList();
 
           setData(items);
@@ -51,7 +49,7 @@ class IFriendRequestProvider with ChangeNotifier {
           log(e.toString());
         }
       } else {
-        setMessage('Error getting data');
+        setMessage(data.headers['message']);
       }
     });
     return isLoaded();
@@ -62,18 +60,18 @@ class IFriendRequestProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'usrId': Mixin.user?.usrId,
-      'start': _start,
-      'limit': _limit
-    }, IUrls.FRIEND_REQUESTS()).then((data) {
+      'start':_start,
+      'limit':_limit
+    }, IUrls.NUDGE_SOUNDS()).then((data) {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
           var res = jsonResponse.data['result'] ?? [];
+          log('---${res}');
 
-          var items = res.map<Friend>((json) {
-            return Friend.fromJson(json);
+          var items = res.map<NudgeSound>((json) {
+            return  NudgeSound.fromJson(json);
           }).toList();
 
           setDataMore(items);
@@ -81,44 +79,10 @@ class IFriendRequestProvider with ChangeNotifier {
           log(e.toString());
         }
       } else {
-        setMessage('');
+        setMessage(data.headers['message']);
       }
     });
     return isLoaded();
-  }
-
-  Future<bool> acceptRequest(String friendId) async {
-    await XRequest().getData({
-      'frndId': friendId,
-      'frndStatus': 'accepted',
-      'usrId': Mixin.user?.usrId,
-    }, IUrls.ACCEPT_FRIEND_REQUEST()).then((data) {
-      if (data.statusCode == 200) {
-        // Remove from list after accepting
-        list.removeWhere((friend) => friend.frndId == friendId);
-        notifyListeners();
-      } else {
-        setMessage(data.headers['message']);
-      }
-    });
-    return true;
-  }
-
-  Future<bool> rejectRequest(String friendId) async {
-    await XRequest().getData({
-      'frndId': friendId,
-      'frndStatus': 'rejected',
-      'usrId': Mixin.user?.usrId,
-    }, IUrls.REJECT_FRIEND_REQUEST()).then((data) {
-      if (data.statusCode == 200) {
-        // Remove from list after rejecting
-        list.removeWhere((friend) => friend.frndId == friendId);
-        notifyListeners();
-      } else {
-        setMessage(data.headers['message']);
-      }
-    });
-    return true;
   }
 
   bool isLoading() {
@@ -129,7 +93,7 @@ class IFriendRequestProvider with ChangeNotifier {
     return _loadingMore;
   }
 
-  void setLoading(bool value, bool loud) {
+  void setLoading(bool value,bool loud) {
     if(loud) {
       _loading = value;
     }
@@ -152,12 +116,15 @@ class IFriendRequestProvider with ChangeNotifier {
     setLoadingMore(false);
   }
 
+  List<NudgeSound> getSounds() {
+    return list;
+  }
+
   int getCount() {
     return list.length;
   }
 
   void setMessage(value) {
-    _loading = false;
     errorMessage = value;
     notifyListeners();
   }

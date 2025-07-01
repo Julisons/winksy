@@ -13,6 +13,7 @@ import 'package:winksy/provider/gift/gift_provider.dart';
 import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/screen/account/photo/photo.dart';
 import 'package:winksy/screen/account/winker/treats/treats.dart';
+import 'package:winksy/screen/account/winker/nudges/nudges.dart';
 import 'package:winksy/screen/account/winker/winker_info_tab.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
@@ -27,6 +28,7 @@ import '../../../model/interest.dart';
 import '../../../model/user.dart';
 import '../../../provider/friends_provider.dart';
 import '../../../provider/like_provider.dart';
+import '../../../provider/nudge/nudge_sound_provider.dart';
 import '../../../provider/user_provider.dart';
 import '../../../request/posts.dart';
 import '../../../theme/custom_colors.dart';
@@ -70,6 +72,7 @@ class _IWinkserState extends State<IWinkser> {
       Provider.of<IFriendProvider>(context, listen: false).refresh('',true);
       Provider.of<IFriendsProvider>(context, listen: false).refresh('',true);
       Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
+      Provider.of<INudgeSoundProvider>(context, listen: false).refresh('',true);
     });
   }
 
@@ -242,7 +245,16 @@ class _IWinkserState extends State<IWinkser> {
                                               ..usrReceiver = Mixin.winkser?.usrFullNames;
                                             Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
                                           } else if (gifts[index].title == 'Nudge') {
-
+                                            showModalBottomSheet<void>(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return SizedBox(
+                                                  height: MediaQuery.of(context).size.height/1.2,
+                                                  width: MediaQuery.of(context).size.width,
+                                                  child: INudges(),
+                                                );
+                                              },
+                                            );
                                           } else if (gifts[index].title == 'Gift') {
                                             showModalBottomSheet<void>(
                                               context: context,
@@ -266,7 +278,16 @@ class _IWinkserState extends State<IWinkser> {
                                                 ..usrReceiver = Mixin.winkser?.usrFullNames;
                                               Mixin.navigate(context,  IMessage(chat: chat, showTitle: true,));
                                             } else if (gifts[index].title == 'Nudge') {
-
+                                              showModalBottomSheet<void>(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return SizedBox(
+                                                    height: MediaQuery.of(context).size.height/1.2,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: INudges(),
+                                                  );
+                                                },
+                                              );
                                             } else if (gifts[index].title == 'Gift') {
                                               showModalBottomSheet<void>(
                                                 context: context,

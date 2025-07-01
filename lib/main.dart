@@ -12,6 +12,7 @@ import 'package:winksy/provider/like_me_provider.dart';
 import 'package:winksy/provider/like_provider.dart';
 import 'package:winksy/provider/match_provider.dart';
 import 'package:winksy/provider/notification_provider.dart';
+import 'package:winksy/provider/nudge/nudge_sound_provider.dart';
 import 'package:winksy/provider/opponents_provider.dart';
 import 'package:winksy/provider/payment_provider.dart';
 import 'package:winksy/provider/pet/browse_provider.dart';
@@ -109,6 +110,8 @@ class MyApp extends StatelessWidget {
               create: (_) => IFriendRequestProvider().init()),
           ChangeNotifierProvider<IFameHallProvider>(
               create: (_) => IFameHallProvider().init()),
+          ChangeNotifierProvider<INudgeSoundProvider>(
+              create: (_) => INudgeSoundProvider().init()),
           ChangeNotifierProvider(create: (context) => AppModel(),
           ),
         ],

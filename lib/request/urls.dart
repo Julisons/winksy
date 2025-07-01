@@ -59,6 +59,10 @@ static String BASE_URL = '$BASE:5000';
     return "$BASE_URL/interest/save_interest";
   }
 
+  static String NUDGE() {
+    return "$BASE_URL/nudge/save_nudge";
+  }
+
   static String FRIEND() {
     return "$BASE_URL/friend/save_friend";
   }
@@ -137,6 +141,10 @@ static String BASE_URL = '$BASE:5000';
 
   static Uri TREATS() {
     return Uri.parse("$BASE_URL/gift/fetch_gifts");
+  }
+
+  static Uri NUDGE_SOUNDS() {
+    return Uri.parse("$BASE_URL/nudge_sound/fetch_nudgesounds");
   }
 
   static String MAIN_LINKS(params) {
