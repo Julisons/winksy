@@ -279,6 +279,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
   }
 
   String _getGameEndMessage() {
+
     final result = didEnd();
     if (result == Result.draw) {
       return "It's a draw! Well played!";
@@ -288,8 +289,8 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
           : "${Mixin.quad?.quadUser ?? 'Player 1'} wins!";
     } else if (result == Result.player2) {
       return Mixin.quad?.quadFirstPlayerId.toString() != Mixin.user?.usrId.toString()
-          ? "Congratulations! You won!"
-          : "${Mixin.quad?.quadAgainst ?? 'Player 2'} wins!";
+          ?  "${Mixin.quad?.quadAgainst ?? 'Player 2'} wins!"
+          : "Congratulations! You won!";
     }
     return "Game Over!";
   }

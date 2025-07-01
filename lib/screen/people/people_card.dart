@@ -15,6 +15,7 @@ import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
 import '../../component/Glass.dart';
+import '../../component/online_status_indicator.dart';
 import '../../mixin/constants.dart';
 import '../../model/chat.dart';
 import '../../model/user.dart';
@@ -53,14 +54,17 @@ class _IPeopleCardState extends State<IPeopleCard> {
           padding: EdgeInsets.all(.0.h),
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
-                child: CachedNetworkImage(
-                  imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
-                      : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
-                  width: MediaQuery.of(context).size.width/2,
-                  height: MediaQuery.of(context).size.width/1.2,
-                  fit: BoxFit.fitHeight,
+              OnlineStatusBadge(
+                userId: widget.user.usrId,
+                badgeSize: 16.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
+                  child: CachedNetworkImage(
+                    imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
+                        : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
+                    width: MediaQuery.of(context).size.width/2,
+                    height: MediaQuery.of(context).size.width/1.2,
+                    fit: BoxFit.fitHeight,
                   placeholder: (context, url) => Shimmer.fromColors(
                     baseColor: color.xSecondaryColor,
                     highlightColor:color.xPrimaryColor,
@@ -73,9 +77,10 @@ class _IPeopleCardState extends State<IPeopleCard> {
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Container(
-                    color: color.xSecondaryColor,
-                    child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    errorWidget: (context, url, error) => Container(
+                      color: color.xSecondaryColor,
+                      child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    ),
                   ),
                 ),
               ),

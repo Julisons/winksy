@@ -12,6 +12,7 @@ import 'package:winksy/screen/people/people_card.dart';
 import 'package:winksy/screen/people/people_shimmer.dart';
 import '../../../mixin/constants.dart';
 import '../../component/loader.dart';
+import '../../component/online_status_indicator.dart';
 import '../../component/popup.dart';
 import '../../provider/user_provider.dart';
 import '../../theme/custom_colors.dart';
@@ -65,17 +66,31 @@ class _IPeopleState extends State<IPeople> {
               child: Stack(
                 alignment: AlignmentDirectional.centerStart,
                 children: [
-                  Text('People',
-                    style: GoogleFonts.poppins(
-                      color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                            offset: Offset(0, 1),
-                            blurRadius: 3.0,
-                            color: color.xSecondaryColor
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('People',
+                        style: GoogleFonts.poppins(
+                          color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(0, 1),
+                                blurRadius: 3.0,
+                                color: color.xSecondaryColor
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 4.h),
+                      OnlineUsersCounter(
+                        textStyle: TextStyle(
+                          color: color.xTextColor,
+                          fontSize: FONT_SMALL,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               )

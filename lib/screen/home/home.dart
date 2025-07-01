@@ -44,6 +44,7 @@ import '../dashboard/dashboard.dart';
 import '../message/message.dart';
 import '../people/people.dart';
 import '../zoo/zoo.dart';
+import '../../service/online_status_service.dart';
 
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 late BuildContext gContext;
@@ -177,6 +178,7 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    OnlineStatusService.instance.dispose();
     super.dispose();
   }
 
@@ -189,6 +191,13 @@ class _IHomeState extends State<IHome> with WidgetsBindingObserver {
 
     _buildFCM();
     _location();
+    
+    // Initialize online status service after user is loaded
+    Future.delayed(Duration(seconds: 2), () {
+      if (Mixin.user?.usrId != null) {
+        OnlineStatusService.instance.initialize(context);
+      }
+    });
   }
 
   Future<void> _checkPackage(BuildContext context) async {

@@ -20,6 +20,7 @@ import '../../../../mixin/mixins.dart';
 import '../../../../request/urls.dart';
 import '../../../component/button.dart';
 import '../../../component/loader.dart';
+import '../../../component/online_status_indicator.dart';
 import '../../../component/popup.dart';
 import '../../../component/profile_card.dart';
 import '../../../games/games.dart';
@@ -29,6 +30,7 @@ import '../../../model/user.dart';
 import '../../../provider/friends_provider.dart';
 import '../../../provider/like_provider.dart';
 import '../../../provider/nudge/nudge_sound_provider.dart';
+import '../../../provider/user/online_status_provider.dart';
 import '../../../provider/user_provider.dart';
 import '../../../request/posts.dart';
 import '../../../theme/custom_colors.dart';
@@ -73,6 +75,11 @@ class _IWinkserState extends State<IWinkser> {
       Provider.of<IFriendsProvider>(context, listen: false).refresh('',true);
       Provider.of<IPhotoProvider>(context, listen: false).refresh('',false);
       Provider.of<INudgeSoundProvider>(context, listen: false).refresh('',true);
+      
+      // Get online status for this user
+      if (Mixin.winkser?.usrId != null) {
+        Provider.of<OnlineStatusProvider>(context, listen: false).requestUserStatus(Mixin.winkser!.usrId);
+      }
     });
   }
 
@@ -189,16 +196,11 @@ class _IWinkserState extends State<IWinkser> {
                                       ),
                                     ) : Icon(Icons.person, size: 50, color: color.xPrimaryColor,),
                               Positioned(
-                                right: 30,
+                                right: 25,
                                 bottom: 3.r,
-                                child: Container(
-                                  width: 15.r,
-                                  height: 15.r,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green, // Online indicator color
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white, width: 1), // Border to match avatar
-                                  ),
+                                child: OnlineStatusIndicator(
+                                  userId: Mixin.winkser?.usrId,
+                                  size: 15.0,
                                 ),
                               ),
                             ],
@@ -219,6 +221,12 @@ class _IWinkserState extends State<IWinkser> {
                                 ),
                               ],
                             ),
+                          SizedBox(height: 6.h),
+                          OnlineStatusIndicator(
+                            userId: Mixin.winkser?.usrId,
+                            size: 16.0,
+                            showText: true,
+                          ),
                           SizedBox(height: 16.h,),
                           Column(
                             children: [

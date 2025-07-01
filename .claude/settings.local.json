@@ -4,7 +4,9 @@
       "Bash(rm:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter pub:*)"
     ],
     "deny": []
   }

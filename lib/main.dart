@@ -21,6 +21,7 @@ import 'package:winksy/provider/pet/pet_provider.dart';
 import 'package:winksy/provider/pet/wish_provider.dart';
 import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/provider/theme_provider.dart';
+import 'package:winksy/provider/user/online_status_provider.dart';
 import 'package:winksy/provider/user_provider.dart';
 import 'package:winksy/screen/splash/splash_screen.dart';
 import 'package:winksy/theme/theme_data_style.dart';
@@ -112,6 +113,8 @@ class MyApp extends StatelessWidget {
               create: (_) => IFameHallProvider().init()),
           ChangeNotifierProvider<INudgeSoundProvider>(
               create: (_) => INudgeSoundProvider().init()),
+          ChangeNotifierProvider<OnlineStatusProvider>(
+              create: (_) => OnlineStatusProvider()),
           ChangeNotifierProvider(create: (context) => AppModel(),
           ),
         ],
