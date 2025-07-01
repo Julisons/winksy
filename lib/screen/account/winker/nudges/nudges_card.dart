@@ -155,14 +155,14 @@ class _INudgeCardState extends State<INudgeCard> {
                           children: [
                             Icon(
                               _isPlaying ? Icons.stop : Icons.play_arrow,
-                              color: Colors.white,
+                              color: color.xTextColorSecondary,
                               size: 16.r,
                             ),
                             SizedBox(width: 4.w),
                             Text(
                               _isPlaying ? 'Stop' : 'Listen',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: color.xTextColorSecondary,
                                 fontSize: FONT_SMALL,
                                 fontWeight: FontWeight.w600,
                               ),
