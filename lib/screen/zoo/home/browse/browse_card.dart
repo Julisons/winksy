@@ -16,6 +16,7 @@ import 'package:winksy/screen/message/chat/chat.dart';
 
 import '../../../../component/button.dart';
 import '../../../../component/loader.dart';
+import '../../../../component/online_status_indicator.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../model/pet.dart';
@@ -63,33 +64,38 @@ class _IBrowseCardState extends State<IBrowseCard> {
         child: Row(
           children: [
             SizedBox(width: 3,),
-            ClipOval(
-              child: InkWell(
-                onTap: () {
-                  Mixin.winkser = User.fromJson(widget.pet.toJson());
-                  log("Winkser: ${Mixin.winkser?.usrId}");
-                  Mixin.navigate(context, IWinkser());
-                },
-                child: CachedNetworkImage(
-                  imageUrl: widget.pet.usrImage.toString(),
-                  width: 150.h,
-                  height: 150.h,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: xShimmerBase,
-                    highlightColor: xShimmerHighlight,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width/2,
-                    //  height: MediaQuery.of(context).size.width/2,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
+            OnlineStatusBadge(
+              userId: widget.pet.usrId,
+              badgeSize: 16.0,
+              alignment: Alignment.topRight,
+              child: ClipOval(
+                child: InkWell(
+                  onTap: () {
+                    Mixin.winkser = User.fromJson(widget.pet.toJson());
+                    log("Winkser: ${Mixin.winkser?.usrId}");
+                    Mixin.navigate(context, IWinkser());
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: widget.pet.usrImage.toString(),
+                    width: 150.h,
+                    height: 150.h,
+                    fit: BoxFit.fitHeight,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: xShimmerBase,
+                      highlightColor: xShimmerHighlight,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width/2,
+                      //  height: MediaQuery.of(context).size.width/2,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => CircleAvatar(
-                    backgroundColor: color.xSecondaryColor,
-                    child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      backgroundColor: color.xSecondaryColor,
+                      child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    ),
                   ),
                 ),
               ),
@@ -197,14 +203,16 @@ class _IBrowseCardState extends State<IBrowseCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Last Active: ',
+                        Text('Last Seen: ',
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
                             fontSize: FONT_13,
                           ),
                         ),
-                        Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
+                        Text(widget.pet.usrLastSeen != null 
+                            ? timeago.format(DateTime.parse(widget.pet.usrLastSeen))
+                            : 'Never',
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,

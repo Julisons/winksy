@@ -15,6 +15,7 @@ import 'package:vibration/vibration.dart';
 import '../../../../mixin/mixins.dart';
 import '../../../../request/urls.dart';
 import '../../../../theme/custom_colors.dart';
+import '../../../component/online_status_indicator.dart';
 import '../../../model/chat.dart';
 import '../../../model/user.dart';
 import '../message.dart';
@@ -59,23 +60,28 @@ class _IChatCardState extends State<IChatCard> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl: '${widget.chat.usrImage}'.startsWith('http') ? '${widget.chat.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${widget.chat.usrImage}',
-                    fit: BoxFit.cover,
-                    height: 70,
-                    width: 70,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: color.xSecondaryColor,
-                      highlightColor: color.xPrimaryColor,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
+                OnlineStatusBadge(
+                  userId: Mixin.user?.usrId == widget.chat.msgSenderId ? widget.chat.msgReceiverId : widget.chat.msgSenderId,
+                  badgeSize: 14.0,
+                  alignment: Alignment.topRight,
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: '${widget.chat.usrImage}'.startsWith('http') ? '${widget.chat.usrImage}' : '${IUrls.IMAGE_URL}/file/secured/${widget.chat.usrImage}',
+                      fit: BoxFit.cover,
+                      height: 70,
+                      width: 70,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: color.xSecondaryColor,
+                        highlightColor: color.xPrimaryColor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
                 SizedBox(width: 16.h),

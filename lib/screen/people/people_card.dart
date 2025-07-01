@@ -57,6 +57,7 @@ class _IPeopleCardState extends State<IPeopleCard> {
               OnlineStatusBadge(
                 userId: widget.user.usrId,
                 badgeSize: 16.0,
+                alignment: Alignment.topRight,
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
                   child: CachedNetworkImage(
@@ -149,7 +150,13 @@ class _IPeopleCardState extends State<IPeopleCard> {
                             ),*/
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(height: 2),
+                      OnlineStatusIndicator(
+                        userId: widget.user.usrId,
+                        size: 10.0,
+                        showText: true,
+                      ),
                     ],
                   ),
                 ),

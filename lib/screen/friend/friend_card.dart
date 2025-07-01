@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
+import '../../../component/online_status_indicator.dart';
 import '../../../mixin/mixins.dart';
 import '../../../request/urls.dart';
 import '../../../theme/custom_colors.dart';
@@ -51,29 +52,34 @@ class _IFriendCardState extends State<IFriendCard> {
           padding: EdgeInsets.all(.0.h),
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
-                child: CachedNetworkImage(
-                  imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
-                      : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
-                  width: MediaQuery.of(context).size.width/2,
-                  height: MediaQuery.of(context).size.width/1.2,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: color.xSecondaryColor,
-                    highlightColor:color.xPrimaryColor,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width/2,
-                    //  height: MediaQuery.of(context).size.width/2,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.white,
+              OnlineStatusBadge(
+                userId: widget.user.usrId,
+                badgeSize: 16.0,
+                alignment: Alignment.topRight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
+                  child: CachedNetworkImage(
+                    imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
+                        : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
+                    width: MediaQuery.of(context).size.width/2,
+                    height: MediaQuery.of(context).size.width/1.2,
+                    fit: BoxFit.fitHeight,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: color.xSecondaryColor,
+                      highlightColor:color.xPrimaryColor,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width/2,
+                      //  height: MediaQuery.of(context).size.width/2,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: color.xSecondaryColor,
-                    child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    errorWidget: (context, url, error) => Container(
+                      color: color.xSecondaryColor,
+                      child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    ),
                   ),
                 ),
               ),

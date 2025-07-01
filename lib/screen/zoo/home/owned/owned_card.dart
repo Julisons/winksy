@@ -178,14 +178,16 @@ class _IOwnedCardState extends State<IOwnedCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Last Active: ',
+                        Text('Last Seen: ',
                           style: TextStyle(
                             color: color.xTextColor,
                             fontWeight: FontWeight.normal,
                             fontSize: FONT_TITLE,
                           ),
                         ),
-                        Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
+                        Text(widget.pet.usrLastSeen != null 
+                            ? timeago.format(DateTime.parse(widget.pet.usrLastSeen))
+                            : 'Never',
                           style: TextStyle(
                             color: color.xTrailing,
                             fontWeight: FontWeight.bold,

@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
 import '../../../component/button.dart';
+import '../../../component/online_status_indicator.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/chat.dart';
@@ -54,28 +55,33 @@ class _IMatchCardState extends State<IMatchCard> {
           padding: EdgeInsets.all(.0.h),
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
-                child: CachedNetworkImage(
-                  imageUrl: widget.user.usrImage.toString(),
-                  width: MediaQuery.of(context).size.width/2,
-                  height: MediaQuery.of(context).size.width/1.2,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: xShimmerBase,
-                    highlightColor: xShimmerHighlight,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width/2,
-                    //  height: MediaQuery.of(context).size.width/2,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
+              OnlineStatusBadge(
+                userId: widget.user.usrId,
+                badgeSize: 16.0,
+                alignment: Alignment.topRight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.user.usrImage.toString(),
+                    width: MediaQuery.of(context).size.width/2,
+                    height: MediaQuery.of(context).size.width/1.2,
+                    fit: BoxFit.fitHeight,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: xShimmerBase,
+                      highlightColor: xShimmerHighlight,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width/2,
+                      //  height: MediaQuery.of(context).size.width/2,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => CircleAvatar(
-                    backgroundColor: color.xSecondaryColor,
-                    child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      backgroundColor: color.xSecondaryColor,
+                      child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
+                    ),
                   ),
                 ),
               ),

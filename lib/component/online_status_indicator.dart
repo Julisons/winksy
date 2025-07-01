@@ -66,6 +66,12 @@ class OnlineStatusIndicator extends StatelessWidget {
     String statusText = userStatus?.displayStatus ?? 'Offline';
     Color statusColor = userStatus?.isOnline == true ? Colors.green : color.xTextColor;
     IconData statusIcon = userStatus?.isOnline == true ? Icons.circle : Icons.circle_outlined;
+    bool isOnline = userStatus?.isOnline == true;
+    
+    // Hide the entire indicator when user is offline
+    if (!isOnline && showText) {
+      return SizedBox.shrink();
+    }
     
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -125,19 +131,20 @@ class OnlineStatusBadge extends StatelessWidget {
           children: [
             child,
             if (isOnline)
-              Positioned.fill(
-                child: Align(
-                  alignment: alignment,
-                  child: Container(
-                    width: badgeSize.r,
-                    height: badgeSize.r,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2,
-                      ),
+              Positioned(
+                top: alignment == Alignment.topRight || alignment == Alignment.topLeft ? 8.r : null,
+                bottom: alignment == Alignment.bottomRight || alignment == Alignment.bottomLeft ? 8.r : null,
+                right: alignment == Alignment.topRight || alignment == Alignment.bottomRight ? 8.r : null,
+                left: alignment == Alignment.topLeft || alignment == Alignment.bottomLeft ? 8.r : null,
+                child: Container(
+                  width: badgeSize.r,
+                  height: badgeSize.r,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
                     ),
                   ),
                 ),

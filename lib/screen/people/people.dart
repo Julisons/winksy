@@ -66,9 +66,8 @@ class _IPeopleState extends State<IPeople> {
               child: Stack(
                 alignment: AlignmentDirectional.centerStart,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('People',
                         style: GoogleFonts.poppins(
@@ -82,7 +81,7 @@ class _IPeopleState extends State<IPeople> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 4.h),
+                      SizedBox(width: 12.w),
                       OnlineUsersCounter(
                         textStyle: TextStyle(
                           color: color.xTextColor,

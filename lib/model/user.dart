@@ -54,6 +54,10 @@
 /// usrInstId : null
 /// usrCreatedBy : null
 /// usrUpdatedBy : null
+/// usrLastSeen : null
+/// usrAssets : null
+/// usrCash : null
+/// usrInterests : null
 /// usrDistance : "1.2 km"
 
 class User {
@@ -114,6 +118,10 @@ class User {
       dynamic usrInstId, 
       dynamic usrCreatedBy, 
       dynamic usrUpdatedBy, 
+      dynamic usrLastSeen,
+      dynamic usrAssets,
+      dynamic usrCash,
+      dynamic usrInterests,
       dynamic usrDistance,}){
     usrId = usrId;
     usrFullNames = usrFullNames;
@@ -171,6 +179,10 @@ class User {
     usrInstId = usrInstId;
     usrCreatedBy = usrCreatedBy;
     usrUpdatedBy = usrUpdatedBy;
+    usrLastSeen = usrLastSeen;
+    usrAssets = usrAssets;
+    usrCash = usrCash;
+    usrInterests = usrInterests;
     usrDistance = usrDistance;
 }
 
@@ -231,6 +243,10 @@ class User {
     usrInstId = json['usrInstId'];
     usrCreatedBy = json['usrCreatedBy'];
     usrUpdatedBy = json['usrUpdatedBy'];
+    usrLastSeen = json['usrLastSeen'];
+    usrAssets = json['usrAssets'];
+    usrCash = json['usrCash'];
+    usrInterests = json['usrInterests'];
     usrDistance = json['usrDistance'];
   }
   dynamic usrId;
@@ -289,6 +305,10 @@ class User {
   dynamic usrInstId;
   dynamic usrCreatedBy;
   dynamic usrUpdatedBy;
+  dynamic usrLastSeen;
+  dynamic usrAssets;
+  dynamic usrCash;
+  dynamic usrInterests;
   dynamic usrDistance;
 User copyWith({  dynamic usrId,
   dynamic usrFullNames,
@@ -346,6 +366,10 @@ User copyWith({  dynamic usrId,
   dynamic usrInstId,
   dynamic usrCreatedBy,
   dynamic usrUpdatedBy,
+  dynamic usrLastSeen,
+  dynamic usrAssets,
+  dynamic usrCash,
+  dynamic usrInterests,
   dynamic usrDistance,
 }) => User(  usrId: usrId ?? usrId,
   usrFullNames: usrFullNames ?? usrFullNames,
@@ -403,6 +427,10 @@ User copyWith({  dynamic usrId,
   usrInstId: usrInstId ?? usrInstId,
   usrCreatedBy: usrCreatedBy ?? usrCreatedBy,
   usrUpdatedBy: usrUpdatedBy ?? usrUpdatedBy,
+  usrLastSeen: usrLastSeen ?? usrLastSeen,
+  usrAssets: usrAssets ?? usrAssets,
+  usrCash: usrCash ?? usrCash,
+  usrInterests: usrInterests ?? usrInterests,
   usrDistance: usrDistance ?? usrDistance,
 );
 
@@ -465,6 +493,10 @@ User copyWith({  dynamic usrId,
     map['usrInstId'] = usrInstId;
     map['usrCreatedBy'] = usrCreatedBy;
     map['usrUpdatedBy'] = usrUpdatedBy;
+    map['usrLastSeen'] = usrLastSeen;
+    map['usrAssets'] = usrAssets;
+    map['usrCash'] = usrCash;
+    map['usrInterests'] = usrInterests;
     map['usrDistance'] = usrDistance;
     return map;
   }

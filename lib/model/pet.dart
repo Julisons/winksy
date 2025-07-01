@@ -82,6 +82,11 @@
 /// usrInstId : null
 /// usrCreatedBy : null
 /// usrUpdatedBy : null
+/// usrLastSeen : null
+/// usrAssets : null
+/// usrCash : null
+/// usrInterests : null
+/// usrDistance : null
 
 class Pet {
   Pet({
@@ -168,7 +173,12 @@ class Pet {
       dynamic usrPhoneData, 
       dynamic usrInstId, 
       dynamic usrCreatedBy, 
-      dynamic usrUpdatedBy,}){
+      dynamic usrUpdatedBy,
+      dynamic usrLastSeen,
+      dynamic usrAssets,
+      dynamic usrCash,
+      dynamic usrInterests,
+      dynamic usrDistance,}){
     petId = petId;
     petUsrId = petUsrId;
     petOwnerId = petOwnerId;
@@ -253,6 +263,11 @@ class Pet {
     usrInstId = usrInstId;
     usrCreatedBy = usrCreatedBy;
     usrUpdatedBy = usrUpdatedBy;
+    usrLastSeen = usrLastSeen;
+    usrAssets = usrAssets;
+    usrCash = usrCash;
+    usrInterests = usrInterests;
+    usrDistance = usrDistance;
 }
 
   Pet.fromJson(dynamic json) {
@@ -340,6 +355,11 @@ class Pet {
     usrInstId = json['usrInstId'];
     usrCreatedBy = json['usrCreatedBy'];
     usrUpdatedBy = json['usrUpdatedBy'];
+    usrLastSeen = json['usrLastSeen'];
+    usrAssets = json['usrAssets'];
+    usrCash = json['usrCash'];
+    usrInterests = json['usrInterests'];
+    usrDistance = json['usrDistance'];
   }
   dynamic petId;
   dynamic petUsrId;
@@ -425,6 +445,11 @@ class Pet {
   dynamic usrInstId;
   dynamic usrCreatedBy;
   dynamic usrUpdatedBy;
+  dynamic usrLastSeen;
+  dynamic usrAssets;
+  dynamic usrCash;
+  dynamic usrInterests;
+  dynamic usrDistance;
 Pet copyWith({  dynamic petId,
   dynamic petUsrId,
   dynamic petOwnerId,
@@ -509,6 +534,11 @@ Pet copyWith({  dynamic petId,
   dynamic usrInstId,
   dynamic usrCreatedBy,
   dynamic usrUpdatedBy,
+  dynamic usrLastSeen,
+  dynamic usrAssets,
+  dynamic usrCash,
+  dynamic usrInterests,
+  dynamic usrDistance,
 }) => Pet(  petId: petId ?? petId,
   petUsrId: petUsrId ?? petUsrId,
   petOwnerId: petOwnerId ?? petOwnerId,
@@ -593,6 +623,11 @@ Pet copyWith({  dynamic petId,
   usrInstId: usrInstId ?? usrInstId,
   usrCreatedBy: usrCreatedBy ?? usrCreatedBy,
   usrUpdatedBy: usrUpdatedBy ?? usrUpdatedBy,
+  usrLastSeen: usrLastSeen ?? usrLastSeen,
+  usrAssets: usrAssets ?? usrAssets,
+  usrCash: usrCash ?? usrCash,
+  usrInterests: usrInterests ?? usrInterests,
+  usrDistance: usrDistance ?? usrDistance,
 );
 
 
@@ -682,6 +717,11 @@ Pet copyWith({  dynamic petId,
     map['usrInstId'] = usrInstId;
     map['usrCreatedBy'] = usrCreatedBy;
     map['usrUpdatedBy'] = usrUpdatedBy;
+    map['usrLastSeen'] = usrLastSeen;
+    map['usrAssets'] = usrAssets;
+    map['usrCash'] = usrCash;
+    map['usrInterests'] = usrInterests;
+    map['usrDistance'] = usrDistance;
     return map;
   }
 

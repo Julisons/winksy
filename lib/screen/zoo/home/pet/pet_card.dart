@@ -183,7 +183,7 @@ class _IPetCardState extends State<IPetCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Last Active: ',
+                          Text('Last Seen: ',
                             style: TextStyle(
                               color: color.xTextColor,
                               fontWeight: FontWeight.normal,
@@ -191,7 +191,9 @@ class _IPetCardState extends State<IPetCard> {
                             ),
                           ),
                           Flexible(
-                            child: Text( timeago.format(DateTime.parse(widget.pet.petLastActiveTime)),
+                            child: Text(widget.pet.usrLastSeen != null 
+                                ? timeago.format(DateTime.parse(widget.pet.usrLastSeen))
+                                : 'Never',
                               style: TextStyle(
                                 color: color.xTrailing,
                                 fontWeight: FontWeight.bold,

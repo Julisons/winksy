@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../component/button.dart';
+import '../../../component/online_status_indicator.dart';
 import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/friend.dart';
@@ -44,39 +45,44 @@ class _IFriendRequestCardState extends State<IFriendRequestCard> {
           child: Row(
             children: [
               // Profile Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(30.r),
-                child: CachedNetworkImage(
-                  imageUrl: widget.friendRequest.frndUsrId?.toString().startsWith('http') == true
-                      ? widget.friendRequest.frndUsrId.toString()
-                      : '${IUrls.IMAGE_URL}/file/secured/${widget.friendRequest.frndUsrId}',
-                  width: 60.w,
-                  height: 60.w,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
+              OnlineStatusBadge(
+                userId: widget.friendRequest.frndUsrId,
+                badgeSize: 14.0,
+                alignment: Alignment.topRight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.r),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.friendRequest.frndUsrId?.toString().startsWith('http') == true
+                        ? widget.friendRequest.frndUsrId.toString()
+                        : '${IUrls.IMAGE_URL}/file/secured/${widget.friendRequest.frndUsrId}',
                     width: 60.w,
                     height: 60.w,
-                    decoration: BoxDecoration(
-                      color: color.xSecondaryColor,
-                      borderRadius: BorderRadius.circular(30.r),
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 60.w,
+                      height: 60.w,
+                      decoration: BoxDecoration(
+                        color: color.xSecondaryColor,
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        size: 30.r,
+                        color: color.xTextColor,
+                      ),
                     ),
-                    child: Icon(
-                      Icons.person,
-                      size: 30.r,
-                      color: color.xTextColor,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    width: 60.w,
-                    height: 60.w,
-                    decoration: BoxDecoration(
-                      color: color.xSecondaryColor,
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                    child: Icon(
-                      Icons.person,
-                      size: 30.r,
-                      color: color.xTextColor,
+                    errorWidget: (context, url, error) => Container(
+                      width: 60.w,
+                      height: 60.w,
+                      decoration: BoxDecoration(
+                        color: color.xSecondaryColor,
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        size: 30.r,
+                        color: color.xTextColor,
+                      ),
                     ),
                   ),
                 ),
