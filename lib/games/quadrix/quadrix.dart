@@ -37,12 +37,14 @@ class IQuadrix extends StatefulWidget {
 
 class _IQuadrixState extends State<IQuadrix> {
   late Timer _timer;
+  late Timer? _aiFallbackTimer;
   late var _loading = '...';
   final String loading1 = '.';
   final String loading2 = '..';
   final String loading3 = '...';
 
   var _waiting = 'Waiting for opponent';
+  bool _hasFoundOpponent = false;
 
   void _startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -63,16 +65,68 @@ class _IQuadrixState extends State<IQuadrix> {
     );
   }
 
+  void _startAIFallbackTimer() {
+    // Start 1.5-minute timer for AI fallback
+    _aiFallbackTimer = Timer(Duration(minutes: 1, seconds: 30), () {
+      if (!_hasFoundOpponent && mounted) {
+        print('🤖 No opponent found in 1.5 minutes - creating AI Guest opponent');
+        _createGuestOpponent();
+      }
+    });
+  }
+
+  void _createGuestOpponent() {
+    if (_hasFoundOpponent) return; // Safety check
+    
+    _hasFoundOpponent = true;
+    
+    // Create Guest user (AI opponent)
+    Mixin.winkser = User()
+      ..usrId = 'GUEST_AI_OPPONENT'
+      ..usrFullNames = 'Guest';
+    
+    // Set up quad for AI mode
+    Mixin.quad = Quad()
+      ..quadType = 'AI_MODE'
+      ..quadUser = Mixin.user?.usrFirstName
+      ..quadUsrId = Mixin.user?.usrId
+      ..quadAgainst = 'Guest'
+      ..quadAgainstId = 'GUEST_AI_OPPONENT'
+      ..quadFirstPlayerId = Mixin.user?.usrId
+      ..quadStatus = 'PAIRED'
+      ..quadDesc = 'Hard'; // Guest uses Hard difficulty (only mode available)
+
+    setState(() {
+      _timer.cancel();
+      _aiFallbackTimer?.cancel();
+      _loading = '';
+      _waiting = 'Gaming with Guest';
+
+      Future.delayed(Duration(seconds: 4), () {
+        if (mounted) {
+          Mixin.navigate(context, IQuadrixScreen());
+        }
+      });
+    });
+
+    // Disconnect socket since we're going AI mode
+    Mixin.quadrixSocket?.disconnect();
+    Mixin.quadrixSocket?.dispose();
+    Mixin.quadrixSocket = null;
+  }
+
   @override
   void initState() {
     super.initState();
     _initSocket();
     _startTimer();
+    _startAIFallbackTimer();
   }
 
   @override
   void dispose() {
     _timer.cancel();
+    _aiFallbackTimer?.cancel();
     super.dispose();
   }
 
@@ -168,6 +222,10 @@ class _IQuadrixState extends State<IQuadrix> {
       if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
         Mixin.vibrate();
         if(Mixin.quad?.quadStatus == PAIRED){
+          // Real opponent found - cancel AI fallback
+          _hasFoundOpponent = true;
+          _aiFallbackTimer?.cancel();
+          
           Mixin.winkser = User()
             ..usrId = Mixin.quad?.quadAgainstId
             ..usrFullNames = Mixin.quad?.quadAgainst;
@@ -190,6 +248,10 @@ class _IQuadrixState extends State<IQuadrix> {
          * I JOINED A WAITING USER
          */
       if(Mixin.user?.usrId.toString() == Mixin.quad?.quadAgainstId.toString()){
+        // Real opponent found - cancel AI fallback
+        _hasFoundOpponent = true;
+        _aiFallbackTimer?.cancel();
+        
         Mixin.vibrate();
         Mixin.winkser = User()
           ..usrId = Mixin.quad?.quadUsrId

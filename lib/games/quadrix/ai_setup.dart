@@ -76,7 +76,7 @@ class _IAISetupState extends State<IAISetup> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: FONT_13,
-                          color: Colors.white70,
+                          color: Colors.white,
                         ),
                       ),
                     ],

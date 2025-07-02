@@ -227,7 +227,8 @@ class GameBoardState extends State<GameBoard> {
 
       // Set player turn message based on game mode
       if (Mixin.quad?.quadType == 'AI_MODE') {
-        quadPlayer = 'AI thinking...';
+        // Show opponent's name instead of "AI thinking"
+        quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
       } else {
         if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
           quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
@@ -258,8 +259,14 @@ class GameBoardState extends State<GameBoard> {
         //stop the game if the game has ended
         if (result != Result.play) {
           setState(() {});
-          quadPlayer = result == Result.draw ? 'It\'s a tie!' : 
-                      result == Result.player1 ? 'You won!' : 'AI won!';
+          if (result == Result.draw) {
+            quadPlayer = 'It\'s a tie!';
+          } else if (result == Result.player1) {
+            quadPlayer = 'You won!';
+          } else {
+            // Show opponent's name instead of "AI won!"
+            quadPlayer = '${Mixin.quad?.quadAgainst} won!';
+          }
         } else {
           // AI makes a move - showing real computation time only
           _makeAIMove();
@@ -464,8 +471,14 @@ class GameBoardState extends State<GameBoard> {
     
     if (result != Result.play) {
       setState(() {});
-      quadPlayer = result == Result.draw ? 'It\'s a tie!' : 
-                  result == Result.player1 ? 'You won!' : 'AI won!';
+      if (result == Result.draw) {
+        quadPlayer = 'It\'s a tie!';
+      } else if (result == Result.player1) {
+        quadPlayer = 'You won!';
+      } else {
+        // Show opponent's name instead of "AI won!"
+        quadPlayer = '${Mixin.quad?.quadAgainst} won!';
+      }
     } else {
       setState(() {
         quadPlayer = 'Your turn';

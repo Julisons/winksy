@@ -39,11 +39,15 @@ int getHardMove(List<List<int>> board) {
     }
   }
   
-  // 3. Block user's 3-in-a-row threats
+  // 3. Block user's 3-in-a-row threats (but safely)
   int blockColumn = findThreeInARowToBlock(board);
   if (blockColumn != -1) {
-    print('🛡️ AI blocking user threat in column $blockColumn');
-    return blockColumn;
+    if (!doesMoveGiftOpponentWin(board, blockColumn)) {
+      print('🛡️ AI safely blocking user threat in column $blockColumn');
+      return blockColumn;
+    } else {
+      print('⚠️ Blocking move in column $blockColumn would gift user a win - SKIPPING');
+    }
   }
   
   // 3. Block immediate opponent win (but not if AI move there also causes opponent win)
