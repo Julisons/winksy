@@ -20,8 +20,6 @@ class IAISetup extends StatefulWidget {
 }
 
 class _IAISetupState extends State<IAISetup> {
-  String selectedDifficulty = 'Medium';
-  final List<String> difficulties = ['Easy', 'Medium', 'Hard'];
   
   @override
   Widget build(BuildContext context) {
@@ -49,7 +47,7 @@ class _IAISetupState extends State<IAISetup> {
               FaIcon(FontAwesomeIcons.robot,size: 60.w,),
               SizedBox(height: 20.h),
               Text(
-                'Choose AI Difficulty',
+                'AI Challenge',
                 style: GoogleFonts.poppins(
                   fontSize: FONT_TITLE,
                   fontWeight: FontWeight.bold,
@@ -57,41 +55,35 @@ class _IAISetupState extends State<IAISetup> {
                 ),
               ),
               SizedBox(height: 30.h),
-              ...difficulties.map((difficulty) => Container(
-                margin: EdgeInsets.only(bottom: 12.r),
-                child: Card(
-                  color: selectedDifficulty == difficulty 
-                      ? color.xTrailingAlt 
-                      : color.xSecondaryColor,
-                  elevation: ELEVATION,
-                  child: ListTile(
-                    title: Text(
-                      difficulty,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: FONT_TITLE,
-                        color: selectedDifficulty == difficulty 
-                            ? Colors.white 
-                            : color.xTextColorSecondary,
+              Card(
+                color: color.xTrailingAlt,
+                elevation: ELEVATION,
+                child: Padding(
+                  padding: EdgeInsets.all(16.r),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Expert AI',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: FONT_TITLE,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      _getDifficultyDescription(difficulty),
-                      style: TextStyle(
-                        fontSize: FONT_13,
-                        color: selectedDifficulty == difficulty 
-                            ? Colors.white70 
-                            : color.xTextColor,
+                      SizedBox(height: 8.h),
+                      Text(
+                        'Advanced negamax algorithm with deep tactical analysis and comprehensive threat detection',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: FONT_13,
+                          color: Colors.white70,
+                        ),
                       ),
-                    ),
-                    onTap: () {
-                      setState(() {
-                        selectedDifficulty = difficulty;
-                      });
-                    },
+                    ],
                   ),
                 ),
-              )).toList(),
+              ),
+              SizedBox(height: 20.h),
               Spacer(),
               IButton(
                 text: 'Start AI Game',
@@ -111,33 +103,20 @@ class _IAISetupState extends State<IAISetup> {
     );
   }
 
-  String _getDifficultyDescription(String difficulty) {
-    switch (difficulty) {
-      case 'Easy':
-        return 'Perfect for beginners - AI makes random moves 70% of the time';
-      case 'Medium':
-        return 'Good challenge - AI detects threats and uses basic tactics';
-      case 'Hard':
-        return 'Expert level - Advanced negamax algorithm with tactical analysis';
-      default:
-        return '';
-    }
-  }
-
   void _startAIGame() {
     Mixin.quad = Quad()
       ..quadType = 'AI_MODE'
       ..quadUser = Mixin.user?.usrFirstName
       ..quadUsrId = Mixin.user?.usrId
-      ..quadAgainst = 'AI ($selectedDifficulty)'
+      ..quadAgainst = 'Expert AI'
       ..quadAgainstId = 'AI_OPPONENT'
       ..quadFirstPlayerId = Mixin.user?.usrId
       ..quadStatus = 'PAIRED'
-      ..quadDesc = selectedDifficulty;
+      ..quadDesc = 'Hard';
 
     Mixin.winkser = User()
       ..usrId = 'AI_OPPONENT'
-      ..usrFullNames = 'AI ($selectedDifficulty)';
+      ..usrFullNames = 'Expert AI';
 
     Mixin.navigate(context, IQuadrixScreen());
   }

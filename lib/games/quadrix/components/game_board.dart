@@ -406,19 +406,28 @@ class GameBoardState extends State<GameBoard> {
     List<List<int>> board = List.generate(ai.rows, (r) => 
         List.generate(ai.cols, (c) => gameState[r][c]['value'] as int));
     
+    // Debug: Print current board state
+    debugPrint('AI analyzing board:');
+    for (int r = 0; r < ai.rows; r++) {
+      debugPrint(board[r].toString());
+    }
+    
     // Get AI difficulty from quad description
     String difficulty = Mixin.quad?.quadDesc ?? 'Medium';
+    debugPrint('AI difficulty: $difficulty');
     
     // Get AI move with timeout protection
     int aiColumn = -1;
     try {
       // Add a small delay for user experience and computation time
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future.delayed(Duration(milliseconds: 500)); // Increased delay for better UX
       aiColumn = ai.getAIMove(board, difficulty: difficulty);
+      debugPrint('AI selected column: $aiColumn');
     } catch (e) {
       print('AI error: $e');
       // Fallback to center column
       aiColumn = 3;
+      debugPrint('AI fallback to center column');
     }
     
     // Validate AI move
