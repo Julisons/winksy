@@ -118,52 +118,80 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                     color: color.xSecondaryColor,
                     elevation: ELEVATION,
                     margin: EdgeInsets.only(bottom: 16.r),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.only(
-                        left: 20.r,
-                        right: 12.r,
-                        bottom: 12.r,
-                        top: 12.r,
-                      ),
-                      leading: Icon(
-                        Icons.arrow_forward_ios,
-                        color: color.xTextColorSecondary,
-                      ),
-                      title: Text(
-                        items[index].title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: FONT_TITLE,
-                          color: color.xTextColorSecondary,
-                        ),
-                      ),
-                      subtitle: Padding(
-                        padding: EdgeInsets.only(top: 6.r),
-                        child: Text(
-                          items[index].desc,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: FONT_13,
-                            color: color.xTextColor,
+                    child: SizedBox(
+                      height: 100.h,
+                      child: Stack(
+                        children: [
+                          ListTile(
+                            contentPadding: EdgeInsets.only(
+                              left: 20.r,
+                              right: 12.r,
+                              bottom: 12.r,
+                              top: 12.r,
+                            ),
+                            leading: Icon(
+                              Icons.arrow_forward_ios,
+                              color: color.xTextColorSecondary,
+                            ),
+                            title: Text(
+                              items[index].title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: FONT_TITLE,
+                                color: color.xTextColorSecondary,
+                              ),
+                            ),
+                            subtitle: Padding(
+                              padding: EdgeInsets.only(top: 6.r),
+                              child: Text(
+                                items[index].desc,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: FONT_13,
+                                  color: color.xTextColor,
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              switch (items[index].title.toUpperCase()) {
+                                case 'START GAME':
+                                  Mixin.navigate(context, ITicTacToe());
+                                  break;
+                                case 'AI CHALLENGE':
+                                  Mixin.navigate(context, ITicTacToeAISetup());
+                                  break;
+                                case 'HOW TO PLAY':
+                                  Mixin.navigate(context, ITicTacToePromotion());
+                                  break;
+                                case 'HALL OF FAME':
+                                  Mixin.navigate(context, IFameHall(quadType: TIC_TAC_TOE));
+                                  break;
+                              }
+                            },
                           ),
-                        ),
+                          // New label for AI Challenge
+                          if (items[index].title == 'AI Challenge')
+                            Positioned(
+                              top: 8.r,
+                              right: 8.r,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 4.r),
+                                decoration: BoxDecoration(
+                                  color: color.xTrailingAlt,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: Text(
+                                  'NEW',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                      onTap: () {
-                        switch (items[index].title.toUpperCase()) {
-                          case 'START GAME':
-                            Mixin.navigate(context, ITicTacToe());
-                            break;
-                          case 'AI CHALLENGE':
-                            Mixin.navigate(context, ITicTacToeAISetup());
-                            break;
-                          case 'HOW TO PLAY':
-                            Mixin.navigate(context, ITicTacToePromotion());
-                            break;
-                          case 'HALL OF FAME':
-                            Mixin.navigate(context, IFameHall(quadType: TIC_TAC_TOE));
-                            break;
-                        }
-                      },
                     ),
                   );
                 },

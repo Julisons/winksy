@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/mixin/constants.dart';
@@ -35,7 +36,7 @@ class _IAISetupState extends State<IAISetup> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              color.xSecondaryColor,
+              color.xPrimaryColor,
               color.xPrimaryColor,
             ],
           ),
@@ -45,11 +46,7 @@ class _IAISetupState extends State<IAISetup> {
           child: Column(
             children: [
               SizedBox(height: 50.h),
-              Icon(
-                Icons.smart_toy,
-                size: 80.r,
-                color: color.xTrailingAlt,
-              ),
+              FaIcon(FontAwesomeIcons.robot,size: 60.w,),
               SizedBox(height: 20.h),
               Text(
                 'Choose AI Difficulty',
@@ -98,7 +95,7 @@ class _IAISetupState extends State<IAISetup> {
               Spacer(),
               IButton(
                 text: 'Start AI Game',
-                color: color.xTrailingAlt,
+                color: color.xTrailing,
                 textColor: Colors.white,
                 height: 50.h,
                 width: double.infinity,
@@ -106,7 +103,7 @@ class _IAISetupState extends State<IAISetup> {
                   _startAIGame();
                 },
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 40.h),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe_game.dart';
 import 'package:winksy/mixin/constants.dart';
@@ -35,7 +36,7 @@ class _ITicTacToeAISetupState extends State<ITicTacToeAISetup> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              color.xSecondaryColor,
+              color.xPrimaryColor,
               color.xPrimaryColor,
             ],
           ),
@@ -45,11 +46,7 @@ class _ITicTacToeAISetupState extends State<ITicTacToeAISetup> {
           child: Column(
             children: [
               SizedBox(height: 50.h),
-              Icon(
-                Icons.smart_toy,
-                size: 80.r,
-                color: Colors.green,
-              ),
+              FaIcon(FontAwesomeIcons.robot,size: 60.w,),
               SizedBox(height: 20.h),
               Text(
                 'Choose AI Difficulty',
@@ -64,7 +61,7 @@ class _ITicTacToeAISetupState extends State<ITicTacToeAISetup> {
                 margin: EdgeInsets.only(bottom: 12.r),
                 child: Card(
                   color: selectedDifficulty == difficulty 
-                      ? Colors.green 
+                      ? color.xTrailingAlt 
                       : color.xSecondaryColor,
                   elevation: ELEVATION,
                   child: ListTile(
@@ -98,7 +95,7 @@ class _ITicTacToeAISetupState extends State<ITicTacToeAISetup> {
               Spacer(),
               IButton(
                 text: 'Start AI Game',
-                color: Colors.green,
+                color: color.xTrailing,
                 textColor: Colors.white,
                 height: 50.h,
                 width: double.infinity,
@@ -106,7 +103,7 @@ class _ITicTacToeAISetupState extends State<ITicTacToeAISetup> {
                   _startAIGame();
                 },
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 40.h),
             ],
           ),
         ),
