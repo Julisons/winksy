@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -98,14 +99,166 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
 
 
   void autoPlayer() {
-    Map<String, int>? cell = emptyCells();
-    var row = cell?['row'] ?? 0;
-    var col = cell?['col'] ?? 0;
+    if (Mixin.quad?.quadType == 'AI_MODE') {
+      _aiMove();
+    } else {
+      Map<String, int>? cell = emptyCells();
+      var row = cell?['row'] ?? 0;
+      var col = cell?['col'] ?? 0;
 
-    if (board[row][col].isEmpty) {
-      _localPlay(row, col);
-    }else{
-      debugPrint(" ----------IKO----$row-----coin--$col------------");
+      if (board[row][col].isEmpty) {
+        _localPlay(row, col);
+      } else {
+        debugPrint(" ----------IKO----$row-----coin--$col------------");
+      }
+    }
+  }
+
+  void _aiMove() {
+    String difficulty = Mixin.quad?.quadDesc ?? 'Medium';
+    Map<String, int>? move;
+
+    switch (difficulty) {
+      case 'Easy':
+        move = _getEasyAIMove();
+        break;
+      case 'Medium':
+        move = _getMediumAIMove();
+        break;
+      case 'Hard':
+        move = _getHardAIMove();
+        break;
+      default:
+        move = _getMediumAIMove();
+    }
+
+    if (move != null) {
+      int row = move['row']!;
+      int col = move['col']!;
+      
+      if (board[row][col].isEmpty) {
+        setState(() {
+          board[row][col] = currentPlayer;
+          currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+          quadPlayer = 'Your turn';
+          play = true;
+          _startTimer();
+        });
+
+        String winner = checkForWinner();
+        if (winner.isNotEmpty) {
+          _end(winner);
+          showWinnerDialog(winner, REMOTE);
+        }
+      }
+    }
+  }
+
+  Map<String, int>? _getEasyAIMove() {
+    Random random = Random();
+    if (random.nextDouble() < 0.3) {
+      return _getBestMove();
+    }
+    return emptyCells();
+  }
+
+  Map<String, int>? _getMediumAIMove() {
+    Map<String, int>? winMove = _findWinningMove('O');
+    if (winMove != null) return winMove;
+    
+    Map<String, int>? blockMove = _findWinningMove('X');
+    if (blockMove != null) return blockMove;
+    
+    if (board[1][1].isEmpty) return {'row': 1, 'col': 1};
+    
+    List<Map<String, int>> corners = [
+      {'row': 0, 'col': 0}, {'row': 0, 'col': 2},
+      {'row': 2, 'col': 0}, {'row': 2, 'col': 2}
+    ];
+    
+    for (var corner in corners) {
+      if (board[corner['row']!][corner['col']!].isEmpty) {
+        return corner;
+      }
+    }
+    
+    return emptyCells();
+  }
+
+  Map<String, int>? _getHardAIMove() {
+    return _getBestMove();
+  }
+
+  Map<String, int>? _findWinningMove(String player) {
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (board[i][j].isEmpty) {
+          board[i][j] = player;
+          if (checkForWinner() == player) {
+            board[i][j] = '';
+            return {'row': i, 'col': j};
+          }
+          board[i][j] = '';
+        }
+      }
+    }
+    return null;
+  }
+
+  Map<String, int>? _getBestMove() {
+    int bestScore = -1000;
+    Map<String, int>? bestMove;
+
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (board[i][j].isEmpty) {
+          board[i][j] = 'O';
+          int score = _minimax(board, 0, false);
+          board[i][j] = '';
+          
+          if (score > bestScore) {
+            bestScore = score;
+            bestMove = {'row': i, 'col': j};
+          }
+        }
+      }
+    }
+    return bestMove;
+  }
+
+  int _minimax(List<List<String>> board, int depth, bool isMaximizing) {
+    String winner = checkForWinner();
+    
+    if (winner == 'O') return 10 - depth;
+    if (winner == 'X') return depth - 10;
+    if (winner == 'Draw') return 0;
+
+    if (isMaximizing) {
+      int bestScore = -1000;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          if (board[i][j].isEmpty) {
+            board[i][j] = 'O';
+            int score = _minimax(board, depth + 1, false);
+            board[i][j] = '';
+            bestScore = math.max(score, bestScore);
+          }
+        }
+      }
+      return bestScore;
+    } else {
+      int bestScore = 1000;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          if (board[i][j].isEmpty) {
+            board[i][j] = 'X';
+            int score = _minimax(board, depth + 1, true);
+            board[i][j] = '';
+            bestScore = math.min(score, bestScore);
+          }
+        }
+      }
+      return bestScore;
     }
   }
 
@@ -113,33 +266,41 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
     /**
      * IF ITS NOT YOUR TURN , DON'T PLAY
      */
-    if(_quad.quadPlayerId == null){
-      if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
-        return;
-      }
-    }else {
-      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
-        return;
+    if (Mixin.quad?.quadType != 'AI_MODE') {
+      if(_quad.quadPlayerId == null){
+        if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+          return;
+        }
+      }else {
+        if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+          return;
+        }
       }
     }
     Mixin.vibe();
     AudioPlayer().play(AssetSource('audio/sound/tick.wav')); // Your sound file
 
-    if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
-      quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
-    }else {
-      quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+    if (Mixin.quad?.quadType == 'AI_MODE') {
+      quadPlayer = 'AI\'s turn';
+    } else {
+      if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+        quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+      }else {
+        quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+      }
     }
 
-    Quad quad = Quad()
-      ..quadRow = row
-      ..quadColumn = col
-      ..quadUsrId = Mixin.user?.usrId
-      ..quadPlayer = Mixin.user?.usrFirstName
-      ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
-      ..quadId = Mixin.quad?.quadId;
+    if (Mixin.quad?.quadType != 'AI_MODE') {
+      Quad quad = Quad()
+        ..quadRow = row
+        ..quadColumn = col
+        ..quadUsrId = Mixin.user?.usrId
+        ..quadPlayer = Mixin.user?.usrFirstName
+        ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
+        ..quadId = Mixin.quad?.quadId;
 
-    Mixin.quadrixSocket?.emit('played', quad.toJson());
+      Mixin.quadrixSocket?.emit('played', quad.toJson());
+    }
 
     /**
      * RESTART COUNTER
@@ -165,16 +326,21 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
       String winner = checkForWinner();
 
       if (winner.isNotEmpty) {
+        if (Mixin.quad?.quadType != 'AI_MODE') {
+          Quad quad = Quad()
+            ..quadState = winner.toUpperCase()
+            ..quadWinnerId = Mixin.user?.usrId
+            ..quadId = Mixin.quad?.quadId;
 
-        Quad quad = Quad()
-          ..quadState = winner.toUpperCase()
-          ..quadWinnerId = Mixin.user?.usrId
-          ..quadId = Mixin.quad?.quadId;
-
-        Mixin.quadrixSocket?.emit('win', quad.toJson());
+          Mixin.quadrixSocket?.emit('win', quad.toJson());
+        }
 
         _end(winner);
         showWinnerDialog(winner, LOCAL);
+      } else if (Mixin.quad?.quadType == 'AI_MODE') {
+        Timer(Duration(milliseconds: 500), () {
+          _aiMove();
+        });
       }
     }
   }

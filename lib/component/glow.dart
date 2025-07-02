@@ -90,12 +90,10 @@ class _GlowingXDemoState extends State<GlowingXDemo>
               children: [
                 GlowingXText(size: 40, color: Colors.red),
                 GlowingXText(size: 50, color: Colors.blue),
-                GlowingXText(size: 60, color: color.xTrailingAlt),
+                GlowingXText(size: 60, color: Colors.green),
               ],
             ),
-
             SizedBox(height: 40),
-
             // Animated Pulsing X
             SectionTitle('Animated Pulsing X'),
             SizedBox(height: 20),

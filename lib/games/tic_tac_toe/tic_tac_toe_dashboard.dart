@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/quadrix/quadrix.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe.dart';
 import 'package:winksy/games/tic_tac_toe/tic_tac_toe_promotion.dart';
+import 'package:winksy/games/tic_tac_toe/ai_setup.dart';
 import 'package:winksy/mixin/constants.dart';
 import 'package:winksy/screen/zoo/zoo.dart';
 
@@ -49,6 +50,7 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
 
   final List<ListItem> items = [
     ListItem(title: 'Start Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
+    ListItem(title: 'AI Challenge', desc: 'Play against AI with different difficulty levels', icon: Icons.smart_toy,),
     ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
     ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
@@ -150,6 +152,9 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                         switch (items[index].title.toUpperCase()) {
                           case 'START GAME':
                             Mixin.navigate(context, ITicTacToe());
+                            break;
+                          case 'AI CHALLENGE':
+                            Mixin.navigate(context, ITicTacToeAISetup());
                             break;
                           case 'HOW TO PLAY':
                             Mixin.navigate(context, ITicTacToePromotion());
