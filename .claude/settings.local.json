@@ -6,7 +6,9 @@
       "Bash(rg:*)",
       "Bash(grep:*)",
       "Bash(flutter analyze:*)",
-      "Bash(flutter pub:*)"
+      "Bash(flutter pub:*)",
+      "Bash(dart format:*)",
+      "Bash(dart analyze:*)"
     ],
     "deny": []
   }
