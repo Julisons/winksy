@@ -18,8 +18,10 @@ import '../chess/chess_dashboard.dart';
 import 'component/ludo_sync.dart';
 import 'ludo.dart';
 import 'ludo_promotion.dart';
+import 'ai_setup.dart';
 
 final List<ListItem> items = [
+  ListItem(title: 'AI Challenge', desc: 'Play against AI with different difficulty levels', icon: Icons.smart_toy),
   ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
   ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
 ];
@@ -180,24 +182,55 @@ class ILudoDashboardState extends State<ILudoDashboard> {
                   color: color.xSecondaryColor,
                   elevation: ELEVATION,
                   margin: EdgeInsets.only(bottom: 16.r),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
-                    leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
-                    title: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
-                    subtitle: Padding(
-                      padding:  EdgeInsets.only(top: 6.r),
-                      child: Text(item.desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
-                    ),
-                    onTap: () {
-                      switch(item.title.toUpperCase()){
-                        case 'HOW TO PLAY':
-                          Mixin.navigate(context, ILudoPromotion());
-                          break;
-                        case 'HALL OF FAME':
+                  child: SizedBox(
+                    height: 100.h,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.only(left: 20.r, right: 12.r,bottom: 12.r,top: 12.r),
+                          leading: Icon(Icons.arrow_forward_ios, color: color.xTextColorSecondary,),
+                          title: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_TITLE,color: color.xTextColorSecondary)),
+                          subtitle: Padding(
+                            padding:  EdgeInsets.only(top: 6.r),
+                            child: Text(item.desc,style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_13,color: color.xTextColor)),
+                          ),
+                          onTap: () {
+                            switch(item.title.toUpperCase()){
+                              case 'AI CHALLENGE':
+                                Mixin.navigate(context, ILudoAISetup());
+                                break;
+                              case 'HOW TO PLAY':
+                                Mixin.navigate(context, ILudoPromotion());
+                                break;
+                              case 'HALL OF FAME':
 
-                          break;
-                      }
-                    },
+                                break;
+                            }
+                          },
+                        ),
+                        // New label for AI Challenge
+                        if (item.title == 'AI Challenge')
+                          Positioned(
+                            top: 8.r,
+                            right: 8.r,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 4.r),
+                              decoration: BoxDecoration(
+                                color: color.xTrailingAlt,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Text(
+                                'NEW',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 )).toList(),
               ),

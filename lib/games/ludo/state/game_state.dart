@@ -89,6 +89,8 @@ class GameState {
         break;
       case 'RP':
         EventBus().emit(BlinkRedBaseEvent());
+        // Trigger AI turn if it's AI mode and red player's turn
+        EventBus().emit(AITurnEvent());
         break;
       case 'YP':
         EventBus().emit(BlinkYellowBaseEvent());

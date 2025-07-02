@@ -7,6 +7,7 @@ import 'package:flame/game.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'dart:math' as math;
 
 import '../../mixin/mixins.dart';
 import '../../model/quad.dart' as Q;
@@ -28,9 +29,12 @@ import 'component/ui_components/rank_modal_component.dart';
 class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDetector {
   List<String> teams;
   final BuildContext context;
+  static Ludo? _instance;
 
   // Add an unnamed constructor
-  Ludo(this.teams, this.context);
+  Ludo(this.teams, this.context) {
+    _instance = this;
+  }
 
   final rand = Random();
   double get width => size.x;
@@ -117,6 +121,10 @@ class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDete
       blinkRedBase(false);
     });
 
+    EventBus().on<AITurnEvent>((event) {
+      _triggerAITurn();
+    });
+
     await startGame();
   }
 
@@ -144,6 +152,298 @@ class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDete
         //quadPlayer = '${_quad.quadPlayer}\'s turn';
       }
     });
+  }
+
+  void _triggerAITurn() {
+    if (Mixin.quad?.quadType != 'AI_MODE') return;
+    
+    final currentPlayer = GameState().currentPlayer;
+    if (currentPlayer.playerId == 'RP') { // AI player is red
+      Future.delayed(Duration(milliseconds: 1000), () {
+        _performAIMove();
+      });
+    }
+  }
+
+  void _performAIMove() {
+    final currentPlayer = GameState().currentPlayer;
+    if (currentPlayer.playerId != 'RP' || !currentPlayer.enableDice) return;
+
+    // Find the appropriate dice for AI player (Red - upper left)
+    final upperController = world.children.whereType<UpperController>().first;
+    final upperControllerComponents = upperController.children.toList();
+    final leftDice = upperControllerComponents[0]
+        .children
+        .whereType<RectangleComponent>()
+        .first;
+    final rightDiceContainer = leftDice.children.whereType<RectangleComponent>().first;
+    final ludoDice = rightDiceContainer.children.whereType<LudoDice>().firstOrNull;
+
+    if (ludoDice != null) {
+      _aiRollDice(ludoDice);
+    }
+  }
+
+  void _aiRollDice(LudoDice dice) async {
+    final player = GameState().currentPlayer;
+    if (!player.enableDice || !player.isCurrentTurn) return;
+
+    GameState().hidePointer();
+    player.enableDice = false;
+
+    // AI rolls dice
+    GameState().diceNumber = Random().nextInt(6) + 1;
+    dice.diceFace.updateDiceValue(GameState().diceNumber);
+
+    // Apply dice rotation effect
+    dice.add(
+      RotateEffect.by(
+        math.pi * 2, // Full 360-degree rotation (2π radians)
+        EffectController(
+          duration: 0.3,
+          curve: Curves.linear,
+        ),
+      ),
+    );
+
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    final world = this.world;
+    final diceNumber = GameState().diceNumber;
+
+    if (diceNumber == 6) {
+      _aiHandleSixRoll(world, GameState().ludoBoard as LudoBoard, diceNumber, player);
+    } else {
+      _aiHandleNonSixRoll(world, GameState().ludoBoard as LudoBoard, diceNumber, player);
+    }
+  }
+
+  void _aiHandleSixRoll(World world, LudoBoard ludoBoard, int diceNumber, Player player) {
+    player.grantAnotherTurn();
+
+    if (player.hasRolledThreeConsecutiveSixes()) {
+      GameState().switchToNextPlayer();
+      return;
+    }
+
+    final tokensInBase = player.tokens
+        .where((token) => token.state == TokenState.inBase)
+        .toList();
+    final tokensOnBoard = player.tokens
+        .where((token) => token.state == TokenState.onBoard)
+        .toList();
+    final movableTokens = tokensOnBoard.where((token) => token.spaceToMove()).toList();
+
+    final allMovableTokens = [...movableTokens, ...tokensInBase];
+
+    if (allMovableTokens.isEmpty) {
+      GameState().switchToNextPlayer();
+      return;
+    }
+
+    String difficulty = Mixin.quad?.quadDesc ?? 'Medium';
+    Token? selectedToken = _aiSelectToken(tokensInBase, movableTokens, diceNumber, difficulty);
+
+    if (selectedToken != null) {
+      Future.delayed(Duration(milliseconds: 500), () {
+        if (selectedToken.state == TokenState.inBase) {
+          moveOutOfBase(
+            world: world,
+            token: selectedToken,
+            tokenPath: GameState().getTokenPath(player.playerId),
+          );
+        } else {
+          moveForward(
+            world: world,
+            token: selectedToken,
+            tokenPath: GameState().getTokenPath(player.playerId),
+            diceNumber: diceNumber,
+          );
+        }
+      });
+    } else {
+      GameState().switchToNextPlayer();
+    }
+  }
+
+  void _aiHandleNonSixRoll(World world, LudoBoard ludoBoard, int diceNumber, Player player) {
+    final tokensOnBoard = player.tokens
+        .where((token) => token.state == TokenState.onBoard)
+        .toList();
+
+    if (tokensOnBoard.isEmpty) {
+      GameState().switchToNextPlayer();
+      return;
+    }
+
+    final movableTokens = tokensOnBoard.where((token) => token.spaceToMove()).toList();
+
+    if (movableTokens.isEmpty) {
+      GameState().switchToNextPlayer();
+      return;
+    }
+
+    String difficulty = Mixin.quad?.quadDesc ?? 'Medium';
+    Token? selectedToken = _aiSelectToken([], movableTokens, diceNumber, difficulty);
+
+    if (selectedToken != null) {
+      Future.delayed(Duration(milliseconds: 500), () {
+        moveForward(
+          world: world,
+          token: selectedToken,
+          tokenPath: GameState().getTokenPath(player.playerId),
+          diceNumber: diceNumber,
+        );
+      });
+    } else {
+      GameState().switchToNextPlayer();
+    }
+  }
+
+  Token? _aiSelectToken(List<Token> tokensInBase, List<Token> movableTokens, int diceNumber, String difficulty) {
+    List<Token> allOptions = [...tokensInBase, ...movableTokens];
+    if (allOptions.isEmpty) return null;
+
+    switch (difficulty) {
+      case 'Easy':
+        return _aiSelectTokenEasy(allOptions);
+      case 'Medium':
+        return _aiSelectTokenMedium(allOptions, diceNumber);
+      case 'Hard':
+        return _aiSelectTokenHard(allOptions, diceNumber);
+      default:
+        return _aiSelectTokenMedium(allOptions, diceNumber);
+    }
+  }
+
+  Token? _aiSelectTokenEasy(List<Token> tokens) {
+    // Easy: Random selection with slight preference for tokens closer to home
+    if (tokens.isEmpty) return null;
+    final random = Random();
+    return tokens[random.nextInt(tokens.length)];
+  }
+
+  Token? _aiSelectTokenMedium(List<Token> tokens, int diceNumber) {
+    if (tokens.isEmpty) return null;
+
+    // Medium: Prioritize tokens that can attack opponents or advance safely
+    final playerTokens = GameState().players
+        .where((p) => p.playerId != 'RP')
+        .expand((p) => p.tokens)
+        .where((t) => t.state == TokenState.onBoard)
+        .toList();
+
+    // Check for attack opportunities
+    for (var token in tokens) {
+      if (token.state == TokenState.onBoard) {
+        final tokenPath = GameState().getTokenPath('RP');
+        final currentIndex = tokenPath.indexOf(token.positionId);
+        if (currentIndex >= 0 && currentIndex + diceNumber < tokenPath.length) {
+          final newPositionId = tokenPath[currentIndex + diceNumber];
+          
+          // Check if we can attack an opponent
+          Token? opponentAtPosition;
+          try {
+            opponentAtPosition = playerTokens.firstWhere(
+              (t) => t.positionId == newPositionId,
+            );
+          } catch (e) {
+            opponentAtPosition = null;
+          }
+          
+          if (opponentAtPosition != null && opponentAtPosition.positionId.isNotEmpty && 
+              !['B04', 'B23', 'R22', 'R10', 'G02', 'G21', 'Y30', 'Y42'].contains(newPositionId)) {
+            return token; // Attack opportunity
+          }
+        }
+      }
+    }
+
+    // If no attack opportunity, prioritize tokens closest to home
+    tokens.sort((a, b) {
+      if (a.state == TokenState.inBase && b.state != TokenState.inBase) return 1;
+      if (b.state == TokenState.inBase && a.state != TokenState.inBase) return -1;
+      
+      final pathA = GameState().getTokenPath('RP');
+      final pathB = GameState().getTokenPath('RP');
+      final indexA = pathA.indexOf(a.positionId);
+      final indexB = pathB.indexOf(b.positionId);
+      
+      return indexB.compareTo(indexA); // Higher index = closer to home
+    });
+
+    return tokens.first;
+  }
+
+  Token? _aiSelectTokenHard(List<Token> tokens, int diceNumber) {
+    if (tokens.isEmpty) return null;
+
+    // Hard: Advanced strategy considering multiple factors
+    final playerTokens = GameState().players
+        .where((p) => p.playerId != 'RP')
+        .expand((p) => p.tokens)
+        .where((t) => t.state == TokenState.onBoard)
+        .toList();
+
+    int scoreToken(Token token) {
+      int score = 0;
+      
+      if (token.state == TokenState.inBase) {
+        score += 50; // Prioritize getting tokens out
+        return score;
+      }
+
+      final tokenPath = GameState().getTokenPath('RP');
+      final currentIndex = tokenPath.indexOf(token.positionId);
+      
+      if (currentIndex >= 0 && currentIndex + diceNumber < tokenPath.length) {
+        final newPositionId = tokenPath[currentIndex + diceNumber];
+        
+        // Check for attack opportunities
+        Token? opponentAtPosition;
+        try {
+          opponentAtPosition = playerTokens.firstWhere(
+            (t) => t.positionId == newPositionId,
+          );
+        } catch (e) {
+          opponentAtPosition = null;
+        }
+        
+        if (opponentAtPosition != null && opponentAtPosition.positionId.isNotEmpty && 
+            !['B04', 'B23', 'R22', 'R10', 'G02', 'G21', 'Y30', 'Y42'].contains(newPositionId)) {
+          score += 100; // High priority for attacks
+        }
+
+        // Prefer moving tokens closer to home
+        score += currentIndex;
+
+        // Avoid landing on safe spots where opponents can't be attacked
+        if (['B04', 'B23', 'R22', 'R10', 'G02', 'G21', 'Y30', 'Y42'].contains(newPositionId)) {
+          score -= 20;
+        }
+
+        // Check if moving puts us in danger
+        for (var opponent in playerTokens) {
+          final opponentPath = GameState().getTokenPath(opponent.playerId);
+          final opponentIndex = opponentPath.indexOf(opponent.positionId);
+          
+          // Check if opponent can reach our new position with any dice roll (1-6)
+          for (int roll = 1; roll <= 6; roll++) {
+            if (opponentIndex + roll < opponentPath.length && 
+                opponentPath[opponentIndex + roll] == newPositionId &&
+                !['B04', 'B23', 'R22', 'R10', 'G02', 'G21', 'Y30', 'Y42'].contains(newPositionId)) {
+              score -= 30; // Penalty for danger
+              break;
+            }
+          }
+        }
+      }
+      
+      return score;
+    }
+
+    tokens.sort((a, b) => scoreToken(b).compareTo(scoreToken(a)));
+    return tokens.first;
   }
 
   // In your Ludo class
@@ -759,6 +1059,13 @@ class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDete
             }
 
             addDice();
+            
+            // Trigger AI turn if it's the first player and AI mode
+            if (Mixin.quad?.quadType == 'AI_MODE') {
+              Future.delayed(Duration(milliseconds: 1500), () {
+                _triggerAITurn();
+              });
+            }
           } else {
             Player redPlayer = Player(
               playerId: playerId,
@@ -815,6 +1122,9 @@ void moveOutOfBase({
   // Update token position to the first position in the path
   token.positionId = tokenPath.first;
   token.state = TokenState.onBoard;
+
+  // Play piece movement sound when moving out of base
+  FlameAudio.play('piece_moved.mp3');
 
   await _applyEffect(
       token,
@@ -878,6 +1188,13 @@ void tokenCollision(World world, Token attackerToken) async {
     final upperController = world.children.whereType<UpperController>().first;
     lowerController.showPointer(player.playerId);
     upperController.showPointer(player.playerId);
+    
+    // Trigger AI turn if it's AI mode and red player's turn
+    if (Mixin.quad?.quadType == 'AI_MODE' && player.playerId == 'RP') {
+      Future.delayed(Duration(milliseconds: 800), () {
+        Ludo._instance?._triggerAITurn();
+      });
+    }
   }
 
   for (var token in player.tokens) {
@@ -1025,6 +1342,10 @@ Future<void> moveForward({
 
   for (int i = currentIndex + 1; i <= finalIndex && i < tokenPath.length; i++) {
     token.positionId = tokenPath[i];
+    
+    // Play piece movement sound for each box
+    FlameAudio.play('piece_moved.mp3');
+    
     await _applyEffect(
       token,
       MoveToEffect(
@@ -1143,6 +1464,13 @@ Future<bool> checkTokenInHomeAndHandle(Token token, World world) async {
   lowerController.showPointer(player.playerId);
   final upperController = world.children.whereType<UpperController>().first;
   upperController.showPointer(player.playerId);
+
+  // Trigger AI turn if it's AI mode and red player's turn
+  if (Mixin.quad?.quadType == 'AI_MODE' && player.playerId == 'RP') {
+    Future.delayed(Duration(milliseconds: 800), () {
+      Ludo._instance?._triggerAITurn();
+    });
+  }
 
   // Disable tokens for current player
   for (var t in player.tokens) {

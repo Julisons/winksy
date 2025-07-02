@@ -10,6 +10,8 @@ class BlinkRedBaseEvent {}
 
 class OpenPlayerModalEvent{}
 
+class AITurnEvent{}
+
 class EventBus {
   static final EventBus _instance = EventBus._internal();
 
