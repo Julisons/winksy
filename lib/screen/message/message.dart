@@ -704,6 +704,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                     ),
                   ),
                   onTap: () {
+                    debugPrint('----------usrId---${Mixin.winkser?.usrId}');
                     Mixin.navigate(context, IWinkser());
                   },
                 )

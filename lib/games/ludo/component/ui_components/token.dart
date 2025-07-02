@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../state/game_state.dart';
 import '../../ludo.dart';
 import '../../state/token_manager.dart';
+import '../../../../mixin/mixins.dart';
 
 // Enum to define token states
 enum TokenState {
@@ -60,17 +61,30 @@ class Token extends PositionComponent with TapCallbacks {
     final tokenShadow = Offset(size.x / 2, size.y / 1.5);
     final smallerCircleShadow = Offset(size.x / 2, size.y / 1.75);
 
+    // Check if this token belongs to the current user
+    final isOwnToken = _doesCurrentUserOwnPlayer(playerId);
+    
+    // Apply visual styling based on ownership
+    final double opacity = isOwnToken ? 1.0 : 0.6; // Dim opponent tokens
+    final Color borderColor = isOwnToken ? topColor : topColor.withOpacity(0.7);
+    final Color innerColor = isOwnToken ? Colors.white : Colors.grey.shade300;
+
     canvas.drawCircle(tokenShadow, outerRadius,
         Paint()..color = const Color(0xFF3C3D37).withOpacity(0.6));
     canvas.drawCircle(centerShadow, sideOuterRadius,
-        Paint()..color = sideColor); // Draw outer circle
+        Paint()..color = sideColor.withOpacity(opacity)); // Draw outer circle
 
     canvas.drawCircle(
-        center, outerRadius, Paint()..color = topColor); // Draw border
+        center, outerRadius, Paint()..color = borderColor); // Draw border
 
     canvas.drawCircle(smallerCircleShadow, smallerCircleDepth,
         Paint()..color = const Color(0xFF3C3D37).withOpacity(0.7));
-    canvas.drawCircle(center, smallerCircle, Paint()..color = Colors.white);
+    canvas.drawCircle(center, smallerCircle, Paint()..color = innerColor);
+
+    // Add a subtle lock icon or X for opponent tokens
+    if (!isOwnToken) {
+      _renderOpponentIndicator(canvas, center, smallerCircle);
+    }
 
     // Conditionally render the circle around the token
     if (_shouldDrawCircle) {
@@ -89,6 +103,43 @@ class Token extends PositionComponent with TapCallbacks {
     // Scale the circle based on _circleScale
     final scaledRadius = (size.x / 2) * _circleScale;
     canvas.drawCircle(center, scaledRadius, paint);
+  }
+
+  // Render a visual indicator on opponent tokens to show they can't be controlled
+  void _renderOpponentIndicator(Canvas canvas, Offset center, double radius) {
+    // Draw a subtle lock icon using simple shapes
+    final paint = Paint()
+      ..color = Colors.black.withOpacity(0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+
+    final lockSize = radius * 0.6;
+    final lockCenter = center;
+    
+    // Draw lock body (rectangle)
+    final lockBody = Rect.fromCenter(
+      center: Offset(lockCenter.dx, lockCenter.dy + lockSize * 0.15),
+      width: lockSize * 0.8,
+      height: lockSize * 0.6,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(lockBody, Radius.circular(lockSize * 0.1)),
+      paint..style = PaintingStyle.fill
+    );
+    
+    // Draw lock shackle (arc)
+    final shackleRect = Rect.fromCenter(
+      center: Offset(lockCenter.dx, lockCenter.dy - lockSize * 0.1),
+      width: lockSize * 0.5,
+      height: lockSize * 0.4,
+    );
+    canvas.drawArc(
+      shackleRect,
+      -3.14159, // Start from top (pi radians)
+      3.14159,  // Sweep pi radians (half circle)
+      false,    // Don't use center
+      paint..style = PaintingStyle.stroke..strokeWidth = 1.5,
+    );
   }
 
   // Enable circle rendering and animation
@@ -139,9 +190,16 @@ class Token extends PositionComponent with TapCallbacks {
         (isInBase() && GameState().diceNumber != 6) ||
         isInHome()) return;
 
-    enableToken = false;
+    // Check if the current user owns this player/token
+    if (!_doesCurrentUserOwnPlayer(playerId)) {
+      print('You cannot move ${playerId} tokens! You can only control your own player.');
+      return;
+    }
 
+    // Check if it's this player's turn
     if (GameState().currentPlayer.playerId != playerId) return;
+
+    enableToken = false;
 
     final tokens = TokenManager().allTokens;
     for (var token in tokens) {
@@ -184,5 +242,24 @@ class Token extends PositionComponent with TapCallbacks {
     final newIndex = index + GameState().diceNumber;
 
     return newIndex < tokenPath.length;
+  }
+
+  // Helper function to check if the current user owns a specific player
+  bool _doesCurrentUserOwnPlayer(String playerId) {
+    if (Mixin.quad?.quadType == 'AI_MODE') {
+      // In AI mode, user only owns BP (Blue Player)
+      return playerId == 'BP';
+    }
+    
+    // In multiplayer mode, check which player this user controls
+    if (Mixin.user?.usrId?.toString() == Mixin.quad?.quadUsrId?.toString()) {
+      // This user created the game, they are BP (Blue Player)
+      return playerId == 'BP';
+    } else if (Mixin.user?.usrId?.toString() == Mixin.quad?.quadAgainstId?.toString()) {
+      // This user joined the game, they are RP (Red Player)  
+      return playerId == 'RP';
+    }
+    
+    return false; // User is not part of this game or invalid player
   }
 }

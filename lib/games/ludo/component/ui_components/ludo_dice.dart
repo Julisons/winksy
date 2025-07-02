@@ -49,6 +49,12 @@ class LudoDice extends PositionComponent with TapCallbacks {
       return; // Exit if the player cannot roll the dice
     }
 
+    // Check if the current user owns this player
+    if (!_doesCurrentUserOwnPlayer(player.playerId)) {
+      print('You cannot roll dice for ${player.playerId}! You can only control your own player.');
+      return;
+    }
+
     debugPrint('---------here--------------');
 
     // Disable dice to prevent multiple taps
@@ -175,7 +181,8 @@ class LudoDice extends PositionComponent with TapCallbacks {
     } else if (allMovableTokens.length > 1) {
       _enableManualTokenSelection(world, tokensInBase, tokensOnBoard);
     } else if (allMovableTokens.isEmpty) {
-      GameState().switchToNextPlayer();
+      // Handle turn switching properly for multiplayer
+      _handleTurnSwitchAfterNoMoves();
       return;
     }
   }
@@ -188,7 +195,8 @@ class LudoDice extends PositionComponent with TapCallbacks {
 
     // if no tokens on board, switch to next player
     if (tokensOnBoard.isEmpty) {
-      GameState().switchToNextPlayer();
+      // Handle turn switching properly for multiplayer
+      _handleTurnSwitchAfterNoMoves();
       return;
     }
 
@@ -206,7 +214,8 @@ class LudoDice extends PositionComponent with TapCallbacks {
     } else if (movableTokens.length > 1) {
       _enableManualTokenSelection(world, tokensInBase, tokensOnBoard);
     } else if (movableTokens.isEmpty) {
-      GameState().switchToNextPlayer();
+      // Handle turn switching properly for multiplayer
+      _handleTurnSwitchAfterNoMoves();
       return;
     }
   }
@@ -242,6 +251,36 @@ class LudoDice extends PositionComponent with TapCallbacks {
       tokenPath: GameState().getTokenPath(player.playerId),
       diceNumber: diceNumber,
     );
+  }
+
+  // Helper function to check if the current user owns a specific player
+  bool _doesCurrentUserOwnPlayer(String playerId) {
+    if (Mixin.quad?.quadType == 'AI_MODE') {
+      // In AI mode, user only owns BP (Blue Player)
+      return playerId == 'BP';
+    }
+    
+    // In multiplayer mode, check which player this user controls
+    if (Mixin.user?.usrId?.toString() == Mixin.quad?.quadUsrId?.toString()) {
+      // This user created the game, they are BP (Blue Player)
+      return playerId == 'BP';
+    } else if (Mixin.user?.usrId?.toString() == Mixin.quad?.quadAgainstId?.toString()) {
+      // This user joined the game, they are RP (Red Player)  
+      return playerId == 'RP';
+    }
+    
+    return false; // User is not part of this game or invalid player
+  }
+
+  // Handle turn switching when no moves are possible
+  void _handleTurnSwitchAfterNoMoves() {
+    if (Mixin.quad?.quadType == 'AI_MODE') {
+      // In AI mode, just switch locally
+      GameState().switchToNextPlayer();
+    } else {
+      // In multiplayer mode, use the global turn switching function
+      handleTurnSwitchGlobal();
+    }
   }
 
   LudoDice({required this.faceSize, required this.player}) {

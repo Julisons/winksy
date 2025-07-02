@@ -91,6 +91,7 @@ const String PAIRED = "PAIRED";
 const String CHESS = "CHESS";
 const String TIC_TAC_TOE = "TIC_TAC_TOE";
 const String QUADRIX = "QUADRIX";
+const String LUDO = "LUDO";
 const bool leading = false;
 
 const String GAME_SOUND = "GAME_SOUND";

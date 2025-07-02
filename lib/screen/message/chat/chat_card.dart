@@ -87,8 +87,8 @@ class _IChatCardState extends State<IChatCard> {
                 SizedBox(width: 16.h),
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +122,7 @@ class _IChatCardState extends State<IChatCard> {
                               Flexible(
                                 child: Text('${widget.chat.msgText}',
                                     textAlign: TextAlign.start,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: TextStyle( fontWeight: widget.chat.msgStatus == 'SENT' ? FontWeight.bold : FontWeight.normal,
                                         color: color.xTextColorSecondary, fontSize: FONT_13)),
                               ),
@@ -151,11 +151,12 @@ class _IChatCardState extends State<IChatCard> {
               ],
             ),
             onTap: () {
-              widget.onClick!();
               Mixin.winkser = User()
-              ..usrId = Mixin.user?.usrId == widget.chat.msgSenderId ? widget.chat.msgReceiverId : widget.chat.msgSenderId
+              ..usrId = Mixin.user?.usrId == widget.chat.chatSenderId ? widget.chat.chatReceiverId : widget.chat.chatSenderId
               ..usrImage = widget.chat.usrImage
-              ..usrFirstName = Mixin.user?.usrId == widget.chat.msgSenderId ? widget.chat.usrSender : widget.chat.usrReceiver;
+              ..usrFirstName = Mixin.user?.usrId == widget.chat.chatSenderId ? widget.chat.usrSender : widget.chat.usrReceiver
+              ..usrFullNames = Mixin.user?.usrId == widget.chat.chatSenderId ? widget.chat.usrSender : widget.chat.usrReceiver;
+              widget.onClick!();
               Mixin.navigate(context,  IMessage(chat: widget.chat, showTitle: true,));
             },
           ),

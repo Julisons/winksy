@@ -194,7 +194,6 @@ class _IChatState extends State<IChat> {
         {
           Future.delayed(Duration(seconds: 5), () {
             Provider.of<IChatProvider>(context, listen: false).reload('');});
-            Mixin.vibrate();
         }
     });
   }

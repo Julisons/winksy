@@ -1,7 +1,7 @@
 /// quadId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 /// quadUsrId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 /// quadAgainstId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-/// quadState : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadState : "dynamic"
 /// quadWinnerId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 /// quadInstId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 /// quadDesc : "dynamic"
@@ -16,6 +16,20 @@
 /// quadFirstPlayer : 0
 /// quadFirstPlayerId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 /// quadPlayerId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadSocUsrId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadSocAgnstId : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadCurrentTokenMoves : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadLastMoveData : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadMoveSequence : 0
+/// quadGameState : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadLastMoveTimestamp : 0
+/// quadPlayerPositions : "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+/// quadTurnTimer : 0
+/// quadTokenId : "dynamic"
+/// quadNewPositionId : "dynamic"
+/// quadMoveType : "dynamic"
+/// quadDiceValue : 0
+/// quadTimestamp : 0
 
 class Quad {
   Quad({
@@ -36,7 +50,21 @@ class Quad {
       dynamic quadAgainst, 
       dynamic quadFirstPlayer, 
       dynamic quadFirstPlayerId, 
-      dynamic quadPlayerId,}){
+      dynamic quadPlayerId, 
+      dynamic quadSocUsrId, 
+      dynamic quadSocAgnstId, 
+      dynamic quadCurrentTokenMoves, 
+      dynamic quadLastMoveData, 
+      dynamic quadMoveSequence, 
+      dynamic quadGameState, 
+      dynamic quadLastMoveTimestamp, 
+      dynamic quadPlayerPositions, 
+      dynamic quadTurnTimer, 
+      dynamic quadTokenId, 
+      dynamic quadNewPositionId, 
+      dynamic quadMoveType, 
+      dynamic quadDiceValue, 
+      dynamic quadTimestamp,}){
     quadId = quadId;
     quadUsrId = quadUsrId;
     quadAgainstId = quadAgainstId;
@@ -55,6 +83,20 @@ class Quad {
     quadFirstPlayer = quadFirstPlayer;
     quadFirstPlayerId = quadFirstPlayerId;
     quadPlayerId = quadPlayerId;
+    quadSocUsrId = quadSocUsrId;
+    quadSocAgnstId = quadSocAgnstId;
+    quadCurrentTokenMoves = quadCurrentTokenMoves;
+    quadLastMoveData = quadLastMoveData;
+    quadMoveSequence = quadMoveSequence;
+    quadGameState = quadGameState;
+    quadLastMoveTimestamp = quadLastMoveTimestamp;
+    quadPlayerPositions = quadPlayerPositions;
+    quadTurnTimer = quadTurnTimer;
+    quadTokenId = quadTokenId;
+    quadNewPositionId = quadNewPositionId;
+    quadMoveType = quadMoveType;
+    quadDiceValue = quadDiceValue;
+    quadTimestamp = quadTimestamp;
 }
 
   Quad.fromJson(dynamic json) {
@@ -76,6 +118,20 @@ class Quad {
     quadFirstPlayer = json['quadFirstPlayer'];
     quadFirstPlayerId = json['quadFirstPlayerId'];
     quadPlayerId = json['quadPlayerId'];
+    quadSocUsrId = json['quadSocUsrId'];
+    quadSocAgnstId = json['quadSocAgnstId'];
+    quadCurrentTokenMoves = json['quadCurrentTokenMoves'];
+    quadLastMoveData = json['quadLastMoveData'];
+    quadMoveSequence = json['quadMoveSequence'];
+    quadGameState = json['quadGameState'];
+    quadLastMoveTimestamp = json['quadLastMoveTimestamp'];
+    quadPlayerPositions = json['quadPlayerPositions'];
+    quadTurnTimer = json['quadTurnTimer'];
+    quadTokenId = json['quadTokenId'];
+    quadNewPositionId = json['quadNewPositionId'];
+    quadMoveType = json['quadMoveType'];
+    quadDiceValue = json['quadDiceValue'];
+    quadTimestamp = json['quadTimestamp'];
   }
   dynamic quadId;
   dynamic quadUsrId;
@@ -95,6 +151,20 @@ class Quad {
   dynamic quadFirstPlayer;
   dynamic quadFirstPlayerId;
   dynamic quadPlayerId;
+  dynamic quadSocUsrId;
+  dynamic quadSocAgnstId;
+  dynamic quadCurrentTokenMoves;
+  dynamic quadLastMoveData;
+  dynamic quadMoveSequence;
+  dynamic quadGameState;
+  dynamic quadLastMoveTimestamp;
+  dynamic quadPlayerPositions;
+  dynamic quadTurnTimer;
+  dynamic quadTokenId;
+  dynamic quadNewPositionId;
+  dynamic quadMoveType;
+  dynamic quadDiceValue;
+  dynamic quadTimestamp;
 Quad copyWith({  dynamic quadId,
   dynamic quadUsrId,
   dynamic quadAgainstId,
@@ -113,6 +183,20 @@ Quad copyWith({  dynamic quadId,
   dynamic quadFirstPlayer,
   dynamic quadFirstPlayerId,
   dynamic quadPlayerId,
+  dynamic quadSocUsrId,
+  dynamic quadSocAgnstId,
+  dynamic quadCurrentTokenMoves,
+  dynamic quadLastMoveData,
+  dynamic quadMoveSequence,
+  dynamic quadGameState,
+  dynamic quadLastMoveTimestamp,
+  dynamic quadPlayerPositions,
+  dynamic quadTurnTimer,
+  dynamic quadTokenId,
+  dynamic quadNewPositionId,
+  dynamic quadMoveType,
+  dynamic quadDiceValue,
+  dynamic quadTimestamp,
 }) => Quad(  quadId: quadId ?? quadId,
   quadUsrId: quadUsrId ?? quadUsrId,
   quadAgainstId: quadAgainstId ?? quadAgainstId,
@@ -131,6 +215,20 @@ Quad copyWith({  dynamic quadId,
   quadFirstPlayer: quadFirstPlayer ?? quadFirstPlayer,
   quadFirstPlayerId: quadFirstPlayerId ?? quadFirstPlayerId,
   quadPlayerId: quadPlayerId ?? quadPlayerId,
+  quadSocUsrId: quadSocUsrId ?? quadSocUsrId,
+  quadSocAgnstId: quadSocAgnstId ?? quadSocAgnstId,
+  quadCurrentTokenMoves: quadCurrentTokenMoves ?? quadCurrentTokenMoves,
+  quadLastMoveData: quadLastMoveData ?? quadLastMoveData,
+  quadMoveSequence: quadMoveSequence ?? quadMoveSequence,
+  quadGameState: quadGameState ?? quadGameState,
+  quadLastMoveTimestamp: quadLastMoveTimestamp ?? quadLastMoveTimestamp,
+  quadPlayerPositions: quadPlayerPositions ?? quadPlayerPositions,
+  quadTurnTimer: quadTurnTimer ?? quadTurnTimer,
+  quadTokenId: quadTokenId ?? quadTokenId,
+  quadNewPositionId: quadNewPositionId ?? quadNewPositionId,
+  quadMoveType: quadMoveType ?? quadMoveType,
+  quadDiceValue: quadDiceValue ?? quadDiceValue,
+  quadTimestamp: quadTimestamp ?? quadTimestamp,
 );
 
 
@@ -154,6 +252,20 @@ Quad copyWith({  dynamic quadId,
     map['quadFirstPlayer'] = quadFirstPlayer;
     map['quadFirstPlayerId'] = quadFirstPlayerId;
     map['quadPlayerId'] = quadPlayerId;
+    map['quadSocUsrId'] = quadSocUsrId;
+    map['quadSocAgnstId'] = quadSocAgnstId;
+    map['quadCurrentTokenMoves'] = quadCurrentTokenMoves;
+    map['quadLastMoveData'] = quadLastMoveData;
+    map['quadMoveSequence'] = quadMoveSequence;
+    map['quadGameState'] = quadGameState;
+    map['quadLastMoveTimestamp'] = quadLastMoveTimestamp;
+    map['quadPlayerPositions'] = quadPlayerPositions;
+    map['quadTurnTimer'] = quadTurnTimer;
+    map['quadTokenId'] = quadTokenId;
+    map['quadNewPositionId'] = quadNewPositionId;
+    map['quadMoveType'] = quadMoveType;
+    map['quadDiceValue'] = quadDiceValue;
+    map['quadTimestamp'] = quadTimestamp;
     return map;
   }
 

@@ -36,6 +36,9 @@ class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDete
     _instance = this;
   }
 
+  // Public getter for the instance
+  static Ludo? get instance => _instance;
+
   final rand = Random();
   double get width => size.x;
   double get height => size.y;
@@ -56,6 +59,7 @@ class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDete
   void onLoad() async {
     super.onLoad();
     _remotePlay();
+    _initializeMultiplayerTurns();
 
     camera = CameraComponent.withFixedResolution(
       width: width,
@@ -151,6 +155,148 @@ class Ludo extends FlameGame with HasCollisionDetection, KeyboardEvents, TapDete
       }else {
         //quadPlayer = '${_quad.quadPlayer}\'s turn';
       }
+    });
+
+    // Listen for token moves from other players
+    Mixin.quadrixSocket?.on('token_move', (message) async {
+      print('Received token move: ${jsonEncode(message)}');
+      
+      // Only process moves from AI mode or from other real players
+      if (Mixin.quad?.quadType == 'AI_MODE') {
+        return; // In AI mode, no remote moves needed
+      }
+      
+      // Parse the move data
+      final moveData = message as Map<String, dynamic>;
+      final tokenId = moveData['quadTokenId'] as String;
+      final playerId = moveData['quadPlayerId'] as String; // This is the user UUID
+      final newPositionId = moveData['quadNewPositionId'] as String;
+      final moveType = moveData['quadMoveType'] as String;
+      final diceValue = moveData['quadDiceValue'] as int;
+      
+      // Session-based validation: Ensure the move is from a legitimate player
+      if (playerId == null || playerId.isEmpty) {
+        print('Invalid token move: missing player ID');
+        return;
+      }
+      
+      // Validate that the move sender is actually part of this game
+      if (playerId != Mixin.quad?.quadUsrId?.toString() && 
+          playerId != Mixin.quad?.quadAgainstId?.toString()) {
+        print('Unauthorized token move from user: $playerId');
+        return;
+      }
+      
+      // Don't process moves from ourselves
+      if (playerId == Mixin.user?.usrId?.toString()) {
+        print('Ignoring token move from ourselves');
+        return;
+      }
+      
+      // Find the token that needs to be moved by tokenId only
+      // Note: playerId here is the user UUID, not the token's playerId (BP, RP, etc.)
+      final token = TokenManager().allTokens.firstWhere(
+        (t) => t.tokenId == tokenId,
+        orElse: () => throw Exception('Token not found: $tokenId'),
+      );
+      
+      // Apply the move locally
+      token.positionId = newPositionId;
+      
+      // Apply visual movement effect
+      await _applyEffect(
+        token,
+        MoveToEffect(
+          SpotManager()
+              .getSpots()
+              .firstWhere((spot) => spot.uniqueId == token.positionId)
+              .tokenPosition,
+          EffectController(duration: 0.3, curve: Curves.easeInOut),
+        ),
+      );
+      
+      // Update token state based on move type
+      if (moveType == 'moveOutOfBase') {
+        token.state = TokenState.onBoard;
+      }
+      
+      // Handle collision and resizing
+      tokenCollision(world, token);
+      resizeTokensOnSpot(world);
+    });
+
+    // Listen for turn switches from other players
+    Mixin.quadrixSocket?.on('turn_switch', (message) async {
+      print('Received turn switch: ${jsonEncode(message)}');
+      
+      // Only process turn switches in multiplayer mode
+      if (Mixin.quad?.quadType == 'AI_MODE') {
+        return;
+      }
+      
+      // Parse turn switch data
+      final turnData = message as Map<String, dynamic>;
+      final nextPlayerIndex = turnData['nextPlayerIndex'] as int;
+      final senderUserId = turnData['quadUsrId'] as String?;
+      final currentPlayerId = turnData['currentPlayerId'] as String?;
+      
+      // Session-based validation: Ensure the turn switch is from a legitimate player
+      if (senderUserId == null || currentPlayerId == null) {
+        print('Invalid turn switch: missing sender or current player ID');
+        return;
+      }
+      
+      // Validate that the sender is actually part of this game
+      if (senderUserId != Mixin.quad?.quadUsrId?.toString() && 
+          senderUserId != Mixin.quad?.quadAgainstId?.toString()) {
+        print('Unauthorized turn switch from user: $senderUserId');
+        return;
+      }
+      
+      // In multiplayer mode, process turn switches from all legitimate players
+      // including ourselves to ensure synchronization
+      
+      // Safety check for empty players list
+      if (GameState().players.isEmpty) {
+        print('Players list is empty, cannot process turn switch');
+        return;
+      }
+      
+      // Safety check for valid next player index
+      if (nextPlayerIndex >= GameState().players.length) {
+        print('Invalid next player index: $nextPlayerIndex, max: ${GameState().players.length - 1}');
+        return;
+      }
+      
+      // Get the user's player ID to check if it's their turn
+      final userPlayerId = _getCurrentUserPlayerId();
+      if (userPlayerId == null) return;
+      
+      // Disable all players first
+      for (var player in GameState().players) {
+        player.enableDice = false;
+        player.isCurrentTurn = false;
+        
+        // Disable all tokens
+        for (var token in player.tokens) {
+          token.enableToken = false;
+        }
+      }
+      
+      // Enable the current turn player
+      final currentPlayer = GameState().players[nextPlayerIndex];
+      if (currentPlayer.playerId == userPlayerId) {
+        currentPlayer.enableDice = true;
+        currentPlayer.isCurrentTurn = true;
+        print('It\'s your turn! You are playing as ${userPlayerId}');
+      } else {
+        print('Waiting for ${currentPlayer.playerId} to play...');
+      }
+      
+      // Update the current player index
+      GameState().currentPlayerIndex = nextPlayerIndex;
+      
+      print('Turn switched to player: ${currentPlayer.playerId}');
     });
   }
 
@@ -1119,6 +1265,12 @@ void moveOutOfBase({
   required Token token,
   required List<String> tokenPath,
 }) async {
+  // In multiplayer mode, check if it's the current user's turn
+  if (Mixin.quad?.quadType != 'AI_MODE' && !_isCurrentUserTurn()) {
+    print('Not your turn! Current turn: ${GameState().currentPlayer.playerId}');
+    return;
+  }
+
   // Update token position to the first position in the path
   token.positionId = tokenPath.first;
   token.state = TokenState.onBoard;
@@ -1132,6 +1284,14 @@ void moveOutOfBase({
           EffectController(duration: 0.1, curve: Curves.easeInOut)));
 
   tokenCollision(world, token);
+
+  // Emit token move to other player (only in multiplayer mode, not AI mode)
+  _emitTokenMove(token, 'moveOutOfBase', 0);
+  
+  // In multiplayer mode, switch turns after move (unless player gets another turn)
+  if (Mixin.quad?.quadType != 'AI_MODE') {
+    handleTurnSwitchGlobal();
+  }
 }
 
 void tokenCollision(World world, Token attackerToken) async {
@@ -1336,6 +1496,12 @@ Future<void> moveForward({
   required List<String> tokenPath,
   required int diceNumber,
 }) async {
+  // In multiplayer mode, check if it's the current user's turn
+  if (Mixin.quad?.quadType != 'AI_MODE' && !_isCurrentUserTurn()) {
+    print('Not your turn! Current turn: ${GameState().currentPlayer.playerId}');
+    return;
+  }
+
   // get all spots
   final currentIndex = tokenPath.indexOf(token.positionId);
   final finalIndex = currentIndex + diceNumber;
@@ -1371,12 +1537,258 @@ Future<void> moveForward({
   }
   clearTokenTrail();
   
+  // Emit token move to other player (only in multiplayer mode, not AI mode)
+  _emitTokenMove(token, 'moveForward', diceNumber);
+  
+  // In multiplayer mode, switch turns after move (unless player gets another turn)
+  if (Mixin.quad?.quadType != 'AI_MODE') {
+    handleTurnSwitchGlobal();
+  }
 }
 
 void clearTokenTrail() {
   final tokens = TokenManager().allTokens;
   for (var token in tokens) {
     token.disableCircleAnimation();
+  }
+}
+
+// Helper function to get the current user's player ID (BP or RP)
+String? _getCurrentUserPlayerId() {
+  if (Mixin.quad?.quadType == 'AI_MODE') {
+    return 'BP'; // Player is always Blue in AI mode
+  }
+  
+  // In multiplayer mode, determine which team this user controls
+  if (Mixin.user?.usrId?.toString() == Mixin.quad?.quadUsrId?.toString()) {
+    // This user created the game, they are BP (Blue Player)
+    return 'BP';
+  } else if (Mixin.user?.usrId?.toString() == Mixin.quad?.quadAgainstId?.toString()) {
+    // This user joined the game, they are RP (Red Player)  
+    return 'RP';
+  }
+  
+  return null; // User is not part of this game
+}
+
+// Helper function to check if it's the current user's turn
+bool _isCurrentUserTurn() {
+  final userPlayerId = _getCurrentUserPlayerId();
+  if (userPlayerId == null) return false;
+  
+  // Safety check for empty players list
+  if (GameState().players.isEmpty) return false;
+  
+  // Safety check for valid current player index
+  if (GameState().currentPlayerIndex >= GameState().players.length) {
+    return false;
+  }
+  
+  final currentPlayer = GameState().currentPlayer;
+  return currentPlayer.playerId == userPlayerId;
+}
+
+// Helper function to check if the current user owns a specific player
+bool _doesCurrentUserOwnPlayer(String playerId) {
+  if (Mixin.quad?.quadType == 'AI_MODE') {
+    // In AI mode, user only owns BP (Blue Player)
+    return playerId == 'BP';
+  }
+  
+  // In multiplayer mode, check which player this user controls
+  final userControlledPlayer = _getCurrentUserPlayerId();
+  return userControlledPlayer == playerId;
+}
+
+// Helper function to emit token moves to other players
+void _emitTokenMove(Token token, String moveType, int diceValue) {
+  // Only emit in multiplayer mode, not AI mode
+  if (Mixin.quad?.quadType != 'AI_MODE' && Mixin.quadrixSocket != null) {
+    final moveData = {
+      'quadId': Mixin.quad?.quadId?.toString(),
+      'quadTokenId': token.tokenId,
+      'quadPlayerId': Mixin.user?.usrId?.toString(), // Use actual user ID
+      'quadNewPositionId': token.positionId,
+      'quadMoveType': moveType,
+      'quadDiceValue': diceValue,
+      'quadTimestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+    
+    print('Emitting token move: $moveData');
+    Mixin.quadrixSocket?.emit('token_move', moveData);
+  }
+
+  // Helper function to emit turn switch to other players
+  void _emitTurnSwitch() {
+    if (Mixin.quad?.quadType != 'AI_MODE' && Mixin.quadrixSocket != null) {
+      // Safety check for empty players list
+      if (GameState().players.isEmpty) {
+        print('Players list is empty, cannot emit turn switch');
+        return;
+      }
+      
+      // Safety check for valid current player index
+      if (GameState().currentPlayerIndex >= GameState().players.length) {
+        print('Invalid current player index, cannot emit turn switch');
+        return;
+      }
+      
+      final turnData = {
+        'quadId': Mixin.quad?.quadId?.toString(),
+        'quadUsrId': Mixin.user?.usrId?.toString(), // Add sender's user ID for validation
+        'currentPlayerId': GameState().currentPlayer.playerId,
+        'nextPlayerIndex': (GameState().currentPlayerIndex + 1) % GameState().players.length,
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+      };
+      
+      print('Emitting turn switch: $turnData');
+      Mixin.quadrixSocket?.emit('turn_switch', turnData);
+    }
+  }
+
+  // Helper function to handle turn switching after a move
+  void handleTurnAfterMove() {
+    // Safety check for empty players list
+    if (GameState().players.isEmpty) {
+      print('Players list is empty, cannot handle turn switch');
+      return;
+    }
+    
+    // Safety check for valid current player index
+    if (GameState().currentPlayerIndex >= GameState().players.length) {
+      print('Invalid current player index, resetting to 0');
+      GameState().currentPlayerIndex = 0;
+    }
+    
+    final currentPlayer = GameState().currentPlayer;
+    
+    // Check if player gets another turn (rolled 6, captured token, or reached home)
+    bool getAnotherTurn = false;
+    
+    // Check if dice was 6
+    if (GameState().diceNumber == 6) {
+      getAnotherTurn = true;
+    }
+    
+    // If player doesn't get another turn, switch to next player
+    if (!getAnotherTurn) {
+      if (Mixin.quad?.quadType == 'AI_MODE') {
+        // In AI mode, just switch locally
+        GameState().switchToNextPlayer();
+      } else {
+        // In multiplayer mode, emit turn switch to other players
+        // The turn switch will be handled by the socket event handler for both players
+        _emitTurnSwitch();
+      }
+    }
+  }
+}
+
+// Global function to handle turn switching that can be called from anywhere
+void handleTurnSwitchGlobal() {
+  // Safety check for empty players list
+  if (GameState().players.isEmpty) {
+    print('Players list is empty, cannot handle turn switch');
+    return;
+  }
+  
+  // Safety check for valid current player index
+  if (GameState().currentPlayerIndex >= GameState().players.length) {
+    print('Invalid current player index, resetting to 0');
+    GameState().currentPlayerIndex = 0;
+  }
+  
+  // Check if player gets another turn (rolled 6, captured token, or reached home)
+  bool getAnotherTurn = false;
+  
+  // Check if dice was 6
+  if (GameState().diceNumber == 6) {
+    getAnotherTurn = true;
+  }
+  
+  // If player doesn't get another turn, switch to next player
+  if (!getAnotherTurn) {
+    if (Mixin.quad?.quadType == 'AI_MODE') {
+      // In AI mode, just switch locally
+      GameState().switchToNextPlayer();
+    } else {
+      // In multiplayer mode, emit turn switch to other players
+      emitTurnSwitchGlobal();
+    }
+  }
+}
+
+// Global function to emit turn switch
+void emitTurnSwitchGlobal() {
+  if (Mixin.quad?.quadType != 'AI_MODE' && Mixin.quadrixSocket != null) {
+    // Safety check for empty players list
+    if (GameState().players.isEmpty) {
+      print('Players list is empty, cannot emit turn switch');
+      return;
+    }
+    
+    // Safety check for valid current player index
+    if (GameState().currentPlayerIndex >= GameState().players.length) {
+      print('Invalid current player index, cannot emit turn switch');
+      return;
+    }
+    
+    final turnData = {
+      'quadId': Mixin.quad?.quadId?.toString(),
+      'quadUsrId': Mixin.user?.usrId?.toString(),
+      'currentPlayerId': GameState().currentPlayer.playerId,
+      'nextPlayerIndex': (GameState().currentPlayerIndex + 1) % GameState().players.length,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+    
+    print('Emitting turn switch: $turnData');
+    Mixin.quadrixSocket?.emit('turn_switch', turnData);
+  }
+}
+
+// Initialize multiplayer turn management
+void _initializeMultiplayerTurns() {
+  if (Mixin.quad?.quadType == 'AI_MODE') {
+    return; // AI mode doesn't need special turn initialization
+  }
+  
+  // Check if players list is populated, if not, delay initialization
+  if (GameState().players.isEmpty) {
+    print('Players not initialized yet, delaying turn management setup...');
+    Future.delayed(Duration(milliseconds: 500), () {
+      _initializeMultiplayerTurns(); // Retry after delay
+    });
+    return;
+  }
+  
+  // In multiplayer mode, ensure only the appropriate player can act on their turn
+  final userPlayerId = _getCurrentUserPlayerId();
+  if (userPlayerId == null) return;
+  
+  // Disable all players initially, then enable only the current turn player
+  for (var player in GameState().players) {
+    player.enableDice = false;
+    player.isCurrentTurn = false;
+    
+    // Disable all tokens for all players initially
+    for (var token in player.tokens) {
+      token.enableToken = false;
+    }
+  }
+  
+  // Safely check if we have valid current player index
+  if (GameState().currentPlayerIndex >= GameState().players.length) {
+    GameState().currentPlayerIndex = 0; // Reset to first player if invalid
+  }
+  
+  // Enable the current turn player
+  final currentPlayer = GameState().currentPlayer;
+  if (currentPlayer.playerId == userPlayerId) {
+    currentPlayer.enableDice = true;
+    currentPlayer.isCurrentTurn = true;
+    print('It\'s your turn! You are playing as ${userPlayerId}');
+  } else {
+    print('Waiting for ${currentPlayer.playerId} to play...');
   }
 }
 
