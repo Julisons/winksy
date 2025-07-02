@@ -172,13 +172,13 @@ class _ITicTacToeDashboardState extends State<ITicTacToeDashboard> {
                           // New label for AI Challenge
                           if (items[index].title == 'AI Challenge')
                             Positioned(
-                              top: 8.r,
-                              right: 8.r,
+                              top: 16.r,
+                              right: 16.r,
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 4.r),
+                                padding: EdgeInsets.symmetric(horizontal: 15.r, vertical: 4.r,),
                                 decoration: BoxDecoration(
                                   color: color.xTrailingAlt,
-                                  borderRadius: BorderRadius.circular(12.r),
+                                  borderRadius: BorderRadius.circular(2.r),
                                 ),
                                 child: Text(
                                   'NEW',
