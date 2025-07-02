@@ -323,7 +323,7 @@ class _ISignInState extends State<ISignIn> {
               },
             ),
             TextButton(
-              child: const Text('Reset', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+              child: const Text('Reset', style: TextStyle(color: color.xTrailingAlt, fontWeight: FontWeight.bold)),
               onPressed: () {
 
                 if (_emailController.text.isEmpty) {
@@ -425,7 +425,7 @@ class _ISignInState extends State<ISignIn> {
               },
             ),
             TextButton(
-              child: const Text('Reset', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+              child: const Text('Reset', style: TextStyle(color: color.xTrailingAlt, fontWeight: FontWeight.bold)),
               onPressed: () {
 
                 if (_emailController.text.isEmpty) {
@@ -580,7 +580,7 @@ class _ISignInState extends State<ISignIn> {
               },
             ),
             TextButton(
-              child: const Text('Reset', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+              child: const Text('Reset', style: TextStyle(color: color.xTrailingAlt, fontWeight: FontWeight.bold)),
               onPressed: () {
 
                 if (_pinController.text.isEmpty) {

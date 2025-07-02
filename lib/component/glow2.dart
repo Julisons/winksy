@@ -38,9 +38,9 @@ class GlowingLetterDemo extends StatelessWidget {
               children: [
                 GlowingLetter(letter: 'A', size: 60, color: Colors.red),
                 GlowingLetter(letter: 'B', size: 60, color: Colors.blue),
-                GlowingLetter(letter: 'C', size: 60, color: Colors.green),
-                GlowingLetter(letter: 'X', size: 60, color: Colors.green),
-                GlowingLetter(letter: 'O', size: 60, color: Colors.green),
+                GlowingLetter(letter: 'C', size: 60, color: Colors.green,),
+                GlowingLetter(letter: 'X', size: 60, color: Colors.green,),
+                GlowingLetter(letter: 'O', size: 60, color: Colors.green,),
               ],
             ),
 

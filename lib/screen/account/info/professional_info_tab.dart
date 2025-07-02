@@ -281,13 +281,13 @@ class ProfessionalInfoTab extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(8.r),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: color.xTrailingAlt.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
                     Icons.verified_user_outlined,
                     size: 20.r,
-                    color: Colors.green,
+                    color: color.xTrailingAlt,
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -312,7 +312,7 @@ class ProfessionalInfoTab extends StatelessWidget {
                     context,
                     "Verified Account",
                     Icons.check_circle,
-                    Colors.green,
+                    color.xTrailingAlt,
                     true,
                   ),
                 ),
@@ -322,7 +322,7 @@ class ProfessionalInfoTab extends StatelessWidget {
                     context,
                     "Active Status",
                     Icons.circle,
-                    Colors.green,
+                    color.xTrailingAlt,
                     true,
                   ),
                 ),

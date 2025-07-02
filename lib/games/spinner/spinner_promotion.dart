@@ -306,7 +306,7 @@ class IDailySpinPromotion extends StatelessWidget {
                 final colors = [
                   Colors.red[300]!,
                   Colors.blue[300]!,
-                  Colors.green[300]!,
+                  color.xTrailingAlt[300]!,
                   Colors.yellow[300]!,
                   Colors.purple[300]!,
                   Colors.orange[300]!,

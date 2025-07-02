@@ -703,7 +703,7 @@ class _IWinkserState extends State<IWinkser> with SingleTickerProviderStateMixin
                                     width: 6,
                                     height: 6,
                                     decoration: BoxDecoration(
-                                      color: Colors.green,
+                                      color: color.xTrailingAlt,
                                       shape: BoxShape.circle,
                                       border: Border.all(color: Colors.white, width: 1),
                                     ),
@@ -726,7 +726,7 @@ class _IWinkserState extends State<IWinkser> with SingleTickerProviderStateMixin
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.8),
+                                color: color.xTrailingAlt.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(

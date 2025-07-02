@@ -45,7 +45,7 @@ class OnlineStatusIndicator extends StatelessWidget {
       width: size.r,
       height: size.r,
       decoration: BoxDecoration(
-        color: isOnline ? Colors.green : Colors.grey,
+        color: isOnline ? Colors.green: Colors.grey,
         shape: BoxShape.circle,
         border: Border.all(
           color: Colors.white,
@@ -64,7 +64,7 @@ class OnlineStatusIndicator extends StatelessWidget {
 
   Widget _buildTextIndicator(BuildContext context, UserStatus? userStatus, CustomColors color) {
     String statusText = userStatus?.displayStatus ?? 'Offline';
-    Color statusColor = userStatus?.isOnline == true ? Colors.green : color.xTextColor;
+    Color statusColor = userStatus?.isOnline == true ? Colors.green: color.xTextColor;
     IconData statusIcon = userStatus?.isOnline == true ? Icons.circle : Icons.circle_outlined;
     bool isOnline = userStatus?.isOnline == true;
     

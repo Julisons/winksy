@@ -261,7 +261,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: end ? color.xTrailing : color.xPrimaryColor
+                color: end ? color.xTrailingAlt : color.xPrimaryColor
             ),
             alignment: Alignment.center,
             child: Text(

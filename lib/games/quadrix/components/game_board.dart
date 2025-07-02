@@ -16,7 +16,7 @@ import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
 import '../../fame_hall/fame_hall.dart';
-import '../ai/ai.dart';
+import '../ai/ai.dart' as ai;
 import '../core/game_screen.dart';
 import '../models/coin.dart';
 import '../quadrix_dashboard.dart';
@@ -45,14 +45,22 @@ class GameBoardState extends State<GameBoard> {
     super.initState();
 
     fullColumns.clear();
-    if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+    
+    // Check if this is AI mode or multiplayer mode
+    if (Mixin.quad?.quadType == 'AI_MODE') {
       quadPlayer = "You start";
       _startTimer();
-    }else{
-      quadPlayer = Mixin.quad?.quadPlayer+" starts";
+    } else {
+      // Original multiplayer logic
+      if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+        quadPlayer = "You start";
+        _startTimer();
+      }else{
+        quadPlayer = Mixin.quad?.quadPlayer+" starts";
+      }
+      _remotePlay();
+      _onGaveUpPlay();
     }
-    _remotePlay();
-    _onGaveUpPlay();
   }
 
   void _startTimer() {
@@ -179,17 +187,26 @@ class GameBoardState extends State<GameBoard> {
     final color = Theme.of(context).extension<CustomColors>()!;
     if (end == false) {
 
-      /**
-       *
-       * IF ITS NOT YOUR TURN , DON'T PLAY
-       */
-      if(_quad.quadPlayerId == null){
-        if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+      // Check if this is AI mode
+      if (Mixin.quad?.quadType == 'AI_MODE') {
+        // In AI mode, only allow player moves when it's their turn
+        if (player != 1) {
           return;
         }
-      }else {
-        if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
-          return;
+      } else {
+        // Original multiplayer turn validation
+        /**
+         *
+         * IF ITS NOT YOUR TURN , DON'T PLAY
+         */
+        if(_quad.quadPlayerId == null){
+          if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+            return;
+          }
+        }else {
+          if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+            return;
+          }
         }
       }
 
@@ -208,10 +225,15 @@ class GameBoardState extends State<GameBoard> {
         play = false;
       }
 
-      if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
-        quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
-      }else {
-        quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+      // Set player turn message based on game mode
+      if (Mixin.quad?.quadType == 'AI_MODE') {
+        quadPlayer = 'AI thinking...';
+      } else {
+        if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+          quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+        }else {
+          quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+        }
       }
 
       //row----4-----column---5
@@ -229,30 +251,46 @@ class GameBoardState extends State<GameBoard> {
 
       Result result = didEnd();
 
-      Quad quad = Quad()
-        ..quadRow = coin['row'] as int
-        ..quadColumn =  coin['column'] as int
-        ..quadUsrId = Mixin.user?.usrId
-        ..quadState = result.name.toString().toUpperCase()
-        ..quadPlayer = Mixin.user?.usrFirstName
-        ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
-        ..quadId = Mixin.quad?.quadId;
-
-      _end(result);
-      Mixin.quadrixSocket?.emit('played', quad.toJson());
-
-      //stop the game if the game has ended
-      if (result != Result.play) {
-
+      // Handle AI mode vs multiplayer mode differently
+      if (Mixin.quad?.quadType == 'AI_MODE') {
+        _end(result);
+        
+        //stop the game if the game has ended
+        if (result != Result.play) {
+          setState(() {});
+          quadPlayer = result == Result.draw ? 'It\'s a tie!' : 
+                      result == Result.player1 ? 'You won!' : 'AI won!';
+        } else {
+          // AI makes a move - showing real computation time only
+          _makeAIMove();
+        }
+      } else {
+        // Original multiplayer logic
         Quad quad = Quad()
+          ..quadRow = coin['row'] as int
+          ..quadColumn =  coin['column'] as int
+          ..quadUsrId = Mixin.user?.usrId
           ..quadState = result.name.toString().toUpperCase()
-          ..quadWinnerId = Mixin.user?.usrId
+          ..quadPlayer = Mixin.user?.usrFirstName
+          ..quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId
           ..quadId = Mixin.quad?.quadId;
 
-        Mixin.quadrixSocket?.emit('win', quad.toJson());
+        _end(result);
+        Mixin.quadrixSocket?.emit('played', quad.toJson());
 
-        setState(() {});
-        quadPlayer = 'You won';
+        //stop the game if the game has ended
+        if (result != Result.play) {
+
+          Quad quad = Quad()
+            ..quadState = result.name.toString().toUpperCase()
+            ..quadWinnerId = Mixin.user?.usrId
+            ..quadId = Mixin.quad?.quadId;
+
+          Mixin.quadrixSocket?.emit('win', quad.toJson());
+
+          setState(() {});
+          quadPlayer = 'You won';
+        }
       }
     } else {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -358,6 +396,75 @@ class GameBoardState extends State<GameBoard> {
     });
   }
 
+
+  void _makeAIMove() async {
+    if (end) return;
+    
+    final color = Theme.of(context).extension<CustomColors>()!;
+    
+    // Convert game state to AI board format
+    List<List<int>> board = List.generate(ai.rows, (r) => 
+        List.generate(ai.cols, (c) => gameState[r][c]['value'] as int));
+    
+    // Get AI difficulty from quad description
+    String difficulty = Mixin.quad?.quadDesc ?? 'Medium';
+    
+    // Get AI move with timeout protection
+    int aiColumn = -1;
+    try {
+      // Add a small delay for user experience and computation time
+      await Future.delayed(Duration(milliseconds: 200));
+      aiColumn = ai.getAIMove(board, difficulty: difficulty);
+    } catch (e) {
+      print('AI error: $e');
+      // Fallback to center column
+      aiColumn = 3;
+    }
+    
+    // Validate AI move
+    if (aiColumn == -1 || aiColumn < 0 || aiColumn >= ai.cols || !ai.canDrop(board, aiColumn)) {
+      // Emergency fallback - find any valid move
+      for (int c = 0; c < ai.cols; c++) {
+        if (ai.canDrop(board, c)) {
+          aiColumn = c;
+          break;
+        }
+      }
+      if (aiColumn == -1) return; // No valid moves at all
+    }
+    
+    // Create coin for AI move
+    var aiCoin = {
+      'row': 0,
+      'column': aiColumn,
+      'value': 0
+    };
+    
+    await onPlay(
+        coin: Coin(
+          row: 0,
+          column: aiColumn,
+          selected: false,
+          color: color.xSecondaryColor,
+        ),
+        playerTurnKey: widget.playerTurnKey,
+        gameBoardKey: widget.gameBoardKey);
+
+    Result result = didEnd();
+    _end(result);
+    
+    if (result != Result.play) {
+      setState(() {});
+      quadPlayer = result == Result.draw ? 'It\'s a tie!' : 
+                  result == Result.player1 ? 'You won!' : 'AI won!';
+    } else {
+      setState(() {
+        quadPlayer = 'Your turn';
+        play = true;
+        _startTimer();
+      });
+    }
+  }
 
   void _end(Result result){
     if(result == Result.draw) {

@@ -90,7 +90,7 @@ class _GlowingXDemoState extends State<GlowingXDemo>
               children: [
                 GlowingXText(size: 40, color: Colors.red),
                 GlowingXText(size: 50, color: Colors.blue),
-                GlowingXText(size: 60, color: Colors.green),
+                GlowingXText(size: 60, color: color.xTrailingAlt),
               ],
             ),
 

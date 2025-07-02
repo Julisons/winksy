@@ -334,7 +334,7 @@ class SecondScreenState extends State<SecondScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TokenDisplay(color: Colors.green),
+                                      TokenDisplay(color: color.xTrailingAlt),
                                       SizedBox(width: 6.h),
                                       Text(
                                         'Player 2',

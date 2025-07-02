@@ -307,7 +307,7 @@ class _FaceDetectionScannerState extends State<FaceDetectionScanner>
                 children: [
                   Icon(
                     _detectedFaces.isNotEmpty ? Icons.check_circle : Icons.warning,
-                    color: _detectedFaces.isNotEmpty ? Colors.green : Colors.orange,
+                    color: _detectedFaces.isNotEmpty ? Colors.green: Colors.orange,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -525,13 +525,13 @@ class _FaceDetectionExampleState extends State<FaceDetectionExample> {
                   children: [
                     Icon(
                       _hasFace ? Icons.check_circle : Icons.cancel,
-                      color: _hasFace ? Colors.green : Colors.red,
+                      color: _hasFace ? Colors.green: Colors.red,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       _hasFace ? 'Face Detected!' : 'No Face Detected',
                       style: TextStyle(
-                        color: _hasFace ? Colors.green : Colors.red,
+                        color: _hasFace ? Colors.green: Colors.red,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
