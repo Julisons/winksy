@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:winksy/screen/authenticate/password/reset_password.dart';
+import 'package:winksy/screen/authenticate/select/bio.dart';
 import 'package:winksy/screen/authenticate/sign_up.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,12 @@ class _ISignInState extends State<ISignIn> {
   bool _isLoading = false;
   bool _isLoggedIn = false;
   final User user = User();
+  
+  var name;
+  var image;
+  var email;
+  var gender;
+  var birthday;
 
   @override
   void initState() {
@@ -215,7 +223,7 @@ class _ISignInState extends State<ISignIn> {
                           Mixin.user = User()
                             ..usrId = Mixin.user?.usrId,
 
-                            Mixin.pop(context, const IHome())
+                            Mixin.pop(context, const IBio())
                         });
                       } else {
                         Mixin.errorDialog(context, 'ERROR', res);
@@ -632,6 +640,65 @@ class _ISignInState extends State<ISignIn> {
     );
   }*/
 
+  Future<void> _fetchGoogleProfileData(String accessToken) async {
+    try {
+      // Fetch user profile data from Google People API
+      final response = await http.get(
+        Uri.parse('https://people.googleapis.com/v1/people/me?personFields=genders,birthdays'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Google People API Response: $data');
+        
+        // Extract gender
+        if (data['genders'] != null && data['genders'].isNotEmpty) {
+          gender = data['genders'][0]['value'] ?? 'Not specified';
+          // Normalize gender values
+          switch (gender?.toLowerCase()) {
+            case 'male':
+              gender = 'Male';
+              break;
+            case 'female':
+              gender = 'Female';
+              break;
+            case 'other':
+              gender = 'Other';
+              break;
+            default:
+              gender = 'Not specified';
+          }
+        }
+        
+        // Extract birthday
+        if (data['birthdays'] != null && data['birthdays'].isNotEmpty) {
+          final birthdayData = data['birthdays'][0]['date'];
+          if (birthdayData != null) {
+            final year = birthdayData['year'];
+            final month = birthdayData['month'];
+            final day = birthdayData['day'];
+            
+            if (year != null && month != null && day != null) {
+              birthday = '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}T00:00:00.000Z';
+            }
+          }
+        }
+      } else {
+        print('Failed to fetch Google profile data: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error fetching Google profile data: $error');
+      // Set defaults if API call fails
+      gender = 'Not specified';
+      birthday = null;
+    }
+  }
+
   Future<void> _handleSignIn(context) async {
     setState(() {
       _isLoading = true;
@@ -654,10 +721,19 @@ class _ISignInState extends State<ISignIn> {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final String? accessToken = googleAuth.accessToken;
 
-      _nameController.text = googleUser.displayName ?? "N/A";
-      _imageController.text = googleUser.photoUrl ?? "N/A";
-      _emailController.text = googleUser.email ?? "N/A";
-      _passwordController.text = googleUser.displayName?? "N/A";
+      name = googleUser.displayName ?? "N/A";
+      image = googleUser.photoUrl ?? "N/A";
+      email = googleUser.email ?? "N/A";
+      
+      _nameController.text = name;
+      _imageController.text = image;
+      _emailController.text = email;
+      _passwordController.text = name;
+
+      // Fetch additional profile data including gender and birthday
+      await _fetchGoogleProfileData(accessToken!);
+
+      print('-----------------------------------------------------------------name: $name image: $image email : $email gender: $gender birthday: $birthday');
 
 
       if (accessToken == null) {
@@ -674,16 +750,18 @@ class _ISignInState extends State<ISignIn> {
       });
 
       User user = User()
-        ..usrFirstName = _nameController.text
-        ..usrLastName =  _nameController.text
+        ..usrFirstName = name
+        ..usrLastName = name
+        ..usrFullNames = name
+        ..usrNationalId = email
+        ..usrEmail = email
+        ..usrMobileNumber = ''
+        ..usrImage = image
         ..usrType = 'GOOGLE'
-        ..usrFullNames =  _nameController.text
-        ..usrNationalId =  _emailController.text
-        ..usrEmail = _emailController.text
-        ..usrMobileNumber = _emailController.text
-        ..usrImage = _imageController.text
-        ..usrEncryptedPassword = _emailController.text
-        ..usrUsername = _emailController.text;
+        ..usrEncryptedPassword = email+':'+email
+        ..usrUsername = email
+        ..usrGender = gender ?? 'Not specified'
+        ..usrDob = birthday;
 
       IPost.postData(user, (state, res, value) {
         setState(() {
@@ -692,7 +770,7 @@ class _ISignInState extends State<ISignIn> {
             Mixin.showToast(context, res, INFO);
             Mixin.getUser().then((value) => {
               Mixin.user = value,
-              Mixin.pop(context, const IHome())
+              Mixin.pop(context, const IBio())
             });
           } else {
             Mixin.errorDialog(context, 'ERROR', res);

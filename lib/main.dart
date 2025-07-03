@@ -23,6 +23,7 @@ import 'package:winksy/provider/photo_provider.dart';
 import 'package:winksy/provider/theme_provider.dart';
 import 'package:winksy/provider/user/online_status_provider.dart';
 import 'package:winksy/provider/user_provider.dart';
+import 'package:winksy/screen/authenticate/select/bio.dart';
 import 'package:winksy/screen/splash/splash_screen.dart';
 import 'package:winksy/theme/theme_data_style.dart';
 import 'package:device_preview/device_preview.dart';
@@ -128,7 +129,7 @@ class MyApp extends StatelessWidget {
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                home: ISplashScreen(),
+                home: IBio(),
                 theme: ThemeDataStyle.lighter,
                 darkTheme: ThemeDataStyle.darker,
               );

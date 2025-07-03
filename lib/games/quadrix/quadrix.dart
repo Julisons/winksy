@@ -66,10 +66,10 @@ class _IQuadrixState extends State<IQuadrix> {
   }
 
   void _startAIFallbackTimer() {
-    // Start 1.5-minute timer for AI fallback
-    _aiFallbackTimer = Timer(Duration(minutes: 1, seconds: 30), () {
+    // Start 30-second timer for AI fallback
+    _aiFallbackTimer = Timer(Duration(seconds: 30), () {
       if (!_hasFoundOpponent && mounted) {
-        print('🤖 No opponent found in 1.5 minutes - creating AI Guest opponent');
+        print('🤖 No opponent found in 30 seconds - creating AI Guest opponent');
         _createGuestOpponent();
       }
     });
@@ -160,7 +160,22 @@ class _IQuadrixState extends State<IQuadrix> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(_waiting, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary)),
+                      _waiting.contains('Gaming with') 
+                        ? RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Gaming with ',
+                                  style: GoogleFonts.quicksand(fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR, color: color.xTextColorSecondary),
+                                ),
+                                TextSpan(
+                                  text: _waiting.substring('Gaming with '.length),
+                                  style: GoogleFonts.quicksand(fontWeight: FontWeight.bold, fontSize: FONT_APP_BAR, color: color.xTrailing),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Text(_waiting, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary)),
                       SizedBox(
                           width: 30.w,
                           child: Text(_loading, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),
@@ -169,7 +184,7 @@ class _IQuadrixState extends State<IQuadrix> {
                   SizedBox(height: 20,),
                   Text('Welcome to Quadrix! This is a game where you can challenge your friends and family in a fun and strategic way. Choose from various game modes and customize your experience to suit your preferences.',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.quicksand(
                       fontSize: FONT_13,
                       color: color.xTextColor,
                     ),
@@ -220,7 +235,6 @@ class _IQuadrixState extends State<IQuadrix> {
       * I AM THE INITIATOR
       */
       if(Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
-        Mixin.vibrate();
         if(Mixin.quad?.quadStatus == PAIRED){
           // Real opponent found - cancel AI fallback
           _hasFoundOpponent = true;
@@ -235,7 +249,8 @@ class _IQuadrixState extends State<IQuadrix> {
             _loading = '';
             _waiting = 'Gaming with ${Mixin.quad?.quadAgainst}';
 
-            Future.delayed(Duration(seconds: 4), () {
+            Mixin.vibrate(duration: 130);
+            Future.delayed(Duration(seconds: 5), () {
                Mixin.navigate(context,IQuadrixScreen());
             });
           });
@@ -262,7 +277,8 @@ class _IQuadrixState extends State<IQuadrix> {
           _loading = '';
           _waiting = 'Gaming with ${Mixin.quad?.quadUser}';
 
-          Future.delayed(Duration(seconds: 4), () {
+          Mixin.vibrate(duration: 130);
+          Future.delayed(Duration(seconds: 5), () {
               Mixin.navigate(context,IQuadrixScreen());
           });
         });

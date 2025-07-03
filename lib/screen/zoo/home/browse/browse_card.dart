@@ -76,7 +76,8 @@ class _IBrowseCardState extends State<IBrowseCard> {
                     Mixin.navigate(context, IWinkser());
                   },
                   child: CachedNetworkImage(
-                    imageUrl: widget.pet.usrImage.toString(),
+                    imageUrl: '${widget.pet.usrImage}'.startsWith('http') ? widget.pet.usrImage
+                        : '${IUrls.IMAGE_URL}/file/secured/${widget.pet.usrImage}',
                     width: 150.h,
                     height: 150.h,
                     fit: BoxFit.fitHeight,

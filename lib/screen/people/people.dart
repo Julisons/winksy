@@ -70,7 +70,7 @@ class _IPeopleState extends State<IPeople> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('People',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.quicksand(
                           color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
                           shadows: [
                             Shadow(

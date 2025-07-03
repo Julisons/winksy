@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:winksy/component/app_bar.dart';
 import 'package:winksy/model/message.dart';
 import '../../../../mixin/constants.dart';
 import '../../../../mixin/mixins.dart';
@@ -51,36 +52,7 @@ class _IChatState extends State<IChat> {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
         backgroundColor: color.xPrimaryColor,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          surfaceTintColor: color.xPrimaryColor,
-          centerTitle: false,
-          backgroundColor: color.xPrimaryColor,
-          title:  Transform(
-            transform: Matrix4.translationValues(10, 0.0, 0.0),
-            child: SizedBox(
-                width: 210.w,
-                height: 120.h,
-                child: Stack(
-                  alignment: AlignmentDirectional.centerStart,
-                  children: [
-                    Text('Messages',
-                      style: GoogleFonts.poppins(
-                        color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                              offset: Offset(0, 1),
-                              blurRadius: 3.0,
-                              color: color.xSecondaryColor
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-            ),
-          ),
-        ),
+        appBar: IAppBar(leading: false,title: 'Messages',),
         body: VisibilityDetector(
           key: Key('my-widget-key'),
           onVisibilityChanged: (visibilityInfo) {
@@ -95,7 +67,7 @@ class _IChatState extends State<IChat> {
             color: color.xPrimaryColor,
             padding: EdgeInsets.only(top: 10.h),
             child: Consumer<IChatProvider>(builder: (context, provider, child) {
-              return (provider.loading || provider.list.isEmpty)
+              return (provider.loading)
                   ? Center(child: Loading(dotColor: color.xTrailing,size: LOADER))
                   : provider.list.isEmpty ?
                   EmptyStateWidget(

@@ -123,7 +123,7 @@ class _IProfileState extends State<IProfile> with TickerProviderStateMixin {
                 style: TextStyle(fontSize: FONT_13, color: color.xTextColor)),
           ],
         ),
-        actions: <Widget>[IPopup()],
+        actions: <Widget>[IPopup(showDeleteAccount: true)],
       ),
       body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

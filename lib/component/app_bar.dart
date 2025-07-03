@@ -25,8 +25,9 @@ class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
       ) : null,
       elevation: ELEVATION,
       backgroundColor: color.xPrimaryColor,
+      surfaceTintColor: color.xPrimaryColor,
       title: Transform(
-        transform: Matrix4.translationValues(10, 0.0, 0.0),
+        transform: Matrix4.translationValues(leading ? 0 : 10, 0.0, 0.0),
         child: SizedBox(
             width: 310.w,
             height: 120.h,
@@ -34,7 +35,7 @@ class IAppBar extends StatelessWidget implements PreferredSizeWidget  {
               alignment: AlignmentDirectional.centerStart,
               children: [
                 Text(title,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.quicksand(
                     color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(

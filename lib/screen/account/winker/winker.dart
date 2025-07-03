@@ -173,6 +173,45 @@ class _IWinkserState extends State<IWinkser> with SingleTickerProviderStateMixin
     }
   }
 
+  String _formatLastSeen(dynamic lastSeen) {
+    if (lastSeen == null) return '';
+    
+    try {
+      DateTime lastSeenDate;
+      if (lastSeen is String) {
+        lastSeenDate = DateTime.parse(lastSeen);
+      } else if (lastSeen is DateTime) {
+        lastSeenDate = lastSeen;
+      } else {
+        return '';
+      }
+
+      final now = DateTime.now();
+      final difference = now.difference(lastSeenDate);
+
+      if (difference.inMinutes < 1) {
+        return 'just now';
+      } else if (difference.inMinutes < 60) {
+        return '${difference.inMinutes}m ago';
+      } else if (difference.inHours < 24) {
+        return '${difference.inHours}h ago';
+      } else if (difference.inDays < 7) {
+        return '${difference.inDays}d ago';
+      } else if (difference.inDays < 30) {
+        final weeks = (difference.inDays / 7).floor();
+        return '${weeks}w ago';
+      } else if (difference.inDays < 365) {
+        final months = (difference.inDays / 30).floor();
+        return '${months}mo ago';
+      } else {
+        final years = (difference.inDays / 365).floor();
+        return '${years}y ago';
+      }
+    } catch (e) {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
@@ -296,18 +335,34 @@ class _IWinkserState extends State<IWinkser> with SingleTickerProviderStateMixin
                         ),
                         SizedBox(height: 10.h,),
                         if (isVerified)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Column(
                             children: [
-                              Icon(Icons.verified, color: color.xTrailingAlt, size: 20.r),
-                              SizedBox(width: 6.w),
-                              Text(
-                                "Verified profile",
-                                style: TextStyle(
-                                  color: color.xTextColor,
-                                  fontSize: 14.sp,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.verified, color: color.xTrailingAlt, size: 20.r),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    "Verified profile",
+                                    style: TextStyle(
+                                      color: color.xTextColor,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ],
                               ),
+                              if (Mixin.winkser?.usrLastSeen != null)
+                                Padding(
+                                  padding: EdgeInsets.only(top: 4.h),
+                                  child: Text(
+                                    "Last seen: ${_formatLastSeen(Mixin.winkser?.usrLastSeen)}",
+                                    style: TextStyle(
+                                      color: color.xTextColor,
+                                      fontSize: 12.sp,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         SizedBox(height: 6.h),

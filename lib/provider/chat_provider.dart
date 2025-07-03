@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import '../mixin/mixins.dart';
 import '../model/chat.dart';
 import '../model/invoice_dtl.dart';
@@ -30,19 +30,20 @@ class IChatProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-
           var res = jsonResponse.data['result'];
-          log('---${res}');
 
           var items = res.map<Chat>((json) {
             return  Chat.fromJson(json);
           }).toList();
+
           setHouses(items);
         } catch (e) {
           log(e.toString());
+          setLoading(false);
         }
       } else {
         setMessage(data.headers['message']);
+        setLoading(false);
       }
     });
     return isLoaded();
@@ -58,21 +59,19 @@ class IChatProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-
-          var res = jsonResponse.data['result'] ?? [];
-          log('---${res}');
-
+          var res = jsonResponse.data['result'];
           var items = res.map<Chat>((json) {
             return  Chat.fromJson(json);
           }).toList();
+
           setHouses(items);
         } catch (e) {
           log(e.toString());
-          // On error, don't clear the list - keep showing existing data
+          setLoading(false);
         }
       } else {
         setMessage(data.headers['message']);
-        // On error, don't clear the list - keep showing existing data
+        setLoading(false);
       }
     });
     return isLoaded();

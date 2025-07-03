@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:winksy/games/chess/model/app_model.dart' show AppModel;
 import 'package:winksy/games/chess/views/components/chess_view/chess_board_widget.dart' show ChessBoardWidget;
@@ -65,8 +66,60 @@ class _ChessViewState extends State<ChessView> {
   }
 
   Future<bool> _willPopCallback() async {
-    appModel.exitChessView();
+    return await _showGiveUpDialog() ?? false;
+  }
 
-    return true;
+  Future<bool> _showGiveUpDialog() async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor: Colors.grey[800],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          title: Text(
+            'Give Up Game?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to quit the game? This will count as a loss.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.white70,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => {
+                Navigator.of(context).pop()
+              },
+              child: Text(
+                'Continue Playing',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+                appModel.exitChessView();
+              },
+              child: Text(
+                'Give Up',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
   }
 }

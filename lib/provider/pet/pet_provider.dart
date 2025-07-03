@@ -40,7 +40,7 @@ class IPetProvider with ChangeNotifier {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
           var res = jsonResponse.data['result'];
-          pet = Pet.fromJson((jsonResponse.result));
+          pet = jsonResponse.result != null ? Pet.fromJson(jsonResponse.result) : Pet();
 
           var items = res.map<Pet>((json) {
             return  Pet.fromJson(json);

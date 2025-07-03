@@ -15,6 +15,7 @@ import '../../component/button.dart';
 import '../../component/glow2.dart';
 import '../../mixin/mixins.dart';
 import '../../model/quad.dart';
+import '../../screen/home/home.dart';
 import '../../theme/custom_colors.dart';
 import '../fame_hall/fame_hall.dart';
 
@@ -453,8 +454,12 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
-    return Scaffold(
-      backgroundColor: color.xPrimaryColor,
+    return WillPopScope(
+      onWillPop: () async {
+        return await _showGiveUpDialog(context);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -468,9 +473,19 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                   textAlign: TextAlign.justify,
                   quadPlayer,
                   style: GoogleFonts.quicksand(
-                    color: color.xTrailing,
+                    color: Color(0xFF00FF00),
                     fontWeight: FontWeight.bold,
                     fontSize: FONT_APP_BAR,
+                    shadows: [
+                      Shadow(
+                        color: Color(0xFF00FF00).withOpacity(0.8),
+                        blurRadius: 10,
+                      ),
+                      Shadow(
+                        color: Color(0xFF00FF00).withOpacity(0.5),
+                        blurRadius: 20,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -494,26 +509,27 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: color.xSecondaryColor, // Background color
+                        color: Colors.black, // Background color
                         border: Border.all(
-                          color: color.xPrimaryColor,     // Border color
-                          width: 2.0,                 // Optional: border thickness
+                          color: Color(0xFF0066FF),     // Neon blue border
+                          width: 2.0,                 // Border thickness
                         ),
-                        borderRadius: BorderRadius.circular(8.0), // Optional: rounded corners
                       ),
                       child: Center(
                         child: board[row][col] == 'O' ?
                         AnimatedGlowingLetter(
                           letter: board[row][col],
                           size: 90.sp,
-                          color: color.xTrailing,
+                          color: Color(0xFF00FF00), // Bright neon green
                           animationType: AnimationType.breathe,
+                          glowType: GlowType.neon,
                         ) :
                         AnimatedGlowingLetter(
                           letter: board[row][col],
                           size: 90.sp,
-                          color: color.xTrailingAlt,
-                          animationType: AnimationType.breathe
+                          color: Color(0xFFFF00FF), // Bright neon pink
+                          animationType: AnimationType.breathe,
+                          glowType: GlowType.neon,
                         ),
                       ),
                     ),
@@ -533,6 +549,7 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
             ),
           ),
         ],
+      ),
       ),
     );
   }
@@ -587,5 +604,60 @@ class _ITicTacToeGameState extends State<ITicTacToeGame> {
       Mixin.vibe();
       AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
+  }
+
+  Future<bool> _showGiveUpDialog(BuildContext context) async {
+    final color = Theme.of(context).extension<CustomColors>()!;
+    
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor: color.xSecondaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          title: Text(
+            'Give Up Game?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color.xTextColor,
+              fontSize: FONT_TITLE,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to quit the game? This will count as a loss.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: FONT_13,
+              color: color.xTextColorSecondary,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => {
+                Navigator.of(context).pop()
+              },
+              child: Text(
+                'Continue Playing',
+                style: TextStyle(color: color.xTextColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Mixin.pop(context, IHome());
+              },
+              child: Text(
+                'Give Up',
+                style: TextStyle(color: color.xTrailing),
+              ),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
   }
 }

@@ -1,6 +1,6 @@
 class IUrls {
 
-// static String BASE = 'http://192.168.100.36';
+ //static String BASE = 'http://192.168.100.36';
 //static String BASE = 'http://10.10.1.22';
 
   static String BASE = 'http://212.47.74.158';
@@ -61,6 +61,10 @@ static String BASE_URL = '$BASE:5000';
 
   static String NUDGE() {
     return "$BASE_URL/nudge/save_nudge";
+  }
+
+  static String DELETE_ACCOUNT() {
+    return "$BASE_URL/auth/delete_account_in_app";
   }
 
   static String FRIEND() {

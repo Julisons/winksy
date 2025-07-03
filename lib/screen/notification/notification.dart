@@ -22,6 +22,26 @@ class INotifications extends StatefulWidget {
 }
 
 class _INotificationsState extends State<INotifications> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          Provider.of<INotificationProvider>(context, listen: false).loadMore('');
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(context) {
     final color = Theme.of(context).extension<CustomColors>()!;
@@ -42,24 +62,38 @@ class _INotificationsState extends State<INotifications> {
               onReload: () async {
                 provider.refresh('', true);
               },
-            ) : RefreshIndicator(
-              color: color.xTrailing,
-                onRefresh: () => provider.refresh('', true),
-                child:  ListView.builder(
-                  padding: const EdgeInsets.only(
-                      bottom: 6,
-                      top: 6,
-                      right: 6,
-                      left: 6),
-                  scrollDirection: Axis.vertical,
-                    physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  addAutomaticKeepAlives: false,
-                  itemBuilder: (context, index) {
-                    return INotificationsCard(notification: provider.list[index]);
-                  },
-                  itemCount: provider.getCount(),
-                )) ;
+            ) : Column(
+                children: [
+                  Expanded(
+                    child: RefreshIndicator(
+                      color: color.xTrailing,
+                      backgroundColor: color.xPrimaryColor,
+                      onRefresh: () => provider.refresh('', true),
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.only(
+                            bottom: 60,
+                            top: 6,
+                            right: 6,
+                            left: 6),
+                        scrollDirection: Axis.vertical,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        addAutomaticKeepAlives: false,
+                        itemBuilder: (context, index) {
+                          return INotificationsCard(notification: provider.list[index]);
+                        },
+                        itemCount: provider.getCount(),
+                      ),
+                    ),
+                  ),
+                  if (provider.isLoadingMore())
+                    Container(
+                      padding: EdgeInsets.all(14),
+                      child: Loading(dotColor: color.xTrailing),
+                    ),
+                ],
+              );
           }),
     );
   }

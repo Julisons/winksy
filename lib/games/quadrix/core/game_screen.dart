@@ -66,8 +66,12 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
         ),
       ],
     );
-    return Scaffold(
-      appBar: appBar,
+    return WillPopScope(
+      onWillPop: () async {
+        return await _showGiveUpDialog(context);
+      },
+      child: Scaffold(
+        appBar: appBar,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -275,6 +279,7 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
           ),
         ),
       ),
+      ),
     );
   }
 
@@ -311,5 +316,60 @@ class _IQuadrixScreenState extends State<IQuadrixScreen> {
       playerTurnKey: playerTurnKey,
       context: context,
     );
+  }
+
+  Future<bool> _showGiveUpDialog(BuildContext context) async {
+    final color = Theme.of(context).extension<CustomColors>()!;
+    
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor: color.xSecondaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          title: Text(
+            'Give Up Game?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color.xTextColor,
+              fontSize: FONT_TITLE,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to quit the game? This will count as a loss.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: FONT_13,
+              color: color.xTextColorSecondary,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => {
+                Navigator.of(context).pop()
+              },
+              child: Text(
+                'Continue Playing',
+                style: TextStyle(color: color.xTextColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Mixin.pop(context, IHome());
+              },
+              child: Text(
+                'Give Up',
+                style: TextStyle(color: color.xTrailing),
+              ),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
   }
 }

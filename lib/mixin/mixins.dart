@@ -292,9 +292,9 @@ class Mixin {
     );
   }
 
-  static void vibrate() async {
+  static void vibrate({duration = 80}) async {
     if (await Vibration.hasCustomVibrationsSupport()) {
-      Vibration.vibrate(duration: 80, amplitude: 8);
+      Vibration.vibrate(duration: duration, amplitude: 8);
     } else {
       Vibration.vibrate();
       await Future.delayed(Duration(milliseconds: 500));

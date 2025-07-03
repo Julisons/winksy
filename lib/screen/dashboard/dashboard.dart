@@ -116,7 +116,7 @@ class _IDashboardState extends State<IDashboard>
                 alignment: AlignmentDirectional.centerStart,
                 children: [
                   Text('Play',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.quicksand(
                       color: color.xTrailing, fontSize: FONT_APP_BAR, fontWeight: FontWeight.bold,
                       shadows: [
                         Shadow(

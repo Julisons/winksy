@@ -22,6 +22,7 @@ import '../../mixin/mixins.dart';
 import '../../model/treat.dart';
 import '../../request/posts.dart';
 import '../../request/urls.dart';
+import '../../screen/home/home.dart';
 import '../../theme/custom_colors.dart';
 
 class ISpinner extends StatefulWidget {
@@ -117,8 +118,12 @@ class _ISpinnerState extends State<ISpinner> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
 
-    return Scaffold(
-      backgroundColor: color.xPrimaryColor,
+    return WillPopScope(
+      onWillPop: () async {
+        return await _showGiveUpDialog(context);
+      },
+      child: Scaffold(
+        backgroundColor: color.xPrimaryColor,
       body: Container(
         padding: EdgeInsets.all(23),
         child: Column(
@@ -236,6 +241,7 @@ class _ISpinnerState extends State<ISpinner> {
           ],
         ),
       ),
+      ),
     );
   }
 
@@ -347,6 +353,61 @@ class _ISpinnerState extends State<ISpinner> {
         }
       });
     }, IUrls.PET());
+  }
+
+  Future<bool> _showGiveUpDialog(BuildContext context) async {
+    final color = Theme.of(context).extension<CustomColors>()!;
+    
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          backgroundColor: color.xSecondaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          title: Text(
+            'Give Up Game?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color.xTextColor,
+              fontSize: FONT_TITLE,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to quit spinning?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: FONT_13,
+              color: color.xTextColorSecondary,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => {
+                Navigator.of(context).pop()
+              },
+              child: Text(
+                'Continue Playing',
+                style: TextStyle(color: color.xTextColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Mixin.pop(context, IHome());
+              },
+              child: Text(
+                'Quit',
+                style: TextStyle(color: color.xTrailing),
+              ),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
   }
 }
 

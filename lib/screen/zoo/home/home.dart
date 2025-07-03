@@ -190,15 +190,6 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Last Active:',
-                                            style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
-                                        Text(timeago.format(DateTime.parse(pet.petLastActiveTime)),
-                                            style: TextStyle(color: color.xTrailing, fontWeight: FontWeight.bold, fontSize: FONT_TITLE)),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
                                         Text('Owned By:',
                                             style: TextStyle(color: color.xTextColor, fontSize: FONT_TITLE)),
                                         Text('${pet.usrOwner}',
