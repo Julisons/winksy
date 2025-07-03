@@ -480,7 +480,7 @@ class _ISignUpState extends State<ISignUp> {
             Mixin.showToast(context, res, INFO);
             Mixin.getUser().then((value) => {
               Mixin.user = value,
-              Mixin.pop(context, const IHome())
+              Mixin.pop(context, const IBio())
             });
           } else {
             Mixin.signIn(context, 'ERROR', res);
