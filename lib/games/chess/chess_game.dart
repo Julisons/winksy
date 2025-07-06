@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -53,6 +54,10 @@ class _IChessGameState extends State<IChessGame> {
   String currentPlayer = '';
   late Quad _quad = Quad();
   String quadPlayer = '';
+  Timer? _timer;
+  bool play = true;
+  late int _seconds;
+  bool end = false;
 
   @override
   void initState() {
@@ -60,13 +65,43 @@ class _IChessGameState extends State<IChessGame> {
 
     if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
       quadPlayer = "You start";
+      _startTimer();
     }else{
       quadPlayer = Mixin.quad?.quadPlayer+" starts";
     }
 
-    _play();
-
+    _remotePlay();
     _initializeBoard();
+    _onGaveUpPlay();
+  }
+
+  void _startTimer() {
+    _seconds = 15;
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _seconds--;
+      if (_seconds <= 5) {
+        Mixin.vibe();
+        AudioPlayer().play(AssetSource('audio/sound/warning.wav'));
+      }
+      if (_seconds == 0) {
+        autoPlayer();
+      }
+      if(quadPlayer.contains('You start')) {
+        quadPlayer = 'You start $_seconds';
+        setState(() {});
+      }
+      else if(quadPlayer.contains('Your turn')) {
+        quadPlayer = 'Your turn $_seconds';
+       setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   void _initializeBoard() {
@@ -180,18 +215,15 @@ class _IChessGameState extends State<IChessGame> {
           selectedRow = row;
           selectedCol = col;
         }
-      } else if (board[row][col] != null &&
-          board[row][col]!.isWhite == selectedPiece!.isWhite) {
+      } else if (board[row][col] != null && board[row][col]!.isWhite == selectedPiece!.isWhite) {
         selectedPiece = board[row][col];
         selectedRow = row;
         selectedCol = col;
-      } else if (selectedPiece != null &&
-          validMoves.any((element) => element[0] == row && element[1] == col)) {
+      } else if (selectedPiece != null && validMoves.any((element) => element[0] == row && element[1] == col)) {
         movePiece(row, col);
       }
 
-      validMoves = calculateRealValidMoves(
-          selectedRow, selectedCol, selectedPiece, true);
+      validMoves = calculateRealValidMoves(selectedRow, selectedCol, selectedPiece, true);
     });
   }
 
@@ -551,10 +583,10 @@ class _IChessGameState extends State<IChessGame> {
       //appBar: IAppBar(title: 'Chess', leading: false),
       backgroundColor: color.xPrimaryColor,
       body: Container(
-        padding: EdgeInsets.only(bottom: 30.h),
+        padding: EdgeInsets.only(bottom: 28.h),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade700],
+            colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade800],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -565,11 +597,11 @@ class _IChessGameState extends State<IChessGame> {
             Expanded(
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: whitePiecesTaken.length,
+                itemCount: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? whitePiecesTaken.length : blackPiecesTaken.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 8),
                 itemBuilder: (context, index) => DeadPiece(
-                  imagePath: whitePiecesTaken[index].imagePath,
+                  imagePath: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? whitePiecesTaken[index].imagePath : blackPiecesTaken[index].imagePath,
                   isWhite: true,
                 ),
               ), // GridView.builder
@@ -604,6 +636,8 @@ class _IChessGameState extends State<IChessGame> {
 
                       if(viableMove){
                         FlameAudio.play('piece_moved.mp3');
+                        _timer?.cancel();
+                        _seconds = 15;
                       }
 
                       log('-${Mixin.user?.usrId}--${(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString())}----------quadPlayerId---${_quad.quadPlayerId}------------isWhiteTurn: $isWhiteTurn');
@@ -659,11 +693,11 @@ class _IChessGameState extends State<IChessGame> {
             Expanded(
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: blackPiecesTaken.length,
+                itemCount: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? blackPiecesTaken.length : whitePiecesTaken.length,
                 gridDelegate:
                     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
                 itemBuilder: (context, index) => DeadPiece(
-                  imagePath: blackPiecesTaken[index].imagePath,
+                  imagePath: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? blackPiecesTaken[index].imagePath : whitePiecesTaken[index].imagePath,
                   isWhite: false,
                 ),
               ), // GridView.builder
@@ -681,8 +715,7 @@ class _IChessGameState extends State<IChessGame> {
     );
   }
 
-
-  void _play(){
+  void _remotePlay(){
     Mixin.quadrixSocket?.on('play', (message) async {
       print(jsonEncode(message));
       _quad = Quad.fromJson(message);
@@ -698,6 +731,7 @@ class _IChessGameState extends State<IChessGame> {
       if(_quad.quadMoveType == 'true') {
           FlameAudio.play('piece_moved.mp3');
           Mixin.vibe();
+          _startTimer();
         if (Mixin.user?.usrId.toString() == _quad.quadPlayerId.toString()) {
           quadPlayer = 'Your turn';
         } else {
@@ -711,9 +745,37 @@ class _IChessGameState extends State<IChessGame> {
 
   void _end(String winner){
     if(winner == 'Draw') {
-      AudioPlayer().play(AssetSource('sound/win.wav')); // Your sound file
+      setState(() {});
+      _timer?.cancel();
+      Mixin.vibe();
+      AudioPlayer().play(AssetSource('audio/sound/win.wav')); // Your sound file
     }else {
-      AudioPlayer().play(AssetSource('sound/win2.wav')); // Your sound file
+      setState(() {});
+      _timer?.cancel();
+      Mixin.vibe();
+      AudioPlayer().play(AssetSource('audio/sound/win2.wav')); // Your sound file
     }
+  }
+
+  void autoPlayer() {
+    _timer?.cancel();
+    _seconds = 15;
+  }
+
+  void _onGaveUpPlay(){
+    Mixin.quadrixSocket?.on('gave_up', (message) async {
+      print(jsonEncode(message));
+      _quad = Quad.fromJson(message);
+
+      var quitter =  Mixin.user?.usrId == Mixin.quad?.quadUsrId ? Mixin.quad?.quadAgainst : Mixin.quad?.quadUser;
+      setState(() {
+        _timer?.cancel();
+        AudioPlayer().play(AssetSource('audio/sound/win2.wav'));
+        quadPlayer = 'You won ';
+        Mixin.showToast(context,'$quitter  couldn\'t take it anymore;  Gave up in silence 😔', INFO);
+        end = true;
+        setState(() {});
+      });
+    });
   }
 }

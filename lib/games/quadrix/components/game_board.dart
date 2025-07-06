@@ -365,8 +365,8 @@ class GameBoardState extends State<GameBoard> {
         color: Theme.of(context).extension<CustomColors>()!.xSecondaryColor,
       ),
 
-          playerTurnKey: widget.playerTurnKey,
-          gameBoardKey: widget.gameBoardKey);
+      playerTurnKey: widget.playerTurnKey,
+      gameBoardKey: widget.gameBoardKey);
 
       play = true;
 
