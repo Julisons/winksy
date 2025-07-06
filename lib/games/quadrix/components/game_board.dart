@@ -7,6 +7,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:winksy/games/games.dart';
 
 import '../../../component/button.dart';
@@ -97,54 +98,67 @@ class GameBoardState extends State<GameBoard> {
   @override
   Widget build(BuildContext context) {
     final color = ThemeDataStyle.darker.extension<CustomColors>()!;
-    return Container(
-      height: MediaQuery.of(context).size.width - 20,
-      width: MediaQuery.of(context).size.width - 20,
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: gameState.map((row) {
-          return Row(
-            children: row.map((coin) {
-              return Expanded(
-                child: InkWell(
-                onTap: () async {
-                  _localPlay(coin,row);
-                },
-                child:
-                GameCoinWidget(
-                  coin: (coin['value'] == 0)
-                      ? Coin(
-                    row: coin['row'] as int,
-                    column: coin['column'] as int,
-                    selected: false,
-                    color: color.xSecondaryColor,
-                  )
-                      : (coin['value'] == 1)
-                      ? Coin(
-                    row: coin['row'] as int,
-                    column: coin['column'] as int,
-                    selected: true,
-                    color: playerOneColor,
-                  )
-                      : (coin['value'] == 2)
-                      ? Coin(
-                    row: coin['row'] as int,
-                    column: coin['column'] as int,
-                    selected: true,
-                    color: playerTwoColor,
-                  )
-                      : Coin(
-                    row: coin['row'] as int,
-                    column: coin['column'] as int,
-                    selected: true,
-                    color: Colors.red,
+    return VisibilityDetector(
+      key: Key('my-widget-key'),
+      onVisibilityChanged: (visibilityInfo) {
+        var visiblePercentage = visibilityInfo.visibleFraction * 100;
+        debugPrint('Widget ${visibilityInfo.key} is ${visiblePercentage}% visible');
+
+        if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+          quadPlayer = "You start";
+        }else{
+          quadPlayer = Mixin.quad?.quadPlayer+" starts";
+        }
+      },
+      child: SizedBox(
+        height: MediaQuery.of(context).size.width - 20,
+        width: MediaQuery.of(context).size.width - 20,
+        child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          children: gameState.map((row) {
+            return Row(
+              children: row.map((coin) {
+                return Expanded(
+                  child: InkWell(
+                  onTap: () async {
+                    _localPlay(coin,row);
+                  },
+                  child:
+                  GameCoinWidget(
+                    coin: (coin['value'] == 0)
+                        ? Coin(
+                      row: coin['row'] as int,
+                      column: coin['column'] as int,
+                      selected: false,
+                      color: color.xSecondaryColor,
+                    )
+                        : (coin['value'] == 1)
+                        ? Coin(
+                      row: coin['row'] as int,
+                      column: coin['column'] as int,
+                      selected: true,
+                      color: playerOneColor,
+                    )
+                        : (coin['value'] == 2)
+                        ? Coin(
+                      row: coin['row'] as int,
+                      column: coin['column'] as int,
+                      selected: true,
+                      color: playerTwoColor,
+                    )
+                        : Coin(
+                      row: coin['row'] as int,
+                      column: coin['column'] as int,
+                      selected: true,
+                      color: Colors.red,
+                    ),
                   ),
-                ),
-                ),
-              );
-            }).toList(),
-          );
-        }).toList(),
+                  ),
+                );
+              }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
