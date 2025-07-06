@@ -581,22 +581,44 @@ class _IChessGameState extends State<IChessGame> {
   Widget build(BuildContext context) {
     final color = ThemeDataStyle.darker.extension<CustomColors>()!;
     return Scaffold(
-      //appBar: IAppBar(title: 'Chess', leading: false),
+      appBar: AppBar(
+        backgroundColor:color.xPrimaryColor,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(quadPlayer,
+              style: GoogleFonts.quicksand(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: FONT_APP_BAR,
+              ),
+            textAlign: TextAlign.center,),
+            GlowingLetter(letter: checkStatus ? " (CHECK)" : "",size: FONT_APP_BAR,glowType: GlowType.intense,color: color.xTrailing),
+          ],
+        ),
+      ),
       backgroundColor: color.xPrimaryColor,
       body: Container(
-        padding: EdgeInsets.only(bottom: 28.h),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(top: 28.h),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.grey.shade800, Colors.grey.shade800, Colors.grey.shade800],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(0),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               child: GridView.builder(
+                shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? whitePiecesTaken.length : blackPiecesTaken.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -607,91 +629,98 @@ class _IChessGameState extends State<IChessGame> {
                 ),
               ), // GridView.builder
             ),
-            GlowingLetter(letter: checkStatus ? "CHECK" : '',size: FONT_APP_BAR,glowType: GlowType.intense,),
-            Expanded(
-              flex: 4,
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 8 * 8,
-                reverse: (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
-                itemBuilder: (context, index) {
-                  int row = index ~/ 8;
-                  int col = index % 8;
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 8 * 8,
+              // reverse: (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
+              itemBuilder: (context, index) {
+                int row, col;
 
-                  bool isSelected = selectedCol == col && selectedRow == row;
-                  bool isValidMove = false;
+                if (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()) {
+                  // Flip the board for the second player
+                  int flippedIndex = 63 - index; // 64 squares total, so 63 is max index
+                  row = flippedIndex ~/ 8;
+                  col = flippedIndex % 8;
+                } else {
+                  row = index ~/ 8;
+                  col = index % 8;
+                }
 
-                  for (var position in validMoves) {
-                    // compare row and col
-                    if (position[0] == row && position[1] == col) {
-                      isValidMove = true;
-                    }
+                bool isSelected = selectedCol == col && selectedRow == row;
+                bool isValidMove = false;
+
+                for (var position in validMoves) {
+                  // compare row and col
+                  if (position[0] == row && position[1] == col) {
+                    isValidMove = true;
                   }
+                }
 
-                  return Square(
-                    isValidMove: isValidMove,
-                    onTap: () {
-                      bool viableMove = (selectedPiece != null && isValidMove);
+                return Square(
+                  isValidMove: isValidMove,
+                  onTap: () {
+                    bool viableMove = (selectedPiece != null && isValidMove);
 
-                      if(viableMove){
-                        FlameAudio.play('piece_moved.mp3');
-                        _timer?.cancel();
-                        _seconds = 15;
+                    if(viableMove){
+                      FlameAudio.play('piece_moved.mp3');
+                      _timer?.cancel();
+                      _seconds = 15;
+                    }
+
+                    log('-${Mixin.user?.usrId}--${(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString())}----------quadPlayerId---${_quad.quadPlayerId}------------isWhiteTurn: $isWhiteTurn');
+
+                    if(viableMove){
+                      log('-------------------------------------------------------------isValidMove: $isValidMove');
+                    }
+                    /**
+                     * IF ITS NOT YOUR TURN , DON'T PLAY
+                     */
+
+                    if(_quad.quadPlayerId == null){
+                      if (!(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString() && isWhiteTurn)) {
+                        return;
                       }
-
-                      log('-${Mixin.user?.usrId}--${(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString())}----------quadPlayerId---${_quad.quadPlayerId}------------isWhiteTurn: $isWhiteTurn');
-
-                      if(viableMove){
-                        log('-------------------------------------------------------------isValidMove: $isValidMove');
+                    }else {
+                      if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
+                        return;
                       }
-                      /**
-                       * IF ITS NOT YOUR TURN , DON'T PLAY
-                       */
+                    }
 
-                      if(_quad.quadPlayerId == null){
-                        if (!(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString() && isWhiteTurn)) {
-                          return;
-                        }
-                      }else {
-                        if (Mixin.user?.usrId.toString() != _quad.quadPlayerId.toString()) {
-                          return;
-                        }
+                    Quad quad = Quad()
+                      ..quadRow = row
+                      ..quadColumn = col
+                      ..quadMoveType = (selectedPiece != null && isValidMove)
+                      ..quadUsrId = Mixin.user?.usrId
+                      ..quadPlayer = Mixin.user?.usrFirstName
+                      ..quadId = Mixin.quad?.quadId;
+
+                    if(viableMove) {
+                      quad.quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId;
+
+                      if (Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+                        quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+                      } else {
+                        quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
                       }
+                    }else{
+                      //Maintain the first player because is not viableMove
+                      quad.quadPlayerId = Mixin.user?.usrId;
+                    }
 
-                      Quad quad = Quad()
-                        ..quadRow = row
-                        ..quadColumn = col
-                        ..quadMoveType = (selectedPiece != null && isValidMove)
-                        ..quadUsrId = Mixin.user?.usrId
-                        ..quadPlayer = Mixin.user?.usrFirstName
-                        ..quadId = Mixin.quad?.quadId;
-
-                      if(viableMove) {
-                        quad.quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId;
-
-                        if (Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
-                          quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
-                        } else {
-                          quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
-                        }
-                      }else{
-                        //Maintain the first player because is not viableMove
-                        quad.quadPlayerId = Mixin.user?.usrId;
-                      }
-
-                      Mixin.quadrixSocket?.emit('played', quad.toJson());
-                      pieceSelected(row, col);
-                    },
-                    isSelected: isSelected,
-                    isWhite: isWhite(index),
-                    piece: board[row][col],
-                  );
-                },
-              ),
+                    Mixin.quadrixSocket?.emit('played', quad.toJson());
+                    pieceSelected(row, col);
+                  },
+                  isSelected: isSelected,
+                  isWhite: isWhite(index),
+                  piece: board[row][col],
+                );
+              },
             ),
             Expanded(
               child: GridView.builder(
+                shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? blackPiecesTaken.length : whitePiecesTaken.length,
                 gridDelegate:
@@ -702,13 +731,6 @@ class _IChessGameState extends State<IChessGame> {
                 ),
               ), // GridView.builder
             ),
-            Text(quadPlayer,
-              style: GoogleFonts.quicksand(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: FONT_APP_BAR,
-              ),
-              textAlign: TextAlign.center,)
           ],
         ),
       ),
