@@ -8,6 +8,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:winksy/component/glow2.dart';
 
 import '../../component/app_bar.dart';
 import '../../mixin/constants.dart';
@@ -586,7 +587,7 @@ class _IChessGameState extends State<IChessGame> {
         padding: EdgeInsets.only(bottom: 28.h),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade800],
+            colors: [Colors.grey.shade800, Colors.grey.shade800, Colors.grey.shade800],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -602,19 +603,18 @@ class _IChessGameState extends State<IChessGame> {
                     crossAxisCount: 8),
                 itemBuilder: (context, index) => DeadPiece(
                   imagePath: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? whitePiecesTaken[index].imagePath : blackPiecesTaken[index].imagePath,
-                  isWhite: true,
+                  isWhite: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()),
                 ),
               ), // GridView.builder
-            ), // Expanded
-            Text(checkStatus ? "CHECK" : ""),
+            ),
+            GlowingLetter(letter: checkStatus ? "CHECK" : '',size: FONT_APP_BAR,glowType: GlowType.intense,),
             Expanded(
               flex: 4,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 8 * 8,
                 reverse: (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
                 itemBuilder: (context, index) {
                   int row = index ~/ 8;
                   int col = index % 8;
@@ -698,7 +698,7 @@ class _IChessGameState extends State<IChessGame> {
                     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
                 itemBuilder: (context, index) => DeadPiece(
                   imagePath: (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) ? blackPiecesTaken[index].imagePath : whitePiecesTaken[index].imagePath,
-                  isWhite: false,
+                  isWhite: (Mixin.user?.usrId.toString() != Mixin.quad?.quadFirstPlayerId.toString()),
                 ),
               ), // GridView.builder
             ),
