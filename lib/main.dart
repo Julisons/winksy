@@ -1,4 +1,3 @@
-import 'package:winksy/games/chess/model/app_model.dart' show AppModel;
 import 'package:winksy/provider/chat_provider.dart';
 import 'package:winksy/provider/fame_hall_provider.dart';
 import 'package:winksy/provider/friend_provider.dart';
@@ -115,8 +114,8 @@ class MyApp extends StatelessWidget {
               create: (_) => INudgeSoundProvider().init()),
           ChangeNotifierProvider<OnlineStatusProvider>(
               create: (_) => OnlineStatusProvider()),
-          ChangeNotifierProvider(create: (context) => AppModel(),
-          ),
+         /* ChangeNotifierProvider(create: (context) => AppModel(),
+          ),*/
         ],
         child: ScreenUtilInit(
             designSize: const Size(490.9, 1075.0),
