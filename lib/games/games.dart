@@ -103,6 +103,9 @@ class _IGamesState extends State<IGames> {
                   final item = games[index];
                   return GestureDetector(
                     onTap: () {
+
+                      Mixin.winkser = Mixin.user;
+
                       switch (item.title) {
                         case 'Friend Zoo':
                           Mixin.navigate(context, IZoo());
@@ -127,29 +130,57 @@ class _IGamesState extends State<IGames> {
                     child: Card(
                       color: color.xSecondaryColor,
                       elevation: ELEVATION,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text( item.icon,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: FONT_ICON,
-                                color: color.xTextColorSecondary,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text( item.icon,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FONT_ICON,
+                                    color: color.xTextColorSecondary,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  item.title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FONT_TITLE,
+                                    color: color.xTextColorSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (item.title == 'Quadrix')
+                            Positioned(
+                              top: 8.h,
+                              right: 8.w,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                                decoration: BoxDecoration(
+                                  color: color.xTrailingAlt,
+                                  borderRadius: BorderRadius.circular(1.r),
+                                ),
+                                child: Text(
+                                  'NEW',
+                                  style: GoogleFonts.quicksand(
+                                    color: Colors.white,
+                                    fontSize: FONT_SMALL ,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                            SizedBox(height: 8),
-                            Text(
-                              item.title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: FONT_TITLE,
-                                color: color.xTextColorSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   );

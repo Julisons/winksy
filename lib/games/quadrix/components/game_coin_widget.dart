@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/custom_colors.dart';
+import '../../../theme/theme_data_style.dart';
 import '../models/coin.dart';
 import '../utils/game_logic.dart';
 
@@ -77,7 +78,7 @@ class _GameCoinWidgetState extends State<GameCoinWidget>
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).extension<CustomColors>()!;
+     final color = ThemeDataStyle.darker.extension<CustomColors>()!;
     double size = (MediaQuery.of(context).size.width - 20) / 7;
 
     // Check if this ball should be animated

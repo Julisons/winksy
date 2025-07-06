@@ -31,7 +31,7 @@ class INotificationProvider with ChangeNotifier {
     setLoading(true, loud);
 
     await XRequest().getData({
-      //'notiUsrId': Mixin.user?.usrId,
+      'notiUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.NOTIFICATIONS()).then((data) {
@@ -61,8 +61,7 @@ class INotificationProvider with ChangeNotifier {
     setLoadingMore(true);
 
     await XRequest().getData({
-      'INotificationOwnerId': Mixin.user?.usrId,
-      'wishUsrId': Mixin.user?.usrId,
+      'notiUsrId': Mixin.user?.usrId,
       'start':_start,
       'limit':_limit
     }, IUrls.NOTIFICATIONS()).then((data) {

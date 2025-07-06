@@ -20,7 +20,6 @@ class PlayerTurnWidgetState extends State<PlayerTurnWidget> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Container(
-      color: color.xPrimaryColor,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(

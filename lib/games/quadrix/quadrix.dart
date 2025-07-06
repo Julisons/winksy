@@ -15,6 +15,7 @@ import '../../component/app_bar.dart';
 import '../../mixin/mixins.dart';
 import '../../model/quad.dart';
 import '../../model/user.dart';
+import '../../request/posts.dart';
 import '../../request/urls.dart';
 import '../../theme/custom_colors.dart';
 
@@ -87,14 +88,17 @@ class _IQuadrixState extends State<IQuadrix> {
     
     // Set up quad for AI mode
     Mixin.quad = Quad()
+      ..quadId =  Mixin.quad?.quadId
       ..quadType = 'AI_MODE'
-      ..quadUser = Mixin.user?.usrFirstName
-      ..quadUsrId = Mixin.user?.usrId
       ..quadAgainst = 'Guest'
-      ..quadAgainstId = 'GUEST_AI_OPPONENT'
+      ..quadAgainstId = '2732c12e-d4dd-40a8-97ac-186d6fd91159'
       ..quadFirstPlayerId = Mixin.user?.usrId
       ..quadStatus = 'PAIRED'
       ..quadDesc = 'Hard'; // Guest uses Hard difficulty (only mode available)
+
+    IPost.postData(Mixin.quad, (state, res, value) {
+      if (!state) {Mixin.errorDialog(context, 'ERROR', res);}
+    }, IUrls.QUADRIX());
 
     setState(() {
       _timer.cancel();
@@ -130,11 +134,6 @@ class _IQuadrixState extends State<IQuadrix> {
     super.dispose();
   }
 
-  final List<ListItem> items = [
-/*    ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
-    ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
-    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),*/
-  ];
 
   @override
   Widget build(BuildContext context) {

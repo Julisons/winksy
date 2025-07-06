@@ -13,6 +13,7 @@ import 'package:winksy/mixin/extentions.dart';
 import 'package:winksy/provider/pet/browse_provider.dart';
 import 'package:winksy/provider/pet/owned_provider.dart';
 import 'package:winksy/screen/message/chat/chat.dart';
+import 'package:winksy/screen/zoo/home/home.dart';
 
 import '../../../../component/button.dart';
 import '../../../../component/loader.dart';
@@ -324,15 +325,5 @@ class _IBrowseCardState extends State<IBrowseCard> {
         ),
       ),
     );
-  }
-}
-
-extension on String {
-  String kes() {
-    return NumberFormat.currency(
-      locale: 'en_KE',
-      symbol: ' ',
-      decimalDigits: 0, // Set to 0 decimal places
-    ).format(int.parse(this));
   }
 }

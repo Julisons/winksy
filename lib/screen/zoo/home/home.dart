@@ -20,6 +20,8 @@ import '../../../theme/custom_colors.dart';
 import 'owned/owned.dart';
 
 class IPetHome extends StatefulWidget {
+  const IPetHome({super.key});
+
   @override
   _IPetHomeState createState() => _IPetHomeState();
 }
@@ -118,12 +120,15 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
                         children: [
                           Row(
                             children: [
-                              Text(
-                                '${Mixin.user?.usrFullNames}',
-                                style: TextStyle(
-                                    color: color.xTextColorSecondary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: FONT_APP_BAR),
+                              Padding(
+                                padding:  EdgeInsets.only(left: 8.w),
+                                child: Text(
+                                  '${Mixin.user?.usrFullNames}',
+                                  style: TextStyle(
+                                      color: color.xTextColorSecondary,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: FONT_APP_BAR),
+                                ),
                               ),
                               SizedBox(width: 3),
                               Visibility(
@@ -241,12 +246,17 @@ class _IPetHomeState extends State<IPetHome> with SingleTickerProviderStateMixin
   }
 }
 
-extension on String {
+extension KesExtension on String? {
   String kes() {
+    if (this == null || this!.trim().isEmpty) return 'KES 0';
+
+    final parsed = int.tryParse(this!.trim());
+    if (parsed == null) return 'KES 0';
+
     return NumberFormat.currency(
       locale: 'en_KE',
       symbol: 'KES ',
       decimalDigits: 0,
-    ).format(int.parse(this));
+    ).format(parsed);
   }
 }

@@ -15,6 +15,7 @@ import '../../../mixin/constants.dart';
 import '../../../mixin/mixins.dart';
 import '../../../model/quad.dart';
 import '../../../theme/custom_colors.dart';
+import '../../../theme/theme_data_style.dart';
 import '../../fame_hall/fame_hall.dart';
 import '../ai/ai.dart' as ai;
 import '../core/game_screen.dart';
@@ -68,6 +69,10 @@ class GameBoardState extends State<GameBoard> {
     _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _seconds--;
+      if (_seconds <= 5) {
+        Mixin.vibe();
+        AudioPlayer().play(AssetSource('audio/sound/warning.wav'));
+      }
       if (_seconds == 0) {
         autoPlayer();
       }
@@ -91,8 +96,8 @@ class GameBoardState extends State<GameBoard> {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).extension<CustomColors>()!;
-    return SizedBox(
+    final color = ThemeDataStyle.darker.extension<CustomColors>()!;
+    return Container(
       height: MediaQuery.of(context).size.width - 20,
       width: MediaQuery.of(context).size.width - 20,
       child: ListView(
@@ -100,7 +105,8 @@ class GameBoardState extends State<GameBoard> {
         children: gameState.map((row) {
           return Row(
             children: row.map((coin) {
-              return InkWell(
+              return Expanded(
+                child: InkWell(
                 onTap: () async {
                   _localPlay(coin,row);
                 },
@@ -133,6 +139,7 @@ class GameBoardState extends State<GameBoard> {
                     selected: true,
                     color: Colors.red,
                   ),
+                ),
                 ),
               );
             }).toList(),
@@ -184,7 +191,7 @@ class GameBoardState extends State<GameBoard> {
 
   Future<void> _localPlay(coin,row) async {
 
-    final color = Theme.of(context).extension<CustomColors>()!;
+     final color = ThemeDataStyle.darker.extension<CustomColors>()!;
     if (end == false) {
 
       // Check if this is AI mode
@@ -356,7 +363,7 @@ class GameBoardState extends State<GameBoard> {
           //stop the game if the game has ended
           if (result != Result.play) {
             setState(() {});
-            //final color = Theme.of(context).extension<CustomColors>()!;
+            // final color = ThemeDataStyle.darker.extension<CustomColors>()!;
 
             quadPlayer = (result == Result.draw)
                 ? 'It\'s a tie'
@@ -407,7 +414,7 @@ class GameBoardState extends State<GameBoard> {
   void _makeAIMove() async {
     if (end) return;
     
-    final color = Theme.of(context).extension<CustomColors>()!;
+     final color = ThemeDataStyle.darker.extension<CustomColors>()!;
     
     // Convert game state to AI board format
     List<List<int>> board = List.generate(ai.rows, (r) => 

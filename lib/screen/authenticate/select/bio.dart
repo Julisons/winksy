@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math' as math;
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -31,6 +32,76 @@ import '../../../component/face_detector.dart';
 import '../../../component/loader.dart';
 import '../../home/home.dart';
 
+class ParticlePainter extends CustomPainter {
+  final double animationValue;
+  
+  ParticlePainter(this.animationValue);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.1)
+      ..style = PaintingStyle.fill;
+
+    final random = math.Random(42); // Fixed seed for consistent particles
+    
+    for (int i = 0; i < 20; i++) {
+      final x = random.nextDouble() * size.width;
+      final baseY = random.nextDouble() * size.height;
+      
+      // Create floating motion
+      final y = baseY + math.sin((animationValue * 2 * math.pi) + (i * 0.5)) * 10;
+      
+      final radius = 2 + random.nextDouble() * 3;
+      final opacity = 0.05 + (math.sin(animationValue * 2 * math.pi + i) * 0.05);
+      
+      paint.color = Colors.white.withOpacity(opacity);
+      canvas.drawCircle(Offset(x, y), radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+class AnimatedGradientBackground extends StatelessWidget {
+  final Widget child;
+  final Animation<double> animation;
+
+  const AnimatedGradientBackground({
+    Key? key,
+    required this.child,
+    required this.animation,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, _) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Theme.of(context).extension<CustomColors>()!.xPrimaryColor,
+                Theme.of(context).extension<CustomColors>()!.xPrimaryColor.withOpacity(0.8),
+                Theme.of(context).extension<CustomColors>()!.xSecondaryColor.withOpacity(0.1),
+              ],
+              stops: [
+                0.0,
+                0.5 + math.sin(animation.value * 2 * math.pi) * 0.3,
+                1.0,
+              ],
+            ),
+          ),
+          child: child,
+        );
+      },
+    );
+  }
+}
 
 class IBio extends StatefulWidget {
   const IBio({super.key});
@@ -51,14 +122,64 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
   XFile? _image;
   DateTime? selectedDate;
 
+  // Animation Controllers
+  late AnimationController _headerAnimationController;
+  late AnimationController _imageAnimationController;
+  late AnimationController _cardsAnimationController;
+  late AnimationController _fieldsAnimationController;
+  late AnimationController _buttonAnimationController;
+  late AnimationController _particleAnimationController;
+  late AnimationController _loadingAnimationController;
+
+  // Animations
+  late Animation<double> _headerFadeAnimation;
+  late Animation<Offset> _headerSlideAnimation;
+  late Animation<double> _imageScaleAnimation;
+  late Animation<double> _imagePulseAnimation;
+  late Animation<Offset> _girlCardSlideAnimation;
+  late Animation<Offset> _boyCardSlideAnimation;
+  late Animation<double> _cardsOpacityAnimation;
+  late Animation<Offset> _fieldsSlideAnimation;
+  late Animation<double> _fieldsOpacityAnimation;
+  late Animation<double> _buttonBounceAnimation;
+  late Animation<double> _buttonScaleAnimation;
+  late Animation<double> _particleAnimation;
+  late Animation<double> _loadingRotationAnimation;
+
+  // Selection animations
+  late AnimationController _girlSelectionController;
+  late AnimationController _boySelectionController;
+  late AnimationController _girlIntSelectionController;
+  late AnimationController _boyIntSelectionController;
+  
+  late Animation<double> _girlSelectionScale;
+  late Animation<double> _boySelectionScale;
+  late Animation<double> _girlIntSelectionScale;
+  late Animation<double> _boyIntSelectionScale;
+
   @override
   void dispose() {
+    _headerAnimationController.dispose();
+    _imageAnimationController.dispose();
+    _cardsAnimationController.dispose();
+    _fieldsAnimationController.dispose();
+    _buttonAnimationController.dispose();
+    _particleAnimationController.dispose();
+    _loadingAnimationController.dispose();
+    _girlSelectionController.dispose();
+    _boySelectionController.dispose();
+    _girlIntSelectionController.dispose();
+    _boyIntSelectionController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    
+    // Initialize animations
+    _initializeAnimations();
+    
     // Initialize birthday if user already has date of birth
     if (Mixin.user?.usrDob != null) {
       try {
@@ -69,15 +190,234 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
       }
     }
     
-    // Schedule Google profile image validation after the widget is built
-    if (Mixin.user?.usrType == 'GOOGLE' && Mixin.user?.usrImage != null) {
-      log('-------------usrType------bot-null-----usrImage-----${Mixin.user?.usrImage}------');
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _validateGoogleProfileImage();
-      });
-    }else{
-      log('-------------usrType-------null-----usrImage-----------');
-    }
+    // Start entrance animations
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startEntranceAnimations();
+      
+      // Schedule Google profile image validation after animations
+      if (Mixin.user?.usrType == 'GOOGLE' && Mixin.user?.usrImage != null) {
+        log('-------------usrType------bot-null-----usrImage-----${Mixin.user?.usrImage}------');
+        Future.delayed(Duration(milliseconds: 800), () {
+          _validateGoogleProfileImage();
+        });
+      } else {
+        log('-------------usrType-------null-----usrImage-----------');
+      }
+    });
+  }
+
+  void _initializeAnimations() {
+    // Main animation controllers
+    _headerAnimationController = AnimationController(
+      duration: Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    
+    _imageAnimationController = AnimationController(
+      duration: Duration(milliseconds: 800),
+      vsync: this,
+    );
+    
+    _cardsAnimationController = AnimationController(
+      duration: Duration(milliseconds: 1200),
+      vsync: this,
+    );
+    
+    _fieldsAnimationController = AnimationController(
+      duration: Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    
+    _buttonAnimationController = AnimationController(
+      duration: Duration(milliseconds: 600),
+      vsync: this,
+    );
+    
+    _particleAnimationController = AnimationController(
+      duration: Duration(seconds: 8),
+      vsync: this,
+    )..repeat();
+    
+    _loadingAnimationController = AnimationController(
+      duration: Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat();
+
+    // Selection controllers
+    _girlSelectionController = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    _boySelectionController = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    _girlIntSelectionController = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    _boyIntSelectionController = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    // Header animations
+    _headerFadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _headerAnimationController,
+      curve: Interval(0.0, 0.6, curve: Curves.easeOut),
+    ));
+    
+    _headerSlideAnimation = Tween<Offset>(
+      begin: Offset(0, -0.5),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _headerAnimationController,
+      curve: Interval(0.0, 0.8, curve: Curves.elasticOut),
+    ));
+
+    // Image animations
+    _imageScaleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _imageAnimationController,
+      curve: Curves.elasticOut,
+    ));
+    
+    _imagePulseAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _imageAnimationController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Card animations
+    _girlCardSlideAnimation = Tween<Offset>(
+      begin: Offset(-1.0, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _cardsAnimationController,
+      curve: Interval(0.0, 0.7, curve: Curves.elasticOut),
+    ));
+    
+    _boyCardSlideAnimation = Tween<Offset>(
+      begin: Offset(1.0, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _cardsAnimationController,
+      curve: Interval(0.2, 0.9, curve: Curves.elasticOut),
+    ));
+    
+    _cardsOpacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _cardsAnimationController,
+      curve: Interval(0.0, 0.5, curve: Curves.easeOut),
+    ));
+
+    // Fields animations
+    _fieldsSlideAnimation = Tween<Offset>(
+      begin: Offset(0, 1.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _fieldsAnimationController,
+      curve: Curves.elasticOut,
+    ));
+    
+    _fieldsOpacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _fieldsAnimationController,
+      curve: Interval(0.0, 0.5, curve: Curves.easeOut),
+    ));
+
+    // Button animations
+    _buttonBounceAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _buttonAnimationController,
+      curve: Curves.elasticOut,
+    ));
+    
+    _buttonScaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _buttonAnimationController,
+      curve: Curves.easeOut,
+    ));
+
+    // Particle animation
+    _particleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_particleAnimationController);
+
+    // Loading animation
+    _loadingRotationAnimation = Tween<double>(
+      begin: 0.0,
+      end: 2.0,
+    ).animate(_loadingAnimationController);
+
+    // Selection animations
+    _girlSelectionScale = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _girlSelectionController,
+      curve: Curves.elasticOut,
+    ));
+    
+    _boySelectionScale = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _boySelectionController,
+      curve: Curves.elasticOut,
+    ));
+    
+    _girlIntSelectionScale = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _girlIntSelectionController,
+      curve: Curves.elasticOut,
+    ));
+    
+    _boyIntSelectionScale = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _boyIntSelectionController,
+      curve: Curves.elasticOut,
+    ));
+  }
+
+  void _startEntranceAnimations() async {
+    // Staggered entrance animations
+    _headerAnimationController.forward();
+    
+    await Future.delayed(Duration(milliseconds: 200));
+    _imageAnimationController.forward();
+    
+    await Future.delayed(Duration(milliseconds: 300));
+    _cardsAnimationController.forward();
+    
+    await Future.delayed(Duration(milliseconds: 400));
+    _fieldsAnimationController.forward();
+    
+    await Future.delayed(Duration(milliseconds: 200));
+    _buttonAnimationController.forward();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -383,6 +723,35 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
     }, IUrls.UPDATE_USER());
   }
 
+  Widget _buildAnimatedParticles() {
+    return AnimatedBuilder(
+      animation: _particleAnimation,
+      builder: (context, child) {
+        return CustomPaint(
+          painter: ParticlePainter(_particleAnimation.value),
+          size: Size.infinite,
+        );
+      },
+    );
+  }
+
+  Widget _buildTypewriterText(String text, TextStyle style, {Duration delay = Duration.zero}) {
+    return AnimatedBuilder(
+      animation: _headerAnimationController,
+      builder: (context, child) {
+        final progress = _headerAnimationController.value;
+        final visibleCharacters = (text.length * progress).round();
+        final visibleText = text.substring(0, visibleCharacters);
+        
+        return Text(
+          visibleText,
+          style: style,
+          textAlign: TextAlign.center,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
@@ -393,77 +762,140 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
     _girlInt = Mixin.user?.usrOsType == 'FEMALE';
     _bioController.text = Mixin.user?.usrDesc ?? '';
 
+    // Update selection animations
+    if (_girl) _girlSelectionController.forward(); else _girlSelectionController.reverse();
+    if (_boy) _boySelectionController.forward(); else _boySelectionController.reverse();
+    if (_girlInt) _girlIntSelectionController.forward(); else _girlIntSelectionController.reverse();
+    if (_boyInt) _boyIntSelectionController.forward(); else _boyIntSelectionController.reverse();
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          surfaceTintColor: color.xPrimaryColor,
+          surfaceTintColor: Colors.transparent,
           centerTitle: false,
-          backgroundColor: color.xPrimaryColor,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        backgroundColor: color.xPrimaryColor,
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                right:  24.w,
-                left: 24.w,
-                bottom: 34.w,
-              ),
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: " Please fill below ",
-                    style: TextStyle(
-                      color: color.xTextColorSecondary,
-                      fontWeight: FontWeight.normal,
-                      fontSize: FONT_APP_BAR,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "information",
-                        style: TextStyle(
-                          color: color.xTrailing,
-                          fontWeight: FontWeight.bold,
-                          fontSize: FONT_APP_BAR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "\nTo get started.",
-                        style: TextStyle(
-                          color: color.xTextColorSecondary,
-                          fontWeight: FontWeight.normal,
-                          fontSize: FONT_APP_BAR,
-                        ),
-                      ),
-                    ],
+        extendBodyBehindAppBar: true,
+        body: AnimatedGradientBackground(
+          animation: _particleAnimation,
+          child: Stack(
+            children: [
+              // Particle background
+              Positioned.fill(child: _buildAnimatedParticles()),
+              
+              // Main content
+              SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 20,
+                    right: 24.w,
+                    left: 24.w,
+                    bottom: 34.w,
                   ),
-                  textAlign: TextAlign.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                // Animated Header
+                SlideTransition(
+                  position: _headerSlideAnimation,
+                  child: FadeTransition(
+                    opacity: _headerFadeAnimation,
+                    child: Column(
+                      children: [
+                        _buildTypewriterText(
+                          "Please fill below ",
+                          TextStyle(
+                            color: color.xTextColorSecondary,
+                            fontWeight: FontWeight.normal,
+                            fontSize: FONT_APP_BAR,
+                          ),
+                        ),
+                        AnimatedBuilder(
+                          animation: _headerAnimationController,
+                          builder: (context, child) {
+                            return ShaderMask(
+                              shaderCallback: (bounds) => LinearGradient(
+                                colors: [
+                                  color.xTrailing,
+                                  color.xTrailing.withOpacity(0.7),
+                                  color.xTrailing,
+                                ],
+                                stops: [
+                                  0.0,
+                                  0.5 + math.sin(_headerAnimationController.value * 4 * math.pi) * 0.3,
+                                  1.0,
+                                ],
+                              ).createShader(bounds),
+                              child: Text(
+                                "information",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: FONT_APP_BAR,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          },
+                        ),
+                        _buildTypewriterText(
+                          "\nTo get started.",
+                          TextStyle(
+                            color: color.xTextColorSecondary,
+                            fontWeight: FontWeight.normal,
+                            fontSize: FONT_APP_BAR,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 SizedBox(height: Mixin.isTab(context) ? 20.h : 40.h),
-                Container(
-                  height:  MediaQuery.of(context).size.width/3,
-                  width:  MediaQuery.of(context).size.width/2,
-                  decoration: BoxDecoration(
-                    color: color.xSecondaryColor, // Background color
-                    borderRadius: BorderRadius.circular(16.0), // Rounded corners
-                  ),
-                  child: InkWell(
-                    onTap: () async {
-                      await ImagePicker()
-                          .pickImage(source: ImageSource.gallery)
-                          .then((value) {
-                        if (value != null) {
-                          setState(() {
-                            _image = value;
-                            _cropImage();
-                          });
-                        }
-                      });
-                    },
+                // Animated Profile Image Container
+                ScaleTransition(
+                  scale: _imageScaleAnimation,
+                  child: AnimatedBuilder(
+                    animation: _imagePulseAnimation,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: !_isImage && Mixin.user?.usrImage == null ? _imagePulseAnimation.value : 1.0,
+                        child: Container(
+                          height: MediaQuery.of(context).size.width/3,
+                          width: MediaQuery.of(context).size.width/2,
+                          decoration: BoxDecoration(
+                            color: color.xSecondaryColor,
+                            borderRadius: BorderRadius.circular(16.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: color.xTrailing.withOpacity(0.2),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(16.0),
+                              onTap: () async {
+                                // Add haptic feedback
+                                HapticFeedback.lightImpact();
+                                await ImagePicker()
+                                    .pickImage(source: ImageSource.gallery)
+                                    .then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      _image = value;
+                                      _cropImage();
+                                    });
+                                  }
+                                });
+                              },
                     child: _isImage && _croppedFile?.path != null ? ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.file(
@@ -493,7 +925,20 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     )
-                        : Icon(Icons.person, size: 100.h, color: color.xPrimaryColor),
+                        : AnimatedSwitcher(
+                            duration: Duration(milliseconds: 300),
+                            child: Icon(
+                              Icons.person, 
+                              size: 100.h, 
+                              color: color.xTrailing.withOpacity(0.5),
+                              key: ValueKey('person_icon'),
+                            ),
+                          ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: 34.h),
@@ -763,7 +1208,7 @@ class _IBioState extends State<IBio> with TickerProviderStateMixin {
               ],
             ),
           ),
-        )));
+        )])));
   }
 
   void _postImage(){

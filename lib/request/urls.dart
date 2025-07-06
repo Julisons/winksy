@@ -22,6 +22,10 @@ static String BASE_URL = '$BASE:5000';
     return Uri.parse('$BASE_URL/message/fetch_messages');
   }
 
+  static String QUADRIX() {
+    return '$BASE_URL/quadrix/save_quadrix';
+  }
+
   static String NODE(){
     return "$BASE:3030/messages";
    // return "http://192.168.100.36:3030/messages";

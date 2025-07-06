@@ -181,7 +181,7 @@ class ProfessionalInfoTab extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: color.xPrimaryColor.withOpacity(0.3),
+        color: color.xPrimaryColor.withOpacity(0.6),
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(
           color: color.xTextColor.withOpacity(0.1),
