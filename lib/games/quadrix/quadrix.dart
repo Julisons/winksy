@@ -91,6 +91,7 @@ class _IQuadrixState extends State<IQuadrix> {
       ..quadId =  Mixin.quad?.quadId
       ..quadType = 'AI_MODE'
       ..quadAgainst = 'Guest'
+      ..quadUsrId = Mixin.user?.usrId
       ..quadAgainstId = '2732c12e-d4dd-40a8-97ac-186d6fd91159'
       ..quadFirstPlayerId = Mixin.user?.usrId
       ..quadStatus = 'PAIRED'
