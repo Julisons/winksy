@@ -187,7 +187,7 @@ class _IGamesState extends State<IGames> {
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: color.xTrailing,
                                   borderRadius: BorderRadius.circular(1.r),
                                 ),
                                 child: Text(

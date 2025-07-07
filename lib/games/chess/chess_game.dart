@@ -909,7 +909,7 @@ class _IChessGameState extends State<IChessGame> {
   }
 
   void _makeRandomMoveForTimeout() {
-    // Make a random valid move when time expires
+    // Find all valid moves
     List<List<int>> allMoves = [];
     
     for (int row = 0; row < 8; row++) {
@@ -925,51 +925,44 @@ class _IChessGameState extends State<IChessGame> {
     }
     
     if (allMoves.isNotEmpty) {
-      // Select random move
+      // Pick random move
       var randomMove = allMoves[Random().nextInt(allMoves.length)];
+      int row = randomMove[2];
+      int col = randomMove[3];
       
-      // Execute the move
-      selectedPiece = board[randomMove[0]][randomMove[1]];
-      selectedRow = randomMove[0];
-      selectedCol = randomMove[1];
+      // First select the piece
+      pieceSelected(randomMove[0], randomMove[1]);
       
-      // Show timeout notification
-      setState(() {
-        String playerName = 'Player';
-        if (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) {
-          playerName = isWhiteTurn ? 'You' : (Mixin.quad?.quadAgainst ?? 'Opponent');
-        } else {
-          playerName = isWhiteTurn ? (Mixin.quad?.quadUser ?? 'Opponent') : 'You';
-        }
-        quadPlayer = '$playerName auto-played (timeout)';
-      });
-      
-      // Make the move
-      movePiece(randomMove[2], randomMove[3]);
-      
-      // Play sound and haptic feedback
-      FlameAudio.play('piece_moved.mp3');
-      Mixin.vibe();
-      
-      // Emit move for multiplayer
-      if (!isAIMode && Mixin.quadrixSocket != null) {
+      // Then do the EXACT same socket code that works in UI
+      if (!isAIMode) {
         Quad quad = Quad()
-          ..quadRow = randomMove[2]
-          ..quadColumn = randomMove[3]
-          ..quadMoveType = true
+          ..quadRow = row
+          ..quadColumn = col
+          ..quadMoveType = (selectedPiece != null && validMoves.any((element) => element[0] == row && element[1] == col))
           ..quadUsrId = Mixin.user?.usrId
           ..quadPlayer = Mixin.user?.usrFirstName
           ..quadId = Mixin.quad?.quadId;
+
+        bool viableMove = (selectedPiece != null && validMoves.any((element) => element[0] == row && element[1] == col));
         
-        quad.quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() 
-            ? Mixin.quad?.quadAgainstId 
-            : Mixin.quad?.quadUsrId;
-        
+        if(viableMove) {
+          quad.quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() ?  Mixin.quad?.quadAgainstId : Mixin.quad?.quadUsrId;
+
+          if (Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString()) {
+            quadPlayer = '${Mixin.quad?.quadAgainst}\'s turn';
+          } else {
+            quadPlayer = '${Mixin.quad?.quadUser}\'s turn';
+          }
+        }else{
+          //Maintain the first player because is not viableMove
+          quad.quadPlayerId = Mixin.user?.usrId;
+        }
+
         Mixin.quadrixSocket?.emit('played', quad.toJson());
       }
-    } else {
-      // No valid moves available (shouldn't happen in normal gameplay)
-      print('No valid moves available for timeout auto-play');
+      
+      // Finally make the move
+      pieceSelected(row, col);
     }
   }
 
