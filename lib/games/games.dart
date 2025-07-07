@@ -180,6 +180,26 @@ class _IGamesState extends State<IGames> {
                                 ),
                               ),
                             ),
+                          if (item.title == 'Chess')
+                            Positioned(
+                              top: 8.h,
+                              right: 8.w,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(1.r),
+                                ),
+                                child: Text(
+                                  'HOT',
+                                  style: GoogleFonts.quicksand(
+                                    color: Colors.white,
+                                    fontSize: FONT_SMALL,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
