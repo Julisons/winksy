@@ -35,7 +35,7 @@ class _IChessAISetupState extends State<IChessAISetup> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              color.xSecondaryColor,
+              color.xPrimaryColor,
               color.xPrimaryColor,
             ],
           ),

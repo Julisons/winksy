@@ -1,7 +1,8 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/component/glow2.dart';
 
-import '../../component/app_bar.dart';
 import '../../mixin/constants.dart';
 import '../../mixin/mixins.dart';
 import '../../model/quad.dart';
@@ -20,6 +20,7 @@ import 'components/dead_piece.dart';
 import 'components/pieces.dart';
 import 'components/square.dart';
 import 'helper/helper_function.dart';
+import 'chess_ai.dart';
 
 class IChessGame extends StatefulWidget {
   const IChessGame({Key? key}) : super(key: key);
@@ -60,20 +61,32 @@ class _IChessGameState extends State<IChessGame> {
   late int _seconds;
   bool end = false;
 
+  // AI mode variables
+  bool get isAIMode => Mixin.quad?.quadType == 'AI_MODE';
+  bool get isUserTurn => isWhiteTurn; // User always plays white in AI mode
+  Timer? _aiMoveTimer;
+
   @override
   void initState() {
     super.initState();
 
-    if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+    if (isAIMode) {
+      // AI mode initialization
       quadPlayer = "You start";
       _startTimer();
-    }else{
-      quadPlayer = Mixin.quad?.quadPlayer+" starts";
+    } else {
+      // Multiplayer mode initialization
+      if(Mixin.quad?.quadFirstPlayerId.toString() == Mixin.user?.usrId.toString()){
+        quadPlayer = "You start";
+        _startTimer();
+      }else{
+        quadPlayer = Mixin.quad?.quadPlayer+" starts";
+      }
+      _remotePlay();
+      _onGaveUpPlay();
     }
 
-    _remotePlay();
     _initializeBoard();
-    _onGaveUpPlay();
   }
 
   void _startTimer() {
@@ -96,12 +109,17 @@ class _IChessGameState extends State<IChessGame> {
         quadPlayer = 'Your turn $_seconds';
        setState(() {});
       }
+      else if(quadPlayer.contains('AI thinking')) {
+        quadPlayer = 'AI thinking $_seconds';
+        setState(() {});
+      }
     });
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _aiMoveTimer?.cancel();
     super.dispose();
   }
 
@@ -476,18 +494,33 @@ class _IChessGameState extends State<IChessGame> {
     });
 
     if (isCheckMate(!isWhiteTurn)) {
+      final color = ThemeDataStyle.darker.extension<CustomColors>()!;
       showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-                title: Text("CHECK MATE"),
+          builder: (context) =>
+              AlertDialog(
+                title: Text("CHECK MATE", style: TextStyle(
+                  color: color.xTextColorSecondary,fontSize: FONT_TITLE
+                ),),
                 actions: [
                   TextButton(
-                      onPressed: resetGame, child: Text("Restart The Game"))
+                      onPressed: resetGame, child: Text("Restart The Game",
+                  style: TextStyle(
+                    color: color.xTrailing,
+                    fontSize: FONT_13
+                  ),))
                 ],
               ));
     }
 
     isWhiteTurn = !isWhiteTurn;
+    
+    // In AI mode, trigger AI move after user's move
+    if (isAIMode && !isUserTurn && !end) {
+      // Start timer for AI's turn (AI is also subject to 15-second limit)
+      _startTimer();
+      _scheduleAIMove();
+    }
   }
 
   bool isKingInCheck(bool isWhiteKing) {
@@ -669,10 +702,10 @@ class _IChessGameState extends State<IChessGame> {
                       _seconds = 15;
                     }
 
-                    log('-${Mixin.user?.usrId}--${(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString())}----------quadPlayerId---${_quad.quadPlayerId}------------isWhiteTurn: $isWhiteTurn');
+                    dev.log('-${Mixin.user?.usrId}--${(Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString())}----------quadPlayerId---${_quad.quadPlayerId}------------isWhiteTurn: $isWhiteTurn');
 
                     if(viableMove){
-                      log('-------------------------------------------------------------isValidMove: $isValidMove');
+                      dev.log('-------------------------------------------------------------isValidMove: $isValidMove');
                     }
                     /**
                      * IF ITS NOT YOUR TURN , DON'T PLAY
@@ -742,7 +775,7 @@ class _IChessGameState extends State<IChessGame> {
       print(jsonEncode(message));
       _quad = Quad.fromJson(message);
 
-      log('----------_quad.quadMoveType---------${_quad.quadMoveType}');
+      dev.log('----------_quad.quadMoveType---------${_quad.quadMoveType}');
 
       /**
        * THIS MOVE IS FROM ME, SO JUST IGNORE
@@ -782,6 +815,11 @@ class _IChessGameState extends State<IChessGame> {
   void autoPlayer() {
     _timer?.cancel();
     _seconds = 15;
+    
+    // In AI mode, if it's AI's turn, make an AI move
+    if (isAIMode && !isUserTurn && !end) {
+      _makeAIMove();
+    }
   }
 
   void _onGaveUpPlay(){
@@ -799,5 +837,111 @@ class _IChessGameState extends State<IChessGame> {
         setState(() {});
       });
     });
+  }
+
+  // AI Move Methods
+  void _scheduleAIMove() {
+    // Cancel any existing AI move timer
+    _aiMoveTimer?.cancel();
+    
+    // Update UI to show AI is thinking (but keep timer running)
+    setState(() {
+      quadPlayer = 'AI thinking $_seconds';
+    });
+    
+    // Schedule AI move with shorter delay (AI should play fast like a good player)
+    _aiMoveTimer = Timer(Duration(milliseconds: 800), () {
+      _makeAIMove();
+    });
+  }
+
+  void _makeAIMove() {
+    if (end || isUserTurn) return;
+    
+    try {
+      // Get AI difficulty from quad description
+      String difficulty = Mixin.quad?.quadDesc ?? 'Medium';
+      
+      // Get AI move using ChessAI
+      Move? aiMove = ChessAI.getAIMove(
+        board, 
+        isWhiteTurn, 
+        difficulty,
+        whiteKingPosition, 
+        blackKingPosition
+      );
+      
+      if (aiMove != null) {
+        // Execute the AI move
+        setState(() {
+          quadPlayer = 'AI played';
+        });
+        
+        // Simulate piece selection and movement
+        selectedPiece = board[aiMove.fromRow][aiMove.fromCol];
+        selectedRow = aiMove.fromRow;
+        selectedCol = aiMove.fromCol;
+        
+        // Execute the move
+        movePiece(aiMove.toRow, aiMove.toCol);
+        
+        // Play sound and haptic feedback for AI move
+        FlameAudio.play('piece_moved.mp3');
+        Mixin.vibe();
+        
+        // Start timer for user's next turn
+        if (!end) {
+          _startTimer();
+          setState(() {
+            quadPlayer = 'Your turn $_seconds';
+          });
+        }
+      } else {
+        // No valid AI move found (shouldn't happen in normal gameplay)
+        setState(() {
+          quadPlayer = 'AI has no moves';
+        });
+      }
+    } catch (e) {
+      print('AI Move Error: $e');
+      // Fallback: make a random move
+      _makeRandomMove();
+    }
+  }
+  
+  void _makeRandomMove() {
+    // Fallback method to make a random valid move
+    List<List<int>> allMoves = [];
+    
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        ChessPiece? piece = board[row][col];
+        if (piece != null && piece.isWhite == isWhiteTurn) {
+          List<List<int>> validMovesForPiece = calculateRealValidMoves(row, col, piece, true);
+          for (List<int> move in validMovesForPiece) {
+            allMoves.add([row, col, move[0], move[1]]);
+          }
+        }
+      }
+    }
+    
+    if (allMoves.isNotEmpty) {
+      var randomMove = allMoves[Random().nextInt(allMoves.length)];
+      selectedPiece = board[randomMove[0]][randomMove[1]];
+      selectedRow = randomMove[0];
+      selectedCol = randomMove[1];
+      movePiece(randomMove[2], randomMove[3]);
+      
+      // Play sound and haptic feedback for AI fallback move
+      FlameAudio.play('piece_moved.mp3');
+      Mixin.vibe();
+      
+      if (!end) {
+        _startTimer();
+        setState(() {
+          quadPlayer = 'Your turn $_seconds';
+        });
+      }
+    }
   }
 }

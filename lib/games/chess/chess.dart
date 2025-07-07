@@ -3,14 +3,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:winksy/games/chess/chess_game.dart';
-import 'package:winksy/games/quadrix/core/game_screen.dart';
 import 'package:winksy/mixin/constants.dart';
-import 'package:winksy/screen/zoo/zoo.dart';
 
 import '../../component/app_bar.dart';
 import '../../mixin/mixins.dart';
