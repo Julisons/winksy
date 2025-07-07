@@ -23,6 +23,22 @@ class _IChessAISetupState extends State<IChessAISetup> {
   final List<String> difficulties = ['Easy', 'Medium', 'Hard'];
 
   @override
+  void initState() {
+    super.initState();
+    _loadDifficulty();
+  }
+
+  // Load previously saved difficulty preference
+  Future<void> _loadDifficulty() async {
+    final String? difficulty = await Mixin.getPrefString(key: CHESS_AI_DIFFICULTY);
+    if (difficulty != null && difficulty.isNotEmpty && difficulties.contains(difficulty)) {
+      setState(() {
+        selectedDifficulty = difficulty;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).extension<CustomColors>()!;
     
@@ -90,6 +106,8 @@ class _IChessAISetupState extends State<IChessAISetup> {
                     setState(() {
                       selectedDifficulty = difficulty;
                     });
+                    // Save difficulty preference immediately
+                    Mixin.prefString(pref: selectedDifficulty, key: CHESS_AI_DIFFICULTY);
                   },
                   child: Container(
                     padding: EdgeInsets.all(20.r),
@@ -152,9 +170,9 @@ class _IChessAISetupState extends State<IChessAISetup> {
                   _startAIGame();
                 },
                 text: 'Start AI Challenge',
-                color: color.xTrailingAlt,
+                color: color.xTrailing,
                 textColor: Colors.white,
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.9,
                 height: 50.h,
               ),
               

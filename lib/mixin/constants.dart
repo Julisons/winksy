@@ -80,6 +80,7 @@ const int CONN = -1;
 const String TOKEN = "TOKEN";
 const String CURR = "USER";
 const String SPIN_DATE = "SPIN_DATE";
+const String CHESS_AI_DIFFICULTY = "CHESS_AI_DIFFICULTY";
 const String DOC = "DOCTOR";
 const String THEME = "THEME";
 const String DARK = "DARK";

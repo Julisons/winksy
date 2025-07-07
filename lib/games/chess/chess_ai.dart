@@ -61,7 +61,34 @@ class ChessAI {
     moves = _orderMoves(board, moves);
     
     if (moves.isEmpty) {
-      // No moves available - checkmate or stalemate
+      // No moves available - could be checkmate, stalemate, or no pieces
+      
+      // Check if king exists
+      bool hasKing = false;
+      int pieceCount = 0;
+      for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+          ChessPiece? piece = board[row][col];
+          if (piece != null && piece.isWhite == isMaximizing) {
+            pieceCount++;
+            if (piece.type == ChessPiecesType.king) {
+              hasKing = true;
+            }
+          }
+        }
+      }
+      
+      // No king = instant loss
+      if (!hasKing) {
+        return isMaximizing ? -999999 : 999999;
+      }
+      
+      // Only king left = material loss
+      if (pieceCount == 1) {
+        return isMaximizing ? -999999 : 999999;
+      }
+      
+      // Check for checkmate vs stalemate
       if (_isInCheck(board, isMaximizing)) {
         // Checkmate - return large penalty/bonus
         return isMaximizing ? -999999 : 999999;

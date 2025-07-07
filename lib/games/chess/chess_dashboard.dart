@@ -7,6 +7,7 @@ import '../../component/glow2.dart';
 import '../../mixin/mixins.dart';
 import '../../theme/custom_colors.dart';
 import '../fame_hall/fame_hall.dart';
+import '../opponent/opponent.dart';
 import 'chess.dart';
 import 'chess_promotion.dart';
 import 'ai_setup.dart';
@@ -42,10 +43,10 @@ class _IChessDashboardState extends State<IChessDashboard> {
   final List<ListItem> items = [
     ListItem(title: 'Start Game', desc: 'Connect and play with others instantly', icon: Icons.wifi_tethering,),
     ListItem(title: 'Play with AI', desc: 'Challenge the computer at different difficulty levels', icon: Icons.smart_toy, badge: 'NEW'),
-    ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
+   // ListItem(title: 'Invite a Friend', desc: 'Challenge someone you know to a fun game', icon: Icons.person_outline,),
     ListItem(title: 'Hall of Fame', desc: 'Manage your account settings', icon: Icons.account_circle_outlined),
     ListItem(title: 'How to play', desc: 'Players you recently competed against',  icon: Icons.group),
-    ListItem(title: 'Game Settings', desc: 'Customize your gameplay preferences', icon: Icons.settings),
+    ListItem(title: 'Recent Opponents', desc: 'Players you recently competed against', icon: Icons.settings),
   ];
 
   @override
@@ -163,6 +164,9 @@ class _IChessDashboardState extends State<IChessDashboard> {
                           break;
                         case 'HALL OF FAME':
                           Mixin.navigate(context, IFameHall(quadType: CHESS));
+                          break;
+                        case 'RECENT OPPONENTS':
+                          Mixin.navigate(context, IOpponent(quadType: CHESS));
                           break;
                       }
                     },

@@ -493,13 +493,15 @@ class _IChessGameState extends State<IChessGame> {
       validMoves = [];
     });
 
-    if (isCheckMate(!isWhiteTurn)) {
+    // Check for game ending conditions
+    String? gameEndReason = _checkGameEnd(!isWhiteTurn);
+    if (gameEndReason != null) {
       final color = ThemeDataStyle.darker.extension<CustomColors>()!;
       showDialog(
           context: context,
           builder: (context) =>
               AlertDialog(
-                title: Text("CHECK MATE", style: TextStyle(
+                title: Text(gameEndReason, style: TextStyle(
                   color: color.xTextColorSecondary,fontSize: FONT_TITLE
                 ),),
                 actions: [
@@ -511,6 +513,7 @@ class _IChessGameState extends State<IChessGame> {
                   ),))
                 ],
               ));
+      end = true; // Mark game as ended
     }
 
     isWhiteTurn = !isWhiteTurn;
@@ -943,5 +946,124 @@ class _IChessGameState extends State<IChessGame> {
         });
       }
     }
+  }
+
+  // Comprehensive game end detection
+  String? _checkGameEnd(bool checkingPlayer) {
+    // 1. Check if the player has any pieces left
+    bool hasKing = false;
+    int pieceCount = 0;
+    
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        ChessPiece? piece = board[row][col];
+        if (piece != null && piece.isWhite == checkingPlayer) {
+          pieceCount++;
+          if (piece.type == ChessPiecesType.king) {
+            hasKing = true;
+          }
+        }
+      }
+    }
+    
+    // 2. No king = immediate loss (king captured)
+    if (!hasKing) {
+      String winner = checkingPlayer ? "Black" : "White";
+      if (isAIMode) {
+        winner = checkingPlayer ? "AI" : "You";
+      }
+      return "$winner Wins! - King Captured";
+    }
+    
+    // 3. Only king left = insufficient material loss
+    if (pieceCount == 1) {
+      String winner = checkingPlayer ? "Black" : "White";
+      if (isAIMode) {
+        winner = checkingPlayer ? "AI" : "You";
+      }
+      return "$winner Wins! - All Pieces Captured";
+    }
+    
+    // 4. Check for checkmate
+    if (isCheckMate(checkingPlayer)) {
+      String winner = checkingPlayer ? "Black" : "White";
+      if (isAIMode) {
+        winner = checkingPlayer ? "AI" : "You";
+      }
+      return "$winner Wins! - Checkmate";
+    }
+    
+    // 5. Check for stalemate (no legal moves but not in check)
+    if (!isKingInCheck(checkingPlayer)) {
+      List<List<int>> allMoves = [];
+      
+      for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+          ChessPiece? piece = board[row][col];
+          if (piece != null && piece.isWhite == checkingPlayer) {
+            List<List<int>> pieceMoves = calculateRealValidMoves(row, col, piece, true);
+            allMoves.addAll(pieceMoves);
+          }
+        }
+      }
+      
+      if (allMoves.isEmpty) {
+        return "Stalemate - Draw";
+      }
+    }
+    
+    // 6. Check for insufficient material draw
+    if (_isInsufficientMaterial()) {
+      return "Draw - Insufficient Material";
+    }
+    
+    return null; // Game continues
+  }
+
+  // Check if both sides have insufficient material to checkmate
+  bool _isInsufficientMaterial() {
+    int whiteKnights = 0, whiteBishops = 0, whiteOthers = 0;
+    int blackKnights = 0, blackBishops = 0, blackOthers = 0;
+    
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        ChessPiece? piece = board[row][col];
+        if (piece != null && piece.type != ChessPiecesType.king) {
+          if (piece.isWhite) {
+            if (piece.type == ChessPiecesType.knight) {
+              whiteKnights++;
+            } else if (piece.type == ChessPiecesType.bishop) {
+              whiteBishops++;
+            } else {
+              whiteOthers++;
+            }
+          } else {
+            if (piece.type == ChessPiecesType.knight) {
+              blackKnights++;
+            } else if (piece.type == ChessPiecesType.bishop) {
+              blackBishops++;
+            } else {
+              blackOthers++;
+            }
+          }
+        }
+      }
+    }
+    
+    // If either side has pawns, rooks, or queens, material is sufficient
+    if (whiteOthers > 0 || blackOthers > 0) return false;
+    
+    // King vs King
+    if (whiteKnights == 0 && whiteBishops == 0 && blackKnights == 0 && blackBishops == 0) {
+      return true;
+    }
+    
+    // King + Knight vs King or King + Bishop vs King
+    if ((whiteKnights + whiteBishops <= 1) && (blackKnights + blackBishops == 0) ||
+        (blackKnights + blackBishops <= 1) && (whiteKnights + whiteBishops == 0)) {
+      return true;
+    }
+    
+    return false;
   }
 }
