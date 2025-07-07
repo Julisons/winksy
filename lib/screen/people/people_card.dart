@@ -93,6 +93,8 @@ class _IPeopleCardState extends State<IPeopleCard> {
                   color: color.xTextColor,
                   borderRadius: CORNER,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,

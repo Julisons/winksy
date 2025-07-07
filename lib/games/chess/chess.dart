@@ -107,7 +107,18 @@ class _IChessState extends State<IChess> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(_waiting, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary)),
+                      RichText(
+                        text: TextSpan(
+                          text: _waiting.contains('Gaming with ') ? 'Gaming with ' : _waiting,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary),
+                          children: _waiting.contains('Gaming with ') ? [
+                            TextSpan(
+                              text: _waiting.replaceFirst('Gaming with ', ''),
+                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTrailing),
+                            ),
+                          ] : [],
+                        ),
+                      ),
                       SizedBox(
                           width: 30.w,
                           child: Text(_loading, style: TextStyle(fontWeight: FontWeight.bold,fontSize: FONT_APP_BAR,color: color.xTextColorSecondary))),

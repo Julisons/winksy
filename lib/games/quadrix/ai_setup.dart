@@ -56,7 +56,7 @@ class _IAISetupState extends State<IAISetup> {
               ),
               SizedBox(height: 30.h),
               Card(
-                color: color.xTrailingAlt,
+                color: color.xSecondaryColor,
                 elevation: ELEVATION,
                 child: Padding(
                   padding: EdgeInsets.all(16.r),
@@ -95,7 +95,7 @@ class _IAISetupState extends State<IAISetup> {
                   _startAIGame();
                 },
               ),
-              SizedBox(height: 40.h),
+              SizedBox(height: 50.h),
             ],
           ),
         ),

@@ -57,7 +57,8 @@ class _IPhotosState extends State<IPhotos> {
     final color = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
       backgroundColor: color.xSecondaryColor,
-      body: Consumer<IPhotoProvider>(
+      body:
+      Consumer<IPhotoProvider>(
           builder: (context, provider, child) {
             return provider.isLoading() ?
             Center(

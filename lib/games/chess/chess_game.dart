@@ -590,7 +590,7 @@ class _IChessGameState extends State<IChessGame> {
           children: [
             Text(quadPlayer,
               style: GoogleFonts.quicksand(
-                color: Colors.white,
+                color: color.xTrailing,
                 fontWeight: FontWeight.bold,
                 fontSize: FONT_APP_BAR,
               ),
