@@ -109,8 +109,9 @@ class _IChessGameState extends State<IChessGame> {
         quadPlayer = 'Your turn $_seconds';
        setState(() {});
       }
-      else if(quadPlayer.contains('AI thinking')) {
-        quadPlayer = 'AI thinking $_seconds';
+      else if(quadPlayer.contains('\'s turn')) {
+        String opponentName = Mixin.winkser?.usrFullNames ?? 'AI';
+        quadPlayer = '$opponentName\'s turn $_seconds';
         setState(() {});
       }
     });
@@ -613,10 +614,85 @@ class _IChessGameState extends State<IChessGame> {
     setState(() {});
   }
 
+  Future<bool> _showGiveUpDialog(BuildContext context) async {
+    final color = ThemeDataStyle.darker.extension<CustomColors>()!;
+    
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: color.xPrimaryColor,
+          title: Text(
+            'Give Up Game?',
+            style: TextStyle(
+              color: color.xTrailing,
+              fontSize: FONT_TITLE,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            isAIMode 
+              ? 'Are you sure you want to quit the game?'
+              : 'Are you sure you want to quit the game? This will count as a loss.',
+            style: TextStyle(
+              color: color.xTextColorSecondary,
+              fontSize: FONT_13,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Continue Playing',
+                style: TextStyle(
+                  color: color.xTextColor,
+                  fontSize: FONT_13,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                _timer?.cancel();
+                _aiMoveTimer?.cancel();
+                
+                // In multiplayer mode, emit give up event
+                if (!isAIMode && Mixin.quadrixSocket != null) {
+                  Quad giveUpQuad = Quad()
+                    ..quadId = Mixin.quad?.quadId
+                    ..quadUsrId = Mixin.user?.usrId
+                    ..quadPlayer = Mixin.user?.usrFirstName;
+                  Mixin.quadrixSocket?.emit('give_up', giveUpQuad.toJson());
+                }
+                
+                Navigator.of(context).pop(true);
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Give Up',
+                style: TextStyle(
+                  color: color.xTrailing,
+                  fontSize: FONT_13,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = ThemeDataStyle.darker.extension<CustomColors>()!;
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        if (end) {
+          return true; // Allow back navigation if game is ended
+        }
+        return await _showGiveUpDialog(context);
+      },
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor:color.xPrimaryColor,
         automaticallyImplyLeading: false,
@@ -770,6 +846,7 @@ class _IChessGameState extends State<IChessGame> {
           ],
         ),
       ),
+      ),
     );
   }
 
@@ -819,9 +896,80 @@ class _IChessGameState extends State<IChessGame> {
     _timer?.cancel();
     _seconds = 15;
     
+    if (end) return;
+    
     // In AI mode, if it's AI's turn, make an AI move
-    if (isAIMode && !isUserTurn && !end) {
+    if (isAIMode && !isUserTurn) {
       _makeAIMove();
+    } 
+    // In user vs user mode, make a random move for the player
+    else if (!isAIMode) {
+      _makeRandomMoveForTimeout();
+    }
+  }
+
+  void _makeRandomMoveForTimeout() {
+    // Make a random valid move when time expires
+    List<List<int>> allMoves = [];
+    
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        ChessPiece? piece = board[row][col];
+        if (piece != null && piece.isWhite == isWhiteTurn) {
+          List<List<int>> validMovesForPiece = calculateRealValidMoves(row, col, piece, true);
+          for (List<int> move in validMovesForPiece) {
+            allMoves.add([row, col, move[0], move[1]]);
+          }
+        }
+      }
+    }
+    
+    if (allMoves.isNotEmpty) {
+      // Select random move
+      var randomMove = allMoves[Random().nextInt(allMoves.length)];
+      
+      // Execute the move
+      selectedPiece = board[randomMove[0]][randomMove[1]];
+      selectedRow = randomMove[0];
+      selectedCol = randomMove[1];
+      
+      // Show timeout notification
+      setState(() {
+        String playerName = 'Player';
+        if (Mixin.user?.usrId.toString() == Mixin.quad?.quadFirstPlayerId.toString()) {
+          playerName = isWhiteTurn ? 'You' : (Mixin.quad?.quadAgainst ?? 'Opponent');
+        } else {
+          playerName = isWhiteTurn ? (Mixin.quad?.quadUser ?? 'Opponent') : 'You';
+        }
+        quadPlayer = '$playerName auto-played (timeout)';
+      });
+      
+      // Make the move
+      movePiece(randomMove[2], randomMove[3]);
+      
+      // Play sound and haptic feedback
+      FlameAudio.play('piece_moved.mp3');
+      Mixin.vibe();
+      
+      // Emit move for multiplayer
+      if (!isAIMode && Mixin.quadrixSocket != null) {
+        Quad quad = Quad()
+          ..quadRow = randomMove[2]
+          ..quadColumn = randomMove[3]
+          ..quadMoveType = true
+          ..quadUsrId = Mixin.user?.usrId
+          ..quadPlayer = Mixin.user?.usrFirstName
+          ..quadId = Mixin.quad?.quadId;
+        
+        quad.quadPlayerId = Mixin.user?.usrId.toString() == Mixin.quad?.quadUsrId.toString() 
+            ? Mixin.quad?.quadAgainstId 
+            : Mixin.quad?.quadUsrId;
+        
+        Mixin.quadrixSocket?.emit('played', quad.toJson());
+      }
+    } else {
+      // No valid moves available (shouldn't happen in normal gameplay)
+      print('No valid moves available for timeout auto-play');
     }
   }
 
@@ -847,9 +995,10 @@ class _IChessGameState extends State<IChessGame> {
     // Cancel any existing AI move timer
     _aiMoveTimer?.cancel();
     
-    // Update UI to show AI is thinking (but keep timer running)
+    // Update UI to show AI's turn (but keep timer running)
     setState(() {
-      quadPlayer = 'AI thinking $_seconds';
+      String opponentName = Mixin.winkser?.usrFullNames ?? 'AI';
+      quadPlayer = '$opponentName\'s turn $_seconds';
     });
     
     // Schedule AI move with shorter delay (AI should play fast like a good player)
@@ -877,7 +1026,8 @@ class _IChessGameState extends State<IChessGame> {
       if (aiMove != null) {
         // Execute the AI move
         setState(() {
-          quadPlayer = 'AI played';
+          String opponentName = Mixin.winkser?.usrFullNames ?? 'AI';
+          quadPlayer = '$opponentName played';
         });
         
         // Simulate piece selection and movement
@@ -902,7 +1052,8 @@ class _IChessGameState extends State<IChessGame> {
       } else {
         // No valid AI move found (shouldn't happen in normal gameplay)
         setState(() {
-          quadPlayer = 'AI has no moves';
+          String opponentName = Mixin.winkser?.usrFullNames ?? 'AI';
+          quadPlayer = '$opponentName has no moves';
         });
       }
     } catch (e) {

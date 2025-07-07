@@ -264,6 +264,9 @@ class _IChessState extends State<IChess> {
          * I JOINED A WAITING USER
          */
       if(Mixin.user?.usrId.toString() == Mixin.quad?.quadAgainstId.toString()){
+        // Real opponent found - cancel AI fallback
+        _hasFoundOpponent = true;
+        _aiFallbackTimer?.cancel();
 
         Mixin.winkser = User()
           ..usrId = Mixin.quad?.quadUsrId
