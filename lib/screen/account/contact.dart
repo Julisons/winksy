@@ -215,7 +215,7 @@ class _IContactUsState extends State<IContactUs> {
                                 Text(
                                   'Address',
                                   style: TextStyle(
-                                    color: color.xTrailing.withOpacity(0.7),
+                                    color: color.xTextColorSecondary.withOpacity(0.7),
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -224,7 +224,7 @@ class _IContactUsState extends State<IContactUs> {
                                 Text(
                                   'P.O. Box 50410-10\nNairobi, Kenya',
                                   style: TextStyle(
-                                    color: color.xTrailing,
+                                    color: color.xTextColorSecondary,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
                                     height: 1.3,
@@ -282,7 +282,7 @@ class _IContactUsState extends State<IContactUs> {
                   Text(
                     label,
                     style: TextStyle(
-                      color: color.xTrailing.withOpacity(0.7),
+                      color: color.xTextColorSecondary.withOpacity(0.7),
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -291,7 +291,7 @@ class _IContactUsState extends State<IContactUs> {
                   Text(
                     value,
                     style: TextStyle(
-                      color: color.xTrailing,
+                      color: color.xTextColorSecondary,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -301,7 +301,7 @@ class _IContactUsState extends State<IContactUs> {
             ),
             Icon(
               Icons.touch_app_outlined,
-              color: color.xTrailing.withOpacity(0.5),
+              color: color.xTextColorSecondary.withOpacity(0.5),
               size: 18.sp,
             ),
           ],
