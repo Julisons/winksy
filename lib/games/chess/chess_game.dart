@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as dev;
@@ -468,6 +467,9 @@ class _IChessGameState extends State<IChessGame> {
       } else {
         blackPiecesTaken.add(capturedPiece);
       }
+      
+      // Play capture sound when a piece is eaten
+      FlameAudio.play('audio/sound/kill.wav');
     }
 
     if (selectedPiece?.type == ChessPiecesType.king) {

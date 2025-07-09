@@ -31,7 +31,7 @@ class ILikeProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'];
+          var res = jsonResponse.data?['result'] ?? [];
           log('---${res}');
 
           var items = res.map<Interest>((json) {

@@ -40,7 +40,7 @@ class IFriendRequestProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
 
           var items = res.map<Friend>((json) {
             return Friend.fromJson(json);
@@ -70,7 +70,7 @@ class IFriendRequestProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
 
           var items = res.map<Friend>((json) {
             return Friend.fromJson(json);

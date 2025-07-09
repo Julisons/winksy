@@ -149,6 +149,7 @@ class _IPeopleState extends State<IPeople> {
 
                   if(provider.isLoadingMore())
                     Container(
+                      color: Colors.transparent,
                         padding: EdgeInsets.all(14.h),
                         child: Loading(dotColor: color.xTrailing))
                 ],

@@ -40,7 +40,7 @@ class ISpinnerProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
 
           var items = res.map<Spinner>((json) {
             return  Spinner.fromJson(json);
@@ -69,7 +69,7 @@ class ISpinnerProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
           log('---${res}');
 
           var items = res.map<Spinner>((json) {

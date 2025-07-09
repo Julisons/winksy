@@ -37,7 +37,7 @@ class IFameHallProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          var res = jsonResponse.data['result'];
+          var res = jsonResponse.data?['result'] ?? [];
           var items = res.map<User>((json) {
             return  User.fromJson(json);
           }).toList();
@@ -66,7 +66,7 @@ class IFameHallProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          var res = jsonResponse.data['result'] ;
+          var res = jsonResponse.data?['result'] ?? [];
 
           var items = res.map<User>((json) {
             return  User.fromJson(json);

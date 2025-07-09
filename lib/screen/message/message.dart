@@ -361,18 +361,14 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
         key: const Key('my-widget-key'),
         onVisibilityChanged: (visibilityInfo) {
           _prepMessages();
-
           log('Widget is ${visibilityInfo.visibleFraction * 100}% visible');
         },
         child: Container(
-          decoration:
-              Theme.of(context).platform ==
+          decoration: Theme.of(context).platform ==
                   TargetPlatform
                       .iOS //new
-              ? BoxDecoration(
-                  border: Border(top: BorderSide(color: Colors.grey[200]!)),
-                )
-              : null,
+              ? BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[200]!)),): null,
+          padding: EdgeInsets.all(6.w),
           child: Column(
             children: [
               Flexible(
@@ -383,11 +379,11 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                     _messages.isNotEmpty
                         ? Flexible(
                             child: RefreshIndicator(
-                              color: xGreenPrimary,
+                              color: color.xTrailing,
                               backgroundColor: color.xPrimaryColor,
                               onRefresh: () => _prepMessages(),
                               child: ListView.builder(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(16.w),
                                 physics: const BouncingScrollPhysics(
                                   parent: AlwaysScrollableScrollPhysics(),
                                 ),
@@ -401,7 +397,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              _isTyping
+             _isTyping
                   ? Align(
                       alignment: Alignment.bottomLeft,
                       child: Padding(
@@ -409,7 +405,7 @@ class _IMessageState extends State<IMessage> with TickerProviderStateMixin {
                         child: ChatTypingBubble(
                           bubbleColor: color.xSecondaryColor,
                           dotColor: color.xTrailingAlt,
-                          typingText:'${Mixin.winkser?.usrFullNames ?? widget.chat.usrReceiver} is typing',
+                          typingText:'${Mixin.winkser?.usrFullNames ?? (widget.chat.usrReceiver)} is typing',
                           animationStyle: TypingAnimationStyle.bounce,
                         ),
                       ),

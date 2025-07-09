@@ -39,7 +39,7 @@ class IPetProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'];
+          var res = jsonResponse.data?['result'] ?? [];
           pet = jsonResponse.result != null ? Pet.fromJson(jsonResponse.result) : Pet();
 
           var items = res.map<Pet>((json) {
@@ -70,7 +70,7 @@ class IPetProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ;
+          var res = jsonResponse.data?['result'] ?? [];
           log('---${res}');
 
           var items = res.map<Pet>((json) {

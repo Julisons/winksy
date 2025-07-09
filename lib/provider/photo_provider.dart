@@ -39,7 +39,7 @@ class IPhotoProvider with ChangeNotifier {
       if (data.statusCode == 200) {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
-          var res = jsonResponse.data['result'];
+          var res = jsonResponse.data?['result'] ?? [];
 
           var items = res.map<Photo>((json) {
             return  Photo.fromJson(json);
@@ -70,7 +70,7 @@ class IPhotoProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
           log('---${res}');
 
           var items = res.map<Photo>((json) {

@@ -38,7 +38,7 @@ class INudgeSoundProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
 
           var items = res.map<NudgeSound>((json) {
             return  NudgeSound.fromJson(json);
@@ -67,7 +67,7 @@ class INudgeSoundProvider with ChangeNotifier {
         try {
           JsonResponse jsonResponse = JsonResponse.fromJson(jsonDecode(data.body));
           
-          var res = jsonResponse.data['result'] ?? [];
+          var res = jsonResponse.data?['result'] ?? [];
           log('---${res}');
 
           var items = res.map<NudgeSound>((json) {

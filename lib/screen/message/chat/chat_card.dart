@@ -154,8 +154,9 @@ class _IChatCardState extends State<IChatCard> {
               Mixin.winkser = User()
               ..usrId = Mixin.user?.usrId == widget.chat.chatSenderId ? widget.chat.chatReceiverId : widget.chat.chatSenderId
               ..usrImage = widget.chat.usrImage
-              ..usrFirstName = Mixin.user?.usrId == widget.chat.chatSenderId ? widget.chat.usrSender : widget.chat.usrReceiver
-              ..usrFullNames = Mixin.user?.usrId == widget.chat.chatSenderId ? widget.chat.usrSender : widget.chat.usrReceiver;
+              ..usrFirstName = Mixin.user?.usrId == widget.chat.msgSenderId ? widget.chat.usrSender : widget.chat.usrReceiver
+              ..usrFullNames = Mixin.user?.usrId == widget.chat.msgSenderId ? widget.chat.usrSender : widget.chat.usrReceiver;
+
               widget.onClick!();
               Mixin.navigate(context,  IMessage(chat: widget.chat, showTitle: true,));
             },

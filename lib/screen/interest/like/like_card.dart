@@ -62,7 +62,8 @@ class _ILikeCardState extends State<ILikeCard> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(CORNER)) ,
                   child: CachedNetworkImage(
-                    imageUrl: widget.user.usrImage.toString(),
+                    imageUrl: '${widget.user.usrImage}'.startsWith('http') ? widget.user.usrImage
+                        : '${IUrls.IMAGE_URL}/file/secured/${widget.user.usrImage}',
                     width: MediaQuery.of(context).size.width/2,
                     height: MediaQuery.of(context).size.width/1.2,
                     fit: BoxFit.fitHeight,
@@ -78,8 +79,8 @@ class _ILikeCardState extends State<ILikeCard> {
                         ),
                       ),
                     ),
-                    errorWidget: (context, url, error) => CircleAvatar(
-                      backgroundColor: color.xSecondaryColor,
+                    errorWidget: (context, url, error) => Container(
+                      color: color.xSecondaryColor,
                       child: Icon(Icons.person, size: 50, color: color.xPrimaryColor),
                     ),
                   ),
